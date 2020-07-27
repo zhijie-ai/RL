@@ -21,8 +21,8 @@ class Actor(object):
         self.s_dim = s_dim
         self.a_dim = a_dim
         self.batch_size = batch_size
-        self.output_size = output_size
-        self.weights_len = weights_len #1,currently only generate 1 item
+        self.output_size = output_size#即item的维度
+        self.weights_len = weights_len #1,currently only generate 1 item，动作中item的个数
         self.tau = tau
         self.learning_rate = learning_rate
         self.scope = scope

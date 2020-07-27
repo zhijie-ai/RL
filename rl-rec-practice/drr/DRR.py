@@ -17,12 +17,12 @@ import numpy as np
 from scipy.special import comb
 import time
 
-from drr.actor import Actor
-from drr.critic import Critic
-from drr.noise import OUNoise
-from drr.replay_buffer import ReplayBuffer
-from drr.simulator import Simulator
-from drr.preprocesing import process_data
+from actor import Actor
+from critic import Critic
+from noise import OUNoise
+from replay_buffer import ReplayBuffer
+from simulator import Simulator
+from preprocesing import process_data
 
 #state representation module
 #require user has same dimension with items (both 1*k dimension)
@@ -275,6 +275,10 @@ def main(args):
         # initialize replay memory
         replay_buffer = ReplayBuffer(int(args['buffer_size']))
 
+<<<<<<< HEAD
+=======
+        # emb的维度*(state的数量+state数量的两两组合)
+>>>>>>> bf5ebce... RL 相关
         s_dim = int(args['embedding']) * (
                     int(args['state_item_num']) + int(comb(int(args['state_item_num']), 2)))  ### need more work here
         a_dim = int(args['embedding']) * int(args['action_item_num'])

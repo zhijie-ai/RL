@@ -218,3 +218,9 @@ def process_data(data_path,users_path,items_path,history_len):
         user_embed[row[0]]=new_row
 
     return pd.DataFrame.from_dict(whole_data),item_embed,user_embed
+'''
+                         1                       2
+s1  [[1, 2, 3], [4, 5, 6]]  [[1, 2, 3], [4, 5, 6]]
+s2  [[1, 2, 3], [4, 5, 6]]  [[1, 2, 3], [4, 5, 6]]
+s3  [[1, 2, 3], [4, 5, 6]]  [[1, 2, 3], [4, 5, 6]]
+'''
