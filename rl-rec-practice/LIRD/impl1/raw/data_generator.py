@@ -21,7 +21,7 @@ class DataGenerator():
         List the users and the items
         List all the users historic
         '''
-        self.data = self.load_datas(datapath, itempath)
+        self.data = self.load_datas(datapath, itempath)# 合并二者的数据。
         self.users = self.data['userId'].unique()  # list of all users
         self.items = self.data['itemId'].unique()  # list of all items
         self.histo = self.gen_histo()
