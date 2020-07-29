@@ -24,11 +24,13 @@ from noise import OrnsteinUhlenbeckNoise
 from replay_buffer import ReplayMemory
 
 
+# 将train.csv文件变成(s,a,s_,r)的数据格式，dataframe
 def read_file(data_path):
     ''' Load data from train.csv or test.csv. '''
 
     data = pd.read_csv(data_path, sep=';')
     for col in ['state', 'n_state', 'action_reward']:
+        # 629&2|402&3|824&3|418&4,变成一个二维数组
         data[col] = [np.array([[np.int(k) for k in ee.split('&')] for ee in e.split('|')]) for e in data[col]]
     for col in ['state', 'n_state']:
         data[col] = [np.array([e[0] for e in l]) for l in data[col]]
@@ -165,6 +167,7 @@ def train(sess, environment, actor, critic, embeddings, history_length, ra_lengt
             # '21: Stage 2: Parameter Updating Stage'
             if replay_memory.size() >= batch_size:  # Experience replay
                 replay = True
+                # 更新A和C的参数
                 replay_Q_value, critic_loss = experience_replay(replay_memory, batch_size,
                                                                 actor, critic, embeddings, ra_length,
                                                                 history_length * embeddings.size(),
@@ -211,14 +214,15 @@ buffer_size = 1000000 # Size of replay memory D in article
 fixed_length = True # Fixed memory length
 
 dg = DataGenerator('data/ml-100k/u.data', 'data/ml-100k/u.item')
-dg.gen_train_test(0.8, seed=42)
+dg.gen_train_test(0.8, seed=42)# 产生训练集和测试集
 
+# 根据nb_states给每个用户生成训练集的条数，len(nb_states):条数，history_length:每条数据的item个数
 dg.write_csv('data/train.csv', dg.train, nb_states=[history_length], nb_actions=[ra_length])
 dg.write_csv('data/test.csv', dg.test, nb_states=[history_length], nb_actions=[ra_length])
 
-data = read_file('data/train.csv')
+data = read_file('data/train.csv')# (s,a,s_)
 
-# Embeddings
+# Embeddings，通过神经网络算出来的，通过softmax网络算出来的，类似w2v中的2个embedding矩阵，
 if True: # Generate embeddings?
   eg = EmbeddingsGenerator(dg.user_train, pd.read_csv('data/ml-100k/u.data', sep='\t', names=['userId', 'itemId', 'rating', 'timestamp']))
   eg.train(nb_epochs=300)
@@ -228,6 +232,7 @@ if True: # Generate embeddings?
   print('Test set: Loss=%.4f ; Accuracy=%.1f%%' % (test_loss, test_accuracy * 100))
   eg.save_embeddings('data/embeddings.csv')
 
+# 加载item的embedding
 embeddings = Embeddings(read_embeddings('data/embeddings.csv'))
 
 state_space_size = embeddings.size() * history_length
@@ -255,6 +260,7 @@ def state_to_items(state, actor, ra_length, embeddings, dict_embeddings, target=
   return [dict_embeddings[str(action)]
           for action in actor.get_recommendation_list(ra_length, np.array(state).reshape(1, -1), embeddings, target).reshape(ra_length, embeddings.size())]
 
+# test_df为测试数据或者训练数据
 def test_actor(actor, test_df, embeddings, dict_embeddings, ra_length, history_length, target=False, nb_rounds=1):
   ratings = []
   unknown = 0
@@ -262,6 +268,8 @@ def test_actor(actor, test_df, embeddings, dict_embeddings, ra_length, history_l
   for _ in range(nb_rounds):
     for i in range(len(test_df)):
       history_sample = list(test_df[i].sample(history_length)['itemId'])
+
+      # 根据当前的state获取action，返回的是 dict_embeddings[str_item]=1...
       recommendation = state_to_items(embeddings.embed(history_sample), actor, ra_length, embeddings, dict_embeddings, target)
       for item in recommendation:
         l = list(test_df[i].loc[test_df[i]['itemId'] == item]['rating'])

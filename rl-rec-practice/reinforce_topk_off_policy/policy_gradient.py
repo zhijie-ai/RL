@@ -26,11 +26,11 @@ def uniform_distribution(a):
     return a[index]
 '''
 
-
+# topk修正后的概率
 def cascade_model(p,k):
     return 1-(1-p)**k
 
-
+# lambda比重
 def gradient_cascade(p, k):
     return k*(1-p)**(k-1)
 
@@ -61,7 +61,7 @@ class PolicyGradient:
         '''
         weight_capping_c cap the coefficient to reduce variance 
         '''
-        self.weight_capping_c = weight_capping_c
+        self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
 
         # num of items on the slate
         self.K = k
@@ -235,10 +235,12 @@ class PolicyGradient:
 
         with tf.name_scope('loss'):
 
+            # item的数量
             l = self.outputs_softmax.shape.as_list()[1]
             #print(l)
             #print(self.episode_observations[-1])
             observation = np.array(self.episode_observations[-1])
+            # 行为策略,beta,根据概率选动作。根据n_y选动作
             at = self.behaviour_action(observation,self.b_distribution)
             #print(s)
             observation.shape = (len(observation),1)
@@ -249,9 +251,9 @@ class PolicyGradient:
             print(p_at)
             # off-policy correction,a/b,here behavior policy is uniform distribution
             # induce weight capping to reduce variance
-            off_policy_correction = self.weight_capping(p_at * l)
+            off_policy_correction = self.weight_capping(p_at * l)# 2个概率的比值
             # top-k correction
-            topk_correction = gradient_cascade(p_at, self.K)
+            topk_correction = gradient_cascade(p_at, self.K)# 论文中的lambda_k
             # log gradient
             neg_log_prob = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels)
             self.loss = tf.reduce_sum(neg_log_prob * self.discounted_episode_rewards_norm

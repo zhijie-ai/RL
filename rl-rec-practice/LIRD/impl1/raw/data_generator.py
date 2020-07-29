@@ -22,8 +22,8 @@ class DataGenerator():
         List all the users historic
         '''
         self.data = self.load_datas(datapath, itempath)# 合并二者的数据。
-        self.users = self.data['userId'].unique()  # list of all users
-        self.items = self.data['itemId'].unique()  # list of all items
+        self.users = self.data['userId'].unique()  # list of all users，所有的用户
+        self.items = self.data['itemId'].unique()  # list of all items，所有的item
         self.histo = self.gen_histo()
         self.train = []
         self.test = []
@@ -52,6 +52,8 @@ class DataGenerator():
                                    usecols=range(2), encoding='latin-1')
         return data.merge(movie_titles, on='itemId', how='left')
 
+
+    # 将用户的数据按时间排序封装到df中放入list返回
     def gen_histo(self):
         '''
         Group all rates given by users and store them from older to most recent.
@@ -92,9 +94,10 @@ class DataGenerator():
                           Number max of movies to take for the 'state' column
         max_action :      int, optional
                           Number max of movies to take for the 'action' action
-        nb_states :       array(int), optional
+        nb_states :       array(int), optional [12]
                           Numbers of movies to be taken for each sample made on user's historic
-        nb_actions :      array(int), optional
+                          相当于定义了每个用户生成的样本数,[12]--代表一个样本，长度为12个item
+        nb_actions :      array(int), optional [4]
                           Numbers of rating to be taken for each sample made on user's historic
 
         Returns
@@ -113,7 +116,7 @@ class DataGenerator():
         '''
 
         n = len(user_histo)
-        sep = int(action_ratio * n)
+        sep = int(action_ratio * n)# sep之前的用于生成state,sep之后的用于生成action
         nb_sample = random.randint(1, max_samp_by_user)
         if not nb_states:
             nb_states = [min(random.randint(1, sep), max_state) for i in range(nb_sample)]
@@ -146,6 +149,7 @@ class DataGenerator():
             actions.append(sample_action)
         return states, actions
 
+    # 根据采样比例，将data分为训练集和测试集
     def gen_train_test(self, test_ratio, seed=None):
         '''
         Shuffle the historic of users and separate it in a train and a test set.
@@ -171,6 +175,7 @@ class DataGenerator():
         self.user_train = [h.iloc[0, 0] for h in self.train]
         self.user_test = [h.iloc[0, 0] for h in self.test]
 
+    # 将数据落地磁盘
     def write_csv(self, filename, histo_to_write, delimiter=';', action_ratio=0.8, max_samp_by_user=5, max_state=100,
                   max_action=50, nb_states=[], nb_actions=[]):
         '''
@@ -210,11 +215,14 @@ class DataGenerator():
             f_writer = csv.writer(file, delimiter=delimiter)
             f_writer.writerow(['state', 'action_reward', 'n_state'])
             for user_histo in histo_to_write:
+                # 根据len(nb_states)的长度给该用户生成训练集的条数
+                # state = str(row.loc['itemId']) + '&' + str(row.loc['rating'])
+                # action = str(row.loc['itemId']) + '&' + str(row.loc['rating'])
                 states, actions = self.sample_histo(user_histo, action_ratio, max_samp_by_user, max_state, max_action,
                                                     nb_states, nb_actions)
                 for i in range(len(states)):
                     # FORMAT STATE
-                    state_str = '|'.join(states[i])
+                    state_str = '|'.join(states[i])# [10&1,12&2....]
                     # FORMAT ACTION
                     action_str = '|'.join(actions[i])
                     # FORMAT N_STATE

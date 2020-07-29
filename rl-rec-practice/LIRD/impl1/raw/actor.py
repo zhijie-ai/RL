@@ -146,9 +146,10 @@ class Actor():
 
         # '1: Generate w_t = {w_t^1, ..., w_t^K} according to Equation (5)'
         method = self.predict_target if target else self.predict
-        weights = method(noisy_state, [ra_length] * batch_size)
+        weights = method(noisy_state, [ra_length] * batch_size)# 假设一个batch里面有64个state，则action就有64个，每个action又有4个item
 
-        # '3: Score items in I according to Equation (6)'
+        # '3: Score items in I according to Equation (6)'，action中每一个item的emb和所有的item的emb点积，得到一个score，
+        # 也就是说action中每一个item的操作后都会得到一个长长的向量，向量的维度就是全量item的个数
         scores = np.array([[[get_score(weights[i][k], embedding, batch_size)
                              for embedding in embeddings.get_embedding_vector()]
                             for k in range(ra_length)]

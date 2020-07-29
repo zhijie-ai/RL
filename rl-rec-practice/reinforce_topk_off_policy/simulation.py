@@ -37,8 +37,8 @@ def simulation():
     rewards = []
 
     PG = PolicyGradient(
-        n_x=len(observations[0]),
-        n_y=len(actions),
+        n_x=len(observations[0]),# 数据的维度
+        n_y=len(actions),# item的个数
         s0=observations[random.randint(0, len(observations) - 1)],
         learning_rate=0.005,
         reward_decay=1,

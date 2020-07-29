@@ -46,7 +46,7 @@ class EmbeddingsGenerator:
         context: user's history with one random movie removed
         target: id of random removed movie
         '''
-        user_movies_count = len(self.user_movies[user_id])
+        user_movies_count = len(self.user_movies[user_id])# assume 20
         # picking random movie
         random_index = np.random.randint(0, user_movies_count - 1)  # -1 avoids taking the last movie
         # setting target
