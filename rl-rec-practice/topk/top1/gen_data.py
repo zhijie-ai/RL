@@ -9,43 +9,31 @@
 #               皇图霸业谈笑中，                 #
 #               不胜人生一场醉。                 #
 #----------------------------------------------
-import pandas as pd
-import pickle
 import numpy as np
+import pickle
+
+np.random.seed(1234)
+
+def gen_data(num_user=10000,items=100000):
+    clicked_item=[]
+    rewards=[]
+    for i in range(num_user):
+        step = np.random.randint(8,16)# 每个用户的session最多16步，最少8步
+        clicked_item.append(np.random.choice(range(items),step,replace=False))
+        rewards.append(np.random.randint(-10,10,step))# 0-20分选step个
+
+    return np.array(clicked_item),np.array(rewards)
 
 
-def process_data(ori_data, history_len, action_len=1):
-    whole_data = {}
-    for u in ori_data.keys():
-        data = {}
-        items = ori_data[u]
-
-        state_list = []
-        action_list = []
-        n_state_list = []
-        reward_list = []
-
-        for i in range(len(items) - (action_len + history_len)):
-
-            state_list.append([di['movie_id'] for di in items[i:i + history_len]])
-            action_list.append([di['movie_id'] for di in items[i + 1:i + 1 + action_len]])
-            reward_list.append([di['ratings'] for di in items[i + 1:i + 1 + action_len]])
-            n_state_list.append([di['movie_id'] for di in items[i + action_len:i + action_len + history_len]])
-
-
-        data['state_float'] = state_list# We only need state in full load,which means 5 elements
-        data['action_float'] = action_list
-        data['reward_float'] = reward_list
-        data['n_state_float'] = n_state_list
-        whole_data[u] =data
-
-    return pd.DataFrame.from_dict(whole_data),len(np.unique([item['movie_id'] for di in ori_data.values() for item in di]))
 
 
 
 
 if __name__ == '__main__':
-    with open('../data/whole_user_movies.pickle','rb') as f:
-        whole_data = pickle.load(f)
-
-    df = process_data(whole_data,10)
+    # data = gen_data()
+    # with open('../data/session.pickle', 'wb') as f:
+    #     pickle.dump(data,f)
+    
+    with open('../data/session.pickle','rb') as f:
+        data = pickle.load(f)
+        print(len(data[0]))
