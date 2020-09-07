@@ -1,0 +1,275 @@
+===========start executing run_task time 2019-10-13 00:17:01.970094
+处理跨天的数据，nowdate:2019-10-13 00:17:01.970094,lastdate:2019-10-12 23:24:29
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 00:17:01.970000,last_time 2019-10-12 23:24:29.511000
+==========the number of save2es handled:2407951 
+此次save2es方法处理的文件数目：10
+==========execute run_task function costed time 46.02770543893178 m
+==========run_task finished time 2019-10-13 01:03:03.632420
+===========start executing run_task time 2019-10-13 01:03:04.233129
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 01:03:04.233000,last_time 2019-10-13 00:17:01.970000
+==========the number of save2es handled:5319791 
+此次save2es方法处理的文件数目：27
+==========execute run_task function costed time 37.84942107200622 m
+==========run_task finished time 2019-10-13 01:40:55.198393
+===========start executing run_task time 2019-10-13 01:40:55.835447
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 01:40:55.835000,last_time 2019-10-13 01:03:04.233000
+==========the number of save2es handled:4563486 
+此次save2es方法处理的文件数目：22
+==========execute run_task function costed time 34.08275169531505 m
+==========run_task finished time 2019-10-13 02:15:00.800549
+===========start executing run_task time 2019-10-13 02:15:01.373429
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 02:15:01.373000,last_time 2019-10-13 01:40:55.835000
+==========the number of save2es handled:3343921 
+此次save2es方法处理的文件数目：18
+==========execute run_task function costed time 27.960708661874136 m
+==========run_task finished time 2019-10-13 02:42:59.015949
+===========start executing run_task time 2019-10-13 02:42:59.597792
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 02:42:59.597000,last_time 2019-10-13 02:15:01.373000
+==========the number of save2es handled:3345431 
+此次save2es方法处理的文件数目：16
+==========execute run_task function costed time 27.72276008526484 m
+==========run_task finished time 2019-10-13 03:10:42.963397
+===========start executing run_task time 2019-10-13 03:10:43.537458
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 03:10:43.537000,last_time 2019-10-13 02:42:59.597000
+==========the number of save2es handled:3355807 
+此次save2es方法处理的文件数目：18
+==========execute run_task function costed time 27.72455723285675 m
+==========run_task finished time 2019-10-13 03:38:27.010892
+===========start executing run_task time 2019-10-13 03:38:27.560443
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 03:38:27.560000,last_time 2019-10-13 03:10:43.537000
+==========the number of save2es handled:2818437 
+此次save2es方法处理的文件数目：15
+==========execute run_task function costed time 24.978626068433126 m
+==========run_task finished time 2019-10-13 04:03:26.278007
+===========start executing run_task time 2019-10-13 04:03:26.881640
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 04:03:26.881000,last_time 2019-10-13 03:38:27.560000
+==========the number of save2es handled:2774642 
+此次save2es方法处理的文件数目：15
+==========execute run_task function costed time 24.737129310766857 m
+==========run_task finished time 2019-10-13 04:28:11.109399
+===========start executing run_task time 2019-10-13 04:28:11.708448
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 04:28:11.708000,last_time 2019-10-13 04:03:26.881000
+==========the number of save2es handled:2832392 
+此次save2es方法处理的文件数目：15
+==========execute run_task function costed time 25.536317733923592 m
+==========run_task finished time 2019-10-13 04:53:43.887512
+===========start executing run_task time 2019-10-13 04:53:44.517551
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 04:53:44.517000,last_time 2019-10-13 04:28:11.708000
+==========the number of save2es handled:2831645 
+此次save2es方法处理的文件数目：13
+==========execute run_task function costed time 26.805500892798104 m
+==========run_task finished time 2019-10-13 05:20:32.847605
+===========start executing run_task time 2019-10-13 05:20:33.439641
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 05:20:33.439000,last_time 2019-10-13 04:53:44.517000
+==========the number of save2es handled:3399956 
+此次save2es方法处理的文件数目：16
+==========execute run_task function costed time 29.13866406281789 m
+==========run_task finished time 2019-10-13 05:49:41.759485
+===========start executing run_task time 2019-10-13 05:49:42.314036
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 05:49:42.314000,last_time 2019-10-13 05:20:33.439000
+==========the number of save2es handled:2984906 
+此次save2es方法处理的文件数目：15
+==========execute run_task function costed time 27.15797437429428 m
+==========run_task finished time 2019-10-13 06:16:51.792498
+===========start executing run_task time 2019-10-13 06:16:52.424057
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 06:16:52.424000,last_time 2019-10-13 05:49:42.314000
+==========the number of save2es handled:3575417 
+此次save2es方法处理的文件数目：15
+==========execute run_task function costed time 30.862258394559223 m
+==========run_task finished time 2019-10-13 06:47:44.159561
+===========start executing run_task time 2019-10-13 06:47:44.770917
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 06:47:44.770000,last_time 2019-10-13 06:16:52.424000
+==========the number of save2es handled:3877252 
+此次save2es方法处理的文件数目：17
+==========execute run_task function costed time 32.747935473918915 m
+==========run_task finished time 2019-10-13 07:20:29.647045
+===========start executing run_task time 2019-10-13 07:20:30.271915
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 07:20:30.271000,last_time 2019-10-13 06:47:44.770000
+==========the number of save2es handled:4607445 
+此次save2es方法处理的文件数目：21
+==========execute run_task function costed time 36.87228522698084 m
+==========run_task finished time 2019-10-13 07:57:22.609029
+===========start executing run_task time 2019-10-13 07:57:23.182611
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 07:57:23.182000,last_time 2019-10-13 07:20:30.271000
+==========the number of save2es handled:4706133 
+此次save2es方法处理的文件数目：22
+==========execute run_task function costed time 37.4886314590772 m
+==========run_task finished time 2019-10-13 08:34:52.500499
+===========start executing run_task time 2019-10-13 08:34:53.083543
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 08:34:53.083000,last_time 2019-10-13 07:57:23.182000
+==========the number of save2es handled:4742713 
+此次save2es方法处理的文件数目：21
+==========execute run_task function costed time 37.2312048236529 m
+==========run_task finished time 2019-10-13 09:12:06.955832
+===========start executing run_task time 2019-10-13 09:12:07.561587
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 09:12:07.561000,last_time 2019-10-13 08:34:53.083000
+==========the number of save2es handled:5331160 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 40.39480561812719 m
+==========run_task finished time 2019-10-13 09:52:31.249924
+===========start executing run_task time 2019-10-13 09:52:31.848725
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 09:52:31.848000,last_time 2019-10-13 09:12:07.561000
+==========the number of save2es handled:5387700 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 40.9444304227829 m
+==========run_task finished time 2019-10-13 10:33:28.514550
+===========start executing run_task time 2019-10-13 10:33:29.079595
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 10:33:29.079000,last_time 2019-10-13 09:52:31.848000
+==========the number of save2es handled:5352303 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 40.64762536287308 m
+==========run_task finished time 2019-10-13 11:14:07.937117
+===========start executing run_task time 2019-10-13 11:14:08.584744
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 11:14:08.584000,last_time 2019-10-13 10:33:29.079000
+==========the number of save2es handled:5274028 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 40.475133840243025 m
+==========run_task finished time 2019-10-13 11:54:37.092774
+===========start executing run_task time 2019-10-13 11:54:37.686066
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 11:54:37.686000,last_time 2019-10-13 11:14:08.584000
+==========the number of save2es handled:5318974 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 42.57520927588145 m
+==========run_task finished time 2019-10-13 12:37:12.198622
+===========start executing run_task time 2019-10-13 12:37:12.824611
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 12:37:12.824000,last_time 2019-10-13 11:54:37.686000
+==========the number of save2es handled:5928772 
+此次save2es方法处理的文件数目：27
+==========execute run_task function costed time 43.60112630526225 m
+==========run_task finished time 2019-10-13 13:20:48.892189
+===========start executing run_task time 2019-10-13 13:20:49.525821
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 13:20:49.525000,last_time 2019-10-13 12:37:12.824000
+==========the number of save2es handled:5836143 
+此次save2es方法处理的文件数目：26
+==========execute run_task function costed time 43.24313086271286 m
+==========run_task finished time 2019-10-13 14:04:04.113673
+===========start executing run_task time 2019-10-13 14:04:04.755162
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 14:04:04.755000,last_time 2019-10-13 13:20:49.525000
+==========the number of save2es handled:5289316 
+此次save2es方法处理的文件数目：25
+==========execute run_task function costed time 40.15305696725845 m
+==========run_task finished time 2019-10-13 14:44:13.938580
+===========start executing run_task time 2019-10-13 14:44:14.538382
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 14:44:14.538000,last_time 2019-10-13 14:04:04.755000
+==========the number of save2es handled:5265977 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 40.44509447813034 m
+==========run_task finished time 2019-10-13 15:24:41.244051
+===========start executing run_task time 2019-10-13 15:24:41.780285
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 15:24:41.780000,last_time 2019-10-13 14:44:14.538000
+==========the number of save2es handled:5174523 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 41.23372517426809 m
+==========run_task finished time 2019-10-13 16:05:55.803795
+===========start executing run_task time 2019-10-13 16:05:56.376463
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 16:05:56.376000,last_time 2019-10-13 15:24:41.780000
+==========the number of save2es handled:5731069 
+此次save2es方法处理的文件数目：25
+==========execute run_task function costed time 42.26112265189489 m
+==========run_task finished time 2019-10-13 16:48:12.043822
+===========start executing run_task time 2019-10-13 16:48:12.637732
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 16:48:12.637000,last_time 2019-10-13 16:05:56.376000
+==========the number of save2es handled:5278321 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 40.053172544638315 m
+==========run_task finished time 2019-10-13 17:28:15.828085
+===========start executing run_task time 2019-10-13 17:28:16.469121
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 17:28:16.469000,last_time 2019-10-13 16:48:12.637000
+==========the number of save2es handled:5121202 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 39.24355469544729 m
+==========run_task finished time 2019-10-13 18:07:31.082403
+===========start executing run_task time 2019-10-13 18:07:31.654782
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 18:07:31.654000,last_time 2019-10-13 17:28:16.469000
+==========the number of save2es handled:5156081 
+此次save2es方法处理的文件数目：23
+==========execute run_task function costed time 40.72335878610611 m
+==========run_task finished time 2019-10-13 18:48:15.056309
+===========start executing run_task time 2019-10-13 18:48:15.685113
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 18:48:15.685000,last_time 2019-10-13 18:07:31.654000
+==========the number of save2es handled:5555668 
+此次save2es方法处理的文件数目：24
+==========execute run_task function costed time 42.8912227789561 m
+==========run_task finished time 2019-10-13 19:31:09.158480
+===========start executing run_task time 2019-10-13 19:31:09.758244
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 19:31:09.758000,last_time 2019-10-13 18:48:15.685000
+==========the number of save2es handled:6163750 
+此次save2es方法处理的文件数目：23
+==========execute run_task function costed time 45.604627974828084 m
+==========run_task finished time 2019-10-13 20:16:46.035923
+===========start executing run_task time 2019-10-13 20:16:46.613752
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 20:16:46.613000,last_time 2019-10-13 19:31:09.758000
+==========the number of save2es handled:6508140 
+此次save2es方法处理的文件数目：27
+==========execute run_task function costed time 48.270995120207466 m
+==========run_task finished time 2019-10-13 21:05:02.873459
+===========start executing run_task time 2019-10-13 21:05:03.513222
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 21:05:03.513000,last_time 2019-10-13 20:16:46.613000
+==========the number of save2es handled:6557243 
+此次save2es方法处理的文件数目：25
+==========execute run_task function costed time 49.40196942090988 m
+==========run_task finished time 2019-10-13 21:54:27.631387
+===========start executing run_task time 2019-10-13 21:54:28.192337
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 21:54:28.192000,last_time 2019-10-13 21:05:03.513000
+==========the number of save2es handled:7503185 
+此次save2es方法处理的文件数目：30
+==========execute run_task function costed time 54.969010798136395 m
+==========run_task finished time 2019-10-13 22:49:26.332985
+===========start executing run_task time 2019-10-13 22:49:26.964582
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 22:49:26.964000,last_time 2019-10-13 21:54:28.192000
+==========the number of save2es handled:7448366 
+此次save2es方法处理的文件数目：32
+==========execute run_task function costed time 51.96645937760671 m
+==========run_task finished time 2019-10-13 23:41:24.952145
+===========start executing run_task time 2019-10-13 23:41:25.537486
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-13 23:41:25.537000,last_time 2019-10-13 22:49:26.964000
+==========the number of save2es handled:6771888 
+此次save2es方法处理的文件数目：31
+==========execute run_task function costed time 49.72749511798223 m
+==========run_task finished time 2019-10-14 00:31:09.187193
+===========start executing run_task time 2019-10-14 00:31:09.783353
+处理跨天的数据，nowdate:2019-10-14 00:31:09.783353,lastdate:2019-10-13 23:41:25
+当前save2es方法处理的是/aldadx/adx_jsonlogs/20191013/的数据
+=====>now_time 2019-10-14 00:31:09.783000,last_time 2019-10-13 23:41:25.537000
+==========the number of save2es handled:1744454 
+此次save2es方法处理的文件数目：9
+==========execute run_task function costed time 42.10730151732763 m
+==========run_task finished time 2019-10-14 01:13:16.221444

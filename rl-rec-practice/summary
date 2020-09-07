@@ -1,0 +1,37 @@
+针对使用ml-100数据集配合RL做推荐的过程整理及总结:
+1.embedding过程:
+    drr:使用用户和item的基本特征当作embedding,其实就是相当于特征提取的过程
+    ddpg:根据rating_df使用SVD分解来得到U和I的embedding矩阵
+    LIRD:用神经网络来训练得到embedding
+    其实还可以利用AE或者采用最大互信息的思路来提取特征,infomax
+2.数据集的生成:
+    drr:把行为数据按照uid分组后,得到该用户所有有过行为的item及对应的评分.,然后根据时间(其实该实现没有按照时间排序,最好排序下),使用前5个item
+        预测下一个item的方式生成(s,a,r,s_),一个用户就有很多条(s,a,r,s_)的记录了,还用到了聚类,似乎可用可不用
+    ddpg:也是将rating文件根据uid分组,得到该用户所有的item及对于的评分.一个用户只能训练一次.
+    LIRD:将一个用户只取一条数据,其实是在一个list中定义的.然后是state中包含的item个数,action中包含的item个数.仅仅用于初始化工作.
+
+    基本上都是使用显性数据来构造用于训练模型的数据集的.{'uid':{'itemid':1,'itemid2':5}....
+    都把rating数据根据uid来分组.其中,drr中的思路没有按时间排序,个人觉得应该按时间排序下.
+    drr的思路可以实现一个用户有多个(s,a,r)对,而ddpd的思路似乎一个用户只能有一次
+    state:
+        前一个是根据当前用户某一个state的5个item生成一个15*19的向量,后一个是根据u_embbeding和他的10个item经过操作
+        最终拼接成一个(21,100)的矩阵
+    action:都是一个item embbding的长度的向量.
+    reward:第一种是根据(s,a)用某种比较复杂的算法来计算reward,后一种也是.然后都是根据reward是否大于0来计算下一个state,
+        其中,ddpg代码里drrave_state_rep生成state的实现里还没用到.
+    next_reward:都是根据reward是否大于0来改变下一个state
+        drr中,基于当前的state,送给actor,得到一个action,然后计算(s,a)的值.
+        与环境交互的过程,首先基于当前的state送到Actor,输出一个action,将(s,a)送到env,计算reward,并且得到下一个state,这就是正常的
+        强化学习的步骤.正常的RL包含training,serving,simulation,serving及将state传递给Acotr,得到action
+
+    刚开始想过,直接根据log日志整理成(s,a,r)存到replay_buffer中,因为就算正常的RL过程,前期也是搜集数据的过程,后期用replayer_buffer
+        中的数据训练模型.可是后来想想不行,在和环境交互的过程中,数据里包含了有好reward的数据,有不好reward的数据,好的reward的数据会让
+        模型学到增加对应的概率,不好的reward的数据会让模型学到减小对应的概率.如果直接用log日志做训练数据,特别是对于reward只有1,0两种情况的
+        案例来说,模型学不到任何东西,因为所有的(s,a)对应的reward都一样,换句话说,在任何state,采取任何action都没什么区别.
+        如果采用NN来训练一个reward的回归模型,reward是解决了能计算任意的(s,a)的情况,可是,根据reward怎么来更新下一个state呢?
+        原先的论文中,要么是直接根据off-policy来采样,要么也是训练根据reward的大小来判断是否会点击对应的action,从而改变state.
+
+
+用日志数据似乎仅仅用于计算reward.
+主策略π使用考虑长期reward的softmax进行训练，而行为策略β则仅仅使用state-action pairs进行训练；
+主策略π使用用户行为历史上非零reward的样本进行训练，而行为策略β则使用用户行为历史上全部的样本进行训练
