@@ -90,7 +90,6 @@ def format_data():
     feature_click=[[] for _ in range(size_user)]#每个用户所有click的item特征
 
     #data_behavior[u_id].append([time_stamp,disp_list,pick_list])
-    print(len(data_behavior))
     for user in range(len(data_behavior)):
         # (1) count number of click
         click_t=0 # 每个用户的点击item的个数
@@ -121,7 +120,6 @@ def format_data():
                 click_t+=1# splitter a event with 2 clickings to 2 events
 
 
-        print('news_dict',news_dict)
         data_news_cnt[user]=len(news_dict)#每个用户的历史展示个数
 
         feature[user]=np.zeros([data_news_cnt[user],20])# 每个用户所有展示的item，应该就是论文中W
@@ -134,8 +132,8 @@ def format_data():
     return data_click,data_disp,feature,data_time,data_news_cnt,data_parameter,feature_click,news_dict
 
 data = format_data()
-print('data_click',data[0][0])
-print('data_disp',data[1][0])
+print('data_click',data[0])
+print('data_disp',data[1])
 # print('feature',format_data()[2])
 # print('data_time',format_data()[3])# 每个用户总的点击item次数，len(pick_list)
 # print('data_news_cnt',format_data()[4])# 每个用户总的display次数

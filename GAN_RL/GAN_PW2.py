@@ -256,28 +256,29 @@ def construct_graph(is_training,is_batch_norm):
         cumsum_tril_matrix = tf.SparseTensor(cumsum_tril_indices, cumsum_tril_value,
                                              [section_length, section_length])  # sec by sec
         #Xs_clicked为用户所有点击的特征feature_click[user][click_t]=user_news_feature[key]
+        # cumsum_tril_matrix应该就是是论文中的W矩阵，应该是可以不采用这种方式来初始化的。随机初始化？
         click_history[ii] = tf.sparse_tensor_dense_matmul(cumsum_tril_matrix, Xs_clicked)
         # print(Xs_clicked)#(6, 20)
         # print(cumsum_tril_matrix)
 
         # print('click_history.shape',click_history[ii])# shape=(?, 20)
     # 通过position weight得到代表history的特征
-    u_history_feature = tf.concat(click_history, axis=1)#(4,6,20)
+    u_history_feature = tf.concat(click_history, axis=1)#(4,6,20)#这似乎就是st的定义
     print('u_history_feature.shape',u_history_feature.shape)#(6,80)
     # concat history feature and current feature
     # disp_tensor_indice_split 按时间排序的点击次数[0,0,1,1,2],下一个用户点击次数=自己的点击次数+上一个用户总的次数
-    #[0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5],该数组的长度是
+    #[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5],该数组的长度是
     #   当前用户的总的展示次数
     # 从u_history_feature根据该用户的展示次数选出27行(27,80)
-    disp_history_feature = tf.gather(u_history_feature, disp_tensor_indice_split)#(27,80)
-    # 用户历史点击的特征，用户历史展示的特征
+    disp_history_feature = tf.gather(u_history_feature, disp_tensor_indice_split)#(27,80),要考虑到所有展示的item中每个item的reward
+    # 用户历史点击的特征，用户历史展示的特征，disp_current_feature:当前用户所有的展示的item的特征
     print('disp_history_feature.shape',disp_history_feature.shape)
     print('disp_current_feature',disp_current_feature.shape)#(27,20)
     print('tf.concat([disp_history_feature, disp_current_feature], axis=1)',
           tf.concat([disp_history_feature, disp_current_feature], axis=1).shape)
     combine_feature = tf.reshape(tf.concat([disp_history_feature, disp_current_feature], axis=1),
                                  [-1, _f_dim * _weighted_dim + _f_dim])
-    print('combine_feature.shape',combine_feature.shape)#(27,100)
+    print('combine_feature.shape',combine_feature.shape)#(27,100)，如果将(27,20),(27,20)2个矩阵拼接，也是可以的吧
 
     # neural net，可以调
     n1 = 256
@@ -292,11 +293,11 @@ def construct_graph(is_training,is_batch_norm):
 
     # output layer
     u_disp = tf.layers.dense(y2, 1, trainable=True, kernel_initializer=tf.truncated_normal_initializer(stddev=_E3_sd))
-    print('u_disp.shape',u_disp.shape)#(27,1)
+    print('u_disp.shape',u_disp.shape)#(27,1)，公共有27个item，输入27个score
 
     # construct loss function
     exp_u_disp = tf.exp(u_disp)
-    print('exp_u_disp.shape',exp_u_disp.shape)#(27,1)
+    print('exp_u_disp.shape',exp_u_disp.kafka_producer.py)#(27,1)
     # 分段求和函数segment_sum，理论每推荐k个(比如k=10，在造的数据中，由于之前对数据理解不准确，
     #   在展示的时候，应该是都是k个的。假设都是k个，那么在disp_tensor_indice_split参数中，相同的index算一次推荐)
     sum_exp_disp_ubar_ut = tf.segment_sum(exp_u_disp, disp_tensor_indice_split)
@@ -364,6 +365,14 @@ log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 print("%s, start" % log_time)
 
 # 数据准备
+'''
+data_click：记录了每个用户点击的id在所有展示中的index
+data_disp：记录了每个用户展示的id在所有展示中的index
+feature:每个用户所有展示的item的特征[20,20],第一个20代表当前用户共展示了20个item，第二个20代表每个item的维度
+data_time:每个用户的点击次数
+data_news_cnt:每个用户展示的次数
+feature_click:同feature，只是记录的是每个用户点击特征[5,20],5代表5个点击，20代表item的特征维度
+'''
 data_click, data_disp, feature, data_time, data_news_cnt, data_parameter, feature_click = format_data()
 
 log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -421,7 +430,7 @@ for i in range(iterations):
 
     click_2d, disp_2d, feature_tr, sec_cnt, tril_ind, tril_value_ind, disp_2d_split_sect, \
     news_cnt_sht, click_2d_subind, feature_clicked_tr = data_perform(training_user, _band_size)
-    print('click_2d',click_2d)
+    print('click_2d',click_2d)#[[0, 0], [1, 2], [2, 3], [3, 0], [4, 2], [5, 4]]
     print('disp_2d',disp_2d)
     print('feature_tr',np.array(feature_tr).shape)#(27, 20)
     # print('tril_ind',np.array(tril_ind).shape)#(15, 2)

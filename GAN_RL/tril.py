@@ -12,8 +12,10 @@
 import numpy as np
 t_indice=[]
 sec_cnt_x=0
-for kk in range(min(5, 2)):
-    t_indice += map(lambda x: [x + kk + 1 + sec_cnt_x, x + sec_cnt_x], np.arange(2 - (kk + 1)))
+for kk in range(min(5, 6)):
+    print('kk',kk)
+    t_indice += map(lambda x: [x + kk + 1 + sec_cnt_x, x + sec_cnt_x], np.arange(6 - (kk + 1)))
+    print('t_indice',t_indice)
 
 tril_value_indice = map(lambda x: (x[0] - x[1] - 1), t_indice)
 print(t_indice)

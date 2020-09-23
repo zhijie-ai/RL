@@ -21,7 +21,7 @@ feature记录了每个用户所有展示的item的特征，
     construct_graph方法:
 
 
-data_perform方法:
+第四步:data_perform方法:
     遍历的是8个桶里面的所有用户，构造数据，disp_feature是二维数组，把当前set中用户的disp feature拼接到一起，
     click_feature一样，也是把当前set的用户的click feature拼接到一起。具体看代码。
 

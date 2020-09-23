@@ -227,10 +227,10 @@ class PolicyGradient:
         self.sess.run(tf.global_variables_initializer())
 
         # Softmax outputs, we need to transpose as tensorflow nn functions expects them in this shape
-        logits = tf.transpose(Z3)
+        logits = tf.transpose(Z3)#(None,n_y)
         labels = tf.transpose(self.Y)
-        self.outputs_softmax = tf.nn.softmax(logits, name='A3')
-        self.generate_softmax = tf.nn.softmax(logits, name='A3')
+        self.outputs_softmax = tf.nn.softmax(logits, name='A3')#β策略
+        self.generate_softmax = tf.nn.softmax(logits, name='A3')#PI
 
 
         with tf.name_scope('loss'):
@@ -245,13 +245,13 @@ class PolicyGradient:
             #print(s)
             observation.shape = (len(observation),1)
             #print(s)
-            prob_weights = self.sess.run(self.generate_softmax, feed_dict={self.X: observation})
+            prob_weights = self.sess.run(self.generate_softmax, feed_dict={self.X: observation})# PI
             print(prob_weights)
             p_at = prob_weights[0][at]
             print(p_at)
             # off-policy correction,a/b,here behavior policy is uniform distribution
             # induce weight capping to reduce variance
-            off_policy_correction = self.weight_capping(p_at * l)# 2个概率的比值
+            off_policy_correction = self.weight_capping(p_at * l)# 2个概率的比值，方差减小技术之权重裁剪
             # top-k correction
             topk_correction = gradient_cascade(p_at, self.K)# 论文中的lambda_k
             # log gradient

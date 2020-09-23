@@ -48,21 +48,22 @@ def data_perform(user_set,b_size):
             t_indice += map(lambda x: [x + kk + 1 + sec_cnt_x, x + sec_cnt_x], np.arange(data_time[u] - (kk + 1)))
 
         # t_indice=[[14, 0], [15, 1], [16, 2], [17, 3], [18, 4], [19, 5]]
+        # 三角矩阵是用来生成论文中的W的。W应该是可以采用随机初始化的方式的
         tril_indice += t_indice# 三角矩阵的索引
         tril_value_indice += map(lambda x: (x[0] - x[1] - 1), t_indice)#索引对应的值，是由索引得到的。
 
         # 。。。
         # data_click[user].append([click_t,news_dict[id]])
-        click_tensor_indice_tmp = map(lambda x: [x[0] + sec_cnt_x, x[1]], data_click[u])
+        click_tensor_indice_tmp = map(lambda x: [x[0] + sec_cnt_x, x[1]], data_click[u])#用户累计的点击数据
         click_tensor_indice += click_tensor_indice_tmp#可以看做是data_click的数据格式
 
         #data_disp[user].append([click_t,news_dict[idd]])，在展示的index中根据点击的数据查找
-        display_tensor_indice_tmp = map(lambda x: [x[0] + sec_cnt_x, x[1]], data_disp[u])
-        # index 求元素所在的索引
+        display_tensor_indice_tmp = map(lambda x: [x[0] + sec_cnt_x, x[1]], data_disp[u])# 用户累计的展示(曝光)
+        # index 求元素所在的索引，用户点击的item在其曝光的item的位置。
         click_sub_index_tmp = map(lambda x: display_tensor_indice_tmp.index(x), click_tensor_indice_tmp)
 
         #click_sub_index_2d:[0,1,2,3,4]
-        click_sub_index_2d += map(lambda x: x + len(display_tensor_indice), click_sub_index_tmp)
+        click_sub_index_2d += map(lambda x: x + len(display_tensor_indice), click_sub_index_tmp)#加上上一个用户的曝光次数
         display_tensor_indice += display_tensor_indice_tmp#data_disp[u]
         display_tensor_indice_split += map(lambda x: x[0] + sec_cnt_x, data_disp[u])
 
@@ -76,3 +77,7 @@ def data_perform(user_set,b_size):
         return click_tensor_indice, display_tensor_indice, \
                disp_current_feature_x, sec_cnt_x, tril_indice, tril_value_indice, \
                display_tensor_indice_split, max_news_per_user, click_sub_index_2d, feature_clicked_x
+
+    # click_2d, disp_2d,
+    # feature_tr, sec_cnt, tril_ind, tril_value_ind,
+    # disp_2d_split_sect, news_cnt_sht, click_2d_subind, feature_clicked_tr = data_perform(training_user, _band_size)
