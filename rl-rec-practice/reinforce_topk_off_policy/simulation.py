@@ -23,7 +23,7 @@ def simulation():
     users_num = 1
     action_rewards = [10, 9, 1, 1, 1, 1, 1, 1, 1, 1]
     actions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    observations = [[random.randint(0, i * 10) for i in range(1, 4)] for j in range(1, 101)]
+    observations = [[random.randint(0, i * 10) for i in range(1, 4)] for j in range(1, 101)]#(100,3)
     # nums of items to recommend
     K = 2
     load_version = 1

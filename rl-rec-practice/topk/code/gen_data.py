@@ -14,15 +14,15 @@ import pickle
 
 np.random.seed(1234)
 
-def gen_data(num_user=10000,items=100000):
-    clicked_item=[]
+def gen_data(num_user=1000,items=10000):
+    trajectory=[]
     rewards=[]
     for i in range(num_user):
-        step = np.random.randint(8,16)# 每个用户的session最多16步，最少8步
-        clicked_item.append(np.random.choice(range(items),step,replace=False))
-        rewards.append(np.random.randint(-10,10,step))# 0-20分选step个
+        step = np.random.randint(8,9)# 每个用户的session最多16步，最少8步
+        trajectory.append(np.random.choice(range(items),step,replace=False))
+        rewards.append(np.random.randint(1,20,step))# 1~20分选step个,每一步的reward
 
-    return np.array(clicked_item),np.array(rewards)
+    return np.array(trajectory),np.array(rewards)
 
 
 
@@ -36,4 +36,5 @@ if __name__ == '__main__':
     
     with open('../data/session.pickle','rb') as f:
         data = pickle.load(f)
-        print(len(data[0]))
+        print(data[0][0])
+        print(data[1])
