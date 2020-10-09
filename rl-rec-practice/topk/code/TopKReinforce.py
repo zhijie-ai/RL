@@ -97,6 +97,25 @@ class TopKReinforce():
         # return min(cof,self.weight_capping_c)
         return tf.where(cof)
 
+    # 注意，本论文的off-policy的实现和真正的off-policy有点不太一样。真正的off-policy的beta策略是需要和环境
+    # 交互收集数据的。需要探索的过程。而此论文的off-policy中的beta策略不需要去收集收集。只需要提供计算概率的功能就ok了
+    def choose_action(self, history):
+        # Reshape observation to (num_features, 1)
+        # Run forward propagation to get softmax probabilities
+        prob_weights = self.sess.run(self.PI, feed_dict = {self.input: history})
+        action = list(map(lambda x:np.random.choice(range(len(prob_weights.ravel())), p=prob_weights.ravel()),prob_weights))
+
+        # Select action using a biased sample
+        # this will return the index of the action we've sampled
+        # action = np.random.choice(range(len(prob_weights.ravel())), p=prob_weights.ravel())
+
+        # # exploration to allow rare data appeared
+        # if random.randint(0,1000) < 1000:
+        #     pass
+        # else:
+        #     action = random.randint(0,self.n_y-1)
+        return action
+
     def _init_graph(self):
         with tf.variable_scope('input'):
             self.input = tf.placeholder(shape=[None,7],name='X',dtype=tf.int32)
