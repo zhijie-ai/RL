@@ -240,7 +240,7 @@ class PolicyGradient:
             l = self.outputs_softmax.shape.as_list()[1]
             #print(l)
             #print(self.episode_observations[-1])
-            observation = np.array(self.episode_observations[-1])#[4,1,6]
+            observation = np.array(self.episode_observations[-1])#[[4,1,6]]
             # 行为策略,beta,根据概率选动作。根据n_y选动作
             at = self.behaviour_action(observation,self.b_distribution)
             #print(s)

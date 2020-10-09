@@ -147,15 +147,14 @@ class TopKReinforce():
 
         label = tf.reshape(self.label,[-1,1])
         with tf.variable_scope('loss'):
+            prob_weights = self.PI
+            action = list(map(lambda x:np.random.choice(range(len(prob_weights.ravel())), p=prob_weights.ravel()),prob_weights))
+            p_at = list(self.beta[9])
+
             ce_loss_main =tf.nn.sampled_softmax_loss(
                 weights,bias,label,state,5,num_classes=self.item_count)
             topk_correction =gradient_cascade(self.PI,self.topK)# lambda 比值
-            ratio = self.PI/self.beta
-            print('EEEEEEEEEEEEEE',self.ind)
-            ratio = tf.gather_nd(ratio,self.ind)
-            print('BBBBB',type(ratio))
-            # off_policy_correction = self.weight_capping(ratio)
-            off_policy_correction = ratio
+            off_policy_correction = self.weight_capping(ratio)
             print('DDDDDDD',off_policy_correction.shape,topk_correction.shape,ce_loss_main.shape)#(?, 10000) (?, 10000) (?,)
             self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
             tf.summary.scalar('pi_loss',self.pi_loss)
