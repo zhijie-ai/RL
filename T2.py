@@ -12,9 +12,6 @@
 import schedule
 import time
 
-print('BBBBBBBBBBBBBB')
-print('release')
-
 def job(name):
     print("her name is : ", name)
 
