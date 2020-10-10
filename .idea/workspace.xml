@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="778c8d29-473a-41a8-a98a-0c7e7596b1c7" name="Default" comment="" />
+    <list default="true" id="778c8d29-473a-41a8-a98a-0c7e7596b1c7" name="Default" comment="add file">
+      <change beforePath="$PROJECT_DIR$/.idea/RL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RL.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/T3.py" beforeDir="false" afterPath="$PROJECT_DIR$/T3.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +21,14 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="release" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1f2MLTS27LMYsBkouOW7YXp9JDV" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -24,6 +38,9 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -47,6 +64,18 @@
       <recent name="G:\workspace\RL\liujianping" />
       <recent name="G:\workspace\RL\A3C" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Python.T">
     <configuration name="GAN_PW2" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -230,6 +259,77 @@
       <workItem from="1595813009670" duration="157000" />
       <workItem from="1595841581541" duration="80000" />
     </task>
+    <task id="LOCAL-00001" summary="TEST">
+      <created>1602334897374</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1602334897374</updated>
+    </task>
+    <task id="LOCAL-00002" summary="TEST">
+      <created>1602335025277</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1602335025277</updated>
+    </task>
+    <task id="LOCAL-00003" summary="2222">
+      <created>1602335104793</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1602335104793</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add file">
+      <created>1602335240595</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1602335240595</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add file">
+      <created>1602335421815</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1602335421815</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add file">
+      <created>1602335957801</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1602335957801</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add file">
+      <created>1602336316306</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1602336316306</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add master">
+      <created>1602336529855</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1602336529855</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add release">
+      <created>1602336909851</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1602336909851</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add file">
+      <created>1602336943961</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1602336943961</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -243,27 +343,38 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="TEST" />
+    <MESSAGE value="2222" />
+    <MESSAGE value="add master" />
+    <MESSAGE value="add release" />
+    <MESSAGE value="add file" />
+    <option name="LAST_COMMIT_MESSAGE" value="add file" />
+  </component>
   <component name="WindowStateProjectService">
-    <state width="1879" height="329" key="GridCell.Tab.0.bottom" timestamp="1595496580486">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595496580486" />
-    <state width="1879" height="329" key="GridCell.Tab.0.center" timestamp="1595496580485">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595496580485" />
-    <state width="1879" height="329" key="GridCell.Tab.0.left" timestamp="1595496580485">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595496580485" />
-    <state width="1879" height="329" key="GridCell.Tab.0.right" timestamp="1595496580486">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595496580486" />
-    <state x="483" y="163" key="SettingsEditor" timestamp="1595841600455">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="483" y="163" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1595841600455" />
+    <state width="1879" height="329" key="GridCell.Tab.0.bottom" />
+    <state width="1879" height="329" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" />
+    <state width="1879" height="329" key="GridCell.Tab.0.center" />
+    <state width="1879" height="329" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" />
+    <state width="1879" height="329" key="GridCell.Tab.0.left" />
+    <state width="1879" height="329" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" />
+    <state width="1879" height="329" key="GridCell.Tab.0.right" />
+    <state width="1879" height="329" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" />
+    <state x="483" y="163" key="SettingsEditor" />
+    <state x="483" y="163" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -292,8 +403,5 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/RL$T.coverage" NAME="T Coverage Results" MODIFIED="1595494662979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/top1" />
   </component>
 </project>
