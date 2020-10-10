@@ -12,7 +12,7 @@
 import schedule
 import time
 
-print('AAAAAAAAAAAAA')
+print('BBBBBBBBBBBBBB')
 
 
 def job(name):
