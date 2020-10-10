@@ -13,7 +13,7 @@ import schedule
 import time
 
 print('AAAAAAAAAAAAA')
-
+print('master')
 
 def job(name):
     print("her name is : ", name)
