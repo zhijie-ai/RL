@@ -11,6 +11,7 @@
 #----------------------------------------------
 import schedule
 import time
+print('release')
 
 def job(name):
     print("her name is : ", name)
