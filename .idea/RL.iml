@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/MorvanRL/11_Dyna_Q" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/rl-rec-practice/LIRD/impl2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/MorvanRL/2_Q_Learning_maze" />
       <excludeFolder url="file://$MODULE_DIR$/MorvanRL/3_Sarsa_maze" />
       <excludeFolder url="file://$MODULE_DIR$/MorvanRL/4_Sarsa_lambda_maze" />

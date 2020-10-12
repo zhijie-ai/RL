@@ -77,7 +77,6 @@ class TopKReinforce():
         self.gamma = gamma
 
         self.historys,self.actions,self.rewards = load_data()
-        print('AAAAAAAA',self.historys.shape,self.actions.shape,self.rewards.shape)
         self.num_batches = len(self.rewards) // self.batch_size
 
         self._init_graph()
@@ -147,27 +146,29 @@ class TopKReinforce():
 
         label = tf.reshape(self.label,[-1,1])
         with tf.variable_scope('loss'):
+            print('AAAAAAAAAAAAA',self.PI.numpy())
             prob_weights = self.PI
-            action = list(map(lambda x:np.random.choice(range(len(prob_weights.ravel())), p=prob_weights.ravel()),prob_weights))
-            p_at = list(self.beta[9])
+            # action = list(map(lambda x:np.random.choice(range(len(prob_weights.ravel())), p=prob_weights.ravel()),prob_weights))
+            # actions = tf.py_func(fn,[prob_weights],[tf.int64])
 
             ce_loss_main =tf.nn.sampled_softmax_loss(
                 weights,bias,label,state,5,num_classes=self.item_count)
             topk_correction =gradient_cascade(self.PI,self.topK)# lambda 比值
-            off_policy_correction = self.weight_capping(ratio)
+            off_policy_correction = self.PI/self.beta
+            off_policy_correction = self.weight_capping(off_policy_correction)
             print('DDDDDDD',off_policy_correction.shape,topk_correction.shape,ce_loss_main.shape)#(?, 10000) (?, 10000) (?,)
-            self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
-            tf.summary.scalar('pi_loss',self.pi_loss)
-
-            self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
-                weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
-            tf.summary.scalar('beta_loss',self.beta_loss)
-
-        with tf.variable_scope('optimizer'):
-            # beta_vars = [var for var in tf.trainable_variables() if 'item_emb_beta' in var.name or 'bias_beta' in var.name]
-            beta_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,scope='beta_policy')
-            self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
-            self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
+        #     self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
+        #     tf.summary.scalar('pi_loss',self.pi_loss)
+        #
+        #     self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
+        #         weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
+        #     tf.summary.scalar('beta_loss',self.beta_loss)
+        #
+        # with tf.variable_scope('optimizer'):
+        #     # beta_vars = [var for var in tf.trainable_variables() if 'item_emb_beta' in var.name or 'bias_beta' in var.name]
+        #     beta_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,scope='beta_policy')
+        #     self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
+        #     self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
 
     def train(self):
         merged = tf.summary.merge_all()
@@ -179,7 +180,7 @@ class TopKReinforce():
                 self.ind = get_index(actions)
                 rewards = self.rewards[idx*self.batch_size:(idx+1)*self.batch_size]
 
-                print('CCCCCCCCCC',hist.shape,actions.shape,rewards.shape)
+                print('CCCCCCCCCC',hist.shape,actions.shape,rewards.shape)#(128, 7) (128,) (128,)
 
                 pi_loss,beta_loss,summary= self.sess.run([self.train_op_pi,self.train_op_beta,merged],
                                                   feed_dict={self.input:hist,
