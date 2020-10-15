@@ -17,6 +17,7 @@ import torch_optimizer as optim
 
 import numpy as np
 import pandas as pd
+import os
 from tqdm.auto import tqdm
 from time import gmtime, strftime
 import argparse
@@ -45,6 +46,7 @@ parser.add_argument("--data_path", type=str, default="/Users/JingboLiu/Desktop/n
 parser.add_argument("--model_path", type=str, default="/Users/JingboLiu/Desktop/nicf-pytorch/models")
 parser.add_argument("--plot_every", type=int, default=100, help="how many steps to plot the result")
 parser.add_argument("--disable-cuda", action="store_true", help="Disable CUDA")
+parser.add_argument("--num_items", type=int,default=1000, help="the number of item")
 args = parser.parse_args()
 
 args.device = None
@@ -61,13 +63,14 @@ cudnn.benchmark = True
 
 if __name__=='__main__':
 
-    env = FrameEnv(embedding_path, rating_path, num_items, frame_size=10,
+    # 环境
+    env = FrameEnv(args.embedding_path, args.rating_path, args.num_items, frame_size=10,
                    batch_size=25, num_workers=1, test_size=0.05)
 
     beta_net   = Beta().to(cuda)
-    value_net  = Critic(args.policy_input_dim, args.policy_hidden_dim, num_items,
+    value_net  = Critic(args.policy_input_dim, args.policy_hidden_dim, args.num_items,
                         args.dropout, args.init_weight).to(cuda)
-    policy_net = DiscreteActor(args.policy_input_dim, args.policy_hidden_dim, num_items, ).to(cuda)
+    policy_net = DiscreteActor(args.policy_input_dim, args.policy_hidden_dim, args.num_items, ).to(cuda)
 
     policy_net.action_source = {'pi': 'beta', 'beta': 'beta'}
 
@@ -88,7 +91,9 @@ if __name__=='__main__':
     reinforce.params['K'] = 10
 
 
-    for epoch in range(n_epochs):
+    for epoch in range(args.epochs):
+        #{"items": items, "rates": rates, "sizes": size, "users": idx}
+        # train_dataloader 对象中包含了train_user_dataset(UserDataset)对象，实现了__getitem__方法，获取每条数据
         for batch in tqdm(env.train_dataloader):
             loss = reinforce.update(batch)
             reinforce.step()

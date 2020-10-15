@@ -16,6 +16,7 @@ from recnn import data
 import gc
 
 
+#TD 算法
 def temporal_difference(reward, done, gamma, target):
     return reward + (1.0 - done) * gamma * target
 

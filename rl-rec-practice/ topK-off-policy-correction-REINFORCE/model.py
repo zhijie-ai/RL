@@ -17,6 +17,7 @@ from torch.distributions import Categorical
 
 from reinforce import ChooseREINFORCE, reinforce_update
 
+# beta模型,阻止梯度反传
 class Beta(nn.Module):
     def __init__(self,num_items):
         super(Beta, self).__init__()
@@ -98,6 +99,7 @@ class DiscreteActor(nn.Module):
         del self.correction[:]
         del self.lambda_k[:]
 
+    # 没有correnction的offpolicy
     def _select_action(self, state, **kwargs):
 
         # for reinforce without correction only pi_probs is available.
@@ -109,6 +111,7 @@ class DiscreteActor(nn.Module):
         self.saved_log_probs.append(pi_categorical.log_prob(pi_action))
         return pi_probs
 
+    # 有beta策略参与的
     def pi_beta_sample(self, state, beta, action, **kwargs):
         # 1. obtain probabilities
         # note: detach is to block gradient
@@ -138,6 +141,7 @@ class DiscreteActor(nn.Module):
 
         return pi_log_prob, beta_log_prob, pi_probs
 
+    # 有correction的offpolicy，即pi/beta的比值
     def _select_action_with_correction(
             self, state, beta, action, writer, step, **kwargs
     ):
@@ -158,6 +162,7 @@ class DiscreteActor(nn.Module):
 
         return pi_probs
 
+    # 最全面的公式，有offpolicy correction和topK correction
     def _select_action_with_TopK_correction(
             self, state, beta, action, K, writer, step, **kwargs
     ):
@@ -229,6 +234,7 @@ class Reinforce:
             "train": {"value": [], "policy": [], "step": []},
         }
 
+    # batch:{"items": items, "rates": rates, "sizes": size, "users": idx},某个用户的数据
     def update(self, batch, learn=True):
         return reinforce_update(
             batch,

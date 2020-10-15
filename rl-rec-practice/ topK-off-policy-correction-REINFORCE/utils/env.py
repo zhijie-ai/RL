@@ -103,12 +103,14 @@ class FrameEnv:
         )
 
     def process_env(self):
+        # 加载item的embedding
         movie_embeddings_key_dict = pickle.load(open(self.embedding_path, "rb"))
         self.embeddings, self.key_to_id, self.id_to_key = make_items_tensor(movie_embeddings_key_dict)
         ratings = pd.read_csv(self.rating_path)
 
         ratings["movieId"] = ratings["movieId"].map(self.key_to_id)
         users = ratings[["userId", "movieId"]].groupby(["userId"]).size()
+        # 即过滤用户对评分电影数不足frame_size的数据
         users = users[users > self.frame_size].sort_values(ascending=False).index
         ratings = ratings.sort_values(by="timestamp").set_index("userId").drop("timestamp", axis=1).groupby("userId")
         user_dict = {}
@@ -119,6 +121,7 @@ class FrameEnv:
             user_dict[userid]["items"] = x["movieId"].values
             user_dict[userid]["ratings"] = x["rating"].values
 
+        # 按时间顺序得到每个用户对各自评分电影的数据
         ratings.apply(helper)
 
         train_users, test_users = train_test_split(users, test_size=self.test_size)
