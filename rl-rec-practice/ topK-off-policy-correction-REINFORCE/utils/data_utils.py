@@ -31,14 +31,14 @@ def make_items_tensor(items_embeddings_key_dict):
 # 假设items:[0,1,2,3,4,5],ratings=[1,2,3,4,5,3],则state为:[0,1,2,3,4]+[1,2,3,4,5]
 #   action:5，然后变成onehot。reward:3,next_state:[1,2,3,4,5]+[2,3,4,5,3]
 def batch_contstate_discaction(batch, item_embeddings_tensor, frame_size, num_items):
-
     """
     Embed Batch: continuous state discrete action
     """
+    batch = batch[0]
 
     #batch:{"items": items, "rates": rates, "sizes": size, "users": idx},某个用户的数据 size:item的个数
     items_t, ratings_t, sizes_t, users_t = batch["items"], batch["ratings"], batch["sizes"], batch["users"]
-    items_emb = item_embeddings_tensor[items_t.long()]
+    items_emb = item_embeddings_tensor[items_t]
     b_size = ratings_t.size(0)
 
     items = items_emb[:, :-1, :].view(b_size, -1)
@@ -52,7 +52,7 @@ def batch_contstate_discaction(batch, item_embeddings_tensor, frame_size, num_it
     reward = ratings_t[:, -1]
 
     done = torch.zeros(b_size)
-    done[torch.cumsum(sizes_t - frame_size, dim=0) - 1] = 1
+    done[torch.cumsum(sizes_t - frame_size, dim=0) - 1] = 1# 判断是否为done的一种方法。
 
     one_hot_action = torch.zeros(b_size, num_items)
     one_hot_action.scatter_(1, action.view(-1, 1), 1)

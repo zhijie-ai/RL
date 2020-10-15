@@ -31,6 +31,7 @@ from model import Critic, DiscreteActor, Beta, Reinforce
 from reinforce import ChooseREINFORCE
 
 cuda = torch.device('cuda')
+cuda = torch.device('cpu')
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--lr", type=float, default=0.001, help="learning rate")
@@ -42,11 +43,12 @@ parser.add_argument("--top_k", type=int, default=10, help="compute metrics@top_k
 parser.add_argument("--embedding_dim", type=int, default=32, help="dimension of embedding")
 parser.add_argument("--policy_input_dim", type=int, default=1024, help="input dimension for policy/value net")
 parser.add_argument("--policy_hidden_dim", type=int, default=4096, help="hidden dimension for policy/value net")
-parser.add_argument("--data_path", type=str, default="/Users/JingboLiu/Desktop/nicf-pytorch/data/ml-1m")
+parser.add_argument("--data_path", type=str, default="data/ml-1m")
 parser.add_argument("--model_path", type=str, default="/Users/JingboLiu/Desktop/nicf-pytorch/models")
 parser.add_argument("--plot_every", type=int, default=100, help="how many steps to plot the result")
 parser.add_argument("--disable-cuda", action="store_true", help="Disable CUDA")
-parser.add_argument("--num_items", type=int,default=1000, help="the number of item")
+parser.add_argument("--num_items", type=int,default=6040, help="the number of item")
+parser.add_argument("--init_weight", type=int,default=1, help="init weight")
 args = parser.parse_args()
 
 args.device = None
@@ -65,17 +67,17 @@ if __name__=='__main__':
 
     # 环境
     env = FrameEnv(args.embedding_path, args.rating_path, args.num_items, frame_size=10,
-                   batch_size=25, num_workers=1, test_size=0.05)
+                   batch_size=1, num_workers=1, test_size=0.05)
 
     beta_net   = Beta().to(cuda)
     value_net  = Critic(args.policy_input_dim, args.policy_hidden_dim, args.num_items,
-                        args.dropout, args.init_weight).to(cuda)
-    policy_net = DiscreteActor(args.policy_input_dim, args.policy_hidden_dim, args.num_items, ).to(cuda)
+                        args.dropout, args.init_weight)#.to(cuda)
+    policy_net = DiscreteActor(args.policy_input_dim, args.policy_hidden_dim, args.num_items, )#.to(cuda)
 
     policy_net.action_source = {'pi': 'beta', 'beta': 'beta'}
 
     reinforce = Reinforce(policy_net, value_net)
-    reinforce = reinforce.to(cuda)
+    # reinforce = reinforce.to(cuda)
 
     # reinforce.writer = SummaryWriter()
     plotter = Plotter(reinforce.loss_layout, [['value', 'policy']],)
@@ -87,7 +89,7 @@ if __name__=='__main__':
                                                                                 step=step)
 
     reinforce.nets['policy_net'].select_action = select_action_corr
-    reinforce.params['reinforce'] = ChooseREINFORCE(ChooseREINFORCE.reinforce_with_TopK_correction)
+    reinforce.params['reinforce'] = ChooseREINFORCE(ChooseREINFORCE.reinforce_with_TopK_correction)#这个函数是在reinforce.update函数中调用的
     reinforce.params['K'] = 10
 
 
@@ -95,6 +97,7 @@ if __name__=='__main__':
         #{"items": items, "rates": rates, "sizes": size, "users": idx}
         # train_dataloader 对象中包含了train_user_dataset(UserDataset)对象，实现了__getitem__方法，获取每条数据
         for batch in tqdm(env.train_dataloader):
+            print('AAAAAAAAAAA',batch)
             loss = reinforce.update(batch)
             reinforce.step()
             if loss:

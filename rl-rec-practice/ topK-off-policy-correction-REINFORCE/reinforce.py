@@ -48,7 +48,7 @@ def value_update(
             expected_value, params["min_value"], params["max_value"]
         )
 
-    value = nets["value_net"](state, action)
+    value = nets["value_net"](state, action)# 当前s,a的Q值
 
     value_loss = torch.pow(value - expected_value.detach(), 2).mean()
 
@@ -81,7 +81,7 @@ class ChooseREINFORCE:
         for l_k, corr, log_prob, R in zip(
                 policy.lambda_k, policy.correction, policy.saved_log_probs, returns
         ):
-            policy_loss.append(l_k * corr * -log_prob * R)  # <- this line here
+            policy_loss.append(l_k * corr * -log_prob * R)  # <- this line here,这是PI策略的loss函数。
         policy_loss = torch.cat(policy_loss).sum()
         return policy_loss
 
@@ -96,7 +96,7 @@ class ChooseREINFORCE:
         returns = torch.tensor(returns)
         returns = (returns - returns.mean()) / (returns.std() + 0.0001)
 
-        policy_loss = self.method(policy, returns)
+        policy_loss = self.method(policy, returns)#调用了reinforce_with_TopK_correction方法
 
         if learn:
             optimizer.zero_grad()
@@ -132,7 +132,7 @@ def reinforce_update(
 
     state, action, reward, next_state, done = data.get_base_batch(batch)
 
-    predicted_probs = nets["policy_net"].select_action(
+    predicted_probs = nets["policy_net"].select_action(# 是在main中定义的select_action_corr
         state=state, action=action, K=params["K"], learn=learn, writer=writer, step=step
     )
     writer.add_histogram("predicted_probs_std", predicted_probs.std(), step)
@@ -156,7 +156,7 @@ def reinforce_update(
     )
 
     if step % params["policy_step"] == 0 and step > 0:
-        policy_loss = params["reinforce"](
+        policy_loss = params["reinforce"](# 调用了__call__方法
             nets["policy_net"],
             optimizer["policy_optimizer"],
         )

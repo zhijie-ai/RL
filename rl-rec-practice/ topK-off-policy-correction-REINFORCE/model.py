@@ -19,7 +19,7 @@ from reinforce import ChooseREINFORCE, reinforce_update
 
 # beta模型,阻止梯度反传
 class Beta(nn.Module):
-    def __init__(self,num_items):
+    def __init__(self,num_items=6040):
         super(Beta, self).__init__()
         self.net = nn.Sequential(
             nn.Linear(1024, num_items),

@@ -13,7 +13,7 @@ import pandas as pd
 import pickle
 from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
-import os
+import numpy as np
 
 from .data_utils import make_items_tensor, batch_contstate_discaction
 
@@ -52,7 +52,7 @@ class UserDataset(Dataset):
         items = group["items"][:]
         rates = group["ratings"][:]
         size = items.shape[0]
-        return {"items": items, "rates": rates, "sizes": size, "users": idx}
+        return {"items": items, "ratings": rates, "sizes": size, "users": idx}
 
 def sort_users_itemwise(user_dict, users):
     return (
@@ -131,6 +131,25 @@ class FrameEnv:
         self.test_user_dataset = UserDataset(test_users, user_dict)
 
     def prepare_batch_wrapper(self, x):
+        # x:一个batch里的数据
+        ret = {}
+        ret['items']=[]
+        ret['ratings']=[]
+        ret['sizes']=[]
+        ret['users']=[]
+
+        for i in x:
+            ret['items'].append(i['items'])
+            ret['ratings'].append(i['ratings'])
+            ret['sizes'].append(i['sizes'])
+            ret['users'].append(i['users'])
+
+        ret['items'] = np.array(ret['items'])
+        ret['ratings']=np.array(i['ratings'])
+        ret['sizes']=np.array(i['sizes'])
+        ret['users']=np.array(i['users'])
+
+
         batch = batch_contstate_discaction(
             x,
             self.embeddings,
