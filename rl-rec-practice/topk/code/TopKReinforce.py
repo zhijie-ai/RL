@@ -17,7 +17,6 @@ import pickle
 from tensorflow.contrib import rnn
 
 # 主网络和beta网络的实现
-
 # topk修正后的概率
 def cascade_model(p,k):
     return 1-(1-p)**k
@@ -93,7 +92,7 @@ class TopKReinforce():
 
 
     def weight_capping(self,cof):
-        # return min(cof,self.weight_capping_c)
+        return min(cof,self.weight_capping_c)
         return tf.where(cof)
 
     # 注意，本论文的off-policy的实现和真正的off-policy有点不太一样。真正的off-policy的beta策略是需要和环境
@@ -113,6 +112,14 @@ class TopKReinforce():
         #     pass
         # else:
         #     action = random.randint(0,self.n_y-1)
+        return action
+
+    # 推理
+    def predict(self, history):
+        # Reshape observation to (num_features, 1)
+        # Run forward propagation to get softmax probabilities
+        prob_weights = self.sess.run(self.PI, feed_dict = {self.input: history})
+        action = tf.arg_max(prob_weights[0])
         return action
 
     def _init_graph(self):
@@ -146,29 +153,28 @@ class TopKReinforce():
 
         label = tf.reshape(self.label,[-1,1])
         with tf.variable_scope('loss'):
-            print('AAAAAAAAAAAAA',self.PI.numpy())
-            prob_weights = self.PI
-            # action = list(map(lambda x:np.random.choice(range(len(prob_weights.ravel())), p=prob_weights.ravel()),prob_weights))
-            # actions = tf.py_func(fn,[prob_weights],[tf.int64])
+            pi_log_prob = tf.contrib.distributions.log_prob(self.PI)
+            beta_log_prob = tf.contrib.distributions.log_prob(self.beta)
 
             ce_loss_main =tf.nn.sampled_softmax_loss(
                 weights,bias,label,state,5,num_classes=self.item_count)
             topk_correction =gradient_cascade(self.PI,self.topK)# lambda 比值
             off_policy_correction = self.PI/self.beta
-            off_policy_correction = self.weight_capping(off_policy_correction)
+            # off_policy_correction = self.weight_capping(off_policy_correction)
+            print('CCCCCCCC',self.PI.shape,self.beta.shape)
             print('DDDDDDD',off_policy_correction.shape,topk_correction.shape,ce_loss_main.shape)#(?, 10000) (?, 10000) (?,)
-        #     self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
-        #     tf.summary.scalar('pi_loss',self.pi_loss)
-        #
-        #     self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
-        #         weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
-        #     tf.summary.scalar('beta_loss',self.beta_loss)
-        #
-        # with tf.variable_scope('optimizer'):
-        #     # beta_vars = [var for var in tf.trainable_variables() if 'item_emb_beta' in var.name or 'bias_beta' in var.name]
-        #     beta_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,scope='beta_policy')
-        #     self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
-        #     self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
+            self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
+            tf.summary.scalar('pi_loss',self.pi_loss)
+
+            self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
+                weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
+            tf.summary.scalar('beta_loss',self.beta_loss)
+
+        with tf.variable_scope('optimizer'):
+            # beta_vars = [var for var in tf.trainable_variables() if 'item_emb_beta' in var.name or 'bias_beta' in var.name]
+            beta_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,scope='beta_policy')
+            self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
+            self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
 
     def train(self):
         merged = tf.summary.merge_all()
