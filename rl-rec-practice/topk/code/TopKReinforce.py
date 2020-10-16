@@ -15,6 +15,7 @@ import time
 import math
 import pickle
 from tensorflow.contrib import rnn
+import os
 
 # 主网络和beta网络的实现
 # topk修正后的概率
@@ -57,7 +58,7 @@ def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
 
 class TopKReinforce():
     def __init__(self,sess,item_count,embedding_size=64,is_train=True,topK=1,
-                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95):
+                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce_prior'):
         self.sess = sess
         self.item_count=item_count
         self.embedding_size=embedding_size
@@ -68,6 +69,8 @@ class TopKReinforce():
         self.batch_size = batch_size
         self.epochs = epochs
         self.gamma = gamma
+        self.model_name=model_name
+        self.checkout = 'checkout/model'
 
         self.historys,self.actions,self.rewards = load_data()
         self.num_batches = len(self.rewards) // self.batch_size
@@ -117,6 +120,19 @@ class TopKReinforce():
         actions = tf.nn.top_k(prob_weights[0],self.topK)
         # tf.nn.in_top_k
         return actions['indices']
+
+    def save_model(self,step):
+        if not os.path.exists(self.checkout):
+            os.makedirs(self.checkout)
+
+        self.saver.save(self.sess,os.path.join(self.checkout,self.model_name),global_step=step,write_meta_graph=False)
+
+    def restore_model(self):
+        ckpt = tf.train.get_checkpoint_state(self.checkout)
+        if ckpt and ckpt.model_checkpoint_path:
+            ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
+            print('HHHHHHHHHHHHHH',ckpt_name)
+            self.saver.restore(self.sess,os.path.join(self.checkout,ckpt_name))
 
     def pi_beta_sample(self):
         # 1. obtain probabilities
@@ -234,7 +250,7 @@ class TopKReinforce():
         plt.xlabel('Training Steps')
         plt.ylabel('loss')
         plt.legend()
-        plt.show()
+        # plt.show()
         plt.savefig('reinforce_top_k.jpg')
 
 

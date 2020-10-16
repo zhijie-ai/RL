@@ -14,5 +14,5 @@ import numpy as np
 data = np.random.randn(100)
 
 plt.plot(range(len(data)),data)
-plt.show()
+# plt.show()
 plt.savefig('test.jpg')
