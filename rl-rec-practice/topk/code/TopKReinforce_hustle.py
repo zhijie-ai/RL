@@ -16,6 +16,11 @@ import math
 import pickle
 from tensorflow.contrib import rnn
 
+'''
+Top-K Off-Policy Correction for a REINFORCE Recommender System论文的实现思路,该论文实现思路和原论文的有点不一样，
+原论文在实现off-policy correction时，action应该是从beta策略中抽样出来的，然后是计算action在PI和beta策略的概率取比值。
+而本论文的实现思路是，action均从各自的分布中采样，然后取比值。代码作者认为该实现和原论文差不多，甚至更好。参考 https://github.com/awarebayes/RecNN/issues/7
+'''
 # 主网络和beta网络的实现
 # topk修正后的概率
 def cascade_model(p,k):
@@ -62,7 +67,7 @@ class TopKReinforce():
         self.item_count=item_count
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs_prior'
+        self.log_out = 'out/logs'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
@@ -71,7 +76,7 @@ class TopKReinforce():
 
         self.historys,self.actions,self.rewards = load_data()
         self.num_batches = len(self.rewards) // self.batch_size
-        self.action_source = {"pi": "beta", "beta": "beta"}#由beta选择动作
+        self.action_source = {"pi": "pi", "beta": "beta"}
 
         self._init_graph()
 
@@ -115,8 +120,7 @@ class TopKReinforce():
         prob_weights = self.sess.run(self.alpha, feed_dict = {self.input: history})
         # action = tf.arg_max(prob_weights[0])
         actions = tf.nn.top_k(prob_weights[0],self.topK)
-        # tf.nn.in_top_k
-        return actions['indices']
+        return actions
 
     def pi_beta_sample(self):
         # 1. obtain probabilities
@@ -180,7 +184,6 @@ class TopKReinforce():
         label = tf.reshape(self.label,[-1,1])
         with tf.variable_scope('loss'):
             pi_log_prob, beta_log_prob, pi_probs = self.pi_beta_sample()
-
             ce_loss_main =tf.nn.sampled_softmax_loss(
                 weights,bias,label,state,5,num_classes=self.item_count)
 
@@ -189,7 +192,7 @@ class TopKReinforce():
             off_policy_correction = self.weight_capping(off_policy_correction)
             # print('CCCCCCCC',self.PI.shape,self.beta.shape)
             # print('DDDDDDD',off_policy_correction.shape,topk_correction.shape,ce_loss_main.shape)# (?,) (?,) (?,)
-            self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
+            self.pi_loss = -tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*pi_log_prob)
             tf.summary.scalar('pi_loss',self.pi_loss)
 
             self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
@@ -224,6 +227,7 @@ class TopKReinforce():
                 beta.append(beta_loss)
                 self.log_writer.add_summary(summary,counter)
                 counter+=1
+
         return pi,beta
 
     def plot(self,pi_loss,beta_lss):
@@ -238,7 +242,6 @@ class TopKReinforce():
         plt.savefig('reinforce_top_k.jpg')
 
 
-
 if __name__ == '__main__':
     t1 = time.time()
     with tf.Session() as sess:
@@ -249,8 +252,7 @@ if __name__ == '__main__':
     print('time cost :{} m'.format((t2-t1)/60))
 
 
-tf.random.categorical()
-tf.distributions.Categorical()
+
 
 
 

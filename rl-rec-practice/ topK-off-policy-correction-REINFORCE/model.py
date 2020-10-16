@@ -17,7 +17,8 @@ from torch.distributions import Categorical
 
 from reinforce import ChooseREINFORCE, reinforce_update
 
-# beta模型,阻止梯度反传
+# beta模型,阻止梯度反传，beta模型直接是用CrossEntropyLoss来计算loss的，然后loss.backward()。
+# 并且(s,a)对中的a用在了beta模型中。
 class Beta(nn.Module):
     def __init__(self,num_items=6040):
         super(Beta, self).__init__()
@@ -115,7 +116,7 @@ class DiscreteActor(nn.Module):
     def pi_beta_sample(self, state, beta, action, **kwargs):
         # 1. obtain probabilities
         # note: detach is to block gradient
-        beta_probs = beta(state.detach(), action=action)
+        beta_probs = beta(state.detach(), action=action)# 走的是beta网络的forward方法
         pi_probs = self.forward(state)
 
         # 2. probabilities -> categorical distribution.
@@ -166,6 +167,7 @@ class DiscreteActor(nn.Module):
     def _select_action_with_TopK_correction(
             self, state, beta, action, K, writer, step, **kwargs
     ):
+        # state为
         pi_log_prob, beta_log_prob, pi_probs = self.pi_beta_sample(state, beta, action)
 
         # calculate correction
