@@ -275,10 +275,7 @@ def main(args):
         # initialize replay memory
         replay_buffer = ReplayBuffer(int(args['buffer_size']))
 
-<<<<<<< HEAD
-=======
         # emb的维度*(state的数量+state数量的两两组合)
->>>>>>> bf5ebce... RL 相关
         s_dim = int(args['embedding']) * (
                     int(args['state_item_num']) + int(comb(int(args['state_item_num']), 2)))  ### need more work here
         a_dim = int(args['embedding']) * int(args['action_item_num'])
