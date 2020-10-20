@@ -37,9 +37,16 @@ def batch_contstate_discaction(batch, item_embeddings_tensor, frame_size, num_it
     batch = batch[0]
 
     #batch:{"items": items, "rates": rates, "sizes": size, "users": idx},某个用户的数据 size:item的个数
+    '''
+    items_t:应该是二维的[[],[]]每个list代表每个用户的item
+    item_t.append(batch[i]['items'])
+    ratings_t.append(batch[i]['rates'])
+    sizes_t.append(batch[i]['sizes'])
+    users_t.append(batch[i]['users'])
+    '''
     items_t, ratings_t, sizes_t, users_t = batch["items"], batch["ratings"], batch["sizes"], batch["users"]
     items_emb = item_embeddings_tensor[items_t]
-    b_size = ratings_t.size(0)
+    b_size = ratings_t.size(0)#batch_size,相当于几个用户
 
     items = items_emb[:, :-1, :].view(b_size, -1)
     next_items = items_emb[:, 1:, :].view(b_size, -1)

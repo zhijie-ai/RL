@@ -132,22 +132,28 @@ class FrameEnv:
 
     def prepare_batch_wrapper(self, x):
         # x:一个batch里的数据
-        ret = {}
-        ret['items']=[]
-        ret['ratings']=[]
-        ret['sizes']=[]
-        ret['users']=[]
+        # ret = {}
+        # ret['items']=[]
+        # ret['ratings']=[]
+        # ret['sizes']=[]
+        # ret['users']=[]
+        #
+        # for i in x:
+        #     ret['items'].append(i['items'])
+        #     ret['ratings'].append(i['ratings'])
+        #     ret['sizes'].append(i['sizes'])
+        #     ret['users'].append(i['users'])
+        #
+        # ret['items'] = np.array(ret['items'])
+        # ret['ratings']=np.array(i['ratings'])
+        # ret['sizes']=np.array(i['sizes'])
+        # ret['users']=np.array(i['users'])
 
-        for i in x:
-            ret['items'].append(i['items'])
-            ret['ratings'].append(i['ratings'])
-            ret['sizes'].append(i['sizes'])
-            ret['users'].append(i['users'])
-
-        ret['items'] = np.array(ret['items'])
-        ret['ratings']=np.array(i['ratings'])
-        ret['sizes']=np.array(i['sizes'])
-        ret['users']=np.array(i['users'])
+        # for i in range(len(batch)):
+        #     item_t.append(batch[i]['items'])
+        #     ratings_t.append(batch[i]['rates'])
+        #     sizes_t.append(batch[i]['sizes'])
+        #     users_t.append(batch[i]['users'])
 
 
         batch = batch_contstate_discaction(
