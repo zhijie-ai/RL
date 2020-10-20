@@ -62,7 +62,7 @@ def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
     return np.array(historys),np.array(actions),np.array(rewards)
 
 
-def load_data_movie_lenght(path='../data/ratings.dat',time_step=7,gamma=.9):
+def load_data_movie_length(path='../data/ratings.dat',time_step=7,gamma=.9):
     historys=[]
     actions=[]
     rewards=[]
@@ -118,7 +118,7 @@ class TopKReinforce():
         self.model_name=model_name
         self.checkout = 'checkout/model'
 
-        self.historys,self.actions,self.rewards = load_data_movie_lenght()
+        self.historys,self.actions,self.rewards = load_data_movie_length()
         self.num_batches = len(self.rewards) // self.batch_size
         self.action_source = {"pi": "pi", "beta": "beta"}
 
