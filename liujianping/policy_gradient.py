@@ -87,14 +87,24 @@ class Policy_Gradient():
         discounted_ep_rs /= np.std(discounted_ep_rs)
 
         # train on episode
-        self.session.run(self.train_op,feed_dict={
+        _,loss = self.session.run([self.train_op,self.loss],feed_dict={
             self.state_input:np.vstack(self.ep_obs),
             self.tf_acts:np.array(self.ep_as),
             self.tf_vt:discounted_ep_rs
         })
 
         self.ep_obs,self.ep_as,self.ep_rs = [],[],[] # empty episode data
+        return loss
 
+def plot(beta_lss):
+    import matplotlib.pyplot as plt
+
+    plt.plot(range(len(beta_lss)),beta_lss,label='beta-loss',color='r')
+    plt.xlabel('Training Steps')
+    plt.ylabel('loss')
+    plt.legend()
+    # plt.show()
+    plt.savefig('policy_gradient.jpg')
 
 # Hyper Parameters
 ENV_NAME='CartPole-v0'
@@ -108,6 +118,7 @@ def main():
     print(env.action_space,env.action_space.n)
     agent = Policy_Gradient(env)
 
+    loss_ = []
     for episode in range(EPISODE):
         # initialize task
         state = env.reset()
@@ -120,8 +131,11 @@ def main():
             if done:
                 print(reward)##有结束状态的
                 # print('stick for ',step,'steps')
-                agent.learn()
+                loss = agent.learn()
+                loss_.append(loss)
                 break
+
+        plot(loss_)
 
         # Test every 100 episodes
         if episode % 100 == 0:
@@ -129,7 +143,7 @@ def main():
             for i in range(TEST):
                 state = env.reset()
                 for j in range(STEP):
-                    env.render()
+                    # env.render()
                     action = agent.choose_action(state) # direct action for test
                     state,reward,done,_ = env.step(action)
                     total_reward += reward
