@@ -117,6 +117,7 @@ class TopKReinforce():
         self.gamma = gamma
         self.model_name=model_name
         self.checkout = 'checkout/model'
+        self.kl_targ = 0.02
 
         self.historys,self.actions,self.rewards = load_data_movie_length()
         self.num_batches = len(self.rewards) // self.batch_size
@@ -274,18 +275,32 @@ class TopKReinforce():
                 actions = self.actions[idx*self.batch_size:(idx+1)*self.batch_size]
                 rewards = self.rewards[idx*self.batch_size:(idx+1)*self.batch_size]
 
-
-                pi_loss,beta_loss,_,_,summary= self.sess.run([self.pi_loss,self.beta_loss,self.train_op_pi,self.train_op_beta,merged],
-                                                  feed_dict={self.input:hist,
-                                                             self.label:actions,
-                                                             self.discounted_episode_rewards_norm:rewards})
+                pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.input:hist})
+                pi_new,beta_new,pi_loss,beta_loss,_,_,summary= self.sess.run([self.PI,self.beta,self.pi_loss,self.beta_loss,
+                                                                              self.train_op_pi,self.train_op_beta,merged],
+                                                                             feed_dict={self.input:hist,
+                                                                                        self.label:actions,
+                                                                                        self.discounted_episode_rewards_norm:rewards})
 
                 print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f}'.format(counter,epoch,pi_loss,beta_loss))
                 pi.append(pi_loss)
                 beta.append(beta_loss)
                 self.log_writer.add_summary(summary,counter)
                 counter+=1
+                kl_pi = np.mean(np.sum(pi_old * (
+                        np.log(pi_old + 1e-10) - np.log(pi_new + 1e-10)),
+                                       axis=1)
+                                )
+                kl_beta = np.mean(np.sum(beta_old * (
+                        np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
+                                         axis=1)
+                                  )
+                if (kl_pi > self.kl_targ * 4) and (kl_beta>self.kl_targ*4) :  # early stopping if D_KL diverges badly
+                    self.save_model(step=counter)
+                    break
 
+        # 保存模型
+        self.save_model(step=counter)
         return pi,beta
 
     def plot(self,pi_loss,beta_lss):
