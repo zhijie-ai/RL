@@ -135,8 +135,6 @@ def main():
                 loss_.append(loss)
                 break
 
-        plot(loss_)
-
         # Test every 100 episodes
         if episode % 100 == 0:
             total_reward = 0
@@ -151,7 +149,7 @@ def main():
                         break
             ave_reward = total_reward/TEST
             print('episode: ', episode, 'Evaluation Average Reward:', ave_reward)
-
+    plot(loss_)
 
 if __name__ == '__main__':
     main()
