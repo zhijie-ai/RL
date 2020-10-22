@@ -72,7 +72,7 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=7,gamma=.9):
         discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
-    ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'])
+    ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')
     print(ratings.head())
 
     items = list(sorted(ratings.itemid.unique()))
@@ -99,7 +99,7 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=7,gamma=.9):
 
 class TopKReinforce():
     def __init__(self,sess,item_count,embedding_size=64,is_train=True,topK=1,
-                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce_prior'):
+                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce_prior',time_step=15):
         self.sess = sess
         self.item_count=item_count
         self.embedding_size=embedding_size
@@ -111,10 +111,10 @@ class TopKReinforce():
         self.epochs = epochs
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model'
+        self.checkout = 'checkout/model_prior'
         self.kl_targ = 0.02
 
-        self.historys,self.actions,self.rewards = load_data()
+        self.historys,self.actions,self.rewards = load_data_movie_length(gamma=gamma,time_step=time_step)
         self.num_batches = len(self.rewards) // self.batch_size
         self.action_source = {"pi": "beta", "beta": "beta"}#由beta选择动作
 
@@ -301,6 +301,7 @@ class TopKReinforce():
 
     def plot(self,pi_loss,beta_lss):
         import matplotlib.pyplot as plt
+        plt.switch_backend('agg')
 
         plt.plot(range(len(pi_loss)),pi_loss,label='pi-loss',color='g')
         plt.plot(range(len(beta_lss)),beta_lss,label='beta-loss',color='r')
@@ -315,7 +316,7 @@ class TopKReinforce():
 if __name__ == '__main__':
     t1 = time.time()
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=10000,epochs=5000)
+        reinforce = TopKReinforce(sess,item_count=6040,epochs=5000,time_step=15,batch_size=512)
         pi_loss,beta_lss = reinforce.train()
         reinforce.plot(pi_loss,beta_lss)
     t2 = time.time()

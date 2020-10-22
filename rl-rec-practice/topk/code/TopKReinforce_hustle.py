@@ -32,7 +32,7 @@ def cascade_model(p,k):
 def gradient_cascade(p, k):
     return k*(1-p)**(k-1)
 
-def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
+def load_data(path='../data/session.pickle',time_step=15,gamma=0.95):
     historys=[]
     actions=[]
     rewards=[]
@@ -62,7 +62,7 @@ def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
     return np.array(historys),np.array(actions),np.array(rewards)
 
 
-def load_data_movie_length(path='../data/ratings.dat',time_step=7,gamma=.9):
+def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
     historys=[]
     actions=[]
     rewards=[]
@@ -78,7 +78,7 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=7,gamma=.9):
         #discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
-    ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'])
+    ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')
     print(ratings.head())
 
     items = list(sorted(ratings.itemid.unique()))
@@ -104,7 +104,7 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=7,gamma=.9):
 
 class TopKReinforce():
     def __init__(self,sess,item_count,embedding_size=64,is_train=True,topK=1,
-                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce'):
+                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce',time_step=15):
         self.sess = sess
         self.item_count=item_count
         self.embedding_size=embedding_size
@@ -119,7 +119,7 @@ class TopKReinforce():
         self.checkout = 'checkout/model'
         self.kl_targ = 0.02
 
-        self.historys,self.actions,self.rewards = load_data_movie_length()
+        self.historys,self.actions,self.rewards = load_data_movie_length(time_step)
         self.num_batches = len(self.rewards) // self.batch_size
         self.action_source = {"pi": "pi", "beta": "beta"}
 
@@ -305,6 +305,7 @@ class TopKReinforce():
 
     def plot(self,pi_loss,beta_lss):
         import matplotlib.pyplot as plt
+        plt.switch_backend('agg')
 
         plt.plot(range(len(pi_loss)),pi_loss,label='pi-loss',color='g')
         plt.plot(range(len(beta_lss)),beta_lss,label='beta-loss',color='r')
@@ -318,7 +319,7 @@ class TopKReinforce():
 if __name__ == '__main__':
     t1 = time.time()
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=10000,epochs=1000)
+        reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,batch_size=512,time_step=15)
         pi_loss,beta_lss = reinforce.train()
         reinforce.plot(pi_loss,beta_lss)
     t2 = time.time()
