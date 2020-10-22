@@ -113,6 +113,7 @@ class TopKReinforce():
         self.model_name=model_name
         self.checkout = 'checkout/model_prior'
         self.kl_targ = 0.02
+        self.time_step = time_step
 
         self.historys,self.actions,self.rewards = load_data_movie_length(gamma=gamma,time_step=time_step)
         self.num_batches = len(self.rewards) // self.batch_size
@@ -129,6 +130,12 @@ class TopKReinforce():
 
         if not is_train:
             self.restore_model()
+
+    def __str__(self):
+        dit = self.__dict__
+        show = ['item_count','embedding_size','is_train','topK','weight_capping_c','batch_size','epochs','gamma','model_name','time_step']
+        dict = {key:val for key,val in dit.items() if key in show}
+        return str(dict)
 
 
     def weight_capping(self,cof):
@@ -207,7 +214,7 @@ class TopKReinforce():
 
     def _init_graph(self):
         with tf.variable_scope('input'):
-            self.input = tf.placeholder(shape=[None,7],name='X',dtype=tf.int32)
+            self.input = tf.placeholder(shape=[None,self.time_step],name='X',dtype=tf.int32)
             self.label = tf.placeholder(shape=[None],name='label',dtype=tf.int32)
             self.discounted_episode_rewards_norm = tf.placeholder(shape=[None],name='discounted_rewards',dtype=tf.float32)
 
@@ -315,16 +322,19 @@ class TopKReinforce():
 
 if __name__ == '__main__':
     t1 = time.time()
+    print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=5000,time_step=15,batch_size=512)
+        reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,time_step=15,batch_size=512)
+        print('model config :{}'.format(reinforce))
         pi_loss,beta_lss = reinforce.train()
         reinforce.plot(pi_loss,beta_lss)
     t2 = time.time()
+    print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
     print('time cost :{} m'.format((t2-t1)/60))
 
 
-tf.random.categorical()
-tf.distributions.Categorical()
+# tf.random.categorical()
+# tf.distributions.Categorical()
 
 
 

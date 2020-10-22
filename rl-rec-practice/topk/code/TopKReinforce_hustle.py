@@ -44,8 +44,8 @@ def load_data(path='../data/session.pickle',time_step=15,gamma=0.95):
             cumulative = cumulative * gamma + rewards[t]
             discounted_episode_rewards[t] = cumulative
         # Normalize the rewards
-        #discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        #discounted_episode_rewards /= np.std(discounted_episode_rewards)
+        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
+        discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
     with open(path,'rb') as f:
@@ -74,8 +74,8 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
             cumulative = cumulative * gamma + rewards[t]
             discounted_episode_rewards[t] = cumulative
         # Normalize the rewards
-        #discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        #discounted_episode_rewards /= np.std(discounted_episode_rewards)
+        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
+        discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
     ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')
@@ -118,8 +118,9 @@ class TopKReinforce():
         self.model_name=model_name
         self.checkout = 'checkout/model'
         self.kl_targ = 0.02
+        self.time_step = time_step
 
-        self.historys,self.actions,self.rewards = load_data_movie_length(time_step)
+        self.historys,self.actions,self.rewards = load_data_movie_length(time_step=time_step,gamma=gamma)
         self.num_batches = len(self.rewards) // self.batch_size
         self.action_source = {"pi": "pi", "beta": "beta"}
 
@@ -134,6 +135,12 @@ class TopKReinforce():
 
         if not is_train:
             self.restore_model()
+
+    def __str__(self):
+        dit = self.__dict__
+        show = ['item_count','embedding_size','is_train','topK','weight_capping_c','batch_size','epochs','gamma','model_name','time_step']
+        dict = {key:val for key,val in dit.items() if key in show}
+        return str(dict)
 
 
     def weight_capping(self,cof):
@@ -212,7 +219,7 @@ class TopKReinforce():
 
     def _init_graph(self):
         with tf.variable_scope('input'):
-            self.input = tf.placeholder(shape=[None,7],name='X',dtype=tf.int32)
+            self.input = tf.placeholder(shape=[None,self.time_step],name='X',dtype=tf.int32)
             self.label = tf.placeholder(shape=[None],name='label',dtype=tf.int32)
             self.discounted_episode_rewards_norm = tf.placeholder(shape=[None],name='discounted_rewards',dtype=tf.float32)
 
@@ -313,16 +320,19 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('reinforce_top_k.jpg')
+        plt.savefig('reinforce_top_k_prior.jpg')
 
 
 if __name__ == '__main__':
     t1 = time.time()
+    print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,batch_size=512,time_step=15)
+        reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,time_step=15,batch_size=512)
+        print('model config :{}'.format(reinforce))
         pi_loss,beta_lss = reinforce.train()
         reinforce.plot(pi_loss,beta_lss)
     t2 = time.time()
+    print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
     print('time cost :{} m'.format((t2-t1)/60))
 
 

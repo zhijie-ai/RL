@@ -33,11 +33,8 @@ def main(args):
 
 
         #19*(5+C(5,2)=10)=19*15
-<<<<<<< HEAD
-=======
         #emb的维度*(state的数量+state数量的两两组合)
         # state_item_num 每个state中包含item的个数
->>>>>>> bf5ebce... RL 相关
         s_dim = int(args['embedding']) * (
                     int(args['state_item_num']) + int(comb(int(args['state_item_num']), 2)))  ### need more work here
         a_dim = int(args['embedding']) * int(args['action_item_num']) #action_item_num:代表推荐几个item
@@ -94,11 +91,7 @@ if __name__ == '__main__':
         path4 = 'data/user_test.npy'  # u.user 文件中的用户,然后用train_and_test切分成2部分,测试部分用户
         path5 = 'data/dumped/test_user_movies.json'  # 和user_movies.json文件格式一样,只是这是经过train_and_test切分之后的测试用户的数据
         path6 = 'data/dumped/whole_user_movies.json'  # 和user_movies.json文件格式一样,这是u.user文件中的所有用户
-<<<<<<< HEAD
-        history_len = 5
-=======
         history_len = 5 #采取前5个预测
->>>>>>> bf5ebce... RL 相关
         test_data, item_embed_test, user_embed_test = process_data(path5, path4, path3, history_len)
         test_data = test_data.T
         data, item_embed, user_embed = process_data(path1, path2, path3, history_len)

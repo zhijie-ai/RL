@@ -9,10 +9,18 @@
 #               皇图霸业谈笑中，                 #
 #               不胜人生一场醉。                 #
 #-----------------------------------------------
-import matplotlib.pyplot as plt
-import numpy as np
-data = np.random.randn(100)
+class CLS():
+    def __init__(self,name='xiaojie',age=20):
+        self.name=name
+        self.age=age
+        self.test = 'test'
 
-plt.plot(range(len(data)),data)
-# plt.show()
-plt.savefig('test.jpg')
+    def __str__(self):
+        dit = self.__dict__
+        dict = {key:val for key,val in dit.items() if key not in ['test','actions','rewards','sess']}
+        return str(dict)
+
+
+if __name__ == '__main__':
+    cls =CLS()
+    print(cls)
