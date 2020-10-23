@@ -55,17 +55,50 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
 
     return np.array(historys),np.array(actions),np.array(rewards)
 
+gamma = 0.95
+time_step=15
+historys,actions,rewards = load_data_movie_length()
 
-class Reward():
-    def __init__(self,batch_size=256,embedding_size=64,epochs=1000):
+class Reward(keras.Model):
+    def __init__(self,batch_size=256,embedding_size=64,epochs=1000,item_count=6040,unit=128,time_step = 15):
         self.batch_size = batch_size
-        self.embedding_size=64
+        self.embedding_size=embedding_size
         self.epochs = epochs
+        self.item_count = item_count
+        self.time_step = time_step
+
+        self.embedding = keras.layers.Embedding(self.item_count+1,self.embedding_size)
+        self.lstm = keras.layers.LSTM(units=unit)
+        self.full_conn1 = keras.layers.Dense(64)
+        self.full_conn2 = keras.layers.Dense(1)
 
 
-    def build_network(self):
-        pass
+    def call(self,inputs):
+        state,action = inputs
+        x = self.embedding(state)
+        x = self.lstm(x)
+        print('AAAAA',x.shape)
+        inp = tf.concat([x,action],axis=1)
+        print('BBBBB',inp.shape,action.shape)
+        out = self.full_conn1(inp)
+        out = self.full_conn2(out)
+        return out
 
+
+def main():
+    model = Reward()
+    # out = model((historys,actions))
+    model.summary()
+
+    # model.compile(optimizer = keras.optimizers.Adam(0.001),
+    #               loss=keras.losses.MeanSquaredError(),
+    #               metrics=['mse'])
+    #
+    # # train
+    # model.fit((historys,actions),rewards,epochs=10)
+
+
+main()
 
 
 

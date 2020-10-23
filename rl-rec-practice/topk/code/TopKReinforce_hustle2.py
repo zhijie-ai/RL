@@ -18,6 +18,14 @@ import pickle
 from tensorflow.contrib import rnn
 import os
 
+'''
+Top-K Off-Policy Correction for a REINFORCE Recommender System论文的实现思路,该论文实现思路和原论文的有点不一样，
+原论文在实现off-policy correction时，action应该是从beta策略中抽样出来的，然后是计算action在PI和beta策略的概率取比值。
+而本论文的实现思路是，action均从各自的分布中采样，然后取比值。代码作者认为该实现和原论文差不多，甚至更好。参考 https://github.com/awarebayes/RecNN/issues/7
+'''
+# 与TopKReinforce_hustle.py不同的地方在于pi loss的计算，交叉熵的计算,前者用的是pi_log_prob,而本代码使用和TopKReinforce.py的实现。
+# TopKReinforce_hustle.py中pi loss一直波动，不下降的原因应该是loss的计算，交叉熵的计算虽然是最大化action对应的概率。可是它的实现似乎都没有用到y值。
+# 无效的原因是不是在随机选择action，然后将该action的概率最大化？
 # 主网络和beta网络的实现
 # topk修正后的概率
 def cascade_model(p,k):
@@ -27,7 +35,7 @@ def cascade_model(p,k):
 def gradient_cascade(p, k):
     return k*(1-p)**(k-1)
 
-def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
+def load_data(path='../data/session.pickle',time_step=15,gamma=0.95):
     historys=[]
     actions=[]
     rewards=[]
@@ -39,8 +47,8 @@ def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
             cumulative = cumulative * gamma + rewards[t]
             discounted_episode_rewards[t] = cumulative
         # Normalize the rewards
-        #discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        #discounted_episode_rewards /= np.std(discounted_episode_rewards)
+        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
+        discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
     with open(path,'rb') as f:
@@ -55,6 +63,7 @@ def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
 
 
     return np.array(historys),np.array(actions),np.array(rewards)
+
 
 def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
     historys=[]
@@ -96,28 +105,27 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
 
     return np.array(historys),np.array(actions),np.array(rewards)
 
-
 class TopKReinforce():
     def __init__(self,sess,item_count,embedding_size=64,is_train=True,topK=1,
-                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce_prior',time_step=15):
+                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce',time_step=15):
         self.sess = sess
         self.item_count=item_count
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs_prior'
+        self.log_out = 'out/logs'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
         self.epochs = epochs
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model_prior'
+        self.checkout = 'checkout/model'
         self.kl_targ = 0.02
         self.time_step = time_step
 
-        self.historys,self.actions,self.rewards = load_data_movie_length(gamma=gamma,time_step=time_step)
+        self.historys,self.actions,self.rewards = load_data_movie_length(time_step=time_step,gamma=gamma)
         self.num_batches = len(self.rewards) // self.batch_size
-        self.action_source = {"pi": "beta", "beta": "beta"}#由beta选择动作
+        self.action_source = {"pi": "pi", "beta": "beta"}
 
         self._init_graph()
 
@@ -167,8 +175,7 @@ class TopKReinforce():
         prob_weights = self.sess.run(self.alpha, feed_dict = {self.input: history})
         # action = tf.arg_max(prob_weights[0])
         actions = tf.nn.top_k(prob_weights[0],self.topK)
-        # tf.nn.in_top_k
-        return actions['indices']
+        return actions
 
     def save_model(self,step):
         if not os.path.exists(self.checkout):
@@ -182,6 +189,7 @@ class TopKReinforce():
             ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
             print('HHHHHHHHHHHHHH',ckpt_name)
             self.saver.restore(self.sess,os.path.join(self.checkout,ckpt_name))
+
 
     def pi_beta_sample(self):
         # 1. obtain probabilities
@@ -245,7 +253,6 @@ class TopKReinforce():
         label = tf.reshape(self.label,[-1,1])
         with tf.variable_scope('loss'):
             pi_log_prob, beta_log_prob, pi_probs = self.pi_beta_sample()
-
             ce_loss_main =tf.nn.sampled_softmax_loss(
                 weights,bias,label,state,5,num_classes=self.item_count)
 
@@ -254,7 +261,7 @@ class TopKReinforce():
             off_policy_correction = self.weight_capping(off_policy_correction)
             # print('CCCCCCCC',self.PI.shape,self.beta.shape)
             # print('DDDDDDD',off_policy_correction.shape,topk_correction.shape,ce_loss_main.shape)# (?,) (?,) (?,)
-            self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
+            self.pi_loss = -tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
             tf.summary.scalar('pi_loss',self.pi_loss)
 
             self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
@@ -281,9 +288,9 @@ class TopKReinforce():
                 pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.input:hist})
                 pi_new,beta_new,pi_loss,beta_loss,_,_,summary= self.sess.run([self.PI,self.beta,self.pi_loss,self.beta_loss,
                                                                               self.train_op_pi,self.train_op_beta,merged],
-                                                  feed_dict={self.input:hist,
-                                                             self.label:actions,
-                                                             self.discounted_episode_rewards_norm:rewards})
+                                                                             feed_dict={self.input:hist,
+                                                                                        self.label:actions,
+                                                                                        self.discounted_episode_rewards_norm:rewards})
 
                 print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f}'.format(counter,epoch,pi_loss,beta_loss))
                 pi.append(pi_loss)
@@ -292,12 +299,12 @@ class TopKReinforce():
                 counter+=1
                 kl_pi = np.mean(np.sum(pi_old * (
                         np.log(pi_old + 1e-10) - np.log(pi_new + 1e-10)),
-                                    axis=1)
-                             )
-                kl_beta = np.mean(np.sum(beta_old * (
-                        np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
                                        axis=1)
                                 )
+                kl_beta = np.mean(np.sum(beta_old * (
+                        np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
+                                         axis=1)
+                                  )
                 if (kl_pi > self.kl_targ * 4) and (kl_beta>self.kl_targ*4) :  # early stopping if D_KL diverges badly
                     self.save_model(step=counter)
                     break
@@ -316,8 +323,7 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('reinforce_top_k.jpg')
-
+        plt.savefig('reinforce_top_k_prior.jpg')
 
 
 if __name__ == '__main__':
@@ -333,8 +339,7 @@ if __name__ == '__main__':
     print('time cost :{} m'.format((t2-t1)/60))
 
 
-# tf.random.categorical()
-# tf.distributions.Categorical()
+
 
 
 
