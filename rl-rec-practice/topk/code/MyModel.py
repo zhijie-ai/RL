@@ -32,6 +32,7 @@ class MYM(keras.Model):
 net = MYM()
 net.summary()
 
+
 # x = np.random.rand(13,13,7)
 # ix=np.array([x,x])
 # x2 = np.random.rand(34)
