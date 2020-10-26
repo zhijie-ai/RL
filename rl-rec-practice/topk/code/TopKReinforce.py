@@ -265,6 +265,7 @@ class TopKReinforce():
         with tf.variable_scope('optimizer'):
             # beta_vars = [var for var in tf.trainable_variables() if 'item_emb_beta' in var.name or 'bias_beta' in var.name]
             beta_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,scope='beta_policy')
+            print('DDDDDDDDDDDD',beta_vars)
             self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
             self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
 
@@ -334,8 +335,8 @@ if __name__ == '__main__':
     with tf.Session() as sess:
         reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,time_step=15,batch_size=512)
         print('model config :{}'.format(reinforce))
-        pi_loss,beta_lss = reinforce.train()
-        reinforce.plot(pi_loss,beta_lss)
+        pi_loss,beta_loss = reinforce.train()
+        reinforce.plot(pi_loss,beta_loss)
     t2 = time.time()
     print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
     print('time cost :{} m'.format((t2-t1)/60))
