@@ -14,6 +14,10 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import pandas as pd
+from tensorflow.keras  import backend as K
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping
 
 def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
     historys=[]
@@ -55,49 +59,53 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
 
     return np.array(historys),np.array(actions),np.array(rewards)
 
-gamma = 0.95
-time_step=15
-historys,actions,rewards = load_data_movie_length()
-
 class Reward(keras.Model):
-    def __init__(self,batch_size=256,embedding_size=64,epochs=1000,item_count=6040,unit=128,time_step = 15):
-        self.batch_size = batch_size
+    def __init__(self,embedding_size=64,epochs=1000,item_count=6040,unit=128,time_step = 15):
         self.embedding_size=embedding_size
         self.epochs = epochs
         self.item_count = item_count
         self.time_step = time_step
+        self.units = unit
 
-        self.embedding = keras.layers.Embedding(self.item_count+1,self.embedding_size)
-        self.lstm = keras.layers.LSTM(units=unit)
-        self.full_conn1 = keras.layers.Dense(64)
-        self.full_conn2 = keras.layers.Dense(1)
+        ipt1 = keras.Input(shape=(self.time_step),name="history")
+        ipt2 = keras.Input(shape=(1),name='actions')
 
-
-    def call(self,inputs):
-        state,action = inputs
-        x = self.embedding(state)
-        x = self.lstm(x)
-        print('AAAAA',x.shape)
-        inp = tf.concat([x,action],axis=1)
-        print('BBBBB',inp.shape,action.shape)
-        out = self.full_conn1(inp)
-        out = self.full_conn2(out)
-        return out
+        # action
+        action = keras.layers.Embedding(self.item_count,self.embedding_size,input_length = self.time_step)(ipt2)
+        action = K.squeeze(action,axis=1)
+        print('action',action.shape)
+        x = keras.layers.Embedding(self.item_count,self.embedding_size,input_length = self.time_step)(ipt1)
+        x = keras.layers.LSTM(units=self.units)(x)
+        print('x.shape',x.shape)
+        x = keras.layers.concatenate([action,x])
+        print('AAAA',x.shape)
+        x = keras.layers.Dense(64)(x)
+        out = keras.layers.Dense(1)(x)
+        super(Reward,self).__init__(inputs=[ipt1,ipt2],outputs=out)
 
 
 def main():
+    gamma = 0.95
+    time_step=15
+    historys,actions,rewards = load_data_movie_length()
+    historys_train,historys_val,action_train,action_val,rewards_train,rewards_val = train_test_split(historys,actions,rewards,test_size=0.2)
+
+
     model = Reward()
-    # out = model((historys,actions))
-    model.summary()
+    # model.summary()
 
-    # model.compile(optimizer = keras.optimizers.Adam(0.001),
-    #               loss=keras.losses.MeanSquaredError(),
-    #               metrics=['mse'])
-    #
-    # # train
-    # model.fit((historys,actions),rewards,epochs=10)
+    model.compile(optimizer = keras.optimizers.Adam(0.001),
+                  loss=keras.losses.MeanSquaredError(),
+                  metrics=['mse'])
+    filepath="weights.best.hdf5"
 
+    ckp = ModelCheckpoint(filepath,save_best_only=True,verbose=1)
+    stop = EarlyStopping(patience=10,verbose=1)
 
+    # train
+    model.fit([historys_train,action_train],rewards_train,
+                        epochs=1,batch_size=512,verbose=1,
+                        validation_data=([historys_val,action_val],rewards_val),callbacks=[ckp,stop])
 main()
 
 

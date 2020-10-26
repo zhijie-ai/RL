@@ -20,6 +20,7 @@ import os
 
 # 主网络和beta网络的实现
 # topk修正后的概率
+# 计算PI的交叉熵的时候用的是pi_log_prob ，一直波动，无法下降，该代码弃用
 def cascade_model(p,k):
     return 1-(1-p)**k
 
@@ -306,17 +307,24 @@ class TopKReinforce():
         self.save_model(step=counter)
         return pi,beta
 
-    def plot(self,pi_loss,beta_lss):
+    def plot(self,pi_loss,beta_loss):
+        pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
+        beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
+        plt.subplot(211)
         plt.plot(range(len(pi_loss)),pi_loss,label='pi-loss',color='g')
-        plt.plot(range(len(beta_lss)),beta_lss,label='beta-loss',color='r')
+        plt.plot(range(len(beta_loss)),beta_loss,label='beta-loss',color='r')
+
+        plt.subplot(212)
+        plt.plot(range(len(pi_loss_)),pi_loss_,label='pi-loss',color='g')
+        plt.plot(range(len(beta_loss_)),beta_loss_,label='beta-loss',color='r')
         plt.xlabel('Training Steps')
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('reinforce_top_k.jpg')
+        plt.savefig('reinforce_top_k_prior.jpg')
 
 
 

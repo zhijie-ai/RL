@@ -313,17 +313,23 @@ class TopKReinforce():
         self.save_model(step=counter)
         return pi,beta
 
-    def plot(self,pi_loss,beta_lss):
+    def plot(self,pi_loss,beta_loss):
+        pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000]
+        beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
+        plt.subplot(211)
         plt.plot(range(len(pi_loss)),pi_loss,label='pi-loss',color='g')
-        plt.plot(range(len(beta_lss)),beta_lss,label='beta-loss',color='r')
+        plt.plot(range(len(beta_loss)),beta_loss,label='beta-loss',color='r')
         plt.xlabel('Training Steps')
         plt.ylabel('loss')
+        plt.subplot(212)
+        plt.plot(range(len(pi_loss_)),pi_loss_,label='pi-loss',color='g')
+        plt.plot(range(len(beta_loss_)),beta_loss_,label='beta-loss',color='r')
         plt.legend()
         # plt.show()
-        plt.savefig('reinforce_top_k_prior.jpg')
+        plt.savefig('reinforce_top_k.jpg')
 
 
 if __name__ == '__main__':
