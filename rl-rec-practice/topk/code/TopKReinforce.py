@@ -308,9 +308,12 @@ class TopKReinforce():
         self.save_model(step=counter)
         return pi,beta
 
-    def plot(self,pi_loss,beta_loss):
-        pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
-        beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
+    # 取前10个后10个的均值
+    def plot(self,pi_loss,beta_loss,num=10):
+        # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
+        # beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
+        pi_loss_ = [np.mean(pi_loss[ind-num:ind+num]) for ind ,val in enumerate(pi_loss) if ind%5000==num]
+        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%5000==num]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
@@ -325,7 +328,7 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('reinforce_top_k_prior.jpg')
+        plt.savefig('reinforce_top_k.jpg')
 
 
 
