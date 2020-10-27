@@ -85,8 +85,6 @@ class Reward(keras.Model):
 
 
 def main():
-    gamma = 0.95
-    time_step=15
     historys,actions,rewards = load_data_movie_length()
     historys_train,historys_val,action_train,action_val,rewards_train,rewards_val = train_test_split(historys,actions,rewards,test_size=0.2)
 
@@ -106,7 +104,8 @@ def main():
     model.fit([historys_train,action_train],rewards_train,
                         epochs=1,batch_size=512,verbose=1,
                         validation_data=([historys_val,action_val],rewards_val),callbacks=[ckp,stop])
-main()
 
+if __name__ == '__main__':
+    main()
 
 
