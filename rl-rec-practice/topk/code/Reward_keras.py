@@ -21,6 +21,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import Input, Dense, LSTM, Embedding, concatenate
 from tensorflow.keras.models import Model
 from tensorflow.keras.utils import plot_model
+import time
 
 
 def load_data_movie_length(path='../data/ratings.dat', time_step=15, gamma=.9):
@@ -84,7 +85,7 @@ class Reward():
 
         self.model.compile(optimizer=optimizer,
                            loss=keras.losses.MeanSquaredError(),
-                           metrics=['mae'])
+                           metrics=['mse'])
 
     def build_model(self):
         inp1 = Input(shape=(self.time_step,), name='history')
@@ -105,18 +106,26 @@ class Reward():
 
         model = Model([inp1, inp2], out, name='reward_model')
 
-        plot_model(model, to_file='./png/model.png', show_shapes=True)
+        # plot_model(model, to_file='./png/model.png', show_shapes=True)
         return model
 
     def train(self):
+        print('BBBBBBBBBBB',self.model.metrics_names)
+
+        # 报存模型
+        yaml_str = self.model.to_yaml()
+        with open('model/model_keras.yaml', 'w') as f:
+            f.write(yaml_str)
+
         historys_train, historys_val, action_train, action_val, rewards_train, rewards_val = train_test_split(
             self.historys, self.actions,
             self.rewards, test_size=0.2)
         print('GGGGGGGG', historys_train.shape, historys_val.shape, action_train.shape, action_val.shape,
               rewards_train.shape, rewards_val.shape)
-        filepath = "weights.best.hdf5"
+        filepath = "model/weights.best.hdf5"
 
-        ckp = ModelCheckpoint(filepath, save_best_only=True, verbose=1,monitor='val_mae')
+        # monitor如果不定义,默认为val_loss,则在回调函数时会报错。
+        ckp = ModelCheckpoint(filepath, save_best_only=True, verbose=1,monitor='val_mse',mode='min')
         stop = EarlyStopping(patience=10, verbose=1)
 
         # train
@@ -126,7 +135,16 @@ class Reward():
                        validation_data=([historys_val,action_val],rewards_val),
                        callbacks=[ckp,stop])
 
+        filepath = "model/weights2.best.hdf5"
+        self.model.save_weights(filepath)
+
 
 if __name__ == '__main__':
+
+    t1 = time.time()
+    print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
     reward = Reward(epochs=1)
     reward.train()
+    t2 = time.time()
+    print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
+    print('time cost :{} m'.format((t2-t1)/60))

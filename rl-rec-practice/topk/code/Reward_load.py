@@ -15,12 +15,9 @@ from tensorflow import keras
 import numpy as np
 import pandas as pd
 from tensorflow.keras import backend as K
-from sklearn.model_selection import train_test_split
-from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow.keras.callbacks import EarlyStopping
 import time
 
-
+# 自定义模型时，在加载模型时如果采用偷懒的方式采用model_from_yaml加载会报相关错，如load.py文件，但重新定义一遍模型，再load模型权重，是可以的。
 def load_data_movie_length(path='../data/ratings.dat', time_step=15, gamma=.9):
     historys = []
     actions = []
@@ -83,7 +80,7 @@ class Reward(keras.Model):
         x = keras.layers.Embedding(self.item_count, self.embedding_size, input_length=self.time_step)(ipt1)
         x = keras.layers.LSTM(units=self.units)(x)
         print('x.shape', x.shape)
-        x = keras.layers.concatenate([action, x])  # https://zhuanlan.zhihu.com/p/81721574
+        x = keras.layers.concatenate([action, x])
         print('AAAA', x.shape)
         x = keras.layers.Dense(64)(x)
         out = keras.layers.Dense(1)(x)
@@ -92,41 +89,16 @@ class Reward(keras.Model):
 
 def main():
     t1 = time.time()
-    print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
-    historys, actions, rewards = load_data_movie_length()
-    historys_train, historys_val, action_train, action_val, rewards_train, rewards_val = train_test_split(historys,
-                                                                                                          actions,
-                                                                                                          rewards,
-                                                                                                          test_size=0.2)
+    print('loading model.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
+    # historys, actions, rewards = load_data_movie_length()
 
-    model = Reward(epochs=1)
-    # model.summary()
+    model = Reward()
 
-    model.compile(optimizer=keras.optimizers.Adam(0.001),
-                  loss=keras.losses.MeanSquaredError(),
-                  metrics=['mse'])
-
-    model_yaml = model.to_yaml()
-    print(model_yaml)
-    with open('model/model.yaml', 'w') as f:
-        f.write(model_yaml)
-
-    print('EEEEE',model.metrics_names)
-    filepath = "model/weights.best.hdf5"
-
-    ckp = ModelCheckpoint(filepath, save_best_only=True, verbose=1,monitor='val_mse')
-    stop = EarlyStopping(patience=10, verbose=1)
-
-    # train
-    model.fit([historys_train, action_train], rewards_train,
-              epochs=model.epochs, batch_size=model.batch_size, verbose=1,
-              validation_data=([historys_val, action_val], rewards_val),
-              shuffle=True,
-              callbacks=[stop,ckp])
+    filepath = "model/weights3.best.hdf5"
+    model.load_weights(filepath)
+    # print(model.predict([historys[0:10],actions[0:10]]))
 
     t2 = time.time()
-    filepath = "model/weights3.best.hdf5"
-    model.save_weights(filepath)
     print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
     print('time cost :{} m'.format((t2-t1)/60))
 

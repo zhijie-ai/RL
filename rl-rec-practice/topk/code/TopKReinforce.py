@@ -237,8 +237,12 @@ class TopKReinforce():
             self.alpha = cascade_model(self.PI,self.topK)
 
         with tf.variable_scope('beta_policy'):
-            weights_beta=tf.get_variable('item_emb_beta',[self.item_count,self.rnn_size])
-            bias_beta = tf.get_variable('bias_beta',[self.item_count])
+            weights_beta_=tf.get_variable('item_emb_beta',[self.rnn_size,self.rnn_size])
+            bias_beta_ = tf.get_variable('bias_beta',[self.rnn_size])
+            state = tf.add(tf.matmul(state,tf.transpose(weights_beta_)),bias_beta_)
+
+            weights_beta=tf.get_variable('item_emb_beta2',[self.item_count,self.rnn_size])
+            bias_beta = tf.get_variable('bias_beta2',[self.item_count])
             self.beta =tf.add(tf.matmul(state,tf.transpose(weights_beta)),bias_beta)
             self.beta =  tf.nn.softmax(self.beta)# β策略
 
