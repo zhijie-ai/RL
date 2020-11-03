@@ -313,26 +313,39 @@ class TopKReinforce():
         return pi,beta
 
     # 取前10个后10个的均值
-    def plot(self,pi_loss,beta_loss,num=10):
-        # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
-        # beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
+    def plot_pi(self,pi_loss,num=10):
         pi_loss_ = [np.mean(pi_loss[ind-num:ind+num]) for ind ,val in enumerate(pi_loss) if ind%5000==num]
-        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%5000==num]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
         plt.subplot(211)
         plt.plot(range(len(pi_loss)),pi_loss,label='pi-loss',color='g')
-        plt.plot(range(len(beta_loss)),beta_loss,label='beta-loss',color='r')
 
         plt.subplot(212)
         plt.plot(range(len(pi_loss_)),pi_loss_,label='pi-loss',color='g')
+        plt.xlabel('Training Steps')
+        plt.ylabel('loss')
+        plt.legend()
+        # plt.show()
+        plt.savefig('reinforce_top_k_pi.jpg')
+
+    def plot_beta(self,beta_loss,num=10):
+        # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
+        # beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
+        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%5000==num]
+        import matplotlib.pyplot as plt
+        plt.switch_backend('agg')
+
+        plt.subplot(211)
+        plt.plot(range(len(beta_loss)),beta_loss,label='beta-loss',color='r')
+
+        plt.subplot(212)
         plt.plot(range(len(beta_loss_)),beta_loss_,label='beta-loss',color='r')
         plt.xlabel('Training Steps')
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('reinforce_top_k.jpg')
+        plt.savefig('reinforce_top_k_beta.jpg')
 
 
 
@@ -343,7 +356,8 @@ if __name__ == '__main__':
         reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,time_step=15,batch_size=512)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_loss = reinforce.train()
-        reinforce.plot(pi_loss,beta_loss)
+        reinforce.plot_pi(pi_loss)
+        reinforce.plot_beta(beta_loss)
     t2 = time.time()
     print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
     print('time cost :{} m'.format((t2-t1)/60))

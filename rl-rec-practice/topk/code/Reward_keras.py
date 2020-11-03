@@ -109,6 +109,9 @@ class Reward():
         # plot_model(model, to_file='./png/model.png', show_shapes=True)
         return model
 
+    def predict(self,history,action):
+        return self.model.predict([history,action])
+
     def train(self):
         print('BBBBBBBBBBB',self.model.metrics_names)
 

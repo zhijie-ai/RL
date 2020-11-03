@@ -1,0 +1,30 @@
+format_data方法解读：
+e3_behavior_v1.txt文件记录了每个用户每次推荐的item以及用户在该次推荐的item中点击的某些item，相当于是记录了推荐
+    引擎每次给用户推荐的items以及记录该次推荐时，用户对哪些item做了点击。
+e3_news_category_v1.txt文件记录了每个item对应的category id，类似一条新闻有可能属于多个类别，
+e3_user_news_feature_v1.txt文件记录了某个用户对某个item所提取到的特征。根据userid+itemid即可得到该用户对该item的
+    特征
+
+data_click记录第n次点击所对应的item处在所有展示的item的第几个位置。
+feature_click[user]=np.zeros([click_t,20])，click_t记录了用户点击过的item个数，因为在推荐系统里，在排序的时候
+    是要过滤已经推荐过的item的，所有理论上，用户不存在重复点击某个item的可能性，但是反过来，在一段时间内推荐理论上是
+    不存在重复推荐的可能性，如果时间窗口很长，是存在重复推荐的可能性的，为了方便理解代码，可认为不存在重复点击的可能性。
+    所以，click_t即代表用户总共点击了多少个item。每个item20维特征表示。
+news_dict代表在所有展示的item中，各个item在该用户展示时的索引。比如news_dict[1]=3,代表id为1的item在该用户
+    的所有展示中处于第3个位置
+feature记录了每个用户所有展示的item的特征，
+    即feature_click记录了用户点击的item的特征，feature记录用户所有展示的item的特征
+
+第一步:调用format_data方法
+第二步:调用construct_placeholder方法，定义了一系列的占位符
+第三步:调用construct_model方法，在该方法里调用了construct_graph方法
+    construct_graph方法:
+
+
+第四步:data_perform方法:
+    遍历的是8个桶里面的所有用户，构造数据，disp_feature是二维数组，把当前set中用户的disp feature拼接到一起，
+    click_feature一样，也是把当前set的用户的click feature拼接到一起。具体看代码。
+
+然后调用construct_model方法
+
+训练集的数据是在一个时间周期内(比如一个月)。把每个用户的展示按时间排序，构成一个长长的展示列表

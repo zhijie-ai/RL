@@ -90,13 +90,13 @@ class Reward(keras.Model):
 def main():
     t1 = time.time()
     print('loading model.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
-    # historys, actions, rewards = load_data_movie_length()
+    historys, actions, rewards = load_data_movie_length()
 
     model = Reward()
 
-    filepath = "model/weights3.best.hdf5"
+    filepath = "model/weights2.best.hdf5"
     model.load_weights(filepath)
-    # print(model.predict([historys[0:10],actions[0:10]]))
+    print(model.predict([historys[0:15],actions[0:15]]))
 
     t2 = time.time()
     print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))

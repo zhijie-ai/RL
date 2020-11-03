@@ -77,7 +77,7 @@ class Policy_Gradient():
         self.ep_rs.append(r)
 
     def learn(self):
-        discounted_ep_rs = np.zeros_like(self.ep_rs)
+        discounted_ep_rs = np.zeros_like(self.ep_rs,dtype='float')
         running_add = 0
         for t in reversed(range(0,len(self.ep_rs))):
             running_add = running_add * GAMMA+self.ep_rs[t]
