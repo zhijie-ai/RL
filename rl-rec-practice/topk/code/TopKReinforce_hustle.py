@@ -25,6 +25,7 @@ Top-K Off-Policy Correction for a REINFORCE Recommender System论文的实现思
 '''
 # 主网络和beta网络的实现
 # topk修正后的概率
+# 计算PI的交叉熵的时候用的是pi_log_prob ，一直波动，无法下降，该代码弃用
 def cascade_model(p,k):
     return 1-(1-p)**k
 

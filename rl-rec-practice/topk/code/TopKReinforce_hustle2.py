@@ -112,14 +112,14 @@ class TopKReinforce():
         self.item_count=item_count
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs'
+        self.log_out = 'out/logs_hustle'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
         self.epochs = epochs
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model'
+        self.checkout = 'checkout/model_hustle'
         self.kl_targ = 0.02
         self.time_step = time_step
 
@@ -261,7 +261,8 @@ class TopKReinforce():
             off_policy_correction = self.weight_capping(off_policy_correction)
             # print('CCCCCCCC',self.PI.shape,self.beta.shape)
             # print('DDDDDDD',off_policy_correction.shape,topk_correction.shape,ce_loss_main.shape)# (?,) (?,) (?,)
-            self.pi_loss = -tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
+            # 最开始此处有个负号，不应该有负号。
+            self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
             tf.summary.scalar('pi_loss',self.pi_loss)
 
             self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
@@ -314,26 +315,39 @@ class TopKReinforce():
         return pi,beta
 
     # 取前10个后10个的均值
-    def plot(self,pi_loss,beta_loss,num=10):
-        # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
-        # beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
+    def plot_pi(self,pi_loss,num=10):
         pi_loss_ = [np.mean(pi_loss[ind-num:ind+num]) for ind ,val in enumerate(pi_loss) if ind%5000==num]
-        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%5000==num]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
         plt.subplot(211)
         plt.plot(range(len(pi_loss)),pi_loss,label='pi-loss',color='g')
-        plt.plot(range(len(beta_loss)),beta_loss,label='beta-loss',color='r')
 
         plt.subplot(212)
         plt.plot(range(len(pi_loss_)),pi_loss_,label='pi-loss',color='g')
-        plt.plot(range(len(beta_loss_)),beta_loss_,label='beta-loss',color='r')
         plt.xlabel('Training Steps')
-        plt.ylabel('loss')
+        plt.ylabel('pi-loss')
         plt.legend()
         # plt.show()
-        plt.savefig('reinforce_top_k_hustle.jpg')
+        plt.savefig('jpg/reinforce_top_k_pi_hustle.jpg')
+
+    def plot_beta(self,beta_loss,num=10):
+        # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
+        # beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
+        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%5000==num]
+        import matplotlib.pyplot as plt
+        plt.switch_backend('agg')
+
+        plt.subplot(211)
+        plt.plot(range(len(beta_loss)),beta_loss,label='beta-loss',color='r')
+
+        plt.subplot(212)
+        plt.plot(range(len(beta_loss_)),beta_loss_,label='beta-loss',color='r')
+        plt.xlabel('Training Steps')
+        plt.ylabel('beta-loss')
+        plt.legend()
+        # plt.show()
+        plt.savefig('jpg/reinforce_top_k_beta_hustle.jpg')
 
 
 if __name__ == '__main__':
@@ -343,7 +357,8 @@ if __name__ == '__main__':
         reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,time_step=15,batch_size=512)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_lss = reinforce.train()
-        reinforce.plot(pi_loss,beta_lss)
+        reinforce.plot_pi(pi_loss)
+        reinforce.plot_beta(beta_lss)
     t2 = time.time()
     print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
     print('time cost :{} m'.format((t2-t1)/60))

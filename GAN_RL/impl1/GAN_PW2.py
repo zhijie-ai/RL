@@ -267,42 +267,43 @@ def construct_graph(is_training,is_batch_norm):
     print('u_history_feature.shape',u_history_feature.shape)#(6,80)
     # concat history feature and current feature
     # disp_tensor_indice_split 按时间排序的点击次数[0,0,1,1,2],下一个用户点击次数=自己的点击次数+上一个用户总的次数
-    #[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5],该数组的长度是
+    #[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5],该数组的长度是
     #   当前用户的总的展示次数
     # 从u_history_feature根据该用户的展示次数选出27行(27,80)
     #
-    disp_history_feature = tf.gather(u_history_feature, disp_tensor_indice_split)#(27,80),要考虑到所有展示的item中每个item的reward
+    disp_history_feature = tf.gather(u_history_feature, disp_tensor_indice_split)#(30,80),要考虑到所有展示的item中每个item的reward
     # 用户历史点击的特征，用户历史展示的特征，disp_current_feature:当前用户所有的展示的item的特征
     print('disp_history_feature.shape',disp_history_feature.shape)
-    print('disp_current_feature',disp_current_feature.shape)#(27,20)
+    print('disp_current_feature',disp_current_feature.shape)#(30,20)
     print('tf.concat([disp_history_feature, disp_current_feature], axis=1)',
           tf.concat([disp_history_feature, disp_current_feature], axis=1).shape)
     combine_feature = tf.reshape(tf.concat([disp_history_feature, disp_current_feature], axis=1),
                                  [-1, _f_dim * _weighted_dim + _f_dim])
-    print('combine_feature.shape',combine_feature.shape)#(27,100)，如果将(27,20),(27,20)2个矩阵拼接，也是可以的吧
+    print('combine_feature.shape',combine_feature.shape)#(30,100)，如果将(30,20),(30,20)2个矩阵拼接，也是可以的吧
 
     # neural net，可以调
     n1 = 256
     y1 = tf.layers.dense(combine_feature, n1, activation=tf.nn.elu, trainable=True,
                          kernel_initializer=tf.truncated_normal_initializer(stddev=_E3_sd))
-    print('y1.shape',y1.shape)#(27,256)
+    print('y1.shape',y1.shape)#(30,256)
 
     n2 = 32
     y2 = tf.layers.dense(y1, n2, trainable=True, kernel_initializer=tf.truncated_normal_initializer(stddev=_E3_sd))
     y2 = tf.nn.elu(y2)
-    print('y2.shape', y2.shape)#(27,32)
+    print('y2.shape', y2.shape)#(30,32)
 
     # output layer
     u_disp = tf.layers.dense(y2, 1, trainable=True, kernel_initializer=tf.truncated_normal_initializer(stddev=_E3_sd))
-    print('u_disp.shape',u_disp.shape)#(27,1)，公共有27个item，输入27个score
+    print('u_disp.shape',u_disp.shape)#(30,1)，公共有30个item，输入30个score
 
     # construct loss function
     exp_u_disp = tf.exp(u_disp)
-    print('exp_u_disp.shape',exp_u_disp.shape)#(27,1)
+    print('exp_u_disp.shape',exp_u_disp.shape)#(30,1)
     # 分段求和函数segment_sum，理论每推荐k个(比如k=10，在造的数据中，由于之前对数据理解不准确，
     #   在展示的时候，应该是都是k个的。假设都是k个，那么在disp_tensor_indice_split参数中，相同的index算一次推荐)
-    # [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5]
-    sum_exp_disp_ubar_ut = tf.segment_sum(exp_u_disp, disp_tensor_indice_split)
+    # [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]
+    # 相当于每次展示只能点击其中一个，如果某一屏点击了2个item，可以看成是第二次第二次展示同样的5个item点击另一个item。
+    sum_exp_disp_ubar_ut = tf.segment_sum(exp_u_disp, disp_tensor_indice_split)#公式中的正的部分
     #click_2d_subindex,对每个用户来说，点击的index在展示的index中的位置加上上一个用户的展示的长度。
     # 由于u_disp计算的是所有(s,a)的reward，而公式中只需要点击的item的reward。
     sum_click_u_bar_ut = tf.gather(u_disp, click_2d_subindex)
@@ -323,6 +324,8 @@ def construct_graph(is_training,is_batch_norm):
 
     # compute precision
     # disp_tensor_indice:当前batch中用户的展示index，同disp_data，只是增加了一个基数
+    #disp_tensor_indice：[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [2, 0], [2, 1],
+    # [2, 2], [2, 3], [2, 4], [3, 5], [3, 6], [3, 7], [3, 8], [3, 9], [4, 5], [4, 6], [4, 7], [4, 8], [4, 9], [5, 5], [5, 6], [5, 7], [5, 8], [5, 9]]
     exp_disp_ubar_ut = tf.SparseTensor(disp_tensor_indice, tf.reshape(exp_u_disp, [-1]), denseshape)
     dense_exp_disp_util = tf.sparse_tensor_to_dense(exp_disp_ubar_ut, default_value=0.0)
     argmax_click = tf.argmax(tf.sparse_tensor_to_dense(click_tensor, default_value=0.0), axis=1)
@@ -423,7 +426,8 @@ saver = tf.train.Saver(max_to_keep=None)
 
 for i in range(iterations):
 
-    training_start_point = (i * batch_size) % 6
+    # training_start_point = (i * batch_size) % 6
+    training_start_point = 0
     training_user = train_user[training_start_point : training_start_point + batch_size]
     print('training_user',training_user)
     if i == 0:
@@ -432,17 +436,18 @@ for i in range(iterations):
 
     click_2d, disp_2d, feature_tr, sec_cnt, tril_ind, tril_value_ind, disp_2d_split_sect, \
     news_cnt_sht, click_2d_subind, feature_clicked_tr = data_perform(training_user, _band_size)
-    print('click_2d',click_2d)#[[0, 0], [1, 2], [2, 3], [3, 0], [4, 2], [5, 4]]
-    print('disp_2d',disp_2d)
-    print('feature_tr',np.array(feature_tr).shape)#(27, 20)
-    # print('tril_ind',np.array(tril_ind).shape)#(15, 2)
-    print('tril_value_ind',np.array(tril_value_ind))#(15,)
-    print('disp_2d_split_sect',disp_2d_split_sect)#(27,)
-    print('news_cnt_sht',news_cnt_sht)#6
+    print('click_2d',click_2d)#[[0, 0], [1, 2], [2, 3], [3, 6], [4, 5], [5, 7]]
+    print('disp_2d',disp_2d)#[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [3, 5], [3, 6], [3, 7], [3, 8], [3, 9], [4, 5], [4, 6], [4, 7], [4, 8], [4, 9], [5, 5], [5, 6], [5, 7], [5, 8], [5, 9]]
+    # print('feature_tr',np.array(feature_tr).shape)#(30, 20)
+    # print('tril_ind',np.array(tril_ind))#(15, 2)
+    print('tril_value_ind',np.array(tril_value_ind))#[0 0 0 0 0 1 1 1 1 2 2 2 3 3 4]
+    print('disp_2d_split_sect',disp_2d_split_sect)#[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]
+    print('news_cnt_sht',news_cnt_sht)#10
     # print('click_2d_subind',click_2d_subind)
     print('sec_cnt',sec_cnt)#6
-    print('clk_tensor_val',len(click_2d))
-    print('click_2d_subind',click_2d_subind)#[0, 7, 13, 15, 20, 25]
+    print('clk_tensor_val',len(click_2d))#6
+    print('click_2d_subind',click_2d_subind)#[0, 7, 13, 16, 20, 27]
+    print('data_time[{}]'.format(training_user),data_time[training_user])
 
     # print('BBBB',np.array(feature_clicked_tr).shape)
     #cumsum_tril_indices = tf.placeholder(dtype=tf.int64, shape=[None, 2])
@@ -463,3 +468,11 @@ for i in range(iterations):
     if i == 0:
         log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         print("%s, first iteration training complete" % log_time)
+    tril_value_ind = list(range(1,16))
+    ten = tf.SparseTensor(np.array(tril_ind),np.array(tril_value_ind),(sec_cnt, sec_cnt))
+    print(ten)
+    # ten = tf.sparse.reorder(ten)
+    # print(sess.run(tf.sparse.to_dense(ten)))
+    # print(sess.run(tf.sparse_to_dense(ten)))#出错
+    # print(tf.sparse_to_dense(ten))#出错
+    print(tf.sparse_tensor_to_dense(ten, default_value=0))

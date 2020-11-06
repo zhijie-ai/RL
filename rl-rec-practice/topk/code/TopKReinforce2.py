@@ -104,14 +104,14 @@ class TopKReinforce():
         self.item_count=item_count
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs_prior'
+        self.log_out = 'out/logs_prior2'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
         self.epochs = epochs
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model_prior'
+        self.checkout = 'checkout/model_prior2'
         self.kl_targ = 0.02
         self.time_step = time_step
 
@@ -236,6 +236,9 @@ class TopKReinforce():
             self.alpha = cascade_model(self.PI,self.topK)
 
         with tf.variable_scope('beta_policy'):
+            weights_beta2=tf.get_variable('item_emb_beta2',[self.rnn_size,self.rnn_size])
+            bias_beta2 = tf.get_variable('bias_beta2',[self.rnn_size])
+            state = tf.add(tf.matmul(state,weights_beta2),bias_beta2)
             weights_beta=tf.get_variable('item_emb_beta',[self.item_count,self.rnn_size])
             bias_beta = tf.get_variable('bias_beta',[self.item_count])
             self.beta = tf.add(tf.matmul(state,tf.transpose(weights_beta)),bias_beta)
@@ -320,7 +323,7 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_pi.jpg')
+        plt.savefig('jpg/reinforce_top_k_pi2.jpg')
 
     def plot_beta(self,beta_loss,num=10):
         # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
@@ -338,7 +341,7 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_beta.jpg')
+        plt.savefig('jpg/reinforce_top_k_beta2.jpg')
 
 
 
