@@ -20,6 +20,7 @@ import os
 
 # 主网络和beta网络的实现
 # topk修正后的概率
+# 此代码，beta的loss降不下去
 def cascade_model(p,k):
     return 1-(1-p)**k
 
@@ -39,8 +40,8 @@ def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
             cumulative = cumulative * gamma + rewards[t]
             discounted_episode_rewards[t] = cumulative
         # Normalize the rewards
-        #discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        #discounted_episode_rewards /= np.std(discounted_episode_rewards)
+        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
+        discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
     with open(path,'rb') as f:
@@ -87,6 +88,7 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
     ratings = ratings.sort_values(by=['timestamp']).drop('timestamp',axis=1).groupby('userid')
     for _,df in ratings:
         r = _discount_and_norm_rewards(df.rating.values)
+        print('BBBBBBBBBBB',r)
         items = df.itemid.values
         for i in range(len(items)-time_step):
             historys.append(list(items[i:i+time_step]))
@@ -246,7 +248,7 @@ class TopKReinforce():
             pi_log_prob, beta_log_prob, pi_probs = self.pi_beta_sample()
 
             ce_loss_main =tf.nn.sampled_softmax_loss(
-                weights,bias,label,state,5,num_classes=self.item_count)
+                weights,bias,label,state,5,num_classes=self.item_count,partition_strategy='div')
 
             topk_correction =gradient_cascade(tf.exp(pi_log_prob),self.topK)# lambda 比值
             off_policy_correction = tf.exp(pi_log_prob)/tf.exp(beta_log_prob)
@@ -257,7 +259,7 @@ class TopKReinforce():
             tf.summary.scalar('pi_loss',self.pi_loss)
 
             self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
-                weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
+                weights_beta,bias_beta,label,state,5,num_classes=self.item_count,partition_strategy='div'))
             tf.summary.scalar('beta_loss',self.beta_loss)
 
         with tf.variable_scope('optimizer'):
@@ -345,8 +347,10 @@ class TopKReinforce():
 if __name__ == '__main__':
     t1 = time.time()
     print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
-    with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,time_step=15,batch_size=512)
+    config = tf.ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = 1.0
+    with tf.Session(config=config) as sess:
+        reinforce = TopKReinforce(sess,item_count=6040,epochs=500,time_step=15,batch_size=256)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_loss = reinforce.train()
         reinforce.plot_pi(pi_loss)

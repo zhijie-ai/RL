@@ -28,6 +28,7 @@ Top-K Off-Policy Correction for a REINFORCE Recommender System论文的实现思
 # 无效的原因是不是在随机选择action，然后将该action的概率最大化？
 # 主网络和beta网络的实现
 # topk修正后的概率
+# beta的loss降不下去
 def cascade_model(p,k):
     return 1-(1-p)**k
 
@@ -353,8 +354,10 @@ class TopKReinforce():
 if __name__ == '__main__':
     t1 = time.time()
     print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
-    with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=1000,time_step=15,batch_size=512)
+    config = tf.ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = 1.0
+    with tf.Session(config=config) as sess:
+        reinforce = TopKReinforce(sess,item_count=6040,epochs=500,time_step=15,batch_size=256)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_lss = reinforce.train()
         reinforce.plot_pi(pi_loss)

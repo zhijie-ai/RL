@@ -28,7 +28,7 @@ Top-K Off-Policy Correction for a REINFORCE Recommender System论文的实现思
 # 无效的原因是不是在随机选择action，然后将该action的概率最大化？
 # 主网络和beta网络的实现
 # topk修正后的概率
-# 与TopKReinforce_hustle2.py的区别是beta网络的优化增加了一个隐层
+# 与TopKReinforce_hustle2.py的区别是beta loss,每次训练，beta loss总是增长，这次逆着优化
 def cascade_model(p,k):
     return 1-(1-p)**k
 
@@ -113,14 +113,14 @@ class TopKReinforce():
         self.item_count=item_count
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs_hustle'
+        self.log_out = 'out/logs_hustle3'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
         self.epochs = epochs
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model_hustle'
+        self.checkout = 'checkout/model_hustle3'
         self.kl_targ = 0.02
         self.time_step = time_step
 
@@ -245,12 +245,9 @@ class TopKReinforce():
             self.alpha = cascade_model(self.PI,self.topK)
 
         with tf.variable_scope('beta_policy'):
-            weights_beta2=tf.get_variable('item_emb_beta2',[self.rnn_size,self.rnn_size])
-            bias_beta2 = tf.get_variable('bias_beta2',[self.rnn_size])
-            state = tf.add(tf.matmul(state,weights_beta2),bias_beta2)
             weights_beta=tf.get_variable('item_emb_beta',[self.item_count,self.rnn_size])
             bias_beta = tf.get_variable('bias_beta',[self.item_count])
-            self.beta = tf.add(tf.matmul(state,tf.transpose(weights_beta)),bias_beta)
+            self.beta =tf.add(tf.matmul(state,tf.transpose(weights_beta)),bias_beta)
             self.beta =  tf.nn.softmax(self.beta)# β策略
 
 
@@ -258,7 +255,7 @@ class TopKReinforce():
         with tf.variable_scope('loss'):
             pi_log_prob, beta_log_prob, pi_probs = self.pi_beta_sample()
             ce_loss_main =tf.nn.sampled_softmax_loss(
-                weights,bias,label,state,5,num_classes=self.item_count,partition_strategy='div')
+                weights,bias,label,state,5,num_classes=self.item_count)
 
             topk_correction =gradient_cascade(tf.exp(pi_log_prob),self.topK)# lambda 比值
             off_policy_correction = tf.exp(pi_log_prob)/tf.exp(beta_log_prob)
@@ -270,7 +267,7 @@ class TopKReinforce():
             tf.summary.scalar('pi_loss',self.pi_loss)
 
             self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
-                weights_beta,bias_beta,label,state,5,num_classes=self.item_count,partition_strategy='div'))
+                weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
             tf.summary.scalar('beta_loss',self.beta_loss)
 
         with tf.variable_scope('optimizer'):
@@ -289,7 +286,6 @@ class TopKReinforce():
                 hist = self.historys[idx*self.batch_size:(idx+1)*self.batch_size]
                 actions = self.actions[idx*self.batch_size:(idx+1)*self.batch_size]
                 rewards = self.rewards[idx*self.batch_size:(idx+1)*self.batch_size]
-
 
                 pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.input:hist})
                 pi_new,beta_new,pi_loss,beta_loss,_,_,summary= self.sess.run([self.PI,self.beta,self.pi_loss,self.beta_loss,
@@ -334,7 +330,7 @@ class TopKReinforce():
         plt.ylabel('pi-loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_pi_hustle_.jpg')
+        plt.savefig('jpg/reinforce_top_k_pi_hustle3.jpg')
 
     def plot_beta(self,beta_loss,num=10):
         # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
@@ -352,7 +348,7 @@ class TopKReinforce():
         plt.ylabel('beta-loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_beta_hustle_.jpg')
+        plt.savefig('jpg/reinforce_top_k_beta_hustle3.jpg')
 
 
 if __name__ == '__main__':
@@ -369,9 +365,3 @@ if __name__ == '__main__':
     t2 = time.time()
     print('model training end~~~~~~{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t2))))
     print('time cost :{} m'.format((t2-t1)/60))
-
-
-
-
-
-
