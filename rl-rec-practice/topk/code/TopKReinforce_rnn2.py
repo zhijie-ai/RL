@@ -20,7 +20,9 @@ import os
 
 # 主网络和beta网络的实现
 # topk修正后的概率
-# beta网络增加了一层
+# 和TopKReinforce.py的区别是，在训练RNN的思路时是借鉴session-based RNN的思路
+# 如果将reward归一化后，带入训练一直报错，reward有负就报错。
+
 def cascade_model(p,k):
     return 1-(1-p)**k
 
@@ -28,96 +30,50 @@ def cascade_model(p,k):
 def gradient_cascade(p, k):
     return k*(1-p)**(k-1)
 
-def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
-    historys=[]
-    actions=[]
-    rewards=[]
-
-    def _discount_and_norm_rewards(rewards):
+def load_data(path='../data/train3.csv'):
+    def _discount_and_norm_rewards(rewards,gamma=.95):
+        rewards = list(rewards)
         discounted_episode_rewards = np.zeros_like(rewards,dtype='float64')
         cumulative = 0
         for t in reversed(range(len(rewards))):
             cumulative = cumulative * gamma + rewards[t]
             discounted_episode_rewards[t] = cumulative
         # Normalize the rewards
-        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        discounted_episode_rewards /= np.std(discounted_episode_rewards)
+        # discounted_episode_rewards -= np.mean(discounted_episode_rewards)
+        # discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
-    with open(path,'rb') as f:
-        trajectory,rewards_= pickle.load(f)
-        print('FFFFFFFFFF',len(set([i for n in trajectory for i in n])))
-        for t,r in zip(trajectory,rewards_):
-            r = _discount_and_norm_rewards(r)
-            for i in range(len(t)-time_step):
-                historys.append(list(t[i:i+time_step]))
-                actions.append(t[i+time_step])
-                rewards.append(r[i+time_step])
-
-
-    return np.array(historys),np.array(actions),np.array(rewards)
-
-def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
-    historys=[]
-    actions=[]
-    rewards=[]
-
-    def _discount_and_norm_rewards(rewards):
-        discounted_episode_rewards = np.zeros_like(rewards,dtype='float64')
-        cumulative = 0
-        for t in reversed(range(len(rewards))):
-            cumulative = cumulative * gamma + rewards[t]
-            discounted_episode_rewards[t] = cumulative
-        # Normalize the rewards
-        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        discounted_episode_rewards /= np.std(discounted_episode_rewards)
-        return discounted_episode_rewards
-
-    ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')
-    print(ratings.head())
-
+    ratings = pd.read_csv(path,index_col=0)
+    ratings.sort_values(by=['userid','timestamp'],inplace=True)
     items = list(sorted(ratings.itemid.unique()))
     key_to_id_item = dict(zip(items,range(len(items))))
-    id_to_key_item = dict(zip(range(len(items)),items))
-    users = list(set(sorted(ratings.userid.unique())))
-    key_to_id_user = dict(zip(users,range(len(users))))
-    id_to_key_user = dict(zip(range(len(users)),users))
-
-    ratings.userid = ratings.userid.map(key_to_id_user)
     ratings.itemid = ratings.itemid.map(key_to_id_item)
-    ratings = ratings.sort_values(by=['userid','timestamp']).drop('timestamp',axis=1).groupby('userid')
-    for _,df in ratings:
-        r = _discount_and_norm_rewards(df.rating.values)
-        items = df.itemid.values
-        for i in range(len(items)-time_step):
-            historys.append(list(items[i:i+time_step]))
-            actions.append(items[i+time_step])
-            rewards.append(r[i+time_step])
+    print(ratings.head())
+    ratings['rewards'] = ratings.groupby('userid')['rating'].transform(_discount_and_norm_rewards)
+    return ratings
 
-
-    return np.array(historys),np.array(actions),np.array(rewards)
 
 
 class TopKReinforce():
-    def __init__(self,sess,item_count,embedding_size=64,is_train=True,topK=1,
-                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,gamma=0.95,model_name='reinforce_prior',time_step=15):
+    def __init__(self,sess,item_count,embedding_size=10,is_train=True,topK=1,
+                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,hidden_size=1024,
+                 gamma=0.95,model_name='reinforce_prior'):
         self.sess = sess
         self.item_count=item_count
+        print('---------------------',self.item_count)
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs_prior2'
+        self.log_out = 'out/logs_prior_rnn'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
         self.epochs = epochs
+        self.hidden_size=hidden_size
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model_prior2'
+        self.checkout = 'checkout/model_prior_rnn'
         self.kl_targ = 0.02
-        self.time_step = time_step
 
-        self.historys,self.actions,self.rewards = load_data_movie_length(gamma=gamma,time_step=time_step)
-        self.num_batches = len(self.rewards) // self.batch_size
         self.action_source = {"pi": "beta", "beta": "beta"}#由beta选择动作
 
         self._init_graph()
@@ -127,7 +83,6 @@ class TopKReinforce():
         self.sess.run(init)
 
         self.log_writer = tf.summary.FileWriter(self.log_out, self.sess.graph)
-
 
         if not is_train:
             self.restore_model()
@@ -187,8 +142,8 @@ class TopKReinforce():
     def pi_beta_sample(self):
         # 1. obtain probabilities
         # note: detach is to block gradient
-        beta_probs =self.beta
         pi_probs = self.PI
+        beta_probs =self.beta
 
         # 2. probabilities -> categorical distribution.
         beta_categorical = tf.distributions.Categorical(beta_probs)
@@ -204,6 +159,7 @@ class TopKReinforce():
             "pi": pi_categorical.sample(),
             "beta": beta_categorical.sample(),
         }
+        self.available_actions = available_actions
         pi_action = available_actions[self.action_source["pi"]]
         beta_action = available_actions[self.action_source["beta"]]
 
@@ -215,34 +171,34 @@ class TopKReinforce():
 
     def _init_graph(self):
         with tf.variable_scope('input'):
-            self.input = tf.placeholder(shape=[None,self.time_step],name='X',dtype=tf.int32)
-            self.label = tf.placeholder(shape=[None],name='label',dtype=tf.int32)
-            self.discounted_episode_rewards_norm = tf.placeholder(shape=[None],name='discounted_rewards',dtype=tf.float32)
+            self.X = tf.placeholder(tf.int32,[self.batch_size],name='input')
+            self.label = tf.placeholder(tf.int32,[self.batch_size],name='label')
+            self.discounted_episode_rewards_norm = tf.placeholder(shape=[self.batch_size],name='discounted_rewards',dtype=tf.float32)
+            self.state = tf.placeholder(tf.float32,[self.batch_size,self.rnn_size],name='rnn_state')
 
-        cell = rnn.BasicLSTMCell(self.rnn_size)
+        cell = rnn.GRUCell(self.rnn_size,activation=tf.nn.relu)
         with tf.variable_scope('emb'):
-            embedding = tf.get_variable('item_emb',[self.item_count,self.embedding_size])
-            inputs = tf.nn.embedding_lookup(embedding,self.input)
+            embedding = tf.get_variable('item_emb',[self.item_count,self.embedding_size],initializer=tf.random_normal_initializer(0.1,0.01))#(79, 64)
+            inputs = tf.gather(embedding,self.X)
 
-        outputs,_ = tf.nn.dynamic_rnn(cell,inputs,dtype=tf.float32)# outputs为最后一层每一时刻的输出
+        print('AAAA',inputs)
+        outputs,states = cell.__call__(inputs,self.state)# outputs为最后一层每一时刻的输出
+        print(outputs.shape,states)
+        self.final_state = states
 
         # state = tf.reshape(outputs,[-1,self.rnn_size])#bs*step,rnn_size,state
-        state = tf.nn.relu(outputs[:,-1,:])
 
-        with tf.variable_scope('main_policy'):
-            weights=tf.get_variable('item_emb_pi',[self.item_count,self.rnn_size])
+        with tf.variable_scope('main_policy') :
+            weights=tf.get_variable('item_emb_pi',[self.item_count,self.rnn_size],initializer=tf.random_normal_initializer(mean=0.1,stddev=.01))
             bias = tf.get_variable('bias',[self.item_count])
-            self.PI =tf.add(tf.matmul(state,tf.transpose(weights)),bias)
+            self.PI =tf.add(tf.matmul(outputs,tf.transpose(weights)),bias)
             self.PI =  tf.nn.softmax(self.PI)# PI策略
             self.alpha = cascade_model(self.PI,self.topK)
 
         with tf.variable_scope('beta_policy'):
-            weights_beta2=tf.get_variable('item_emb_beta2',[self.rnn_size,self.rnn_size])
-            bias_beta2 = tf.get_variable('bias_beta2',[self.rnn_size])
-            state = tf.add(tf.matmul(state,weights_beta2),bias_beta2)
             weights_beta=tf.get_variable('item_emb_beta',[self.item_count,self.rnn_size])
             bias_beta = tf.get_variable('bias_beta',[self.item_count])
-            self.beta = tf.add(tf.matmul(state,tf.transpose(weights_beta)),bias_beta)
+            self.beta = tf.add(tf.matmul(outputs,tf.transpose(weights_beta)),bias_beta)
             self.beta =  tf.nn.softmax(self.beta)# β策略
 
         label = tf.reshape(self.label,[-1,1])
@@ -250,7 +206,7 @@ class TopKReinforce():
             pi_log_prob, beta_log_prob, pi_probs = self.pi_beta_sample()
 
             ce_loss_main =tf.nn.sampled_softmax_loss(
-                weights,bias,label,state,5,num_classes=self.item_count,partition_strategy='div')
+                weights,bias,label,outputs,5,num_classes=self.item_count)
 
             topk_correction =gradient_cascade(tf.exp(pi_log_prob),self.topK)# lambda 比值
             off_policy_correction = tf.exp(pi_log_prob)/tf.exp(beta_log_prob)
@@ -261,7 +217,7 @@ class TopKReinforce():
             tf.summary.scalar('pi_loss',self.pi_loss)
 
             self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
-                weights_beta,bias_beta,label,state,5,num_classes=self.item_count,partition_strategy='div'))
+                weights_beta,bias_beta,label,outputs,5,num_classes=self.item_count))
             tf.summary.scalar('beta_loss',self.beta_loss)
 
         with tf.variable_scope('optimizer'):
@@ -270,45 +226,83 @@ class TopKReinforce():
             self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
             self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
 
-    def train(self):
+    def init(self,data):
+        data.drop(['timestamp','rating'],axis=1,inplace=True)
+        offset_sessions = np.zeros(data.userid.nunique()+1,dtype=np.int32)
+        offset_sessions[1:] = data.groupby('userid').size().cumsum()
+        return offset_sessions
+
+    def train(self,data):
         pi = []
         beta=[]
         merged = tf.summary.merge_all()
-        counter = 1
+        counter = 0
+
+        offset_sessions = self.init(data)
+        print(data.head(100))
+
         for epoch in range(self.epochs):
-            for idx in range(self.num_batches):
-                hist = self.historys[idx*self.batch_size:(idx+1)*self.batch_size]
-                actions = self.actions[idx*self.batch_size:(idx+1)*self.batch_size]
-                rewards = self.rewards[idx*self.batch_size:(idx+1)*self.batch_size]
+            state = np.zeros([self.batch_size,self.rnn_size],dtype=np.float32)
+            session_idx_arr =np.arange(len(offset_sessions)-1)
+            iters = np.arange(self.batch_size)
 
-                loss = self.sess.run(self.beta_loss,
-                              feed_dict={self.input:hist,
-                                         self.label:actions})
-                print('UUUUUUUUUU',loss)
+            maxiter = iters.max()
+            start =offset_sessions[session_idx_arr[iters]]
+            end =offset_sessions[session_idx_arr[iters]+1]
+            print('EEEEEEEE',offset_sessions)
 
-                pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.input:hist})
-                pi_new,beta_new,pi_loss,beta_loss,_,_,summary= self.sess.run([self.PI,self.beta,self.pi_loss,self.beta_loss,
-                                                                              self.train_op_pi,self.train_op_beta,merged],
-                                                  feed_dict={self.input:hist,
-                                                             self.label:actions,
-                                                             self.discounted_episode_rewards_norm:rewards})
+            finished=False
+            while not finished:
+                minlen =(end-start).min()
+                out_idx = data.itemid.values[start]
+                for i in range(minlen-1):
+                    in_idx = out_idx
+                    out_idx =data.itemid.values[start+i+1]
+                    rewards = data.rewards.values[start+i+1]
+                    fetches =[self.final_state,self.PI,self.beta,self.pi_loss,self.beta_loss,
+                              self.train_op_pi,self.train_op_beta,merged]
+                    feed_dict = {self.X:in_idx,self.label:out_idx,
+                                 self.discounted_episode_rewards_norm:rewards,
+                                 self.state:state}
 
-                print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f}'.format(counter,epoch,pi_loss,beta_loss))
-                pi.append(pi_loss)
-                beta.append(beta_loss)
-                self.log_writer.add_summary(summary,counter)
-                counter+=1
-                kl_pi = np.mean(np.sum(pi_old * (
-                        np.log(pi_old + 1e-10) - np.log(pi_new + 1e-10)),
-                                    axis=1)
-                             )
-                kl_beta = np.mean(np.sum(beta_old * (
-                        np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
-                                       axis=1)
-                                )
-                if (kl_pi > self.kl_targ * 4) and (kl_beta>self.kl_targ*4) :  # early stopping if D_KL diverges badly
-                    self.save_model(step=counter)
-                    break
+
+                    pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.X:in_idx,self.state:state})
+                    state,pi_new,beta_new,pi_loss,beta_loss,_,_,summary=self.sess.run(fetches,feed_dict)
+                    print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f},user:{}'.format(counter,epoch,pi_loss,beta_loss,maxiter))
+
+                    pi.append(pi_loss)
+                    beta.append(beta_loss)
+                    self.log_writer.add_summary(summary,counter)
+                    counter+=1
+                    kl_pi = np.mean(np.sum(pi_old * (
+                            np.log(pi_old + 1e-10) - np.log(pi_new + 1e-10)),
+                                        axis=1)
+                                 )
+                    kl_beta = np.mean(np.sum(beta_old * (
+                            np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
+                                           axis=1)
+                                    )
+                    if (kl_pi > self.kl_targ * 4) and (kl_beta>self.kl_targ*4) :  # early stopping if D_KL diverges badly
+                        self.save_model(step=counter)
+                        break
+
+
+                start = start + minlen - 1
+                mask =np.arange(len(iters))[(end-start)<=1]
+
+                for idx in mask:
+                    maxiter +=1
+                    if maxiter >= len(offset_sessions)-1:
+                        print('epoch finished!!!!!')
+                        finished=True
+                        break
+                    # 用下一个session的数据接力
+                    iters[idx] = maxiter
+                    start[idx] = offset_sessions[session_idx_arr[maxiter]]
+                    end[idx] =offset_sessions[session_idx_arr[maxiter]+1]
+
+                if len(mask):
+                    start[mask]=0
 
         # 保存模型
         self.save_model(step=counter)
@@ -316,7 +310,7 @@ class TopKReinforce():
 
     # 取前10个后10个的均值
     def plot_pi(self,pi_loss,num=10):
-        pi_loss_ = [np.mean(pi_loss[ind-num:ind+num]) for ind ,val in enumerate(pi_loss) if ind%5000==num]
+        pi_loss_ = [np.mean(pi_loss[ind-num:ind+num]) for ind ,val in enumerate(pi_loss) if ind%1000==num]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
@@ -329,12 +323,12 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_pi2.jpg')
+        plt.savefig('jpg/reinforce_top_k_pi_rnn.jpg')
 
     def plot_beta(self,beta_loss,num=10):
         # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
         # beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
-        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%5000==num]
+        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%1000==num]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
@@ -347,19 +341,22 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_beta2.jpg')
+        plt.savefig('jpg/reinforce_top_k_beta_rnn.jpg')
 
 
 
 if __name__ == '__main__':
+    pd.set_option('display.max_rows',None)
     t1 = time.time()
+    data = load_data()
+    print('AAAAA',data.itemid.nunique())#79
+    print('BBBBB',data.itemid.max())
+    print('CCCCC',data.userid.nunique())
     print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
-    config = tf.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = 1.0
-    with tf.Session(config=config) as sess:
-        reinforce = TopKReinforce(sess,item_count=3706,epochs=500,time_step=15,batch_size=256)
+    with tf.Session() as sess:
+        reinforce = TopKReinforce(sess,item_count=data.itemid.nunique(),epochs=2,batch_size=2)
         print('model config :{}'.format(reinforce))
-        pi_loss,beta_loss = reinforce.train()
+        pi_loss,beta_loss = reinforce.train(data)
         reinforce.plot_pi(pi_loss)
         reinforce.plot_beta(beta_loss)
     t2 = time.time()
@@ -369,6 +366,3 @@ if __name__ == '__main__':
 
 # tf.random.categorical()
 # tf.distributions.Categorical()
-
-
-

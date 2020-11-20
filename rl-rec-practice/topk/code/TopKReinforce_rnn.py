@@ -29,85 +29,37 @@ def cascade_model(p,k):
 def gradient_cascade(p, k):
     return k*(1-p)**(k-1)
 
-def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
-    historys=[]
-    actions=[]
-    rewards=[]
-
-    def _discount_and_norm_rewards(rewards):
+def load_data(path='../data/train_ratings.csv'):
+    def _discount_and_norm_rewards(rewards,gamma=.9):
+        rewards = list(rewards)
         discounted_episode_rewards = np.zeros_like(rewards,dtype='float64')
         cumulative = 0
         for t in reversed(range(len(rewards))):
             cumulative = cumulative * gamma + rewards[t]
             discounted_episode_rewards[t] = cumulative
         # Normalize the rewards
-        #discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        #discounted_episode_rewards /= np.std(discounted_episode_rewards)
+        # discounted_episode_rewards -= np.mean(discounted_episode_rewards)
+        # discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
-    with open(path,'rb') as f:
-        trajectory,rewards_= pickle.load(f)
-        print('FFFFFFFFFF',len(set([i for n in trajectory for i in n])))
-        for t,r in zip(trajectory,rewards_):
-            r = _discount_and_norm_rewards(r)
-            for i in range(len(t)-time_step):
-                historys.append(list(t[i:i+time_step]))
-                actions.append(t[i+time_step])
-                rewards.append(r[i+time_step])
-
-
-    return np.array(historys),np.array(actions),np.array(rewards)
-
-def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
-    historys=[]
-    actions=[]
-    rewards=[]
-
-    def _discount_and_norm_rewards(rewards):
-        discounted_episode_rewards = np.zeros_like(rewards,dtype='float64')
-        cumulative = 0
-        for t in reversed(range(len(rewards))):
-            cumulative = cumulative * gamma + rewards[t]
-            discounted_episode_rewards[t] = cumulative
-        # Normalize the rewards
-        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        discounted_episode_rewards /= np.std(discounted_episode_rewards)
-        return discounted_episode_rewards
-
-    ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')
-    print(ratings.head())
-
+    ratings = pd.read_csv(path,index_col=None)
+    ratings.sort_values(by=['userid','timestamp'],inplace=True)
     items = list(sorted(ratings.itemid.unique()))
     key_to_id_item = dict(zip(items,range(len(items))))
-    id_to_key_item = dict(zip(range(len(items)),items))
-    users = list(set(sorted(ratings.userid.unique())))
-    key_to_id_user = dict(zip(users,range(len(users))))
-    id_to_key_user = dict(zip(range(len(users)),users))
-
-    ratings.userid = ratings.userid.map(key_to_id_user)
     ratings.itemid = ratings.itemid.map(key_to_id_item)
-    ratings = ratings.sort_values(by=['timestamp']).drop('timestamp',axis=1).groupby('userid')
-    for _,df in ratings:
-        r = _discount_and_norm_rewards(df.rating.values)
-        items = df.itemid.values
-        for i in range(len(items)-time_step):
-            historys.append(list(items[i:i+time_step]))
-            actions.append(items[i+time_step])
-            rewards.append(r[i+time_step])
-
-
-    return np.array(historys),np.array(actions),np.array(rewards)
+    ratings['rewards'] = ratings.groupby('userid')['rating'].transform(_discount_and_norm_rewards)
+    return ratings
 
 
 class TopKReinforce():
     def __init__(self,sess,item_count,embedding_size=64,is_train=True,topK=1,
                  weight_capping_c=math.e**3,batch_size=128,epochs = 1000,hidden_size=1024,
-                 gamma=0.95,model_name='reinforce_prior',time_step=15):
+                 gamma=0.95,model_name='reinforce_prior_rnn'):
         self.sess = sess
         self.item_count=item_count
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs_prior3'
+        self.log_out = 'out/logs_prior_rnn'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
@@ -115,12 +67,9 @@ class TopKReinforce():
         self.hidden_size=hidden_size
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model_prior3'
+        self.checkout = 'checkout/model_prior_rnn'
         self.kl_targ = 0.02
-        self.time_step = time_step
 
-        self.historys,self.actions,self.rewards = load_data_movie_length(gamma=gamma,time_step=time_step)
-        self.num_batches = len(self.rewards) // self.batch_size
         self.action_source = {"pi": "beta", "beta": "beta"}#由beta选择动作
 
         self._init_graph()
@@ -164,11 +113,14 @@ class TopKReinforce():
         #     action = random.randint(0,self.n_y-1)
         return action
 
-    # 推理
-    def predict(self, history):
+    # 推理,针对一个用户
+    def predict_one_session(self, history):
+        state = np.zeros([1,self.rnn_size],dtype=np.float32)
+        for i in history:
+            alpha,state = self.sess.run([self.alpha,self.final_state],feed_dict={self.X:[i],self.state:state})
         # Reshape observation to (num_features, 1)
         # Run forward propagation to get softmax probabilities
-        prob_weights = self.sess.run(self.alpha, feed_dict = {self.input: history})
+        prob_weights = alpha
         # action = tf.arg_max(prob_weights[0])
         actions = tf.nn.top_k(prob_weights[0],self.topK)
         # tf.nn.in_top_k
@@ -218,29 +170,33 @@ class TopKReinforce():
 
     def _init_graph(self):
         with tf.variable_scope('input'):
-            self.input = tf.placeholder(shape=[None,self.time_step],name='X',dtype=tf.int32)
-            self.label = tf.placeholder(shape=[None],name='label',dtype=tf.int32)
+            self.X = tf.placeholder(tf.int32,[self.batch_size],name='input')
+            self.label = tf.placeholder(tf.int32,[self.batch_size],name='label')
             self.discounted_episode_rewards_norm = tf.placeholder(shape=[None],name='discounted_rewards',dtype=tf.float32)
+            self.state = tf.placeholder(tf.float32,[self.batch_size,self.rnn_size],name='rnn_state')
 
-        cell = rnn.BasicLSTMCell(self.rnn_size)
+        cell = rnn.GRUCell(self.rnn_size)
         with tf.variable_scope('emb'):
             embedding = tf.get_variable('item_emb',[self.item_count,self.embedding_size])
-            inputs = tf.nn.embedding_lookup(embedding,self.input)
+            inputs = tf.nn.embedding_lookup(embedding,self.X)
 
-        outputs,_ = tf.nn.dynamic_rnn(cell,inputs,dtype=tf.float32)# outputs为最后一层每一时刻的输出
+        print('AAAA',inputs)
+        outputs,states_ = cell.__call__(inputs,self.state)# outputs为最后一层每一时刻的输出
+        print(outputs.shape,states_)
+        self.final_state = states_
 
         # state = tf.reshape(outputs,[-1,self.rnn_size])#bs*step,rnn_size,state
-        state = tf.nn.relu(outputs[:,-1,:])
+        state = outputs
 
         with tf.variable_scope('main_policy'):
-            weights=tf.get_variable('item_emb_pi',[self.item_count,self.hidden_size])
+            weights=tf.get_variable('item_emb_pi',[self.item_count,self.rnn_size])
             bias = tf.get_variable('bias',[self.item_count])
             self.PI =tf.add(tf.matmul(state,tf.transpose(weights)),bias)
             self.PI =  tf.nn.softmax(self.PI)# PI策略
             self.alpha = cascade_model(self.PI,self.topK)
 
         with tf.variable_scope('beta_policy'):
-            weights_beta=tf.get_variable('item_emb_beta',[self.item_count,self.hidden_size])
+            weights_beta=tf.get_variable('item_emb_beta',[self.item_count,self.rnn_size])
             bias_beta = tf.get_variable('bias_beta',[self.item_count])
             self.beta = tf.add(tf.matmul(state,tf.transpose(weights_beta)),bias_beta)
             self.beta =  tf.nn.softmax(self.beta)# β策略
@@ -270,40 +226,81 @@ class TopKReinforce():
             self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
             self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
 
+    def init(self,data):
+        data.drop(['timestamp','rating'],axis=1,inplace=True)
+        offset_sessions = np.zeros(data.userid.nunique()+1,dtype=np.int32)
+        offset_sessions[1:] = data.groupby('userid').size().cumsum()
+        return offset_sessions
+
     def train(self):
+
+        data = load_data()
         pi = []
         beta=[]
         merged = tf.summary.merge_all()
-        counter = 1
+        counter = 0
+
+        offset_sessions = self.init(data)
+        print(data.head(10))
+
         for epoch in range(self.epochs):
-            for idx in range(self.num_batches):
-                hist = self.historys[idx*self.batch_size:(idx+1)*self.batch_size]
-                actions = self.actions[idx*self.batch_size:(idx+1)*self.batch_size]
-                rewards = self.rewards[idx*self.batch_size:(idx+1)*self.batch_size]
+            state = np.zeros([self.batch_size,self.rnn_size],dtype=np.float32)
+            session_idx_arr =np.arange(len(offset_sessions)-1)
+            iters = np.arange(self.batch_size)
 
-                pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.input:hist})
-                pi_new,beta_new,pi_loss,beta_loss,_,_,summary= self.sess.run([self.PI,self.beta,self.pi_loss,self.beta_loss,
-                                                                              self.train_op_pi,self.train_op_beta,merged],
-                                                  feed_dict={self.input:hist,
-                                                             self.label:actions,
-                                                             self.discounted_episode_rewards_norm:rewards})
+            maxiter = iters.max()
+            start =offset_sessions[session_idx_arr[iters]]
+            end =offset_sessions[session_idx_arr[iters]+1]
 
-                print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f}'.format(counter,epoch,pi_loss,beta_loss))
-                pi.append(pi_loss)
-                beta.append(beta_loss)
-                self.log_writer.add_summary(summary,counter)
-                counter+=1
-                kl_pi = np.mean(np.sum(pi_old * (
-                        np.log(pi_old + 1e-10) - np.log(pi_new + 1e-10)),
-                                    axis=1)
-                             )
-                kl_beta = np.mean(np.sum(beta_old * (
-                        np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
-                                       axis=1)
-                                )
-                if (kl_pi > self.kl_targ * 4) and (kl_beta>self.kl_targ*4) :  # early stopping if D_KL diverges badly
-                    self.save_model(step=counter)
-                    break
+            finished=False
+            while not finished:
+                minlen =(end-start).min()
+                out_idx = data.itemid.values[start]
+                for i in range(minlen-1):
+                    in_idx = out_idx
+                    out_idx =data.itemid.values[start+i+1]
+                    rewards = data.rewards.values[start+i+1]
+                    fetches =[self.final_state,self.PI,self.beta,self.pi_loss,self.beta_loss,
+                              self.train_op_pi,self.train_op_beta,merged]
+                    feed_dict = {self.X:in_idx,self.label:out_idx,
+                                 self.discounted_episode_rewards_norm:rewards,
+                                 self.state:state}
+                    pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.X:in_idx,self.state:state})
+                    state,pi_new,beta_new,pi_loss,beta_loss,_,_,summary=self.sess.run(fetches,feed_dict)
+                    print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f},current user:{}/{}'.format(counter,epoch,pi_loss,beta_loss,maxiter,data.userid.nunique()))
+
+                    pi.append(pi_loss)
+                    beta.append(beta_loss)
+                    self.log_writer.add_summary(summary,counter)
+                    counter+=1
+                    kl_pi = np.mean(np.sum(pi_old * (
+                            np.log(pi_old + 1e-10) - np.log(pi_new + 1e-10)),
+                                        axis=1)
+                                 )
+                    kl_beta = np.mean(np.sum(beta_old * (
+                            np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
+                                           axis=1)
+                                    )
+                    if (kl_pi > self.kl_targ * 4) and (kl_beta>self.kl_targ*4) :  # early stopping if D_KL diverges badly
+                        self.save_model(step=counter)
+
+
+                start = start + minlen - 1
+                mask =np.arange(len(iters))[(end-start)<=1]
+
+                for idx in mask:
+                    maxiter +=1
+                    if maxiter >= len(offset_sessions)-1:
+                        print('epoch finished!!!!!')
+                        finished=True
+                        break
+                    # 用下一个session的数据接力
+                    iters[idx] = maxiter
+                    start[idx] = offset_sessions[session_idx_arr[maxiter]]
+                    end[idx] =offset_sessions[session_idx_arr[maxiter]+1]
+
+                if len(mask):
+                    start[mask]=0
 
         # 保存模型
         self.save_model(step=counter)
@@ -311,7 +308,7 @@ class TopKReinforce():
 
     # 取前10个后10个的均值
     def plot_pi(self,pi_loss,num=10):
-        pi_loss_ = [np.mean(pi_loss[ind-num:ind+num]) for ind ,val in enumerate(pi_loss) if ind%5000==num]
+        pi_loss_ = [np.mean(pi_loss[ind-num:ind+num]) for ind ,val in enumerate(pi_loss) if ind%1000==num]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
@@ -324,12 +321,12 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_pi3.jpg')
+        plt.savefig('jpg/reinforce_top_k_pi_rnn.jpg')
 
     def plot_beta(self,beta_loss,num=10):
         # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
         # beta_loss_ = [val for ind ,val in enumerate(beta_loss) if ind%5000==0]
-        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%5000==num]
+        beta_loss_ = [np.mean(beta_loss[ind-num:ind+num]) for ind ,val in enumerate(beta_loss) if ind%1000==num]
         import matplotlib.pyplot as plt
         plt.switch_backend('agg')
 
@@ -342,7 +339,7 @@ class TopKReinforce():
         plt.ylabel('loss')
         plt.legend()
         # plt.show()
-        plt.savefig('jpg/reinforce_top_k_beta3.jpg')
+        plt.savefig('jpg/reinforce_top_k_beta_rnn.jpg')
 
 
 
@@ -350,7 +347,7 @@ if __name__ == '__main__':
     t1 = time.time()
     print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=500,time_step=15,batch_size=256)
+        reinforce = TopKReinforce(sess,item_count=3706,epochs=50,batch_size=256)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_loss = reinforce.train()
         reinforce.plot_pi(pi_loss)

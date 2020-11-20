@@ -83,18 +83,18 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
         return discounted_episode_rewards
 
     ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')
-    print(ratings.head())
 
     items = list(sorted(ratings.itemid.unique()))
     key_to_id_item = dict(zip(items,range(len(items))))
-    id_to_key_item = dict(zip(range(len(items)),items))
-    users = list(set(sorted(ratings.userid.unique())))
-    key_to_id_user = dict(zip(users,range(len(users))))
-    id_to_key_user = dict(zip(range(len(users)),users))
+    # id_to_key_item = dict(zip(range(len(items)),items))
+    # users = list(set(sorted(ratings.userid.unique())))
+    # key_to_id_user = dict(zip(users,range(len(users))))
+    # id_to_key_user = dict(zip(range(len(users)),users))
 
-    ratings.userid = ratings.userid.map(key_to_id_user)
+    # ratings.userid = ratings.userid.map(key_to_id_user)
     ratings.itemid = ratings.itemid.map(key_to_id_item)
-    ratings = ratings.sort_values(by=['timestamp']).drop('timestamp',axis=1).groupby('userid')
+    print('AAA',ratings.sort_values(by=['userid','timestamp']).head(10))
+    ratings = ratings.sort_values(by=['userid','timestamp']).drop('timestamp',axis=1).groupby('userid')
     for _,df in ratings:
         r = _discount_and_norm_rewards(df.rating.values)
         items = df.itemid.values
@@ -266,7 +266,7 @@ class TopKReinforce():
             self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
             tf.summary.scalar('pi_loss',self.pi_loss)
 
-            self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
+            self.beta_loss = -tf.reduce_mean(tf.nn.sampled_softmax_loss(
                 weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
             tf.summary.scalar('beta_loss',self.beta_loss)
 
@@ -357,7 +357,7 @@ if __name__ == '__main__':
     config = tf.ConfigProto()
     config.gpu_options.per_process_gpu_memory_fraction = 1.0
     with tf.Session(config=config) as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=500,time_step=15,batch_size=256)
+        reinforce = TopKReinforce(sess,item_count=3706,epochs=500,time_step=15,batch_size=256)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_lss = reinforce.train()
         reinforce.plot_pi(pi_loss)

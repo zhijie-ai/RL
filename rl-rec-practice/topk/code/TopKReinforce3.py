@@ -20,7 +20,7 @@ import os
 
 # 主网络和beta网络的实现
 # topk修正后的概率
-# 和TopKReinforce.py的区别是，lstm的输出经过了一层全连接层
+# 和TopKReinforce.py的区别是，lstm的输出经过了一层全连接层(beta loss还是呈现上升的曲线)
 
 def cascade_model(p,k):
     return 1-(1-p)**k
@@ -28,35 +28,6 @@ def cascade_model(p,k):
 # lambda比重
 def gradient_cascade(p, k):
     return k*(1-p)**(k-1)
-
-def load_data(path='../data/session.pickle',time_step=7,gamma=0.95):
-    historys=[]
-    actions=[]
-    rewards=[]
-
-    def _discount_and_norm_rewards(rewards):
-        discounted_episode_rewards = np.zeros_like(rewards,dtype='float64')
-        cumulative = 0
-        for t in reversed(range(len(rewards))):
-            cumulative = cumulative * gamma + rewards[t]
-            discounted_episode_rewards[t] = cumulative
-        # Normalize the rewards
-        #discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        #discounted_episode_rewards /= np.std(discounted_episode_rewards)
-        return discounted_episode_rewards
-
-    with open(path,'rb') as f:
-        trajectory,rewards_= pickle.load(f)
-        print('FFFFFFFFFF',len(set([i for n in trajectory for i in n])))
-        for t,r in zip(trajectory,rewards_):
-            r = _discount_and_norm_rewards(r)
-            for i in range(len(t)-time_step):
-                historys.append(list(t[i:i+time_step]))
-                actions.append(t[i+time_step])
-                rewards.append(r[i+time_step])
-
-
-    return np.array(historys),np.array(actions),np.array(rewards)
 
 def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
     historys=[]
@@ -86,7 +57,7 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
 
     ratings.userid = ratings.userid.map(key_to_id_user)
     ratings.itemid = ratings.itemid.map(key_to_id_item)
-    ratings = ratings.sort_values(by=['timestamp']).drop('timestamp',axis=1).groupby('userid')
+    ratings = ratings.sort_values(by=['userid','timestamp']).drop('timestamp',axis=1).groupby('userid')
     for _,df in ratings:
         r = _discount_and_norm_rewards(df.rating.values)
         items = df.itemid.values
@@ -354,7 +325,7 @@ if __name__ == '__main__':
     t1 = time.time()
     print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=500,time_step=15,batch_size=256)
+        reinforce = TopKReinforce(sess,item_count=3706,epochs=500,time_step=15,batch_size=256)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_loss = reinforce.train()
         reinforce.plot_pi(pi_loss)

@@ -85,10 +85,9 @@ def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
 
     ratings.userid = ratings.userid.map(key_to_id_user)
     ratings.itemid = ratings.itemid.map(key_to_id_item)
-    ratings = ratings.sort_values(by=['timestamp']).drop('timestamp',axis=1).groupby('userid')
+    ratings = ratings.sort_values(by=['userid','timestamp']).drop('timestamp',axis=1).groupby('userid')
     for _,df in ratings:
         r = _discount_and_norm_rewards(df.rating.values)
-        print('BBBBBBBBBBB',r)
         items = df.itemid.values
         for i in range(len(items)-time_step):
             historys.append(list(items[i:i+time_step]))
@@ -350,7 +349,7 @@ if __name__ == '__main__':
     config = tf.ConfigProto()
     config.gpu_options.per_process_gpu_memory_fraction = 1.0
     with tf.Session(config=config) as sess:
-        reinforce = TopKReinforce(sess,item_count=6040,epochs=500,time_step=15,batch_size=256)
+        reinforce = TopKReinforce(sess,item_count=3706,epochs=500,time_step=15,batch_size=256)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_loss = reinforce.train()
         reinforce.plot_pi(pi_loss)
