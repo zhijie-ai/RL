@@ -42,7 +42,8 @@ def load_data(path='../data/train_ratings.csv'):
         # discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
-    ratings = pd.read_csv(path,index_col=None)
+    # ratings = pd.read_csv(path,index_col=None)
+    ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')
     ratings.sort_values(by=['userid','timestamp'],inplace=True)
     items = list(sorted(ratings.itemid.unique()))
     key_to_id_item = dict(zip(items,range(len(items))))
@@ -59,7 +60,7 @@ class TopKReinforce():
         self.item_count=item_count
         self.embedding_size=embedding_size
         self.rnn_size = 128
-        self.log_out = 'out/logs_prior_rnn'
+        self.log_out = 'out/logs_rnn_top1'
         self.topK = topK
         self.weight_capping_c = weight_capping_c# 方差减少技术中的一种 weight capping中的常数c
         self.batch_size = batch_size
@@ -67,7 +68,7 @@ class TopKReinforce():
         self.hidden_size=hidden_size
         self.gamma = gamma
         self.model_name=model_name
-        self.checkout = 'checkout/model_prior_rnn'
+        self.checkout = 'checkout/model_rnn_top1'
         self.kl_targ = 0.02
 
         self.action_source = {"pi": "beta", "beta": "beta"}#由beta选择动作
@@ -78,7 +79,7 @@ class TopKReinforce():
         init = tf.global_variables_initializer()
         self.sess.run(init)
 
-        self.log_writer = tf.summary.FileWriter(self.log_out, self.sess.graph)
+        # self.log_writer = tf.summary.FileWriter(self.log_out, self.sess.graph)
 
 
         if not is_train:
@@ -130,7 +131,7 @@ class TopKReinforce():
         if not os.path.exists(self.checkout):
             os.makedirs(self.checkout)
 
-        self.saver.save(self.sess,os.path.join(self.checkout,self.model_name),global_step=step,write_meta_graph=False)
+        self.saver.save(self.sess,os.path.join(self.checkout,self.model_name),global_step=step,write_meta_graph=True)
 
     def restore_model(self):
         ckpt = tf.train.get_checkpoint_state(self.checkout)
@@ -206,7 +207,7 @@ class TopKReinforce():
             pi_log_prob, beta_log_prob, pi_probs = self.pi_beta_sample()
 
             ce_loss_main =tf.nn.sampled_softmax_loss(
-                weights,bias,label,state,5,num_classes=self.item_count)
+                weights,bias,label,state,50,num_classes=self.item_count)
 
             topk_correction =gradient_cascade(tf.exp(pi_log_prob),self.topK)# lambda 比值
             off_policy_correction = tf.exp(pi_log_prob)/tf.exp(beta_log_prob)
@@ -214,11 +215,11 @@ class TopKReinforce():
             # print('CCCCCCCC',self.PI.shape,self.beta.shape)
             # print('DDDDDDD',off_policy_correction.shape,topk_correction.shape,ce_loss_main.shape)# (?,) (?,) (?,)
             self.pi_loss = tf.reduce_mean(off_policy_correction*topk_correction*self.discounted_episode_rewards_norm*ce_loss_main)
-            tf.summary.scalar('pi_loss',self.pi_loss)
+            # tf.summary.scalar('pi_loss',self.pi_loss)
 
             self.beta_loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(
-                weights_beta,bias_beta,label,state,5,num_classes=self.item_count))
-            tf.summary.scalar('beta_loss',self.beta_loss)
+                weights_beta,bias_beta,label,state,50,num_classes=self.item_count))
+            # tf.summary.scalar('beta_loss',self.beta_loss)
 
         with tf.variable_scope('optimizer'):
             # beta_vars = [var for var in tf.trainable_variables() if 'item_emb_beta' in var.name or 'bias_beta' in var.name]
@@ -234,10 +235,9 @@ class TopKReinforce():
 
     def train(self):
 
-        data = load_data()
+        data = load_data('../data/ratings_1m.dat')
         pi = []
         beta=[]
-        merged = tf.summary.merge_all()
         counter = 0
 
         offset_sessions = self.init(data)
@@ -261,28 +261,16 @@ class TopKReinforce():
                     out_idx =data.itemid.values[start+i+1]
                     rewards = data.rewards.values[start+i+1]
                     fetches =[self.final_state,self.PI,self.beta,self.pi_loss,self.beta_loss,
-                              self.train_op_pi,self.train_op_beta,merged]
+                              self.train_op_pi,self.train_op_beta]
                     feed_dict = {self.X:in_idx,self.label:out_idx,
                                  self.discounted_episode_rewards_norm:rewards,
                                  self.state:state}
-                    pi_old,beta_old = self.sess.run([self.PI,self.beta],feed_dict={self.X:in_idx,self.state:state})
-                    state,pi_new,beta_new,pi_loss,beta_loss,_,_,summary=self.sess.run(fetches,feed_dict)
-                    print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f},current user:{}/{}'.format(counter,epoch,pi_loss,beta_loss,maxiter,data.userid.nunique()))
+                    state,pi_new,beta_new,pi_loss,beta_loss,_,_=self.sess.run(fetches,feed_dict)
+                    print('ite:{},epoch:{},pi loss:{:.2f},beta loss:{:.2f},finished num of user:{}/{}'.format(counter,epoch,pi_loss,beta_loss,maxiter+1,data.userid.nunique()))
 
                     pi.append(pi_loss)
                     beta.append(beta_loss)
-                    self.log_writer.add_summary(summary,counter)
                     counter+=1
-                    kl_pi = np.mean(np.sum(pi_old * (
-                            np.log(pi_old + 1e-10) - np.log(pi_new + 1e-10)),
-                                        axis=1)
-                                 )
-                    kl_beta = np.mean(np.sum(beta_old * (
-                            np.log(beta_old + 1e-10) - np.log(beta_new + 1e-10)),
-                                           axis=1)
-                                    )
-                    if (kl_pi > self.kl_targ * 4) and (kl_beta>self.kl_targ*4) :  # early stopping if D_KL diverges badly
-                        self.save_model(step=counter)
 
 
                 start = start + minlen - 1
@@ -300,7 +288,7 @@ class TopKReinforce():
                     end[idx] =offset_sessions[session_idx_arr[maxiter]+1]
 
                 if len(mask):
-                    start[mask]=0
+                    state[mask]=0
 
         # 保存模型
         self.save_model(step=counter)
@@ -319,7 +307,9 @@ class TopKReinforce():
         plt.plot(range(len(pi_loss_)),pi_loss_,label='pi-loss',color='g')
         plt.xlabel('Training Steps')
         plt.ylabel('loss')
+        plt.ylim(0,180)
         plt.legend()
+        plt.grid(True)
         # plt.show()
         plt.savefig('jpg/reinforce_top_k_pi_rnn.jpg')
 
@@ -337,7 +327,9 @@ class TopKReinforce():
         plt.plot(range(len(beta_loss_)),beta_loss_,label='beta-loss',color='r')
         plt.xlabel('Training Steps')
         plt.ylabel('loss')
+        plt.ylim(0,6)
         plt.legend()
+        plt.grid(True)
         # plt.show()
         plt.savefig('jpg/reinforce_top_k_beta_rnn.jpg')
 
@@ -347,7 +339,7 @@ if __name__ == '__main__':
     t1 = time.time()
     print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=3706,epochs=50,batch_size=256)
+        reinforce = TopKReinforce(sess,item_count=3706,epochs=100,batch_size=2048)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_loss = reinforce.train()
         reinforce.plot_pi(pi_loss)

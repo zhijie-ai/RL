@@ -24,7 +24,7 @@ from tensorflow.keras.utils import plot_model
 import time
 
 
-def load_data_movie_length(path='../data/ratings.dat', time_step=15, gamma=.9):
+def load_data_movie_length(path='../data/ratings_1m.dat', time_step=15, gamma=.9):
     historys = []
     actions = []
     rewards = []

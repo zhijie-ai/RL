@@ -63,7 +63,7 @@ def load_data(path='../data/session.pickle',time_step=15,gamma=0.95):
     return np.array(historys),np.array(actions),np.array(rewards)
 
 
-def load_data_movie_length(path='../data/ratings.dat',time_step=15,gamma=.9):
+def load_data_movie_length(path='../data/ratings_1m.dat',time_step=15,gamma=.9):
     historys=[]
     actions=[]
     rewards=[]

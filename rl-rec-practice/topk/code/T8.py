@@ -28,7 +28,7 @@ discounted_ep_rs /= np.std(discounted_ep_rs)
 
 print(discounted_ep_rs)
 
-def load_data(path='../data/ratings.dat'):
+def load_data(path='../data/ratings_1m.dat'):
     def _discount_and_norm_rewards(rewards,gamma=.9):
         rewards = list(rewards)
         discounted_episode_rewards = np.zeros_like(rewards,dtype='float64')

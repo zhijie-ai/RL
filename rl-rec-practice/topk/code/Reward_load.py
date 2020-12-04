@@ -18,7 +18,7 @@ from tensorflow.keras import backend as K
 import time
 
 # 自定义模型时，在加载模型时如果采用偷懒的方式采用model_from_yaml加载会报相关错，如load.py文件，但重新定义一遍模型，再load模型权重，是可以的。
-def load_data_movie_length(path='../data/ratings.dat', time_step=15, gamma=.9):
+def load_data_movie_length(path='../data/ratings_1m.dat', time_step=15, gamma=.9):
     historys = []
     actions = []
     rewards = []

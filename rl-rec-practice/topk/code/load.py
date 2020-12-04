@@ -21,7 +21,7 @@ filepath = "model/weights2.best.hdf5"
 model.load_weights(filepath)
 print(model)
 
-def load_data_movie_length(path='../data/ratings.dat', time_step=15, gamma=.9):
+def load_data_movie_length(path='../data/ratings_1m.dat', time_step=15, gamma=.9):
     historys = []
     actions = []
     rewards = []
