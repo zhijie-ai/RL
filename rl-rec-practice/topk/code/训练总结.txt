@@ -85,3 +85,19 @@ evaluating..................
 Recall@20: 0.12914818079781878  MRR@20: 0.03420395651361243
 evaluate_sessions_batch !!!! end
 evaluation time cost :0.6646590431531271 m
+
+latest top1 4096/120(有点过拟合了)
+model training end~~~~~~2020-12-05 22:50:50
+time cost :2199.9216593384745 m
+evaluating..................
+Recall@20: 0.09203412854532629  MRR@20: 0.016207428298874865
+evaluate_sessions_batch !!!! end
+evaluation time cost :111.1905081987381 m
+
+20m top10 4096/120
+model training end~~~~~~2020-12-05 01:27:26
+time cost :942.1493030349413 m
+evaluating..................
+Recall@20: 0.19278776305628706  MRR@20: 0.04624149156690158
+evaluate_sessions_batch !!!! end
+evaluation time cost :19.979111723105113 m
