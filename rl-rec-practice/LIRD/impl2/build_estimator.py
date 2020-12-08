@@ -15,7 +15,7 @@ import argparse
 import numpy as np
 import tensorflow as tf
 import pprint as pp
-from replay_buffer import RelayBuffer
+from replay_buffer import ReplayBuffer
 from simulator import Simulator
 from pre_process_data import recall_data
 from util.logger import logger

@@ -13,13 +13,13 @@ import tensorflow as tf
 from scipy.special import comb
 import numpy as np
 
-from actor import Actor
-from critic import Critic
-from noise import OUNoise
+from .actor import Actor
+from .critic import Critic
+from .noise import OUNoise
 from replay_buffer import ReplayBuffer
-from simulator import Simulator
-from preprocesing import process_data
-from DRR import train_test
+from .simulator import Simulator
+from .preprocesing import process_data
+from .DRR import train_test
 
 def main(args):
     tf.reset_default_graph()

@@ -14,14 +14,14 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from actor import Actor
-from critic import Critic
-from data_generator import DataGenerator
-from embedding import Embeddings
-from embedding_generator import EmbeddingsGenerator
-from enviroment import Environment
-from noise import OrnsteinUhlenbeckNoise
-from replay_buffer import ReplayMemory
+from .actor import Actor
+from .critic import Critic
+from .data_generator import DataGenerator
+from .embedding import Embeddings
+from .embedding_generator import EmbeddingsGenerator
+from .enviroment import Environment
+from .noise import OrnsteinUhlenbeckNoise
+from .replay_buffer import ReplayMemory
 
 
 # 将train.csv文件变成(s,a,s_,r)的数据格式，dataframe

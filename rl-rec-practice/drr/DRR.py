@@ -17,12 +17,12 @@ import numpy as np
 from scipy.special import comb
 import time
 
-from actor import Actor
-from critic import Critic
-from noise import OUNoise
+from .actor import Actor
+from .critic import Critic
+from .noise import OUNoise
 from replay_buffer import ReplayBuffer
 from simulator import Simulator
-from preprocesing import process_data
+from .preprocesing import process_data
 
 #state representation module
 #require user has same dimension with items (both 1*k dimension)
@@ -178,6 +178,7 @@ def train_test(sess, env, actor, critic, exploration_noise, s_dim, a_dim, args, 
     actor.hard_update_target_network()# 硬更新
     critic.hard_update_target_network()# 硬更新
 
+    # 最大的episode次数，每一次需要使用全部的user来跑一遍
     for i in range(int(args['max_episodes'])):
         ep_reward = 0.
         ep_q_value = 0.
