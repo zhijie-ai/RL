@@ -21,6 +21,7 @@ import os
 # 主网络和beta网络的实现
 # topk修正后的概率
 # 和TopKReinforce.py的区别是，在训练RNN的思路时是借鉴session-based RNN的思路
+# 和TopKReinforce_rnn_topK.py的区别是beta网络，更新主网络的参数
 
 def cascade_model(p,k):
     return 1-(1-p)**k
@@ -240,7 +241,7 @@ class TopKReinforce():
             # beta_vars = [var for var in tf.trainable_variables() if 'item_emb_beta' in var.name or 'bias_beta' in var.name]
             beta_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,scope='beta_policy')
             self.train_op_pi = tf.train.AdamOptimizer(0.01).minimize(self.pi_loss)
-            self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss,var_list=beta_vars)
+            self.train_op_beta = tf.train.AdamOptimizer(0.01).minimize(self.beta_loss)
 
     def init(self,data):
         data.drop(['timestamp','rating'],axis=1,inplace=True)

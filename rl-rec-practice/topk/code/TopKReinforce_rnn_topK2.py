@@ -21,6 +21,7 @@ import os
 # 主网络和beta网络的实现
 # topk修正后的概率
 # 和TopKReinforce.py的区别是，在训练RNN的思路时是借鉴session-based RNN的思路
+# 全连接多加了一层
 
 def cascade_model(p,k):
     return 1-(1-p)**k
@@ -202,7 +203,10 @@ class TopKReinforce():
         self.final_state = states_
 
         # state = tf.reshape(outputs,[-1,self.rnn_size])#bs*step,rnn_size,state
-        state = outputs
+        with tf.variable_scope('gru_out'):
+            W = tf.get_variable('w',[self.rnn_size,self.rnn_size])
+            b = tf.get_variable('b',[self.rnn_size])
+            state = tf.add(tf.matmul(outputs,W),b)
 
         with tf.variable_scope('main_policy'):
             weights=tf.get_variable('item_emb_pi',[self.item_count,self.rnn_size])
@@ -422,7 +426,7 @@ class TopKReinforce():
 
 if __name__ == '__main__':
 
-    train,test,n_items = load_data('../data/ratings_20m.csv')
+    train,test,n_items = load_data('../data/ratings_1m.csv')
     print('num users of test set:{}'.format(test.userid.nunique()))
     t1 = time.time()
     import sys

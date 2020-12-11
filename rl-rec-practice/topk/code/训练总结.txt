@@ -112,3 +112,35 @@ evaluating..................
 Recall@20: 0.11969506362586617  MRR@20: 0.02215622199272769
 evaluate_sessions_batch !!!! end
 evaluation time cost :110.24317650000255 m
+
+latest top1 4096/120
+model training end~~~~~~2020-12-09 06:50:25
+time cost :1287.0341150959332 m
+evaluating..................
+Recall@20: 0.12446156668413266  MRR@20: 0.02668965843930365
+evaluate_sessions_batch !!!! end
+evaluation time cost :115.05438019434611 m
+
+20m top1 4096/120 加了一层全连接
+model training end~~~~~~2020-12-09 23:51:16
+time cost :872.6630950490634 m
+evaluating..................
+Recall@20: 0.15891192415926614  MRR@20: 0.039210214552186866
+evaluate_sessions_batch !!!! end
+evaluation time cost :18.24732442696889 m
+
+latest top1 4096/120
+model training end~~~~~~2020-12-10 10:45:29
+time cost :1523.4570839881897 m
+evaluating..................
+Recall@20: 0.10007153401053646  MRR@20: 0.02077016944325667
+evaluate_sessions_batch !!!! end
+evaluation time cost :50.0014985760053 m
+
+20m top1 4096/120 beta没有截断
+model training end~~~~~~2020-12-11 09:57:57
+time cost :969.2803102016449 m
+evaluating..................
+Recall@20: 0.04289398962879156  MRR@20: 0.00661684569549156
+evaluate_sessions_batch !!!! end
+evaluation time cost :18.985058410962424 m
