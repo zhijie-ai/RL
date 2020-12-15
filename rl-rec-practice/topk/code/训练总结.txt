@@ -144,3 +144,34 @@ evaluating..................
 Recall@20: 0.04289398962879156  MRR@20: 0.00661684569549156
 evaluate_sessions_batch !!!! end
 evaluation time cost :18.985058410962424 m
+
+latest top1 4096/120 beta没有截断 topK3
+model training end~~~~~~2020-12-13 05:43:15
+time cost :2572.372483531634 m
+evaluating..................
+Recall@20: 0.06423080288186599  MRR@20: 0.01410292601048146
+evaluate_sessions_batch !!!! end
+evaluation time cost :53.19454536040624 m
+
+latest top10 4096/120 beta没有截断 topK3 epochs=50
+model training end~~~~~~2020-12-13 12:40:45
+time cost :2615.2178981264433 m
+evaluating..................
+Recall@20: 0.061199709951234055 MRR@20: 0.010909523588822046
+evaluate_sessions_batch !!!! end
+evaluation time cost :59.332006863753 m
+
+latest top1 4096/120 beta没有截断 topK3 epochs=10
+model training end~~~~~~2020-12-14 18:18:39
+time cost :507.74166042407353 m
+evaluating..................
+Recall@20: 0.10805675116036716  MRR@20: 0.023032157455778426
+evaluate_sessions_batch !!!! end
+evaluation time cost :54.502577614784244 m
+
+latest top10 4096/120 beta没有截断 topK3 epochs=10
+time cost :507.6471407969793 m
+evaluating..................
+Recall@20: 0.11525308348901205  MRR@20: 0.025676980154593992
+evaluate_sessions_batch !!!! end
+evaluation time cost :63.79144788185756 m
