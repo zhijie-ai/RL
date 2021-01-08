@@ -37,8 +37,8 @@ def load_data(path='../data/ratings_1m.dat'):
             cumulative = cumulative * gamma + rewards[t]
             discounted_episode_rewards[t] = cumulative
         # Normalize the rewards
-        discounted_episode_rewards -= np.mean(discounted_episode_rewards)
-        discounted_episode_rewards /= np.std(discounted_episode_rewards)
+        # discounted_episode_rewards -= np.mean(discounted_episode_rewards)
+        # discounted_episode_rewards /= np.std(discounted_episode_rewards)
         return discounted_episode_rewards
 
     ratings = pd.read_csv(path,delimiter='::',index_col=None,header=None,names=['userid','itemid','rating','timestamp'],engine='python')

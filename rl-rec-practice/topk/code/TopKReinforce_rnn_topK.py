@@ -68,7 +68,7 @@ def load_data(path):
 
 class TopKReinforce():
     def __init__(self,sess,item_count,embedding_size=64,is_train=True,topK=1,
-                 weight_capping_c=math.e**3,batch_size=128,epochs = 1000,hidden_size=1024,
+                 weight_capping_c=math.e**3,batch_size=128,epochs = 50,hidden_size=1024,
                  gamma=0.95,model_name='reinforce_prior_rnn',num_sampled=50):
         self.sess = sess
         self.item_count=item_count
@@ -326,7 +326,7 @@ class TopKReinforce():
         plt.legend()
         plt.grid(True)
         # plt.show()
-        plt.savefig('jpg/reinforce_top{}_pi_rnn_{}.jpg'.format(self.topK,self.num_sampled))
+        plt.savefig('jpg/reinforce_top{}_pi_rnn_{}_{}.jpg'.format(self.topK,self.num_sampled,self.epochs))
 
     def plot_beta(self,beta_loss,num=10):
         # pi_loss_ = [val for ind ,val in enumerate(pi_loss) if ind%5000==0]
@@ -347,7 +347,7 @@ class TopKReinforce():
         plt.legend()
         plt.grid(True)
         # plt.show()
-        plt.savefig('jpg/reinforce_top{}_beta_rnn_{}.jpg'.format(self.topK,self.num_sampled))
+        plt.savefig('jpg/reinforce_top{}_beta_rnn_{}_{}.jpg'.format(self.topK,self.num_sampled,self.epochs))
 
     def predict_next_batch(self,session_ids,input_item_ids,batch):
         if not self.predict:
@@ -434,7 +434,7 @@ if __name__ == '__main__':
 
     print('start model training.......{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
     with tf.Session() as sess:
-        reinforce = TopKReinforce(sess,item_count=n_items,epochs=50,batch_size=4096,topK=1,num_sampled=num_sampled)
+        reinforce = TopKReinforce(sess,item_count=n_items,epochs=1,batch_size=4096,topK=10,num_sampled=num_sampled)
         print('model config :{}'.format(reinforce))
         pi_loss,beta_loss = reinforce.train(train)
         reinforce.plot_pi(pi_loss)
