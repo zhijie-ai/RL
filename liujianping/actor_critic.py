@@ -78,11 +78,12 @@ class Actor():
         one_hot_action[action] =1
         a = one_hot_action[np.newaxis,:]
         # train on episode
-        self.session.run(self.train_op,feed_dict={
+        _,loss = self.session.run([self.train_op,self.exp],feed_dict={
             self.state_input:s,
             self.tf_acts:a,
             self.td_error:td_error
         })
+        return loss
 
 EPSILON = 0.01 # final value of epsilon
 REPLAY_SIZE = 10000 # experience replay buffer size
@@ -166,8 +167,9 @@ def main():
             action = actor.choose_action(state)
             next_state,reward,done,_ = env.step(action)
             td_error = critic.train_Q_network(state,reward,next_state) # gradient = grad[r+gamma*V(s_)-V(s)]
-            actor.learn(state,action,td_error) # true_gradient = grad[logpi(s,a)*td_error]
+            loss = actor.learn(state,action,td_error) # true_gradient = grad[logpi(s,a)*td_error]
             state = next_state
+            print('AAAAA',td_error,loss)
             if done:
                 print('================')#有结束状态的
                 break

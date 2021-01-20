@@ -54,7 +54,7 @@ class Policy_Gradient():
         self.all_act_prob = tf.nn.softmax(self.softmax_input,name='act_prob')
         self.neg_log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.softmax_input,
                                                                            labels=self.tf_acts)
-        self.loss = tf.reduce_mean(self.neg_log_prob*self.tf_vt) # reward guided loss
+        self.loss = tf.reduce_mean(self.neg_log_prob*self.tf_vt) # reward guided loss,虽然tf_vt有正有负，但是reduce_mean操作后为正了
         self.train_op = tf.train.AdamOptimizer(LEARNING_RATE).minimize(self.loss)
 
     def weight_variable(self, shape):
@@ -76,7 +76,7 @@ class Policy_Gradient():
         self.ep_as.append(a)
         self.ep_rs.append(r)
 
-    def learn(self):
+    def learn(self,episode):
         discounted_ep_rs = np.zeros_like(self.ep_rs,dtype='float')
         running_add = 0
         for t in reversed(range(0,len(self.ep_rs))):
@@ -87,11 +87,16 @@ class Policy_Gradient():
         discounted_ep_rs /= np.std(discounted_ep_rs)
 
         # train on episode
-        _,loss = self.session.run([self.train_op,self.loss],feed_dict={
+        _,loss,neg = self.session.run([self.train_op,self.loss,self.neg_log_prob],feed_dict={
             self.state_input:np.vstack(self.ep_obs),
             self.tf_acts:np.array(self.ep_as),
             self.tf_vt:discounted_ep_rs
         })
+
+        print('AAAAA',discounted_ep_rs,'\t EEEEE',neg)# 有正有负
+        if episode==0:
+            np.save('rewards',discounted_ep_rs)
+            np.save('ce',neg)
 
         self.ep_obs,self.ep_as,self.ep_rs = [],[],[] # empty episode data
         return loss
@@ -131,7 +136,8 @@ def main():
             if done:
                 print(reward)##有结束状态的
                 # print('stick for ',step,'steps')
-                loss = agent.learn()
+                loss = agent.learn(episode)
+                # print('BBBBB',loss)
                 loss_.append(loss)
                 break
 

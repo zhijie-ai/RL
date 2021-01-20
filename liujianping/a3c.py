@@ -82,6 +82,11 @@ class ACNet(object):
                     self.exp_v = ENTROPY_BETA * entropy + exp_v
                     self.a_loss = tf.reduce_mean(-self.exp_v)
 
+                    # loss,td,log_prob,entropy
+                    self.td = td# 有正有负
+                    self.log_prob = log_prob# 负
+                    self.entropy = entropy# 正
+
                 with tf.name_scope('local_grad'):
                     self.a_grads = tf.gradients(self.a_loss, self.a_params)
                     self.c_grads = tf.gradients(self.c_loss, self.c_params)
@@ -107,7 +112,8 @@ class ACNet(object):
         return a_prob, v, a_params, c_params
 
     def update_global(self, feed_dict):  # run by a local
-        SESS.run([self.update_a_op, self.update_c_op], feed_dict)  # local grads applies to global net
+        loss,td,log_prob,entropy,_,_=SESS.run([self.a_loss,self.td,self.log_prob,self.entropy,self.update_a_op, self.update_c_op], feed_dict)  # local grads applies to global net
+        return loss,td,log_prob,entropy
 
     def pull_global(self):  # run by a local
         SESS.run([self.pull_a_params_op, self.pull_c_params_op])
@@ -160,7 +166,9 @@ class Worker(object):
                         self.AC.a_his: buffer_a,
                         self.AC.v_target: buffer_v_target,
                     }
-                    self.AC.update_global(feed_dict)#把自己的梯度算出来，然后去更新global的梯度。
+                    loss,td,log_prob,entropy = self.AC.update_global(feed_dict)#把自己的梯度算出来，然后去更新global的梯度。
+                    if loss<0:
+                        print('AAAAAAAAAAAAAAAAA',loss,'A',td,'B',log_prob,'C',entropy)
 
                     buffer_s, buffer_a, buffer_r = [], [], []
                     self.AC.pull_global()

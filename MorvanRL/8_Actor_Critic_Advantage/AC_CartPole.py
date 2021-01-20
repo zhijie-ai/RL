@@ -75,7 +75,8 @@ class Actor():
 
         with tf.variable_scope('exp_v'):
             log_prob = tf.log(self.acts_prob[0,self.a])
-            self.exp_v = tf.reduce_mean(log_prob*self.td_error) # advantage (TD error) guided loss
+            self.log_p = log_prob
+            self.exp_v = tf.reduce_mean(log_prob*self.td_error) # advantage (TD error) guided loss,td_error有正有负，log_prob一直为负
 
         with tf.variable_scope('train'):
             self.train_op = tf.train.AdamOptimizer(lr).minimize(-self.exp_v)  # minimize(-exp_v) = maximize(exp_v)
@@ -83,8 +84,8 @@ class Actor():
     def learn(self, s, a, td):
         s = s[np.newaxis, :]
         feed_dict = {self.s: s, self.a: a, self.td_error: td}
-        _, exp_v = self.sess.run([self.train_op, self.exp_v], feed_dict)
-        return exp_v
+        _, exp_v,log_p = self.sess.run([self.train_op, self.exp_v,self.log_p], feed_dict)# exp_v有正有负，
+        return exp_v,log_p
 
     def choose_action(self, s):
         s = s[np.newaxis, :]
@@ -154,7 +155,7 @@ for i_episode in range(MAX_EPISODE):
         if RENDER: env.render()
 
         a = actor.choose_action(s)
-        print('BBBB',a)#0 or 1
+        # print('BBBB',a)#0 or 1
 
         s_, r, done, info = env.step(a)
 
@@ -163,7 +164,12 @@ for i_episode in range(MAX_EPISODE):
         track_r.append(r)
 
         td_error = critic.learn(s, r, s_)  # gradient = grad[r + gamma * V(s_) - V(s)]
-        actor.learn(s, a, td_error)  # true_gradient = grad[logPi(s,a) * td_error]
+
+        ev,log_p = actor.learn(s, a, td_error)  # true_gradient = grad[logPi(s,a) * td_error]
+        if td_error[0][0]>0:
+            print('td_error',td_error)
+            print('exp_v',ev)
+            print('log_prob',log_p)
 
         s = s_
         t += 1

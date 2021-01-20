@@ -131,6 +131,13 @@ class TopKReinforce():
 
     # 推理,针对一个用户
     def predict_one_session(self, history):
+        '''
+        因此我们使用最近邻方案来寻找top M个（M >> K）候选集，再在此基础上进行采样
+        参考了youtube-dnn中recall的做法，由于是softmax，根据softmax采样M(M>>K)个，然后,然后从
+        M中选取 K'个top的视频,再从剩余的M-K'个sample K-K'个视频,这样就有exploration的操作了
+        :param history:
+        :return:
+        '''
         state = np.zeros([1,self.rnn_size],dtype=np.float32)
         for i in history:
             alpha,state = self.sess.run([self.alpha,self.final_state],feed_dict={self.X:[i],self.state:state})
