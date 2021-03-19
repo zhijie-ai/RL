@@ -172,12 +172,14 @@ def data_perform(user_set,b_size):
         t_indice=[]
         #data_time[user]=click_t
         # data_time是一个数组，数组索引可看成用户id，每个位置放置的是该用户对应的点击次数
-        for kk in range(min(b_size-1,data_time[u]-1)):#在特征维度和点击次数之间选最小值
-            t_indice += map(lambda x: [x + kk + 1 + sec_cnt_x, x + sec_cnt_x], np.arange(data_time[u] - (kk + 1)))
+        for kk in range(min(b_size-1,data_time[u]-1)):#在特征维度和点击次数之间选最小值min(19,5)
+            t_indice += map(lambda x: [x + kk + 1 + sec_cnt_x, x + sec_cnt_x], np.arange(data_time[u] - (kk+1)))
 
+        print(t_indice,'0000000000000000000000000000000000',len(t_indice))
         # t_indice=[[14, 0], [15, 1], [16, 2], [17, 3], [18, 4], [19, 5]]
         tril_indice += t_indice# 三角矩阵的索引
         tril_value_indice += map(lambda x: (x[0] - x[1] - 1), t_indice)#索引对应的值，是由索引得到的。
+        print('-----------',tril_value_indice)
 
         # 。。。
         # data_click[user].append([click_t,news_dict[id]])
@@ -186,9 +188,10 @@ def data_perform(user_set,b_size):
 
         #data_disp[user].append([click_t,news_dict[idd]])，在展示的index中根据点击的数据查找
         display_tensor_indice_tmp = list(map(lambda x: [x[0] + sec_cnt_x, x[1]], data_disp[u]))
-        print('data_disp[u]',data_disp[u])
-        # index 求元素所在的索引
+        print('data_disp[u]',data_disp[u],len(data_disp[u]))
+        # index 求点击元素在展示元素中所在的索引
         click_sub_index_tmp = list(map(lambda x: display_tensor_indice_tmp.index(x), click_tensor_indice_tmp))
+        print('click_sub_index_tmp',click_sub_index_tmp)# [0, 7, 13, 15, 21, 27]
 
         #click_sub_index_2d:[0,1,2,3,4],在点击数据的索引上加上上一个用户的展示次数
         click_sub_index_2d += map(lambda x: x + len(display_tensor_indice), click_sub_index_tmp)
@@ -256,10 +259,9 @@ def construct_graph(is_training,is_batch_norm):
         cumsum_tril_matrix = tf.SparseTensor(cumsum_tril_indices, cumsum_tril_value,
                                              [section_length, section_length])  # sec by sec
         #Xs_clicked为用户所有点击的特征feature_click[user][click_t]=user_news_feature[key]
-        # cumsum_tril_matrix应该就是是论文中的W矩阵，应该是可以不采用这种方式来初始化的。随机初始化？
+        # cumsum_tril_matrix应该就是是论文中的W矩阵，应该是可以不采用这种方式来初始化的。随机初始化？每个batch的长度不一样，不能那么定义权重
         click_history[ii] = tf.sparse_tensor_dense_matmul(cumsum_tril_matrix, Xs_clicked)
         # print(Xs_clicked)#(6, 20)
-        # print(cumsum_tril_matrix)
 
         # print('click_history.shape',click_history[ii])# shape=(?, 20)
     # 通过position weight得到代表history的特征
@@ -270,9 +272,10 @@ def construct_graph(is_training,is_batch_norm):
     #[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5],该数组的长度是
     #   当前用户的总的展示次数
     # 从u_history_feature根据该用户的展示次数选出27行(27,80)
-    #
+    #display_tensor_indice_split += map(lambda x: x[0] + sec_cnt_x, data_disp[u])
     disp_history_feature = tf.gather(u_history_feature, disp_tensor_indice_split)#(30,80),要考虑到所有展示的item中每个item的reward
-    # 用户历史点击的特征，用户历史展示的特征，disp_current_feature:当前用户所有的展示的item的特征
+    # 用户历史点击的特征，用户历史展示的特征，disp_current_feature:当前用户所有的展示的item的特征,当前batch的数据
+    #disp_current_feature_x += map(lambda x: feature[u][x], [idd[1] for idd in data_disp[u]])
     print('disp_history_feature.shape',disp_history_feature.shape)
     print('disp_current_feature',disp_current_feature.shape)#(30,20)
     print('tf.concat([disp_history_feature, disp_current_feature], axis=1)',
@@ -294,7 +297,7 @@ def construct_graph(is_training,is_batch_norm):
 
     # output layer
     u_disp = tf.layers.dense(y2, 1, trainable=True, kernel_initializer=tf.truncated_normal_initializer(stddev=_E3_sd))
-    print('u_disp.shape',u_disp.shape)#(30,1)，公共有30个item，输入30个score
+    print('u_disp.shape',u_disp.shape)#(30,1)，公共有30个item，输入30个score,算出当前batch内用户对每一个item的score
 
     # construct loss function
     exp_u_disp = tf.exp(u_disp)
@@ -306,10 +309,10 @@ def construct_graph(is_training,is_batch_norm):
     sum_exp_disp_ubar_ut = tf.segment_sum(exp_u_disp, disp_tensor_indice_split)#公式中的正的部分
     #click_2d_subindex,对每个用户来说，点击的index在展示的index中的位置加上上一个用户的展示的长度。
     # 由于u_disp计算的是所有(s,a)的reward，而公式中只需要点击的item的reward。
-    sum_click_u_bar_ut = tf.gather(u_disp, click_2d_subindex)
+    sum_click_u_bar_ut = tf.gather(u_disp, click_2d_subindex)# 公式中负的部分
     # section_length:当前batch总共的点击次数，news_size:当前batch里用户最大的展示次数
     denseshape = [section_length, news_size]
-    #clk_tensor_indice:用户的点击及点击的id在展示数据中的index，即click_data
+    #clk_tensor_indice:用户的点击及点击的id在展示数据中的index，即click_data,data_click
     #clk_tensor_val: np.ones(len(click_2d)
     click_tensor = tf.SparseTensor(clk_tensor_indice, clk_tensor_val, denseshape)
     print('click_tensor',click_tensor)
@@ -412,7 +415,7 @@ print("%s, construct graph complete" % log_time)
 
 train_user = np.arange(6)
 
-batch_size = 1
+batch_size = 2
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
@@ -439,9 +442,9 @@ for i in range(iterations):
     print('click_2d',click_2d)#[[0, 0], [1, 2], [2, 3], [3, 6], [4, 5], [5, 7]]
     print('disp_2d',disp_2d)#[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [3, 5], [3, 6], [3, 7], [3, 8], [3, 9], [4, 5], [4, 6], [4, 7], [4, 8], [4, 9], [5, 5], [5, 6], [5, 7], [5, 8], [5, 9]]
     # print('feature_tr',np.array(feature_tr).shape)#(30, 20)
-    # print('tril_ind',np.array(tril_ind))#(15, 2)
-    print('tril_value_ind',np.array(tril_value_ind))#[0 0 0 0 0 1 1 1 1 2 2 2 3 3 4]
-    print('disp_2d_split_sect',disp_2d_split_sect)#[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]
+    print('tril_ind',np.array(tril_ind),len(tril_ind))#(15, 2)
+    print('tril_value_ind',np.array(tril_value_ind),len(tril_value_ind))#[0 0 0 0 0 1 1 1 1 2 2 2 3 3 4]
+    print('disp_2d_split_sect',disp_2d_split_sect,len(disp_2d_split_sect))#[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]
     print('news_cnt_sht',news_cnt_sht)#10
     # print('click_2d_subind',click_2d_subind)
     print('sec_cnt',sec_cnt)#6
@@ -468,11 +471,11 @@ for i in range(iterations):
     if i == 0:
         log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         print("%s, first iteration training complete" % log_time)
-    tril_value_ind = list(range(1,16))
-    ten = tf.SparseTensor(np.array(tril_ind),np.array(tril_value_ind),(sec_cnt, sec_cnt))
-    print(ten)
+    # tril_value_ind = list(range(1,16))
+    # ten = tf.SparseTensor(np.array(tril_ind),np.array(tril_value_ind),(sec_cnt, sec_cnt))
+    # print(ten)
     # ten = tf.sparse.reorder(ten)
     # print(sess.run(tf.sparse.to_dense(ten)))
-    # print(sess.run(tf.sparse_to_dense(ten)))#出错
+    # print(sess.run(tf.sparse_to_dense(ten)))#之所以会出错，是因为index中是没有顺序的
     # print(tf.sparse_to_dense(ten))#出错
-    print(tf.sparse_tensor_to_dense(ten, default_value=0))
+    # print(tf.sparse_tensor_to_dense(ten, default_value=0))

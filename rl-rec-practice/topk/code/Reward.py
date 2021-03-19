@@ -100,7 +100,7 @@ def main():
                                                                                                           test_size=0.2)
 
     model = Reward(epochs=1)
-    # model.summary()
+    print(model.summary())
 
     model.compile(optimizer=keras.optimizers.Adam(0.001),
                   loss=keras.losses.MeanSquaredError(),
@@ -133,3 +133,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # tf.saved_model.save(model,'model')

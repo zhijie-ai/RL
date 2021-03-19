@@ -24,3 +24,4 @@ class CLS():
 if __name__ == '__main__':
     cls =CLS()
     print(cls)
+    print(vars(cls))

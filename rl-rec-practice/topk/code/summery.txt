@@ -3,3 +3,6 @@
 3. 自定义模型加载权重时，为啥既可以用weights2.best.hdf5 也可以用weights3.best.hdf5,同样，先用model_keras加载网络结构，
     也可以用load_weights加载自定义Model的方式的权重或者Reward_keras.py文件的训练的权重，应该是他们的参数是一样的。
     也就是说，只要网络结构加载好了，权重只要一样都是可以load的，因为他们的参数是一样的。
+
+tf.saved_model.save(model,'model')可以存成saved_model格式的模型，用于serving，pb模型是跨平台的
+imported = tf.saved_model.load(path)

@@ -16,6 +16,7 @@ import time
 import math
 import pickle
 from tensorflow.contrib import rnn
+from tensorflow.contrib.nn import rank_sampled_softmax_loss
 import os
 
 # 主网络和beta网络的实现
@@ -135,6 +136,9 @@ class TopKReinforce():
         因此我们使用最近邻方案来寻找top M个（M >> K）候选集，再在此基础上进行采样
         参考了youtube-dnn中recall的做法，由于是softmax，根据softmax采样M(M>>K)个，然后,然后从
         M中选取 K'个top的视频,再从剩余的M-K'个sample K-K'个视频,这样就有exploration的操作了
+        论文里说用最近邻算法选出M个？可是没想明白选哪个item的最近邻？所以用原始softmax采样M个替代。在M的基础上算softmax，然后取top K'，
+        再从剩余的取K-K'个。
+        其实也可以直接根据softmax采样，或者选topK的item。
         :param history:
         :return:
         '''

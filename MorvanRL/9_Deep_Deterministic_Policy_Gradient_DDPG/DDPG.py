@@ -258,6 +258,16 @@ for i in range(MAX_EPISODES):
         if RENDER:
             env.render()
 
+        '''
+        1.刚开始我以为计算目标Q值时使用的a'是否是同一个网络产生的来区分on还是off，网上都说DDPG是off-policy,如果采用这种方式
+            来区分的话，a'确实来自actor‘网络，是一个off-policy,可是同时，ppo却是一个on-policy,ppo计算目标Q的时候(计算advantage的时候)
+            也是theta'(论文，而不是代码实现),DDPG和PPO都是参数复制，DDPG在计算target的时候是actor’，而PPO在计算advantage的时候是theta',
+            同样是参数复制，为啥一个是on-policy一个是off-policy？
+        2.我想明白了，确实可以通过在计算target 的时候的策略和采样的时候的行为策略是否是一个来区分on还是off-policy，
+            都是参数复制，明显actor和action'都是一样的。但因为是参数复制，PPO可以看作是同一个policy,而区别在于，DDPG在和环境交互时
+            使用的action是加了随机噪声的，相当于是beta策略，而在计算target的时候是actor的确定策略。相反，PPO从始至终都相当于是一个策略。
+            收集数据的策略和目标策略(计算目标的策略是同一回事？比如DQN中贪婪策略，行为策略是epsilon-贪婪策略)
+        '''
         # Add exploration noise
         a = actor.choose_action(s)
         a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
