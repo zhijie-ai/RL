@@ -309,11 +309,16 @@ def construct_graph(is_training,is_batch_norm):
     sum_exp_disp_ubar_ut = tf.segment_sum(exp_u_disp, disp_tensor_indice_split)#公式中的正的部分
     #click_2d_subindex,对每个用户来说，点击的index在展示的index中的位置加上上一个用户的展示的长度。
     # 由于u_disp计算的是所有(s,a)的reward，而公式中只需要点击的item的reward。
+    # click_sub_index_tmp = list(map(lambda x: display_tensor_indice_tmp.index(x), click_tensor_indice_tmp))
+    # click_sub_index_2d += map(lambda x: x + len(display_tensor_indice), click_sub_index_tmp)
     sum_click_u_bar_ut = tf.gather(u_disp, click_2d_subindex)# 公式中负的部分
     # section_length:当前batch总共的点击次数，news_size:当前batch里用户最大的展示次数
     denseshape = [section_length, news_size]
     #clk_tensor_indice:用户的点击及点击的id在展示数据中的index，即click_data,data_click
     #clk_tensor_val: np.ones(len(click_2d)
+    # data_click[user].append([click_t,news_dict[id]])
+    # click_tensor_indice_tmp = list(map(lambda x: [x[0] + sec_cnt_x, x[1]], data_click[u]))
+    # click_tensor_indice += click_tensor_indice_tmp#可以看做是data_click的数据格式
     click_tensor = tf.SparseTensor(clk_tensor_indice, clk_tensor_val, denseshape)
     print('click_tensor',click_tensor)
 
@@ -329,9 +334,9 @@ def construct_graph(is_training,is_batch_norm):
     # disp_tensor_indice:当前batch中用户的展示index，同disp_data，只是增加了一个基数
     #disp_tensor_indice：[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [2, 0], [2, 1],
     # [2, 2], [2, 3], [2, 4], [3, 5], [3, 6], [3, 7], [3, 8], [3, 9], [4, 5], [4, 6], [4, 7], [4, 8], [4, 9], [5, 5], [5, 6], [5, 7], [5, 8], [5, 9]]
-    exp_disp_ubar_ut = tf.SparseTensor(disp_tensor_indice, tf.reshape(exp_u_disp, [-1]), denseshape)
+    exp_disp_ubar_ut = tf.SparseTensor(disp_tensor_indice, tf.reshape(exp_u_disp, [-1]), denseshape)#展示
     dense_exp_disp_util = tf.sparse_tensor_to_dense(exp_disp_ubar_ut, default_value=0.0)
-    argmax_click = tf.argmax(tf.sparse_tensor_to_dense(click_tensor, default_value=0.0), axis=1)
+    argmax_click = tf.argmax(tf.sparse_tensor_to_dense(click_tensor, default_value=0.0), axis=1)#点击
     argmax_disp = tf.argmax(dense_exp_disp_util, axis=1)
 
     top_2_disp = tf.nn.top_k(dense_exp_disp_util, k=2, sorted=False)[1]
