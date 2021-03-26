@@ -139,7 +139,7 @@ def data_perform(user_set):
 
     # （1） 找出当前batch最多的点击次数。data_time[u]表示用户u对应的点击次数
     for u in user_set:
-        max_time = max(max_time, data_time[u])
+        max_time = max(max_time, data_time[u])#当前batch中最长的点击次数
 
     user_time_dense = np.zeros([size_user, max_time], dtype=np.float32)
     click_feature = np.zeros([max_time, size_user, _f_dim])  # 这个作为LSTM的input
@@ -175,7 +175,7 @@ def data_perform(user_set):
         click_sub_index += map(lambda x: x+len(disp_tensor_indices), click_sub_index_tmp)
 
         disp_tensor_indices = disp_tensor_indices + disp_tensor_indices_tmp
-        max_news_per_user = max(max_news_per_user, data_news_cnt[u])
+        max_news_per_user = max(max_news_per_user, data_news_cnt[u])#data_news_cnt:每个用户的展示次数
 
     return size_user, max_time, max_news_per_user, \
            disp_tensor_indices, disp_tensor_indices_split, np.array(u_feature), click_feature, click_sub_index, \
@@ -228,9 +228,10 @@ def construct_graph(clicked_feature, u_current_feature, disp_tensor_indices_spli
     # (1) move forward one-step
     u_history_feature = tf.concat([tf.zeros([1, batch_size, _RNN_HIDDEN], dtype=tf.float32), rnn_outputs], 0)
     # (2) transpose to reshape --> (user=batch, time, rnn_hidden)
-    u_history_feature = tf.transpose(u_history_feature, perm=[1, 0, 2])  #
+    u_history_feature = tf.transpose(u_history_feature, perm=[1, 0, 2])  #B,T,H
 
     # concat history feature and current feature
+    #disp_tensor_indices_split.append([u_idx, t]),实际上是真正点击的item
     u_history_feature_gather = tf.gather_nd(u_history_feature, disp_tensor_indices_split)
     combine_feature = tf.concat([u_history_feature_gather, u_current_feature], axis=1)
     combine_feature = tf.reshape(combine_feature, [-1, _RNN_HIDDEN + _f_dim]) # indicate size
