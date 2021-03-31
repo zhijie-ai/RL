@@ -78,7 +78,7 @@ def construct_p():
     # (5)
     u_disp = tf.reshape(u_disp, [-1])
     exp_u_disp = tf.exp(u_disp)
-    sum_exp_disp = tf.segment_sum(exp_u_disp, disp_2d_split_user_ind) + float(np.exp(_noclick_weight))
+    sum_exp_disp = tf.segment_sum(exp_u_disp, disp_2d_split_user_ind) + float(np.exp(_noclick_weight))#相当于公式中的正的部分
     scatter_sum_exp_disp = tf.gather(sum_exp_disp, disp_2d_split_user_ind)
     p_disp = tf.div(exp_u_disp, scatter_sum_exp_disp)
 
@@ -118,7 +118,7 @@ def construct_Q_and_loss():
     # 换言之，可以忽略action_k_id，直接把（3）的action_k_feature_gather定义成placeholder，输入item features。
     action_k_id = [[] for _ in range(_k)]
     for ii in range(_k):
-        action_k_id[ii] = tf.placeholder(dtype=tf.int64, shape=[None])
+        action_k_id[ii] = tf.placeholder(dtype=tf.int64, shape=[None])#id的占位符
     # (3) action features
     action_k_feature_gather = [[] for _ in range(_k)]
     for ii in range(_k):
@@ -557,6 +557,7 @@ def form_loss_feed_dict(user_set, states_id, action_id):
     return action_ids_k, action_space, states_feature, history_order, history_user, candidate_action_mean, candidate_action_std
 
 
+#定义一些变量
 _f_dim, _k, iterations, _noclick_weight, _band_size, _weighted_dim, train_user, vali_user, test_user, feature_space, \
 _users_to_test, _time_horizon, num_test, sim_user_reward, user_avg_reward, click_rate, mean_user_avg_reward, mean_click_rate = initialize_environment(sys.argv)
 
@@ -581,6 +582,7 @@ vali_path = './saved_models/E3_agg_split1/'
 saver = tf.train.Saver(max_to_keep=None)
 save_path = os.path.join(vali_path, 'convert_best-loss')
 saver.restore(sess, save_path)
+# 计算reward
 Reward_r, Reward_1, reward_feed_dict, trans_p = construct_reward()
 
 # 构造 Q，max Q，train op
