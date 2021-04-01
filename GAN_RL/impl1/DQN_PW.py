@@ -52,10 +52,11 @@ def construct_p():
     position_weight = [[] for _ in range(_weighted_dim)]
     for ii in range(_weighted_dim):
         position_weight[ii] = tf.get_variable('p_w'+str(ii), [_band_size], initializer=tf.constant_initializer(0.0001))
+        # np.arange(id_cnt) 当前用户上一时刻的点击的item的数量
         position_weight_values = tf.gather(position_weight[ii], history_order_indices)
         weighted_feature = tf.multiply(Xs_clicked, tf.reshape(position_weight_values, [-1, 1]))  # Xs_clicked: section by _f_dim
         click_history[ii] = tf.segment_sum(weighted_feature, history_user_indices)
-    user_states = tf.concat(click_history, axis=1)
+    user_states = tf.concat(click_history, axis=1)#假设4个user，则shape为 4*80
 
     disp_history_feature = tf.gather(user_states, disp_2d_split_user_ind)
 
@@ -80,7 +81,7 @@ def construct_p():
     exp_u_disp = tf.exp(u_disp)
     sum_exp_disp = tf.segment_sum(exp_u_disp, disp_2d_split_user_ind) + float(np.exp(_noclick_weight))#相当于公式中的正的部分
     scatter_sum_exp_disp = tf.gather(sum_exp_disp, disp_2d_split_user_ind)
-    p_disp = tf.div(exp_u_disp, scatter_sum_exp_disp)
+    p_disp = tf.div(exp_u_disp, scatter_sum_exp_disp)#权重
 
     agg_variables = tf.global_variables()
 
@@ -154,7 +155,8 @@ def construct_Q_and_loss():
         q_value_k[ii] = tf.reshape(q_value_k[ii], [-1])
 
         # loss
-        loss_k[ii] = tf.reduce_mean(tf.squared_difference(q_value_k[ii], y_label))
+        # y_label为reward
+        loss_k[ii] = tf.reduce_mean(tf.squared_difference(q_value_k[ii], y_label))#y_label就是env算出来的reward
         opt_k[ii] = tf.train.AdamOptimizer(learning_rate=_lr)
 
         train_variable_k[ii] = list(set(tf.trainable_variables()) - set(current_variables))
@@ -252,7 +254,7 @@ def form_init_Q_feed_dict(user_set, states_id):
             history_user[uu].append(uu)
         else:
             states_feature[uu] = deque(maxlen=_band_size)
-            for idd in states_id[uu]:
+            for idd in states_id[uu]:#用户选择的item
                 states_feature[uu].append(feature_space[user][idd])
 
             states_feature[uu] = list(states_feature[uu])
@@ -275,7 +277,8 @@ def test_during_training(current_best_reward):
 
     for t in range(_time_horizon):
         action_mean_tr, action_std_tr, action_user_indice_tr, action_tensor_indice_tr, action_shape_tr, \
-        action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, action_space_cnt_tr, action_id_tr = form_max_q_feed_dict(sim_vali_user, states)
+        action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, \
+        action_space_cnt_tr, action_id_tr = form_max_q_feed_dict(sim_vali_user, states)
 
         max_q_feed_dict[all_action_id] = action_id_tr
         max_q_feed_dict[all_action_user_indices] = action_user_indice_tr
@@ -559,7 +562,8 @@ def form_loss_feed_dict(user_set, states_id, action_id):
 
 #定义一些变量
 _f_dim, _k, iterations, _noclick_weight, _band_size, _weighted_dim, train_user, vali_user, test_user, feature_space, \
-_users_to_test, _time_horizon, num_test, sim_user_reward, user_avg_reward, click_rate, mean_user_avg_reward, mean_click_rate = initialize_environment(sys.argv)
+_users_to_test, _time_horizon, num_test, sim_user_reward, user_avg_reward, click_rate, \
+mean_user_avg_reward, mean_click_rate = initialize_environment(sys.argv)
 
 _E3_sd = 1e-3
 _candidate_sd = 1e-6
@@ -609,19 +613,23 @@ training_user_copy = np.array(training_user).tolist()
 states = [[] for _ in range(len(training_user))]
 
 data_size_init = len(training_user) * _time_horizon + 100
-data_collection = {'user': deque(maxlen=data_size_init), 'state': deque(maxlen=data_size_init), 'action': deque(maxlen=data_size_init), 'y': deque(maxlen=data_size_init)}
+data_collection = {'user': deque(maxlen=data_size_init), 'state': deque(maxlen=data_size_init),
+                   'action': deque(maxlen=data_size_init), 'y': deque(maxlen=data_size_init)}
 
-for t in range(_time_horizon):
+for t in range(_time_horizon):#100
     data_collection['state'].extend(states)
     data_collection['user'].extend(training_user)
     # prepare to feed max_Q
     states_tr, history_order_tr, history_user_tr = form_init_Q_feed_dict(training_user, states)
 
-    # 1. sample random action
+    # 1. sample random action，模仿推荐系统推荐的action
+    # feature_space 保存的是和用户相关的sku的特征:其实就是sku的embedding向量
     random_action = [[] for _ in range(len(training_user))]
     random_action_feature = []
+    # 给每个用户曝光10个item
     for u_i in range(len(training_user)):
         user_i = training_user[u_i]
+        #从用户曝光过的sku中随机选k个sku作为推荐,模型推荐引擎的选择
         random_action[u_i] = np.random.choice(list(set(np.arange(len(feature_space[user_i])))-set(states[u_i])), _k, replace=False).tolist()
         random_action_feature += [feature_space[user_i][jj] for jj in random_action[u_i]]
 
@@ -630,16 +638,19 @@ for t in range(_time_horizon):
 
     # 2. compute expected immediate reward
     disp_2d_split_user = np.kron(np.arange(len(training_user)), np.ones(_k))
+    # reward_feed_dict = {Xs_clicked: [], history_order_indices: [], history_user_indices: [], disp_2d_split_user_ind: [], disp_action_feature:[]}
     reward_feed_dict[Xs_clicked] = states_tr
-    reward_feed_dict[history_order_indices] = history_order_tr
+    reward_feed_dict[history_order_indices] = history_order_tr#相当于是用户的点击次数
     reward_feed_dict[history_user_indices] = history_user_tr
     reward_feed_dict[disp_2d_split_user_ind] = disp_2d_split_user
     reward_feed_dict[disp_action_feature] = best_action[1]
+    # 为exp操作前的reward*对应的权重
+    # Reward_r = tf.segment_sum(tf.multiply(u_disp, p_disp), disp_2d_split_user_ind)
     [best_action_reward, transition_p] = sess.run([Reward_r, trans_p], feed_dict=reward_feed_dict)
 
     # 4. save to memory
     y_value = best_action_reward
-    data_collection['y'].extend(y_value.tolist())
+    data_collection['y'].extend(y_value.tolist())#y存的是用户推荐引擎推荐的10个item，也即对用户曝光的10个item对应的reward
 
     # 5. sample new states
     remove_set = []
@@ -648,9 +659,12 @@ for t in range(_time_horizon):
             remove_set.append(j)
 
         disp_item = best_action[0][j]
+        #transition_p[j, :]得到的是每个用户对k个item的权重
         no_click = [max(1.0 - np.sum(transition_p[j, :]), 0.0)]
         prob = np.array(transition_p[j, :].tolist()+no_click)
+        #用户根据概率选action，此次曝光有可能选1个，有可能选n个,用户对此次曝光没兴趣，一个都没选的情况呢？
         prob = prob / float(prob.sum())
+        #模拟用户的选择
         rand_choice = np.random.choice(disp_item + [-100], 1, p=prob)
         if rand_choice[0] != -100:
             states[j] += rand_choice.tolist()
@@ -669,16 +683,21 @@ for n in range(batch_iterations):
     action_batch = [data_collection['action'][c] for c in batch_sample]
     y_batch = [data_collection['y'][c] for c in batch_sample]
 
-    action_ids_k_tr, action_space_tr, states_feature_tr, history_order_tr, history_user_tr, action_mean_tr, action_std_tr = form_loss_feed_dict(user_batch, states_batch, action_batch)
+    action_ids_k_tr, action_space_tr, states_feature_tr, history_order_tr, history_user_tr,\
+    action_mean_tr, action_std_tr = form_loss_feed_dict(user_batch, states_batch, action_batch)
 
+    # action_space_tr:action的特征,所有用户的feature_space的矩阵。
+    # action_space_mean:当前用户所有可选的action向量按axis=0的均值
     q_feed_dict[current_action_space] = action_space_tr
     q_feed_dict[action_space_mean] = action_mean_tr
     q_feed_dict[action_space_std] = action_std_tr
     q_feed_dict[Xs_clicked] = states_feature_tr
-    q_feed_dict[history_order_indices] = history_order_tr
-    q_feed_dict[history_user_indices] = history_user_tr
+    q_feed_dict[history_order_indices] = history_order_tr#当前用户点击的item的膈俞
+    q_feed_dict[history_user_indices] = history_user_tr#当前用户的uid
     q_feed_dict[y_label] = y_batch
 
+    # action_ids_k[jj].append(action_id[uu][jj] + len(action_space))
+    # 所有用户u当前的k个曝光sku+上一个用户相关的action的数量
     for ii in range(_k):
         q_feed_dict[action_k_id[ii]] = action_ids_k_tr[ii]
 
