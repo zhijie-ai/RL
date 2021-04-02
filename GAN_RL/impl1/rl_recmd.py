@@ -208,6 +208,7 @@ def sample_new_states_for_train(training_user, states, transition_p, reward_u, f
     remove_set = []
     sampled_reward = []
     for j in range(len(training_user)):
+        # 如果某个用户可选的action数量<某个阈值，则该用户不用再处理了
         if len(feature_space[training_user[j]]) - len(states[j]) <= _k+1:
             remove_set.append(j)
 
@@ -221,7 +222,7 @@ def sample_new_states_for_train(training_user, states, transition_p, reward_u, f
             states[j] += rand_choice.tolist()
             idx = disp_item.index(rand_choice[0])
             sampled_reward.append(reward_u[j][idx])
-        else:
+        else:# 如果什么也没选，则reward置零
             sampled_reward.append(0)
 
     previous_size = len(training_user)

@@ -56,11 +56,13 @@ def construct_p():
         position_weight_values = tf.gather(position_weight[ii], history_order_indices)
         weighted_feature = tf.multiply(Xs_clicked, tf.reshape(position_weight_values, [-1, 1]))  # Xs_clicked: section by _f_dim
         click_history[ii] = tf.segment_sum(weighted_feature, history_user_indices)
-    user_states = tf.concat(click_history, axis=1)#假设4个user，则shape为 4*80
+    user_states = tf.concat(click_history, axis=1)#假设4个user，则shape为 4*80#(4,4,20)
 
-    disp_history_feature = tf.gather(user_states, disp_2d_split_user_ind)
+    #disp_2d_split_user = np.kron(np.arange(len(training_user)), np.ones(_k))
+    disp_history_feature = tf.gather(user_states, disp_2d_split_user_ind)#(40*80)
 
     # (4) combine features
+    # disp_action_feature(40*20) 当前批次用户的所有展示的item，即曝光的item
     concat_disp_features = tf.reshape(tf.concat([disp_history_feature, disp_action_feature], axis=1), [-1, _f_dim * _weighted_dim + _f_dim])
 
     # (5) compute utility
@@ -142,7 +144,7 @@ def construct_Q_and_loss():
         # 注意：action_feature_list是一步步变大的，从length=1 到 length=_k
         action_feature_list.append(action_k_feature_gather[ii])
         # user states 定义在construct_p()里面
-        concate_input_k[ii] = tf.concat([user_states, action_states] + action_feature_list, axis=1)
+        concate_input_k[ii] = tf.concat([user_states, action_states,action_feature_list], axis=1)
         # 实际并没有进行reshape，这里只是为了明确dim，否则做dense layer的时候会报错。
         concate_input_k[ii] = tf.reshape(concate_input_k[ii], [-1, _weighted_dim * _f_dim + 2 * _f_dim + int(ii+1) * _f_dim])
 
@@ -177,19 +179,21 @@ def construct_max_Q():
     global all_action_user_indices, all_action_tensor_indices, all_action_tensor_shape, action_count, action_space_count, all_action_id
 
     all_action_user_indices = tf.placeholder(dtype=tf.int64, shape=[None])
+    #action_tensor_indice += map(lambda x: [uu, x], np.arange(action_cnt[uu]))
     all_action_tensor_indices = tf.placeholder(dtype=tf.int64, shape=[None, 2])
-    all_action_tensor_shape = tf.placeholder(dtype=tf.int64, shape=[2])
-    action_count = tf.placeholder(dtype=tf.int64, shape=[None])
-    action_space_count = tf.placeholder(dtype=tf.int64, shape=[None])
+    all_action_tensor_shape = tf.placeholder(dtype=tf.int64, shape=[2])#行为当前batch的用户数，列为当前batch的用户中剩余action最大的数
+    action_count = tf.placeholder(dtype=tf.int64, shape=[None])#
+    action_space_count = tf.placeholder(dtype=tf.int64, shape=[None])# 上一个用户相关的action的数目
 
 
     # online版本：建议直接把all_action_feature_gather作为placeholder，输入所有可以选的items的features
     all_action_id = tf.placeholder(dtype=tf.int64, shape=[None])
+    # current_action_space:action_space += feature_space[user]
     all_action_feature_gather = tf.gather(current_action_space, all_action_id)
 
-    user_states_scatter = tf.gather(user_states, all_action_user_indices)
+    user_states_scatter = tf.gather(user_states, all_action_user_indices)#None*20*4
     # online版本：建议：action states可以不需要
-    action_states_scatter = tf.gather(action_states, all_action_user_indices)
+    action_states_scatter = tf.gather(action_states, all_action_user_indices)#20*2维
 
     max_action_feature_list = []
     max_action_k = [[] for _ in range(_k)]
@@ -216,6 +220,7 @@ def construct_max_Q():
         # to_avoid_repeat_tensor是为了避免重复推荐一样的item。因为我们希望得到_k个不同的items。
         to_avoid_repeat_tensor += tf.one_hot(max_action_k[ii], tf.cast(all_action_tensor_shape[1], tf.int32), on_value=-1000000000.0, off_value=0.0)
         # 下面几行是把max_action_k[ii]变成真实的item id。这部分应该根据自己的实验数据格式来决定如何写。
+        # 截止到当前用户，之前用户所有的可选的action的总和。
         max_action_k[ii] = tf.add(max_action_k[ii], action_count)
         max_action_k[ii] = tf.gather(all_action_id, max_action_k[ii])
         max_action_feature_k[ii] = tf.gather(current_action_space, max_action_k[ii])
@@ -676,6 +681,7 @@ for t in range(_time_horizon):#100
 # START TRAINING for this batch of users
 num_samples = len(data_collection['user'])
 batch_iterations = int(np.ceil(num_samples * 5 / _training_batch_size))
+# data_collection相当于是从环境中收集到的数据
 for n in range(batch_iterations):
     batch_sample = np.random.choice(len(data_collection['user']), _training_batch_size, replace=False)
     states_batch = [data_collection['state'][c] for c in batch_sample]
@@ -688,12 +694,13 @@ for n in range(batch_iterations):
 
     # action_space_tr:action的特征,所有用户的feature_space的矩阵。
     # action_space_mean:当前用户所有可选的action向量按axis=0的均值
-    q_feed_dict[current_action_space] = action_space_tr
+    # 用户的可选动作action_candidate = np.array(list(set(np.arange(len(feature_space[user]))) - set(states_id[uu])))
+    q_feed_dict[current_action_space] = action_space_tr#已经不区分用户了，把所有用户的放到一个二维数组里去
     q_feed_dict[action_space_mean] = action_mean_tr
     q_feed_dict[action_space_std] = action_std_tr
     q_feed_dict[Xs_clicked] = states_feature_tr
-    q_feed_dict[history_order_indices] = history_order_tr#当前用户点击的item的膈俞
-    q_feed_dict[history_user_indices] = history_user_tr#当前用户的uid
+    q_feed_dict[history_order_indices] = history_order_tr#当前用户点击的item的个数[0,1,0,1,0,1...]
+    q_feed_dict[history_user_indices] = history_user_tr#当前用户的uid[0,0,1,1,2,2....]
     q_feed_dict[y_label] = y_batch
 
     # action_ids_k[jj].append(action_id[uu][jj] + len(action_space))
@@ -701,7 +708,7 @@ for n in range(batch_iterations):
     for ii in range(_k):
         q_feed_dict[action_k_id[ii]] = action_ids_k_tr[ii]
 
-    loss_val = sess.run(train_op_k+loss_k, feed_dict=q_feed_dict)
+    _,loss_val = sess.run([train_op_k,loss_k], feed_dict=q_feed_dict)
 
     if np.mod(n, 250) == 0:
         loss_val = list(loss_val[-_k:])
@@ -731,19 +738,35 @@ for itr in range(iterations):
         data_collection['user'].extend(training_user)
         # prepare to feed max_Q
         action_mean_tr, action_std_tr, action_user_indice_tr, action_tensor_indice_tr, action_shape_tr, \
-        action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, action_space_cnt_tr, action_id_tr = form_max_q_feed_dict(training_user, states)
+        action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, \
+        action_space_cnt_tr, action_id_tr = form_max_q_feed_dict(training_user, states)
 
+
+        #action_id_u = list(action_candidate + action_space_cnt[uu])
+        # action_id += action_id_u,为什么要加上action_space_cnt[uu]呢，因为要用gather获取向量。
         max_q_feed_dict[all_action_id] = action_id_tr
+        #action_user_indice_tr:[0,0,0,1,1,1....]用户
+        # action_cnt[uu] = len(action_id_u)
+        # action_user_indice += [uu for _ in range(action_cnt[uu])]
         max_q_feed_dict[all_action_user_indices] = action_user_indice_tr
+        # action_tensor_indice_tr:action_tensor_indice += map(lambda x: [uu, x], np.arange(action_cnt[uu]))
         max_q_feed_dict[all_action_tensor_indices] = action_tensor_indice_tr
+        #action_shape = [len(user_set), max_act_size],max_act_size:当前batch内用户最大的可选的action的数量
         max_q_feed_dict[all_action_tensor_shape] = action_shape_tr
+        #action_space += feature_space[user]
         max_q_feed_dict[current_action_space] = action_space_tr
+        # candidate_action_mean[uu] = np.mean(np.array(candidate_action), axis=0)
         max_q_feed_dict[action_space_mean] = action_mean_tr
         max_q_feed_dict[action_space_std] = action_std_tr
+        #states_tr 为所有用户点击过的item特征，不分用户[[],[],[]...]
         max_q_feed_dict[Xs_clicked] = states_tr
         max_q_feed_dict[history_order_indices] = history_order_tr
         max_q_feed_dict[history_user_indices] = history_user_tr
+        # action_cnt = np.cumsum(action_cnt)
+        # action_cnt = [0] + list(action_cnt[:-1]),当前用户之前的可选action总和
         max_q_feed_dict[action_count] = action_cnt_tr
+        # action_space_cnt[uu] = len(action_space),存储的上一个用户相关的action的数目
+        # action_space += feature_space[user]
         max_q_feed_dict[action_space_count] = action_space_cnt_tr
         # 1. find best recommend action
         best_action = sess.run([max_action, max_action_disp_features], feed_dict=max_q_feed_dict)
@@ -752,18 +775,26 @@ for itr in range(iterations):
         # 2. compute reward
         disp_2d_split_user = np.kron(np.arange(len(training_user)), np.ones(_k))
         reward_feed_dict[Xs_clicked] = states_tr
+        # id_cnt = len(states_feature[uu])
+        # history_order[uu] = np.arange(id_cnt, dtype=np.int64).tolist()
+        # list(chain.from_iterable(history_order))
         reward_feed_dict[history_order_indices] = history_order_tr
+        # history_user[uu] = list(uu * np.ones(id_cnt, dtype=np.int64))
+        # list(chain.from_iterable(history_user))
         reward_feed_dict[history_user_indices] = history_user_tr
         reward_feed_dict[disp_2d_split_user_ind] = disp_2d_split_user
         reward_feed_dict[disp_action_feature] = best_action[1]
         [reward_u, transition_p] = sess.run([u_disp, trans_p], feed_dict=reward_feed_dict)
         reward_u = np.reshape(reward_u, [-1, _k])
         # 3. sample new states
-        states, training_user, old_training_user, old__new_states, sampled_reward, remove_set = sample_new_states_for_train(training_user, states, transition_p, reward_u, feature_space, best_action[0], _k)
+        states, training_user, old_training_user, old__new_states, sampled_reward, remove_set = \
+            sample_new_states_for_train(training_user, states, transition_p, reward_u, feature_space, best_action[0], _k)
 
         # 4. compute one-step delayed reward
         action_mean_tr, action_std_tr, action_user_indice_tr, action_tensor_indice_tr, action_shape_tr, \
-        action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, action_space_cnt_tr, action_id_tr = form_max_q_feed_dict(old_training_user, old__new_states)
+        action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, action_space_cnt_tr, \
+        action_id_tr = form_max_q_feed_dict(old_training_user, old__new_states)
+
         max_q_feed_dict[all_action_id] = action_id_tr
         max_q_feed_dict[all_action_user_indices] = action_user_indice_tr
         max_q_feed_dict[all_action_tensor_indices] = action_tensor_indice_tr
@@ -774,6 +805,8 @@ for itr in range(iterations):
         max_q_feed_dict[Xs_clicked] = states_tr
         max_q_feed_dict[history_order_indices] = history_order_tr
         max_q_feed_dict[history_user_indices] = history_user_tr
+        # action_cnt = np.cumsum(action_cnt)
+        # action_cnt = [0] + list(action_cnt[:-1])
         max_q_feed_dict[action_count] = action_cnt_tr
         max_q_feed_dict[action_space_count] = action_space_cnt_tr
         max_q_val = sess.run(max_q_value, feed_dict=max_q_feed_dict)
@@ -794,8 +827,11 @@ for itr in range(iterations):
         action_batch = [data_collection['action'][c] for c in batch_sample]
         y_batch = [data_collection['y'][c] for c in batch_sample]
 
-        action_ids_k_tr, action_space_tr, states_feature_tr, history_order_tr, history_user_tr, action_mean_tr, action_std_tr = form_loss_feed_dict(user_batch, states_batch, action_batch)
+        #action_ids_k[jj].append(action_id[uu][jj] + len(action_space))
+        action_ids_k_tr, action_space_tr, states_feature_tr, history_order_tr, history_user_tr, action_mean_tr, \
+        action_std_tr = form_loss_feed_dict(user_batch, states_batch, action_batch)
 
+        #action_space += feature_space[user]
         q_feed_dict[current_action_space] = action_space_tr
         q_feed_dict[action_space_mean] = action_mean_tr
         q_feed_dict[action_space_std] = action_std_tr
