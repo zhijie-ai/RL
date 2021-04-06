@@ -191,7 +191,7 @@ def construct_max_Q():
     # current_action_space:action_space += feature_space[user]
     all_action_feature_gather = tf.gather(current_action_space, all_action_id)
 
-    user_states_scatter = tf.gather(user_states, all_action_user_indices)#None*20*4
+    user_states_scatter = tf.gather(user_states, all_action_user_indices)#80 dim all_action_user_indices，当前batch里面，每个用户的candicate的数量
     # online版本：建议：action states可以不需要
     action_states_scatter = tf.gather(action_states, all_action_user_indices)#20*2维
 
@@ -220,7 +220,8 @@ def construct_max_Q():
         # to_avoid_repeat_tensor是为了避免重复推荐一样的item。因为我们希望得到_k个不同的items。
         to_avoid_repeat_tensor += tf.one_hot(max_action_k[ii], tf.cast(all_action_tensor_shape[1], tf.int32), on_value=-1000000000.0, off_value=0.0)
         # 下面几行是把max_action_k[ii]变成真实的item id。这部分应该根据自己的实验数据格式来决定如何写。
-        # 截止到当前用户，之前用户所有的可选的action的总和。
+        # 截止到当前用户，之前用户所有的可选的action的总和。不包括当前用户的cnt
+        # action_count
         max_action_k[ii] = tf.add(max_action_k[ii], action_count)
         max_action_k[ii] = tf.gather(all_action_id, max_action_k[ii])
         max_action_feature_k[ii] = tf.gather(current_action_space, max_action_k[ii])
@@ -665,6 +666,8 @@ for t in range(_time_horizon):#100
 
         disp_item = best_action[0][j]
         #transition_p[j, :]得到的是每个用户对k个item的权重
+        # 如果np.sum(transition_p[j, :])为1，则说明当前用户一定是选了一个。注意力被平均的分配到了10个item身上。
+        # 如果和不为1，则说明当前用户对此时的10个sku并不感兴趣。
         no_click = [max(1.0 - np.sum(transition_p[j, :]), 0.0)]
         prob = np.array(transition_p[j, :].tolist()+no_click)
         #用户根据概率选action，此次曝光有可能选1个，有可能选n个,用户对此次曝光没兴趣，一个都没选的情况呢？
@@ -760,6 +763,8 @@ for itr in range(iterations):
         max_q_feed_dict[action_space_std] = action_std_tr
         #states_tr 为所有用户点击过的item特征，不分用户[[],[],[]...]
         max_q_feed_dict[Xs_clicked] = states_tr
+        # history_order[uu] = np.arange(id_cnt, dtype=np.int64).tolist()
+        # history_user[uu] = list(uu * np.ones(id_cnt, dtype=np.int64))
         max_q_feed_dict[history_order_indices] = history_order_tr
         max_q_feed_dict[history_user_indices] = history_user_tr
         # action_cnt = np.cumsum(action_cnt)
@@ -795,6 +800,9 @@ for itr in range(iterations):
         action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, action_space_cnt_tr, \
         action_id_tr = form_max_q_feed_dict(old_training_user, old__new_states)
 
+
+        # action_id_u = list(action_candidate + action_space_cnt[uu])
+        # action_id += action_id_u
         max_q_feed_dict[all_action_id] = action_id_tr
         max_q_feed_dict[all_action_user_indices] = action_user_indice_tr
         max_q_feed_dict[all_action_tensor_indices] = action_tensor_indice_tr

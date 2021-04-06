@@ -30,6 +30,36 @@ feature记录了每个用户所有展示的item的特征，
 训练集的数据是在一个时间周期内(比如一个月)。把每个用户的展示按时间排序，构成一个长长的展示列表
 
 环境的使用:
-1. 在真实环境中使用时，应该是拿用户直接跟模型学到的环境交互。然后用交互的数据学习一个策略。而本代码采用的是offline的方式，假设目标策略是随机策略，
+在真实环境中使用时，应该是拿用户直接跟模型学到的环境交互。然后用交互的数据学习一个策略。而本代码采用的是offline的方式，假设目标策略是随机策略，
     用随机策略产生曝光的数据，然后根据环境得到用户可能的选择，得到(s,a),有了训练集后，就可以根据论文中的方法学到一个PI，理论上，这个学到的PI应该和
     随机策略很像，因为训练集是随机策略产生的。
+
+环境的使用:
+1. 利用随机策略与环境交互得到一系列训练集 100个time_horizon
+2. 计算该action的reward得到y
+3. 根据计算的reward预测用户对该次曝光的item的点击情况并更新state，即得到了s,a,r,s_
+    [best_action_reward, transition_p] = sess.run([Reward_r, trans_p], feed_dict=reward_feed_dict)
+
+策略PI的训练
+1. 拿到从环境收集到的数据data_collection 100 time_horizon,虽然有100个time_horizon，但是此时是不用区分的，因为t时刻已经包含了前面时刻的信息了
+2. 每个k利用环境的reward与当前计算出来的reward使用squared_difference训练
+    loss_k[ii] = tf.reduce_mean(tf.squared_difference(q_value_k[ii], y_label))#y_label就是env算出来的reward
+    opt_k[ii] = tf.train.AdamOptimizer(learning_rate=_lr)
+3. 利用cascade dqn方式得到最优action
+    max_action_k[ii] = tf.argmax(q1_tensor, axis=1)
+4. 得到最优的action，即向用户曝光的action后，
+    best_action = sess.run([max_action, max_action_disp_features], feed_dict=max_q_feed_dict)
+    根据最优的action计算reward并预测用户对该10个item的点击情况
+    [reward_u, transition_p] = sess.run([u_disp, trans_p], feed_dict=reward_feed_dict)
+5. 重新计算用户的state，并过滤一些已经不满足要求的用户,得到state_
+    sample_new_states_for_train
+6. 根据新的state即state_计算reward
+    r+gamma*Q(s')
+    y_value = sampled_reward + _gamma * max_q_val
+7. 根据mse来训练策略pi
+
+为什么不用全局id了，猜想是因为如果总量SKU数量太大的话，argmax的计算量就会很大。但是如果只计算用户相关的sku，计算量就会少很多
+argmax只计算当前batch中与用户相关的最大的action的数量
+环境的训练时通过gan的方式来训练的，策略的训练时通过减少和reward的平方的差异为目标来优化的。
+
+
