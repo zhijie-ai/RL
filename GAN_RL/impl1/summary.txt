@@ -36,20 +36,26 @@ feature记录了每个用户所有展示的item的特征，
 
 环境的使用:
 1. 利用随机策略与环境交互得到一系列训练集 100个time_horizon
-2. 计算该action的reward得到y
-3. 根据计算的reward预测用户对该次曝光的item的点击情况并更新state，即得到了s,a,r,s_
+2. 计算该用户的reward得到y，同时，计算该用户对此次曝光的item中各个item的概率。
+3. 根据计算的概率预测用户对该次曝光的item的点击情况并更新state，即得到了s,a,r,s_,r为每个用户对当前10个item的reward的加权和
     [best_action_reward, transition_p] = sess.run([Reward_r, trans_p], feed_dict=reward_feed_dict)
+
 
 策略PI的训练
 1. 拿到从环境收集到的数据data_collection 100 time_horizon,虽然有100个time_horizon，但是此时是不用区分的，因为t时刻已经包含了前面时刻的信息了
 2. 每个k利用环境的reward与当前计算出来的reward使用squared_difference训练
     loss_k[ii] = tf.reduce_mean(tf.squared_difference(q_value_k[ii], y_label))#y_label就是env算出来的reward
     opt_k[ii] = tf.train.AdamOptimizer(learning_rate=_lr)
+    注意:训练的时候拟合的是用户的reward,只需要让每个用户拟合各自的reward即可。
+训练的时候使用的是1000个用户，100个time_horizon,当前s状态下执行动作action后得到reward，由于是交互，得到reward后会返回一个新的状态s'
+直到迭代100个time stamp。回想一下，平时在使用gym的env环境时也是这个流程，不停的与环境交互得到r和s'，然后将数据放入replay_buffer
+
+TEST
 3. 利用cascade dqn方式得到最优action
     max_action_k[ii] = tf.argmax(q1_tensor, axis=1)
 4. 得到最优的action，即向用户曝光的action后，
     best_action = sess.run([max_action, max_action_disp_features], feed_dict=max_q_feed_dict)
-    根据最优的action计算reward并预测用户对该10个item的点击情况
+    根据最优的action计算没一个item的reward并预测用户对该10个item的点击情况
     [reward_u, transition_p] = sess.run([u_disp, trans_p], feed_dict=reward_feed_dict)
 5. 重新计算用户的state，并过滤一些已经不满足要求的用户,得到state_
     sample_new_states_for_train
@@ -57,6 +63,8 @@ feature记录了每个用户所有展示的item的特征，
     r+gamma*Q(s')
     y_value = sampled_reward + _gamma * max_q_val
 7. 根据mse来训练策略pi
+测试时，一般是一个用户一个用户测试，其实也可以是多个用户一起来测试，比如100个用户，但是不能再像训练前收集数据那样一下子执行100个time stamp了，
+    我们要根据s,a得到reward和s',如果和train一样放到data_collection,虽然reward知道，但是s'却不知道了。
 
 为什么不用全局id了，猜想是因为如果总量SKU数量太大的话，argmax的计算量就会很大。但是如果只计算用户相关的sku，计算量就会少很多
 argmax只计算当前batch中与用户相关的最大的action的数量

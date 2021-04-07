@@ -158,7 +158,7 @@ def construct_Q_and_loss():
 
         # loss
         # y_label为reward
-        loss_k[ii] = tf.reduce_mean(tf.squared_difference(q_value_k[ii], y_label))#y_label就是env算出来的reward
+        loss_k[ii] = tf.reduce_mean(tf.squared_difference(q_value_k[ii], y_label))#y_label就是env算出来的reward,每个用户的reward，segment_sum操作了
         opt_k[ii] = tf.train.AdamOptimizer(learning_rate=_lr)
 
         train_variable_k[ii] = list(set(tf.trainable_variables()) - set(current_variables))
@@ -656,7 +656,7 @@ for t in range(_time_horizon):#100
 
     # 4. save to memory
     y_value = best_action_reward
-    data_collection['y'].extend(y_value.tolist())#y存的是用户推荐引擎推荐的10个item，也即对用户曝光的10个item对应的reward
+    data_collection['y'].extend(y_value.tolist())#y存的是用户推荐引擎推荐的10个item，也即对用户曝光的10个item总的reward
 
     # 5. sample new states
     remove_set = []
@@ -817,7 +817,8 @@ for itr in range(iterations):
         # action_cnt = [0] + list(action_cnt[:-1])
         max_q_feed_dict[action_count] = action_cnt_tr
         max_q_feed_dict[action_space_count] = action_space_cnt_tr
-        max_q_val = sess.run(max_q_value, feed_dict=max_q_feed_dict)
+        #max_q_value = tf.segment_max(q_value_all, all_action_user_indices)
+        max_q_val = sess.run(max_q_value, feed_dict=max_q_feed_dict)#每个用户各自最大的q_value,在剩余可选的action中
 
         # 4. save to memory
         # if _is_finite:
@@ -851,7 +852,7 @@ for itr in range(iterations):
         for ii in range(_k):
             q_feed_dict[action_k_id[ii]] = action_ids_k_tr[ii]
 
-        loss_val = sess.run(train_op_k+loss_k, feed_dict=q_feed_dict)
+        _,loss_val = sess.run([train_op_k,loss_k], feed_dict=q_feed_dict)
         loss_val = list(loss_val[-_k:])
 
         if np.mod(n, 50) == 0:
