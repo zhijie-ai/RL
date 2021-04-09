@@ -70,4 +70,6 @@ TEST
 argmax只计算当前batch中与用户相关的最大的action的数量
 环境的训练时通过gan的方式来训练的，策略的训练时通过减少和reward的平方的差异为目标来优化的。
 
+根据DQN的训练思路，环境会根据当前的state执行从agent中选出的action，转换到新的状态state'，并返回reward，
+
 

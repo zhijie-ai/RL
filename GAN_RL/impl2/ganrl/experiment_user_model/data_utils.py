@@ -187,7 +187,7 @@ class Dataset(object):
                    disp_current_feature_x, sec_cnt_x, tril_indice, tril_value_indice, \
                    disp_2d_split_sec, news_cnt_short_x, click_sub_index_2d, feature_clicked_x
 
-        else:
+        else:# LSTM
             news_cnt_short_x = 0
             u_t_dispid = []
             u_t_dispid_split_ut = []
