@@ -38,13 +38,17 @@ class Dataset():
             flag = np.ones(len(ser))#flag=0丢弃
             tmp = ser.tolist()[1:]+[0]
             delta = datetime.timedelta(minutes=2)
+            ser = ser+delta
             if len(ser) == 1:
                 return 1
+
+            flag = (ser[:-1]-ser[1:]).tolist()+[0]
+            flag = -np.sign(flag)#大于等于0保留
 
             for ind,(t,t_next) in enumerate(zip(ser,tmp)):
                 if ind==len(tmp)-1:
                     break
-                t+delta<=t_next
+                t<=t_next
                 flag[ind+1]=0
 
             return flag
