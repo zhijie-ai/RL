@@ -16,15 +16,24 @@ from GAN_RL.yjp.code.options import get_options
 from utils.yjp_decorator import cost_time_def
 from sklearn.model_selection import train_test_split
 import pickle
+from collections import defaultdict
 
 
 class Dataset():
     def __init__(self,args):
         self.data_click = pd.read_csv(args.click_path)
         self.data_exposure = pd.read_csv(args.exposure_path)
+        print('data shape:',self.data_click.shape,self.data_exposure.shape)
         self.model_type = args.user_model
         self.band_size = args.pw_band_size
         self.data_folder = args.data_folder
+        self.embedding_path = args.embedding_path
+        self.random_seed = args.random_seed
+
+        np.random.seed(self.random_seed)
+
+        self.gen_embedding()
+
 
 
     @cost_time_def
@@ -102,21 +111,25 @@ class Dataset():
         data = data.sort_values(by=['user_id','time'])
         return data
 
-
-
+    @cost_time_def
     def preprocess_data(self):
         click = self.filter_(self.data_click,min_count=7,max_count=20)
         exposure = self.filter_(self.data_exposure,min_count=7,max_count=200)
         click['is_click'] = 1
         exposure['is_click']=0
 
+        # 过滤click 不在exposure中的数据
+        click = pd.merge(click,exposure[['user_id','sku_id']],on=['user_id','sku_id'])
+
         behavior_data = pd.concat([click,exposure])
+        print('final shape:',click.shape,exposure.shape,'behavior_data.shape',behavior_data.shape)
 
         # 切分数据
         behavior_data = self.split_dataset(behavior_data)
 
         sizes = behavior_data.nunique()
         size_user = sizes['user_id']
+        size_item = sizes['sku_id']
 
         print(sizes,behavior_data.head())
         data_behavior = [[] for _ in range(size_user)]
@@ -154,13 +167,456 @@ class Dataset():
         pickle.dump(train_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(vali_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(test_user, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(size_user, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(size_item, file, protocol=pickle.HIGHEST_PROTOCOL)
         file.close()
+
+
+    @cost_time_def
+    def gen_embedding(self,d_str='20210412'):
+        if d_str is None:
+            d_str = datetime.datetime.strftime('%Y%m%d')
+        path = '/data1/ai-recall/bpr/model/{}/'.format(d_str)
+        sku_biases = pickle.load(open(path+'sku_biases.pickle','rb'))
+        sku_embeddings= pickle.load(open(path+'sku_embeddings.pickle','rb'))
+        user_biases= pickle.load(open(path+'user_biases.pickle','rb'))
+        user_embeddings= pickle.load(open(path+'user_embeddings.pickle','rb'))
+
+        id2key_user= pickle.load(open(path+'id2key_user.pickle','rb'))
+        id2key_sku= pickle.load(open(path+'id2key_sku.pickle','rb'))
+        id2key_user = {k:int(v) for k,v in id2key_user.items()}
+        id2key_sku = {k:int(v) for k,v in id2key_sku.items()}
+
+
+        sku_emb = np.concatenate((sku_embeddings, sku_biases.reshape(-1, 1)), axis=1)
+        user_emb =np.concatenate((user_embeddings,user_biases.reshape(-1, 1)), axis=1)
+        sku_emb = (sku_emb.T/np.linalg.norm(sku_emb,axis=1)).T
+        user_emb = (user_emb.T/np.linalg.norm(user_emb,axis=1)).T
+
+        filename = self.data_folder+'embedding.pkl'
+        file = open(filename, 'wb')
+        pickle.dump(sku_emb, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(user_emb, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(id2key_user, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(id2key_sku, file, protocol=pickle.HIGHEST_PROTOCOL)
+        file.close()
+
+    @cost_time_def
+    def read_data(self):
+        with open(self.data_folder+'data_behavior.pkl','rb') as f:
+            self.data_behavior = pickle.load(f)
+        filename = self.data_folder+'user-split.pkl'
+        file = open(filename, 'rb')
+        self.train_user = pickle.load(file)
+        self.vali_user = pickle.load(file)
+        self.test_user = pickle.load(file)
+        self.size_user = pickle.load(file)
+        self.size_item = pickle.load(file)
+        file.close()
+
+        filename =self.data_folder+'embedding.pkl'
+        file = open(filename, 'rb')
+        self.sku_embedding = pickle.load(file)
+        self.user_embedding = pickle.load(file)
+        self.id2key_user = pickle.load(file)
+        self.id2key_sku = pickle.load(file)
+
+        self.sku_emb_dict = {self.id2key_sku.get(ind,'UNK'):emb for ind,emb in enumerate(self.sku_embedding)}
+        self.user_emb_dict = {self.id2key_user.get(ind,'UNK'):emb for ind,emb in enumerate(self.user_embedding)}
+        file.close()
+
+        self.f_dim = self.sku_embedding.shape[1]
+        self.random_emb = np.random.randn(self.f_dim)
+
+    def data_process_for_placeholder(self,user_set):
+        if self.model_type=='PW':
+            sec_cnt_x = 0
+            news_cnt_short_x=0
+            new_cnt_x=0
+            click_2d_x=[]
+            disp_2d_x=[]
+
+            tril_indice = []
+            tril_value_indice=[]
+
+            disp_2d_split_sec=[]
+            feature_clicked_x=[]
+
+            disp_current_feature_x=[]
+            click_sub_index_2d=[]
+
+            for u in user_set:
+                t_indice = []
+
+                for kk in range(min(self.band_size-1,self.data_time[u]-1)):
+                    t_indice += map(lambda x:[x+kk+1,x+sec_cnt_x],np.arange(self.data_time[u]-(kk+1)))
+
+                tril_indice+= t_indice
+                tril_value_indice += map(lambda x:(x[0]-x[1]-1),t_indice)
+
+                click_2d_tmp = map(lambda x:[x[0]+sec_cnt_x,x[1]],self.data_click[u])
+                click_2d_tmp = list(click_2d_tmp)
+                click_2d_x += click_2d_tmp
+
+                disp_2d_tmp = map(lambda x:[x[0]+sec_cnt_x,x[1]],self.data_disp[u])
+                disp_2d_tmp = list(disp_2d_tmp)
+
+                click_sub_index_tmp = map(lambda x:disp_2d_tmp.index(x),click_2d_tmp)
+                click_sub_index_tmp = list(click_sub_index_tmp)
+                click_sub_index_2d +=map(lambda x:x+len(disp_2d_x),click_sub_index_tmp)
+                disp_2d_x += disp_2d_tmp
+                disp_2d_split_sec += map(lambda x:x[0]+sec_cnt_x,self.data_disp[u])
+
+                sec_cnt_x +=self.data_time[u]
+                news_cnt_short_x = max(news_cnt_short_x,self.data_news_cnt[u])
+                new_cnt_x += self.data_news_cnt[u]
+                disp_current_feature_x += map(lambda x:self.feature[u][x],[idd[1] for idd in self.data_disp[u]])
+                feature_clicked_x += self.feature_click[u]
+
+
+            out={}
+            out['click_2d_x']=click_2d_x
+            out['disp_2d_x'] = disp_2d_x
+            out['disp_current_feature_x'] = disp_current_feature_x
+            out['sec_cnt_x'] = sec_cnt_x
+            out['tril_indice'] = tril_indice
+            out['tril_value_indice'] = tril_value_indice
+            out['disp_2d_split_sec'] = disp_2d_split_sec
+            out['news_cnt_short_x'] = news_cnt_short_x
+            out['click_sub_index_2d'] = click_sub_index_2d
+            out['feature_clicked_x'] = feature_clicked_x
+            return out
+
+        else:
+            news_cnt_short_x=0
+            u_t_dispid = []
+            u_t_dispid_split_ut = []
+            u_t_dispid_feature = []
+
+            u_t_clickid = []
+
+            size_user = len(user_set)
+            max_time = max([self.data_time[u] for u in user_set])
+
+            click_sub_index = []
+
+            user_time_dense = np.zeros([size_user,max_time],dtype=np.float32)
+            click_feature = np.zeros([max_time,size_user,self.f_dim])
+
+            for u_idx in range(size_user):
+                u = user_set[u_idx]
+
+                u_t_clickid_tmp = []
+                u_t_dispid_tmp = []
+
+                for x in self.data_click[u]:
+                    t,click_id=x
+                    click_feature[t][u_idx] = self.feature[u][click_id]
+                    u_t_clickid_tmp.append([u_idx,t,click_id])
+                    user_time_dense[u_idx,t]=1.0
+
+                u_t_clickid = u_t_clickid+u_t_clickid_tmp
+
+                for x in self.data_disp[u]:
+                    t,disp_id = x
+                    u_t_dispid_tmp.append([u_idx,t,disp_id])
+                    u_t_dispid_split_ut.append([u_idx,t])
+                    u_t_dispid_feature.append(self.feature[u][disp_id])
+
+                click_sub_index_tmp = map(lambda x:u_t_dispid_tmp.index(x),u_t_clickid_tmp)
+                click_sub_index += map(lambda x:x+len(u_t_dispid),click_sub_index_tmp)
+
+                u_t_dispid = u_t_dispid+ u_t_dispid_tmp
+                news_cnt_short_x = max(news_cnt_short_x,self.data_news_cnt[u])
+
+            if self.model_type !='LSTM':
+                print('model type not supported.using LSTM')
+
+            out={}
+            out['size_user']=size_user
+            out['max_time']= max_time
+            out['news_cnt_short_x'] = news_cnt_short_x
+            out['u_t_dispid'] = u_t_dispid
+            out['u_t_dispid_split_ut'] = u_t_dispid_split_ut
+            out['u_t_dispid_feature'] = np.array(u_t_dispid_feature)
+            out['click_feature'] = click_feature
+            out['click_sub_index'] = click_sub_index
+            out['u_t_clickid'] = u_t_clickid
+            out['user_time_dense'] = user_time_dense
+            return out
+
+
+    def data_process_for_placeholder_L2(self,user_set):
+        news_cnt_short_x=0
+        u_t_dispid=[]
+        u_t_dispid_split_ut=[]
+        u_t_dispid_feature=[]
+
+        u_t_clickid=[]
+
+        size_user=len(user_set)
+
+        click_sub_index=[]
+
+        max_time = max([self.data_time[u] for u in user_set])
+
+        user_time_dense = np.zeros([size_user,max_time],dtype=np.float32)
+        click_feature=np.zeros([max_time,size_user,self.f_dim])
+
+        for u_idx in range(size_user):
+            u=user_set[u_idx]
+
+            #其实可以不用采用这个相对的位置。用原始的数据。原始的id就是每个用户各自的相对序号的id。这里再次采用了每次点击对应的曝光的sku相对
+            #   此次点击再做了一个相对位置的处理
+            item_cnt = [{} for _ in range(self.data_time[u])]
+
+            u_t_clickid_tmp=[]
+            u_t_dispid_tmp=[]
+            for x in self.data_disp[u]:
+                t,disp_id=x
+                u_t_dispid_split_ut.append([u_idx,t])
+                u_t_dispid_feature.append(self.feature[u][disp_id])
+                if disp_id not in item_cnt[t]:
+                    item_cnt[t][disp_id]=len(item_cnt[t])
+                u_t_dispid_tmp.append([u_idx,t,item_cnt[t][disp_id]])
+
+            for x in self.data_click[u]:
+                t,click_id=x
+                click_feature[t][u_idx]=self.feature[u][click_id]
+                u_t_clickid_tmp.append([u_idx,t,item_cnt[t][click_id]])
+                user_time_dense[u_idx,t]=1.0
+
+            u_t_clickid = u_t_clickid+u_t_clickid_tmp
+
+            click_sub_index_tmp = map(lambda x:u_t_dispid_tmp.index(x),u_t_clickid_tmp)
+            click_sub_index += map(lambda x:x+len(u_t_dispid),click_sub_index_tmp)
+
+            u_t_dispid = u_t_dispid+u_t_dispid_tmp
+            # news_cnt_short_x = max(news_cnt_short_x,data_news_cnt[u])
+            news_cnt_short_x = self.max_disp_size
+
+        out={}
+
+        out['size_user']=size_user
+        out['max_time']=max_time
+        out['news_cnt_short_x']=news_cnt_short_x
+        out['u_t_dispid']=u_t_dispid
+        out['u_t_disp_split_ut']=u_t_dispid_split_ut
+        out['u_t_dispid_feature']=np.array(u_t_dispid_feature)
+        out['click_feature']=click_feature
+        out['click_sub_index']=click_sub_index
+        out['u_t_clickid']=u_t_clickid
+        out['user_time_dense']=user_time_dense
+        return out
+
+
+    @cost_time_def
+    def format_data(self):
+        print('CCC',self.size_user)
+        k_max = max([len(d_b[1]) for d_b in self.data_behavior])
+
+        # self.data_click = [[] for _ in range(self.size_user)]
+        # self.data_disp = [[] for _ in range(self.size_user)]
+        # self.data_time = np.zeros(self.size_user,dtype=np.int)
+        # self.data_news_cnt = [[] for _ in range(self.size_user)]
+        # self.feature = [[] for _ in range(self.size_user)]
+        # self.feature_click = [[] for _ in range(self.size_user)]
+
+        self.data_click = defaultdict(list)
+        self.data_disp = defaultdict(list)
+        self.data_time = defaultdict(list)
+        self.data_news_cnt = defaultdict(list)
+        self.feature = defaultdict(list)
+        self.feature_click = defaultdict(list)
+
+        for ind in range(self.size_user):
+            u = self.data_behavior[ind][0]
+            click_t=len(self.data_behavior[ind][2])
+            self.data_time[u]=click_t
+
+            news_dict = {}
+            self.feature_click[u] = np.zeros([click_t,self.f_dim])
+            click_t = 0
+
+            disp_list = self.data_behavior[ind][1]
+            pick_list = self.data_behavior[ind][2]
+
+            for id in disp_list:
+                if id not in news_dict:
+                    news_dict[id] = len(news_dict)
+
+            for id in pick_list:
+                self.data_click[u].append([click_t,news_dict[id]])
+                self.feature_click[u][click_t] = self.sku_emb_dict.get(id,self.random_emb)
+
+                for idd in disp_list:
+                    self.data_disp[u].append([click_t,news_dict[idd]])
+
+                click_t += 1
+
+            self.data_news_cnt[u]=len(news_dict)
+
+            self.feature[u]=np.zeros([self.data_news_cnt[u],self.f_dim])
+
+            for id in news_dict:
+                self.feature[u][news_dict[id]]=self.sku_emb_dict.get(id,self.random_emb)
+
+            self.feature[u]=self.feature[u].tolist()
+            self.feature_click[u] = self.feature_click[u].tolist()
+        self.max_disp_size = k_max
+        print(self.data_click.keys())
+
+    def prepare_validation_data_L2(self,num_sets,v_user):
+        vali_thread_u = [[] for _ in range(num_sets)]
+        size_user_v = [[] for _ in range(num_sets)]
+        max_time_v = [[] for _ in range(num_sets)]
+        news_cnt_short_v = [[] for _ in range(num_sets)]
+        u_t_dispid_v = [[] for _ in range(num_sets)]
+        u_t_dispid_split_ut_v = [[] for _ in range(num_sets)]
+        u_t_dispid_feature_v = [[] for _ in range(num_sets)]
+        click_feature_v = [[] for _ in range(num_sets)]
+        click_sub_index_v = [[] for _ in range(num_sets)]
+        u_t_clickid_v = [[] for _ in range(num_sets)]
+        ut_dense_v = [[] for _ in range(num_sets)]
+        for ii in range(len(v_user)):
+            vali_thread_u[ii%num_sets].append(v_user[ii])
+
+        for ii in range(num_sets):
+            out = self.data_process_for_placeholder_L2(vali_thread_u[ii])
+            size_user_v[ii],max_time_v[ii],news_cnt_short_v[ii],u_t_dispid_v[ii],\
+            u_t_dispid_split_ut_v[ii],u_t_dispid_feature_v[ii],click_feature_v[ii],\
+            click_sub_index_v[ii],u_t_clickid_v[ii],ut_dense_v[ii] = out['size_user'],\
+                                                                     out['max_time'], \
+                                                                     out['news_cnt_short_x'], \
+                                                                     out['u_t_dispid'], \
+                                                                     out['u_t_dispid_split_ut'], \
+                                                                     out['u_t_dispid_feature'], \
+                                                                     out['click_feature'], \
+                                                                     out['click_sub_index'], \
+                                                                     out['u_t_clickid'], \
+                                                                     out['user_time_dense']
+
+        out2={}
+        out2['vali_thread_u']=vali_thread_u
+        out2['size_user_v']=size_user_v
+        out2['max_time_v']=max_time_v
+        out2['news_cnt_short_v'] =news_cnt_short_v
+        out2['u_t_dispid_v'] =u_t_dispid_v
+        out2['u_t_dispid_split_ut_v']=u_t_dispid_split_ut_v
+        out2['u_t_dispid_feature_v']=u_t_dispid_feature_v
+        out2['click_feature_v']=click_feature_v
+        out2['click_sub_index_v']=click_sub_index_v
+        out2['u_t_clickid_v']=u_t_clickid_v
+        out2['ut_dense_v']=ut_dense_v
+
+        return out2
+
+    def prepare_validation_data(self,num_sets,v_user):
+        if self.model_type == 'PW':
+            vali_thread_u = [[] for _ in range(num_sets)]
+            click_2d_v = [[] for _ in range(num_sets)]
+            disp_2d_v = [[] for _ in range(num_sets)]
+            feature_v = [[] for _ in range(num_sets)]
+            sec_cnt_v = [[] for _ in range(num_sets)]
+            tril_ind_v = [[] for _ in range(num_sets)]
+            tril_value_ind_v = [[] for _ in range(num_sets)]
+            disp_2d_split_sec_v = [[] for _ in range(num_sets)]
+            feature_clicked_v = [[] for _ in range(num_sets)]
+            news_cnt_short_v = [[] for _ in range(num_sets)]
+            click_sub_index_2d_v = [[] for _ in range(num_sets)]
+
+            for ii in range(len(v_user)):
+                vali_thread_u[ii%num_sets].append(v_user[ii])
+
+            for ii in range(num_sets):
+                out = self.data_process_for_placeholder(vali_thread_u[ii])
+
+                click_2d_v[ii],disp_2d_v[ii],feature_v[ii],sec_cnt_v[ii],tril_ind_v[ii],tril_value_ind_v[ii],\
+                disp_2d_split_sec_v[ii],news_cnt_short_v[ii],click_sub_index_2d_v[ii],feature_clicked_v[ii] = out['click_2d_x'], \
+                                                                                                           out['disp_2d_x'], \
+                                                                                                           out['disp_current_feature_x'], \
+                                                                                                           out['sec_cnt_x'], \
+                                                                                                           out['tril_indice'], \
+                                                                                                           out['tril_value_indice'], \
+                                                                                                           out['disp_2d_split_sec'], \
+                                                                                                           out['news_cnt_short_x'], \
+                                                                                                           out['click_sub_index_2d'], \
+                                                                                                           out['feature_clicked_x']
+            out2={}
+            out2['vali_thread_u']=vali_thread_u
+            out2['click_2d_v']=click_2d_v
+            out2['disp_2d_v']=disp_2d_v
+            out2['feature_v']=feature_v
+            out2['sec_cnt_v']=sec_cnt_v
+            out2['tril_ind_v']=tril_ind_v
+            out2['tril_value_ind_v']=tril_value_ind_v
+            out2['disp_2d_split_sec_v']=disp_2d_split_sec_v
+            out2['news_cnt_short_v']=news_cnt_short_v
+            out2['click_sub_index_2d_v']=click_sub_index_2d_v
+            out2['feature_clicked_v']=feature_clicked_v
+
+            return out2
+        else:
+            if self.model_type !='LSTM':
+                print('model type not supported.using LSTM')
+
+            vali_thread_u = [[] for _ in range(num_sets)]
+            size_user_v = [[] for _ in range(num_sets)]
+            max_time_v = [[] for _ in range(num_sets)]
+            news_cnt_short_v = [[] for _ in range(num_sets)]
+            u_t_dispid_v = [[] for _ in range(num_sets)]
+            u_t_dispid_split_ut_v = [[] for _ in range(num_sets)]
+            u_t_dispid_feature_v = [[] for _ in range(num_sets)]
+            click_feature_v = [[] for _ in range(num_sets)]
+            click_sub_index_v = [[] for _ in range(num_sets)]
+            u_t_clickid_v = [[] for _ in range(num_sets)]
+            ut_dense_v = [[] for _ in range(num_sets)]
+            for ii in range(len(v_user)):
+                vali_thread_u[ii%num_sets].append(v_user[ii])
+
+            for ii in range(num_sets):
+                out = self.data_process_for_placeholder(vali_thread_u[ii])
+
+                size_user_v[ii],max_time_v[ii],news_cnt_short_v[ii],u_t_dispid_v[ii],\
+                u_t_dispid_split_ut_v[ii],u_t_dispid_feature_v[ii],click_feature_v[ii],\
+                click_sub_index_v[ii],u_t_clickid_v[ii],ut_dense_v[ii] = out['size_user'], \
+                                                                         out['max_time'], \
+                                                                         out['news_cnt_short_x'], \
+                                                                         out['u_t_dispid'], \
+                                                                         out['u_t_dispid_split_ut'], \
+                                                                         out['u_t_dispid_feature'], \
+                                                                         out['click_feature'], \
+                                                                         out['click_sub_index'], \
+                                                                         out['u_t_clickid'], \
+                                                                         out['user_time_dense']
+
+            out2 = {}
+
+
+            out2['vali_thread_u']=vali_thread_u
+            out2['size_user_v']=size_user_v
+            out2['max_time_v']=max_time_v
+            out2['news_cnt_short_v']=news_cnt_short_v
+            out2['u_t_dispid_v']=u_t_dispid_v
+            out2['u_t_dispid_split_ut_v']=u_t_dispid_split_ut_v
+            out2['u_t_dispid_feature_v']=u_t_dispid_feature_v
+            out2['click_feature_v']=click_feature_v
+            out2['click_sub_index_v']=click_sub_index_v
+            out2['u_t_clickid_v']=u_t_clickid_v
+            out2['ut_dense_v']=ut_dense_v
+            return out2
+
+
+
+
 
 
 if __name__ == '__main__':
     args = get_options()
     dataset = Dataset(args)
 
-    dataset.preprocess_data()
+    # dataset.preprocess_data()
+    dataset.read_data()
+    dataset.format_data()
 
 

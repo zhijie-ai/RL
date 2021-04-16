@@ -28,7 +28,7 @@ def _discount_and_norm_rewards(rewards,gamma=1.):
     return discounted_episode_rewards
 
 def T(x):
-    print('AAAA',x)
+    print('AAAA\n',x.shape,x.sum(),x)
     return x.sum()
 
 df = pd.DataFrame({'name':np.random.choice(list('ABCD'),20),'ratings':np.random.randint(0,5,20),'ts':np.random.randint(1,1000,20),'gender':np.random.binomial(1,0.5,20)})
@@ -37,7 +37,7 @@ df.sort_values(by=['name','ts'],inplace=True)
 # print(df)
 # df['rewards']=df.groupby('name')['ratings'].transform(_discount_and_norm_rewards)
 # print(df)
-print(df.groupby('name').transform(T))
+df.groupby(['name','ratings','ts'])['gender'].transform(T,args=(20,))
 
 '''
 总结:

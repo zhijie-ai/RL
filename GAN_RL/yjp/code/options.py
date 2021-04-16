@@ -26,6 +26,8 @@ def get_options(args=None):
     parser.add_argument('--exposure_path',type =str,default ='../data/raw/exposure.csv',help = 'dataset_folder')
     parser.add_argument('--data_folder',type =str,default ='../data/handled/',help = 'dataset_folder')
     parser.add_argument('--save_dir',type = str,default = './save_dir/',help='save folder')
+    parser.add_argument('--embedding_path',type = str,default = '/data1/ai-recall/bpr/model/',help='save folder')
+    parser.add_argument('--random_seed',type = int,default = '1126',help='random seed')
 
     parser.add_argument('--resplit', type=eval, default=False)
     parser.add_argument('--num_thread', type=int, default=10, help='number of threadings')
