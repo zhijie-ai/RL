@@ -32,7 +32,7 @@ class Dataset():
 
         np.random.seed(self.random_seed)
 
-        self.gen_embedding()
+        self.handle_data()
 
 
 
@@ -464,7 +464,7 @@ class Dataset():
             self.feature[u]=self.feature[u].tolist()
             self.feature_click[u] = self.feature_click[u].tolist()
         self.max_disp_size = k_max
-        print(self.data_click.keys())
+
 
     def prepare_validation_data_L2(self,num_sets,v_user):
         vali_thread_u = [[] for _ in range(num_sets)]
@@ -605,6 +605,13 @@ class Dataset():
             out2['u_t_clickid_v']=u_t_clickid_v
             out2['ut_dense_v']=ut_dense_v
             return out2
+
+    def handle_data(self):
+        self.gen_embedding()
+        self.preprocess_data()
+
+        self.read_data()
+        self.format_data()
 
 
 

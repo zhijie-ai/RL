@@ -2,7 +2,7 @@
 # -*- encoding=utf-8 -*-                       #
 # __author__:'焉知飞鱼'                         #
 # CreateTime:                                  #
-#       2021/3/18 14:31                         #
+#       2021/4/8 14:31                         #
 #                                              #
 #               天下风云出我辈，                 #
 #               一入江湖岁月催。                 #
@@ -33,7 +33,7 @@ def get_options(args=None):
     parser.add_argument('--num_thread', type=int, default=10, help='number of threadings')
     parser.add_argument('--learning_rate', type=float, default=1e-3, help='learning rate')
     parser.add_argument('--batch_size', type=int, default=128, help='batch size')
-    parser.add_argument('--num_itrs', type=int, default=2000, help='num of iterations for q learning')
+    parser.add_argument('--num_iters', type=int, default=2000, help='num of iterations for q learning')
     # might change later to policy_grad method with attetion rather than lstm
     parser.add_argument('--rnn_hidden_dim', type=int, default=20, help='LSTM hidden sizes')
     parser.add_argument('--pw_dim', type=int, default=4, help='position weight dim')

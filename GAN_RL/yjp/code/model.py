@@ -104,6 +104,7 @@ class UserModelLSTM():
         return loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
 
 
+    # 下面的这2个construct_computation_graph_u和construct_computation_graph_policy感觉可有可无，因为是在main_gan_L2_regularized_yelp.py文件中使用的
     def construct_computation_graph_u(self):
         batch_size = tf.shape(self.placeholder['clicked_feature'])[1]
 

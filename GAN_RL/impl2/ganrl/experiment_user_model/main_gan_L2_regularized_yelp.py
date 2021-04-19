@@ -5,9 +5,9 @@ import tensorflow as tf
 import threading
 import os
 
-from ganrl.common.cmd_args import cmd_args
-from ganrl.experiment_user_model.data_utils import Dataset
-from ganrl.experiment_user_model.utils import UserModelLSTM, UserModelPW
+from GAN_RL.impl2.ganrl.common.cmd_args import cmd_args
+from GAN_RL.impl2.ganrl.experiment_user_model.data_utils import Dataset
+from GAN_RL.impl2.ganrl.experiment_user_model.utils import UserModelLSTM, UserModelPW
 
 
 def multithread_compute_vali():
