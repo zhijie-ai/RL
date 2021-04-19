@@ -228,6 +228,7 @@ class Dataset():
         self.f_dim = self.sku_embedding.shape[1]
         self.random_emb = np.random.randn(self.f_dim)
 
+    @cost_time_def
     def data_process_for_placeholder(self,user_set):
         if self.model_type=='PW':
             sec_cnt_x = 0
@@ -249,23 +250,23 @@ class Dataset():
                 t_indice = []
 
                 for kk in range(min(self.band_size-1,self.data_time[u]-1)):
-                    t_indice += map(lambda x:[x+kk+1,x+sec_cnt_x],np.arange(self.data_time[u]-(kk+1)))
+                    t_indice += map(lambda x:[x + kk + 1 + sec_cnt_x,x + sec_cnt_x],np.arange(self.data_time[u]-(kk+1)))
 
                 tril_indice+= t_indice
-                tril_value_indice += map(lambda x:(x[0]-x[1]-1),t_indice)
+                tril_value_indice += map(lambda x:(x[0] - x[1]-1),t_indice)
 
-                click_2d_tmp = map(lambda x:[x[0]+sec_cnt_x,x[1]],self.data_click[u])
+                click_2d_tmp = map(lambda x:[x[0] + sec_cnt_x,x[1]],self.data_click[u])
                 click_2d_tmp = list(click_2d_tmp)
                 click_2d_x += click_2d_tmp
 
-                disp_2d_tmp = map(lambda x:[x[0]+sec_cnt_x,x[1]],self.data_disp[u])
+                disp_2d_tmp = map(lambda x:[x[0] + sec_cnt_x,x[1]],self.data_disp[u])
                 disp_2d_tmp = list(disp_2d_tmp)
 
                 click_sub_index_tmp = map(lambda x:disp_2d_tmp.index(x),click_2d_tmp)
                 click_sub_index_tmp = list(click_sub_index_tmp)
-                click_sub_index_2d +=map(lambda x:x+len(disp_2d_x),click_sub_index_tmp)
+                click_sub_index_2d +=map(lambda x:x + len(disp_2d_x),click_sub_index_tmp)
                 disp_2d_x += disp_2d_tmp
-                disp_2d_split_sec += map(lambda x:x[0]+sec_cnt_x,self.data_disp[u])
+                disp_2d_split_sec += map(lambda x:x[0] + sec_cnt_x,self.data_disp[u])
 
                 sec_cnt_x +=self.data_time[u]
                 news_cnt_short_x = max(news_cnt_short_x,self.data_news_cnt[u])
@@ -345,7 +346,7 @@ class Dataset():
             out['user_time_dense'] = user_time_dense
             return out
 
-
+    @cost_time_def
     def data_process_for_placeholder_L2(self,user_set):
         news_cnt_short_x=0
         u_t_dispid=[]
@@ -409,10 +410,8 @@ class Dataset():
         out['user_time_dense']=user_time_dense
         return out
 
-
     @cost_time_def
     def format_data(self):
-        print('CCC',self.size_user)
         k_max = max([len(d_b[1]) for d_b in self.data_behavior])
 
         # self.data_click = [[] for _ in range(self.size_user)]
@@ -465,7 +464,7 @@ class Dataset():
             self.feature_click[u] = self.feature_click[u].tolist()
         self.max_disp_size = k_max
 
-
+    @cost_time_def
     def prepare_validation_data_L2(self,num_sets,v_user):
         vali_thread_u = [[] for _ in range(num_sets)]
         size_user_v = [[] for _ in range(num_sets)]
@@ -511,6 +510,7 @@ class Dataset():
 
         return out2
 
+    @cost_time_def
     def prepare_validation_data(self,num_sets,v_user):
         if self.model_type == 'PW':
             vali_thread_u = [[] for _ in range(num_sets)]
@@ -544,16 +544,16 @@ class Dataset():
                                                                                                            out['feature_clicked_x']
             out2={}
             out2['vali_thread_u']=vali_thread_u
-            out2['click_2d_v']=click_2d_v
-            out2['disp_2d_v']=disp_2d_v
-            out2['feature_v']=feature_v
-            out2['sec_cnt_v']=sec_cnt_v
-            out2['tril_ind_v']=tril_ind_v
-            out2['tril_value_ind_v']=tril_value_ind_v
+            out2['click_2d_x_v']=click_2d_v
+            out2['disp_2d_x_v']=disp_2d_v
+            out2['disp_current_feature_x_v']=feature_v
+            out2['sec_cnt_x_v']=sec_cnt_v
+            out2['tril_indice_v']=tril_ind_v
+            out2['tril_value_indice_v']=tril_value_ind_v
             out2['disp_2d_split_sec_v']=disp_2d_split_sec_v
-            out2['news_cnt_short_v']=news_cnt_short_v
+            out2['news_cnt_short_x_v']=news_cnt_short_v
             out2['click_sub_index_2d_v']=click_sub_index_2d_v
-            out2['feature_clicked_v']=feature_clicked_v
+            out2['feature_clicked_x_v']=feature_clicked_v
 
             return out2
         else:
@@ -596,25 +596,26 @@ class Dataset():
             out2['vali_thread_u']=vali_thread_u
             out2['size_user_v']=size_user_v
             out2['max_time_v']=max_time_v
-            out2['news_cnt_short_v']=news_cnt_short_v
+            out2['news_cnt_short_x_v']=news_cnt_short_v
             out2['u_t_dispid_v']=u_t_dispid_v
             out2['u_t_dispid_split_ut_v']=u_t_dispid_split_ut_v
             out2['u_t_dispid_feature_v']=u_t_dispid_feature_v
             out2['click_feature_v']=click_feature_v
             out2['click_sub_index_v']=click_sub_index_v
             out2['u_t_clickid_v']=u_t_clickid_v
-            out2['ut_dense_v']=ut_dense_v
+            out2['user_time_dense_v']=ut_dense_v
             return out2
 
+    @cost_time_def
     def handle_data(self):
-        self.gen_embedding()
-        self.preprocess_data()
+        # self.gen_embedding()
+        # self.preprocess_data()
 
         self.read_data()
         self.format_data()
 
-
-
+        print('size_user:{}\tsize_item:{}\tnum of train user:{}'
+              '\tnum of vali user:{}\tnum of test user:{}'.format(self.size_user,self.size_item,len(self.train_user),len(self.vali_user),len(self.test_user)))
 
 
 

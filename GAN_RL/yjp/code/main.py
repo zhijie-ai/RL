@@ -13,6 +13,7 @@ import datetime,os
 import numpy as np
 import tensorflow as tf
 import threading
+from tqdm import tqdm
 
 from GAN_RL.yjp.code.options import get_options
 from GAN_RL.yjp.code.data_util import Dataset
@@ -40,29 +41,29 @@ def validation(ii,out_):
     global vali_sum,vali_cnt
     if cmd_args.user_model=='LSTM':
         vali_thread_eval = sess.run([train_loss_sum,train_prec1_sum,train_prec2_sum,train_event_cnt],
-                                    feed_dict={user_model.placeholder['clicked_feature']:out_['click_feature'][ii],
-                                               user_model.placeholder['ut_dispid_feature']:out_['u_t_dispid_feature'][ii],
-                                               user_model.placeholder['ut_dispid_ut']:out_['u_t_dispid_split_ut'][ii],
-                                               user_model.placeholder['ut_dispid']:out_['u_t_dispid'][ii],
-                                               user_model.placeholder['ut_clickid']:out_['u_t_clickid'][ii] ,
-                                               user_model.placeholder['ut_clickid_val']:np.ones(len(out_['u_t_clickid'][ii]), dtype=np.float32),
-                                               user_model.placeholder['click_sublist_index']:np.array(out_['click_sub_index'][ii], dtype=np.int64),
-                                               user_model.placeholder['ut_dense']:out_['user_time_dense'][ii],
-                                               user_model.placeholder['time']:out_['max_time'][ii],
-                                               user_model.placeholder['item_size']:out_['news_cnt_short_x'][ii]})
+                                    feed_dict={user_model.placeholder['clicked_feature']:out_['click_feature_v'][ii],
+                                               user_model.placeholder['ut_dispid_feature']:out_['u_t_dispid_feature_v'][ii],
+                                               user_model.placeholder['ut_dispid_ut']:out_['u_t_dispid_split_ut_v'][ii],
+                                               user_model.placeholder['ut_dispid']:out_['u_t_dispid_v'][ii],
+                                               user_model.placeholder['ut_clickid']:out_['u_t_clickid_v'][ii] ,
+                                               user_model.placeholder['ut_clickid_val']:np.ones(len(out_['u_t_clickid_v'][ii]), dtype=np.float32),
+                                               user_model.placeholder['click_sublist_index']:np.array(out_['click_sub_index_v'][ii], dtype=np.int64),
+                                               user_model.placeholder['ut_dense']:out_['user_time_dense_v'][ii],
+                                               user_model.placeholder['time']:out_['max_time_v'][ii],
+                                               user_model.placeholder['item_size']:out_['news_cnt_short_x_v'][ii]})
     elif cmd_args.user_model == 'PW':
         vali_thread_eval = sess.run([train_loss_sum,train_prec1_sum,train_prec2_sum,train_event_cnt],
-                                    feed_dict={user_model.placeholder['disp_current_feature']: out['disp_current_feature_x'][ii],
-                                               user_model.placeholder['item_size']: out['news_cnt_short_x'][ii],
-                                               user_model.placeholder['section_length']: out['sec_cnt_x'][ii],
-                                               user_model.placeholder['click_indices']: out['click_2d_x'][ii],
-                                               user_model.placeholder['click_values']: np.ones(len(out['click_2d_x'][ii]), dtype=np.float32),
-                                               user_model.placeholder['disp_indices']: np.array(out['disp_2d_x'][ii]),
-                                               user_model.placeholder['cumsum_tril_indices']: out['tril_indice'][ii],
-                                               user_model.placeholder['cumsum_tril_value_indices']: np.array(out['tril_value_indice'][ii], dtype=np.int64),
-                                               user_model.placeholder['click_2d_subindex']: out['click_sub_index_2d'][ii],
-                                               user_model.placeholder['disp_2d_split_sec_ind']: out['disp_2d_split_sec'][ii],
-                                               user_model.placeholder['Xs_clicked']: out['feature_clicked_x'][ii]})
+                                    feed_dict={user_model.placeholder['disp_current_feature']: out_['disp_current_feature_x_v'][ii],
+                                               user_model.placeholder['item_size']: out_['news_cnt_short_x_v'][ii],
+                                               user_model.placeholder['section_length']: out_['sec_cnt_x_v'][ii],
+                                               user_model.placeholder['click_indices']: out_['click_2d_x_v'][ii],
+                                               user_model.placeholder['click_values']: np.ones(len(out_['click_2d_x_v'][ii]), dtype=np.float32),
+                                               user_model.placeholder['disp_indices']: np.array(out_['disp_2d_x_v'][ii]),
+                                               user_model.placeholder['cumsum_tril_indices']: out_['tril_indice_v'][ii],
+                                               user_model.placeholder['cumsum_tril_value_indices']: np.array(out_['tril_value_indice_v'][ii], dtype=np.int64),
+                                               user_model.placeholder['click_2d_subindex']: out_['click_sub_index_2d_v'][ii],
+                                               user_model.placeholder['disp_2d_split_sec_ind']: out_['disp_2d_split_sec_v'][ii],
+                                               user_model.placeholder['Xs_clicked']: out_['feature_clicked_x_v'][ii]})
 
     lock.acquire()
     vali_sum[0] += vali_thread_eval[0]
@@ -77,7 +78,6 @@ if __name__ == '__main__':
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print('%s,start '%log_time)
     dataset = Dataset(cmd_args)
-
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print("%s, load data completed" % log_time)
 
@@ -104,52 +104,53 @@ if __name__ == '__main__':
     #prepare validation data
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print("%s, start prepare vali data" % log_time)
-
     out_vali =  dataset.prepare_validation_data(cmd_args.num_thread,dataset.vali_user)
-
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print("%s, prepare validation data, completed" % log_time)
 
+    #prepare test data
+    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print("%s, start prepare test data" % log_time)
     out_test =  dataset.prepare_validation_data(cmd_args.num_thread,dataset.test_user)
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, prepare test data, completed" % log_time)
+    print("%s, prepare test data end" % log_time)
 
     best_metric = [100000.0, 0.0, 0.0]
     vali_path =cmd_args.save_dir+'/'
     if not os.path.exists(vali_path):
         os.makedirs(vali_path)
 
-    saver = tf.train.Saver(max_to_keep=None)
+    saver = tf.compat.v1.train.Saver(max_to_keep=None)
 
-    for i in range(cmd_args.num_iters):
+    for i in tqdm(range(cmd_args.num_iters)):
         # training_start_point = (i * cmd_args.batch_size) % (len(dataset.train_user))
         # training_user = dataset.train_user[training_start_point: min(training_start_point + cmd_args.batch_size, len(dataset.train_user))]
         training_user = np.random.choice(dataset.train_user,cmd_args.batch_size,replace=False)
-        out =  dataset.data_process_for_placeholder(training_user)
+        out_train =  dataset.data_process_for_placeholder(training_user)
         if cmd_args.user_model == 'LSTM':
-            sess.run(train_opt,feed_dict={user_model.placeholder['clicked_feature']:out['click_feature'],
-                                          user_model.placeholder['ut_dispid_feature']:out['u_t_dispid_feature'],
-                                          user_model.placeholder['ut_dispid_ut']:out['u_t_dispid_split_ut'],
-                                          user_model.placeholder['ut_dispid']:out['u_t_dispid'],
-                                          user_model.placeholder['ut_clickid']:out['u_t_clickid'] ,
-                                          user_model.placeholder['ut_clickid_val']:np.ones(len(out['u_t_clickid']), dtype=np.float32),
-                                          user_model.placeholder['click_sublist_index']:np.array(out['click_sub_index'], dtype=np.int64),
-                                          user_model.placeholder['ut_dense']:out['user_time_dense'],
-                                          user_model.placeholder['time']:out['max_time'],
-                                          user_model.placeholder['item_size']:out['news_cnt_short_x']})
+            sess.run(train_opt,feed_dict={user_model.placeholder['clicked_feature']:out_train['click_feature'],
+                                          user_model.placeholder['ut_dispid_feature']:out_train['u_t_dispid_feature'],
+                                          user_model.placeholder['ut_dispid_ut']:out_train['u_t_dispid_split_ut'],
+                                          user_model.placeholder['ut_dispid']:out_train['u_t_dispid'],
+                                          user_model.placeholder['ut_clickid']:out_train['u_t_clickid'] ,
+                                          user_model.placeholder['ut_clickid_val']:np.ones(len(out_train['u_t_clickid']), dtype=np.float32),
+                                          user_model.placeholder['click_sublist_index']:np.array(out_train['click_sub_index'], dtype=np.int64),
+                                          user_model.placeholder['ut_dense']:out_train['user_time_dense'],
+                                          user_model.placeholder['time']:out_train['max_time'],
+                                          user_model.placeholder['item_size']:out_train['news_cnt_short_x']})
 
         elif cmd_args.user_model=='PW':
-            sess.run(train_opt, feed_dict={user_model.placeholder['disp_current_feature']: out['disp_current_feature_x'],
-                                           user_model.placeholder['item_size']: out['news_cnt_short_x'],
-                                           user_model.placeholder['section_length']: out['sec_cnt_x'],
-                                           user_model.placeholder['click_indices']: out['click_2d_x'],
-                                           user_model.placeholder['click_values']: np.ones(len(out['click_2d_x']), dtype=np.float32),
-                                           user_model.placeholder['disp_indices']: np.array(out['disp_2d_x']),
-                                           user_model.placeholder['cumsum_tril_indices']: out['tril_indice'],
-                                           user_model.placeholder['cumsum_tril_value_indices']: np.array(out['tril_value_indice'], dtype=np.int64),
-                                           user_model.placeholder['click_2d_subindex']: out['click_sub_index_2d'],
-                                           user_model.placeholder['disp_2d_split_sec_ind']: out['disp_2d_split_sec'],
-                                           user_model.placeholder['Xs_clicked']: out['feature_clicked_x']})
+            sess.run(train_opt, feed_dict={user_model.placeholder['disp_current_feature']: out_train['disp_current_feature_x'],
+                                           user_model.placeholder['item_size']: out_train['news_cnt_short_x'],
+                                           user_model.placeholder['section_length']: out_train['sec_cnt_x'],
+                                           user_model.placeholder['click_indices']: out_train['click_2d_x'],
+                                           user_model.placeholder['click_values']: np.ones(len(out_train['click_2d_x']), dtype=np.float32),
+                                           user_model.placeholder['disp_indices']: np.array(out_train['disp_2d_x']),
+                                           user_model.placeholder['cumsum_tril_indices']: out_train['tril_indice'],
+                                           user_model.placeholder['cumsum_tril_value_indices']: np.array(out_train['tril_value_indice'], dtype=np.int64),
+                                           user_model.placeholder['click_2d_subindex']: out_train['click_sub_index_2d'],
+                                           user_model.placeholder['disp_2d_split_sec_ind']: out_train['disp_2d_split_sec'],
+                                           user_model.placeholder['Xs_clicked']: out_train['feature_clicked_x']})
 
         if np.mod(i,10)==0:
             if i==0:
@@ -180,13 +181,6 @@ if __name__ == '__main__':
         print("%s, iteration %d train complete" % (log_time, i))
 
     # test
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, start prepare test data" % log_time)
-    out_test =  dataset.prepare_validation_data(cmd_args.num_thread,dataset.vali_user)
-
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, prepare test data end" % log_time)
-
     best_save_path = os.path.join(vali_path, 'best-loss')
     saver.restore(sess,best_save_path)
     test_loss_prc = multithread_compute_validation(out_test)

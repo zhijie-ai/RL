@@ -34,17 +34,17 @@ class UserModelLSTM():
         self.max_disp_size=max_disp_size
 
     def construct_placeholder(self):
-        self.placeholder['clicked_feature'] = tf.placeholder(tf.float32,(None,None,self.f_dim))
-        self.placeholder['ut_dispid_feature'] = tf.placeholder(tf.float32,shape=[None,self.f_dim])
-        self.placeholder['ut_dispid_ut'] = tf.placeholder(dtype=tf.int64,shape=[None,2])
-        self.placeholder['ut_dispid'] = tf.placeholder(dtype=tf.int64,shape=[None,3])
-        self.placeholder['ut_clickid'] = tf.placeholder(dtype=tf.int64,shape=[None,3])
-        self.placeholder['ut_clickid_val'] = tf.placeholder(dtype=tf.float32,shape=[None])
-        self.placeholder['click_sublist_index'] = tf.placeholder(dtype=tf.int64,shape=[None])
+        self.placeholder['clicked_feature'] = tf.compat.v1.placeholder(tf.float32,(None,None,self.f_dim))
+        self.placeholder['ut_dispid_feature'] = tf.compat.v1.placeholder(tf.float32,shape=[None,self.f_dim])
+        self.placeholder['ut_dispid_ut'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,2])
+        self.placeholder['ut_dispid'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,3])
+        self.placeholder['ut_clickid'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,3])
+        self.placeholder['ut_clickid_val'] = tf.compat.v1.placeholder(dtype=tf.float32,shape=[None])
+        self.placeholder['click_sublist_index'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
 
-        self.placeholder['ut_dense'] = tf.placeholder(dtype=tf.float32,shape=[None,None])
-        self.placeholder['time'] = tf.placeholder(dtype=tf.int64)
-        self.placeholder['item_size'] = tf.placeholder(dtype=tf.int64)
+        self.placeholder['ut_dense'] = tf.compat.v1.placeholder(dtype=tf.float32,shape=[None,None])
+        self.placeholder['time'] = tf.compat.v1.placeholder(dtype=tf.int64)
+        self.placeholder['item_size'] = tf.compat.v1.placeholder(dtype=tf.int64)
 
 
     def construct_computation_graph(self):
@@ -55,7 +55,7 @@ class UserModelLSTM():
 
         # construct lstm
         # tf.nn.rnn_cell.BasicLSTMCell()
-        cell = tf.contrib.rnn.BasicLSTMCell(self.rnn_hidden,state_is_tupe=True)
+        cell = tf.contrib.rnn.BasicLSTMCell(self.rnn_hidden,state_is_tuple=True)
         initial_state = cell.zero_state(batch_size,tf.float32)
         rnn_outputs,rnn_states = tf.nn.dynamic_rnn(cell,self.placeholder['clicked_feature'],initial_state=initial_state,time_major=True)
         # rnn_outputs: (time, user=batch, rnn_hidden)
@@ -217,25 +217,25 @@ class UserModelPW():
         self.band_size=args.pw_band_size
 
     def construct_placeholder(self):
-        self.placeholder['disp_current_feature']=tf.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
-        self.placeholder['Xs_clicked'] = tf.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
+        self.placeholder['disp_current_feature']=tf.compat.v1.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
+        self.placeholder['Xs_clicked'] = tf.compat.v1.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
 
-        self.placeholder['item_size']=tf.placeholder(dtype=tf.int64,shape=[])
-        self.placeholder['section_lenght']=tf.placeholder(dtype=tf.int64)
-        self.placeholder['click_indices']=tf.placeholder(dtype=tf.int64,shape=[None,2])
-        self.placeholder['click_values'] = tf.placeholder(dtype=tf.float32,shape=[None])
-        self.placeholder['disp_indices'] = tf.placeholder(dtype=tf.int64,shape=[None,2])
+        self.placeholder['item_size']=tf.compat.v1.placeholder(dtype=tf.int64,shape=[])
+        self.placeholder['section_length']=tf.compat.v1.placeholder(dtype=tf.int64)
+        self.placeholder['click_indices']=tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,2])
+        self.placeholder['click_values'] = tf.compat.v1.placeholder(dtype=tf.float32,shape=[None])
+        self.placeholder['disp_indices'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,2])
 
-        self.placeholder['disp_2d_split_sec_ind']=tf.placeholder(dtype=tf.int64,shape=[None])
+        self.placeholder['disp_2d_split_sec_ind']=tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
 
-        self.placeholder['cumsum_tril_indices'] = tf.placeholder(dtype=tf.int64,shape=[None,2])
-        self.placeholder['cumsum_tril_value_indices'] = tf.placeholder(dtype=tf.int64,shape=[None])
+        self.placeholder['cumsum_tril_indices'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,2])
+        self.placeholder['cumsum_tril_value_indices'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
 
-        self.placeholder['click_2d_subindex'] = tf.placeholder(dtype=tf.int64,shape=[None])
+        self.placeholder['click_2d_subindex'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
 
     def construct_computation_graph(self):
 
-        denseshape=[self.placeholder['section_lenght'],self.placeholder['item_size']]
+        denseshape=[self.placeholder['section_length'],self.placeholder['item_size']]
 
         # (1) history feature  ---net ----> clicked_feature
         # (1) construct cumulative history
@@ -245,7 +245,7 @@ class UserModelPW():
             position_weight = tf.get_variable('p_w'+str(ii),[self.band_size],initializer=tf.constant_initializer(0.0001))
             cumsum_tril_value = tf.gather(position_weight,self.placeholder['cumsum_tril_value_indices'])
             cumsum_tril_matrix = tf.SparseTensor(self.placeholder['cumsum_tril_indices'],cumsum_tril_value,
-                                                 [self.placeholder['section_lenght'],self.placeholder['section_lenght']])
+                                                 [self.placeholder['section_length'],self.placeholder['section_length']])
             click_history[ii] = tf.sparse_tensor_dense_matmul(cumsum_tril_matrix,self.placeholder['Xs_clicked'])
 
         concat_history=tf.concat(click_history,axis=1)
