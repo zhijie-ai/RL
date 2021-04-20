@@ -162,8 +162,6 @@ if __name__ == '__main__':
                                            user_model.placeholder['disp_2d_split_sec_ind']: out_train['disp_2d_split_sec'],
                                            user_model.placeholder['Xs_clicked']: out_train['feature_clicked_x']})
 
-        print('>>>>>>>>>>>>>>>>iter:{}\tloss:{}<<<<<<<<<<<<<<<'.format(i,loss))
-
         if np.mod(i,10)==0:
             if i==0:
                 log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -213,4 +211,4 @@ if __name__ == '__main__':
 
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     t2 = time.time()
-    print("%s, end.\t time cost:{} m" % (log_time,(t2-t1/60)))
+    print("%s, end.\t time cost:%s m" % (log_time,(t2-t1)/60))
