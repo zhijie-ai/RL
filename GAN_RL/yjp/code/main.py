@@ -9,10 +9,11 @@
 #               皇图霸业谈笑中，                 #
 #               不胜人生一场醉。                 #
 #-----------------------------------------------
-import datetime,os
+import datetime,os,time
 import numpy as np
 import tensorflow as tf
 import threading
+from multiprocessing import Process
 from tqdm import tqdm
 
 from GAN_RL.yjp.code.options import get_options
@@ -26,7 +27,10 @@ def multithread_compute_validation(out_):
     vali_cnt = 0
     threads = []
     for ii in range(cmd_args.num_thread):
-        thread = threading.Thread(target=validation,args=(ii,out_))
+        if cmd_args.compu_type=='thread':
+            thread = threading.Thread(target=validation,args=(ii,out_))
+        else:
+            thread = Process(target=validation,args=(ii,out_))
         thread.start()
         threads.append(thread)
 
@@ -70,14 +74,19 @@ def validation(ii,out_):
     vali_sum[1] += vali_thread_eval[1]
     vali_sum[2] += vali_thread_eval[2]
     vali_cnt += vali_thread_eval[3]
+    lock.release()
 
 
 if __name__ == '__main__':
     cmd_args = get_options()
+    print('current args:{}'.format(cmd_args))
 
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    t1 = time.time()
     print('%s,start '%log_time)
     dataset = Dataset(cmd_args)
+    dataset.init_dataset()
+
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print("%s, load data completed" % log_time)
 
@@ -116,7 +125,7 @@ if __name__ == '__main__':
     print("%s, prepare test data end" % log_time)
 
     best_metric = [100000.0, 0.0, 0.0]
-    vali_path =cmd_args.save_dir+'/'
+    vali_path =cmd_args.save_dir
     if not os.path.exists(vali_path):
         os.makedirs(vali_path)
 
@@ -125,10 +134,11 @@ if __name__ == '__main__':
     for i in tqdm(range(cmd_args.num_iters)):
         # training_start_point = (i * cmd_args.batch_size) % (len(dataset.train_user))
         # training_user = dataset.train_user[training_start_point: min(training_start_point + cmd_args.batch_size, len(dataset.train_user))]
-        training_user = np.random.choice(dataset.train_user,cmd_args.batch_size,replace=False)
+        # training_user = np.random.choice(dataset.train_user,cmd_args.batch_size,replace=False)
+        training_user = dataset.get_batch_user(cmd_args.batch_size)
         out_train =  dataset.data_process_for_placeholder(training_user)
         if cmd_args.user_model == 'LSTM':
-            sess.run(train_opt,feed_dict={user_model.placeholder['clicked_feature']:out_train['click_feature'],
+            loss,_ = sess.run([train_loss,train_opt],feed_dict={user_model.placeholder['clicked_feature']:out_train['click_feature'],
                                           user_model.placeholder['ut_dispid_feature']:out_train['u_t_dispid_feature'],
                                           user_model.placeholder['ut_dispid_ut']:out_train['u_t_dispid_split_ut'],
                                           user_model.placeholder['ut_dispid']:out_train['u_t_dispid'],
@@ -140,7 +150,7 @@ if __name__ == '__main__':
                                           user_model.placeholder['item_size']:out_train['news_cnt_short_x']})
 
         elif cmd_args.user_model=='PW':
-            sess.run(train_opt, feed_dict={user_model.placeholder['disp_current_feature']: out_train['disp_current_feature_x'],
+            loss,_ = sess.run([train_loss,train_opt], feed_dict={user_model.placeholder['disp_current_feature']: out_train['disp_current_feature_x'],
                                            user_model.placeholder['item_size']: out_train['news_cnt_short_x'],
                                            user_model.placeholder['section_length']: out_train['sec_cnt_x'],
                                            user_model.placeholder['click_indices']: out_train['click_2d_x'],
@@ -151,6 +161,8 @@ if __name__ == '__main__':
                                            user_model.placeholder['click_2d_subindex']: out_train['click_sub_index_2d'],
                                            user_model.placeholder['disp_2d_split_sec_ind']: out_train['disp_2d_split_sec'],
                                            user_model.placeholder['Xs_clicked']: out_train['feature_clicked_x']})
+
+        print('>>>>>>>>>>>>>>>>iter:{}\tloss:{}<<<<<<<<<<<<<<<'.format(i,loss))
 
         if np.mod(i,10)==0:
             if i==0:
@@ -198,3 +210,7 @@ if __name__ == '__main__':
     test_loss_prc = multithread_compute_validation(out_test)
     vali_loss_prc = multithread_compute_validation(out_vali)
     print("test!!!pre2!!!, test: %.5f, vali: %.5f" % (test_loss_prc[2], vali_loss_prc[2]))
+
+    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    t2 = time.time()
+    print("%s, end.\t time cost:{} m" % (log_time,(t2-t1/60)))

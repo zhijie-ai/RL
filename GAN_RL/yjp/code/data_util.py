@@ -21,9 +21,9 @@ from collections import defaultdict
 
 class Dataset():
     def __init__(self,args):
-        self.data_click = pd.read_csv(args.click_path)
-        self.data_exposure = pd.read_csv(args.exposure_path)
-        print('data shape:',self.data_click.shape,self.data_exposure.shape)
+        self.click = pd.read_csv(args.click_path)
+        self.exposure = pd.read_csv(args.exposure_path)
+        print('data shape:',self.click.shape,self.exposure.shape)
         self.model_type = args.user_model
         self.band_size = args.pw_band_size
         self.data_folder = args.data_folder
@@ -31,10 +31,6 @@ class Dataset():
         self.random_seed = args.random_seed
 
         np.random.seed(self.random_seed)
-
-        self.handle_data()
-
-
 
     @cost_time_def
     def drop_dup_row(self,data,min_count=7):
@@ -113,8 +109,8 @@ class Dataset():
 
     @cost_time_def
     def preprocess_data(self):
-        click = self.filter_(self.data_click,min_count=7,max_count=20)
-        exposure = self.filter_(self.data_exposure,min_count=7,max_count=200)
+        click = self.filter_(self.click,min_count=7,max_count=20)
+        exposure = self.filter_(self.exposure,min_count=7,max_count=200)
         click['is_click'] = 1
         exposure['is_click']=0
 
@@ -134,7 +130,8 @@ class Dataset():
         print(sizes,behavior_data.head())
         data_behavior = [[] for _ in range(size_user)]
 
-        train_user = []
+        train_user_noclick=[]
+        train_user_click=[]
         vali_user = []
         test_user = []
 
@@ -144,7 +141,10 @@ class Dataset():
             data_u = behavior_data[behavior_data.user_id==user]
             split_tag = list(data_u['split_tag'])[0]
             if split_tag == 0:
-                train_user.append(user)
+                if len(data_u[data_u.is_click==1]) ==0:
+                    train_user_noclick.append(user)
+                else:
+                    train_user_click.append(user)
             elif split_tag == 1:
                 vali_user.append(user)
             else:
@@ -164,19 +164,25 @@ class Dataset():
 
         filename = self.data_folder+'user-split.pkl'
         file = open(filename, 'wb')
-        pickle.dump(train_user, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(train_user_click, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(train_user_noclick, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(vali_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(test_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(size_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(size_item, file, protocol=pickle.HIGHEST_PROTOCOL)
         file.close()
+        print('size_user:{}\tsize_item:{}\tnum of train user:{}'
+              '\tnum of vali user:{}\tnum of test user:{}\tclick train user:{}\t'
+              ' no click train user:{}'.format(size_user,size_item,len(train_user_noclick+train_user_click),len(vali_user),
+                                               len(test_user),len(train_user_click),len(train_user_noclick)))
 
 
     @cost_time_def
     def gen_embedding(self,d_str='20210412'):
         if d_str is None:
             d_str = datetime.datetime.strftime('%Y%m%d')
-        path = '/data1/ai-recall/bpr/model/{}/'.format(d_str)
+
+        path = '{}/'.format(d_str)
         sku_biases = pickle.load(open(path+'sku_biases.pickle','rb'))
         sku_embeddings= pickle.load(open(path+'sku_embeddings.pickle','rb'))
         user_biases= pickle.load(open(path+'user_biases.pickle','rb'))
@@ -207,12 +213,15 @@ class Dataset():
             self.data_behavior = pickle.load(f)
         filename = self.data_folder+'user-split.pkl'
         file = open(filename, 'rb')
-        self.train_user = pickle.load(file)
+        self.train_user_click = pickle.load(file)
+        self.train_user_noclick = pickle.load(file)
         self.vali_user = pickle.load(file)
         self.test_user = pickle.load(file)
         self.size_user = pickle.load(file)
         self.size_item = pickle.load(file)
         file.close()
+
+        self.train_user = self.train_user_click+self.train_user_noclick
 
         filename =self.data_folder+'embedding.pkl'
         file = open(filename, 'rb')
@@ -221,8 +230,8 @@ class Dataset():
         self.id2key_user = pickle.load(file)
         self.id2key_sku = pickle.load(file)
 
-        self.sku_emb_dict = {self.id2key_sku.get(ind,'UNK'):emb for ind,emb in enumerate(self.sku_embedding)}
-        self.user_emb_dict = {self.id2key_user.get(ind,'UNK'):emb for ind,emb in enumerate(self.user_embedding)}
+        self.sku_emb_dict = {self.id2key_sku.get(ind,000000):emb for ind,emb in enumerate(self.sku_embedding)}
+        self.user_emb_dict = {self.id2key_user.get(ind,000000):emb for ind,emb in enumerate(self.user_embedding)}
         file.close()
 
         self.f_dim = self.sku_embedding.shape[1]
@@ -444,7 +453,7 @@ class Dataset():
                 if id not in news_dict:
                     news_dict[id] = len(news_dict)
 
-            for id in pick_list:
+            for id in pick_list:#如果用户没有点击，当一个batch内的所有user都没有点击的话，那就会报错
                 self.data_click[u].append([click_t,news_dict[id]])
                 self.feature_click[u][click_t] = self.sku_emb_dict.get(id,self.random_emb)
 
@@ -607,15 +616,20 @@ class Dataset():
             return out2
 
     @cost_time_def
-    def handle_data(self):
+    def init_dataset(self):
         # self.gen_embedding()
         # self.preprocess_data()
-
         self.read_data()
         self.format_data()
 
-        print('size_user:{}\tsize_item:{}\tnum of train user:{}'
+        print('---------------------------size_user:{}\tsize_item:{}\tnum of train user:{}'
               '\tnum of vali user:{}\tnum of test user:{}'.format(self.size_user,self.size_item,len(self.train_user),len(self.vali_user),len(self.test_user)))
+
+    def get_batch_user(self,batch_size):
+        user_click = np.random.choice(self.train_user_click,batch_size-10,replace=False).tolist()
+        user_noclick = np.random.choice(self.train_user_noclick,10,replace=False).tolist()
+        return np.array(user_click+user_noclick)
+
 
 
 
@@ -623,8 +637,7 @@ if __name__ == '__main__':
     args = get_options()
     dataset = Dataset(args)
 
-    # dataset.preprocess_data()
-    dataset.read_data()
-    dataset.format_data()
-
+    dataset.preprocess_data()
+    # dataset.read_data()
+    # dataset.format_data()
 
