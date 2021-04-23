@@ -22,6 +22,7 @@ def get_options(args=None):
     parser = argparse.ArgumentParser(
         description="Args for recommendation system reinforce_gan model")
 
+    #-----------------------------------------env training---------------------------------------------
     parser.add_argument('--click_path',type =str,default ='../data/raw/click.csv',help = 'dataset_folder')
     parser.add_argument('--exposure_path',type =str,default ='../data/raw/exposure.csv',help = 'dataset_folder')
     parser.add_argument('--data_folder',type =str,default ='../data/handled/',help = 'dataset_folder')
@@ -41,17 +42,27 @@ def get_options(args=None):
     parser.add_argument('--compu_type', type=str, default='thread', help='computation unit. only process or thread')
 
 
-    parser.add_argument('--dims', type=str, default='64-64')
+    parser.add_argument('--dims', type=str, default='256-32')
     parser.add_argument('--user_model', type=str, default='PW', help='architecture choice: LSTM or PW')
     # dont think that the PW model could be used atm
 
     #-----------------------------------------env---------------------------------------------
-    parser.add_argument('--iterations', type=int, default=50, help='num of iterations for q learning')
     parser.add_argument('--k', type=int, default=10, help='num of recommendation for each time')
     parser.add_argument('--noclick_weight', type=float, default=0.3, help='threshold for click. if >noclick_weight means user will having a positive callback ')
-    parser.add_argument('--time_horizon', type=int, default=100, help='time step for collecting data with env')
-    parser.add_argument('--std', type=float, default=1e-2, help='std for normal initialization ')
-    parser.add_argument('--lr', type=float, default=1e-2, help='learning rate for q-learning')
+    parser.add_argument('--env_std', type=float, default=1e-3, help='std for normal initialization ')
+
+    #-----------------------------------------dqn---------------------------------------------
+    parser.add_argument('--time_horizon', type=int, default=6, help='time step for collecting data with env')
+    parser.add_argument('--iterations', type=int, default=50, help='num of iterations for q learning')
+    parser.add_argument('--dqn_type', type=str, default='offline', help='collection data with env online or offline.')
+    parser.add_argument('--q_std', type=float, default=1e-2, help='std for dqn normal initialization .')
+    parser.add_argument('--dqn_dims', type=str, default='256-32')
+    parser.add_argument('--dqn_lr', type=float, default=1e-3, help='learning rate for q-learning')
+    parser.add_argument('--min_value', type=float, default=-1000000000.0, help='min value')
+    parser.add_argument('--sample_batch_size', type=int, default=10,help='num of choosing user')
+    parser.add_argument('--gamma', type=float, default=0.98)
+    parser.add_argument('--training_batch_size', type=int, default=10,help='batch size of training')
+    parser.add_argument('--model_path', type =str,default ='../model/dqn/',help = 'dqn model path')
 
     opts = parser.parse_args(args)
 

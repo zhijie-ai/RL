@@ -230,12 +230,12 @@ class Dataset():
         self.id2key_user = pickle.load(file)
         self.id2key_sku = pickle.load(file)
 
-        self.sku_emb_dict = {self.id2key_sku.get(ind,000000):emb for ind,emb in enumerate(self.sku_embedding)}
-        self.user_emb_dict = {self.id2key_user.get(ind,000000):emb for ind,emb in enumerate(self.user_embedding)}
+        self.sku_emb_dict = {self.id2key_sku.get(ind,000000):emb.tolist() for ind,emb in enumerate(self.sku_embedding)}
+        self.user_emb_dict = {self.id2key_user.get(ind,000000):emb.tolist() for ind,emb in enumerate(self.user_embedding)}
         file.close()
 
         self.f_dim = self.sku_embedding.shape[1]
-        self.random_emb = np.random.randn(self.f_dim)
+        self.random_emb = np.random.randn(self.f_dim).tolist()
 
     @cost_time_def
     def data_process_for_placeholder(self,user_set):

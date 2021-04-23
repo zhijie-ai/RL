@@ -17,12 +17,12 @@ def mlp(x,hidden_dims,output_dim,activation,sd,act_last=False):
         x = tf.layers.dense(x,h,activation=activation,trainable=True,
                             kernel_initializer=tf.truncated_normal_initializer(stddev=sd))
 
-        if act_last:
-            return tf.layers.dense(x,output_dim,activation=activation,trainable=True,
-                                   kernel_initializer=tf.truncated_normal_initializer(stddev=sd))
-        else:
-            return tf.layers.dense(x, output_dim, trainable=True,
-                                   kernel_initializer=tf.truncated_normal_initializer(stddev=sd))
+    if act_last:
+        return tf.layers.dense(x,output_dim,activation=activation,trainable=True,
+                               kernel_initializer=tf.truncated_normal_initializer(stddev=sd))
+    else:
+        return tf.layers.dense(x, output_dim, trainable=True,
+                               kernel_initializer=tf.truncated_normal_initializer(stddev=sd))
 
 class UserModelLSTM():
     def __init__(self,f_dim,args,max_disp_size=None):
@@ -284,6 +284,8 @@ class UserModelPW():
         precision_2 = precision_2_sum/event_cnt
 
         self.lossL2 = tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables() if 'bias' not in v.name])*0.06
+        # self.all_variables = tf.global_variables()
+        self.all_variables = tf.trainable_variables()
         return loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
 
     def construct_model(self,is_training,reuse=False):

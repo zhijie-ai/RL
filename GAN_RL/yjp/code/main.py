@@ -2,213 +2,323 @@
 # -*- encoding=utf-8 -*-                       #
 # __author__:'焉知飞鱼'                         #
 # CreateTime:                                  #
-#       2021/4/19 9:55                         #
+#       2021/4/21 15:34                         #
 #                                              #
 #               天下风云出我辈，                 #
 #               一入江湖岁月催。                 #
 #               皇图霸业谈笑中，                 #
 #               不胜人生一场醉。                 #
 #-----------------------------------------------
-import datetime,os,time
+# 用训练得到的env模型来训练强化学习模型
+from collections import deque
+
 import numpy as np
-import tensorflow as tf
-import threading
-from multiprocessing import Process
-from tqdm import tqdm
 
+from GAN_RL.yjp.code.dqn import DQN
+from GAN_RL.yjp.code.env import Enviroment
 from GAN_RL.yjp.code.options import get_options
-from GAN_RL.yjp.code.data_util import Dataset
-from GAN_RL.yjp.code.model import UserModelLSTM,UserModelPW
+import datetime,os
 
-def multithread_compute_validation(out_):
-    global vali_sum,vali_cnt
+# np.set_printoptions(suppress=True)
 
-    vali_sum = [0.0,0.0,0.0]
-    vali_cnt = 0
-    threads = []
-    for ii in range(cmd_args.num_thread):
-        if cmd_args.compu_type=='thread':
-            thread = threading.Thread(target=validation,args=(ii,out_))
-        else:
-            thread = Process(target=validation,args=(ii,out_))
-        thread.start()
-        threads.append(thread)
 
-    for thread in threads:
-        thread.join()
+def data_collection_random_action(data_collection,args, env, dqn, states,training_user, feature_space):
+    # (1) first step: initialize Q as the expected rwd function
+    # current_best_reward = 0.0
+    for t in range(args.time_horizon):
+        data_collection['state'].extend(states)
+        data_collection['user'].extend(training_user)
+        # prepare to feed max_Q
+        states_tr,history_order_tr,history_user_tr = dqn.form_init_Q_feed_dict(training_user,states,feature_space)
 
-    return vali_sum[0]/vali_cnt,vali_sum[1]/vali_cnt,vali_sum[2]/vali_cnt
+        # 1. sample random action，模仿推荐系统推荐的action
+        # feature_space 保存的是和用户相关的sku的特征:其实就是sku的embedding向量
+        random_action = [[] for _ in range(len(training_user))]
+        random_action_feature = []
+        # 每个用户曝光10个item
+        for u_i in range(len(training_user)):
+            user_i = training_user[u_i]
+            # 从用户曝光过的sku中随机选出k个sku作为推荐，模拟推荐引擎的选择
+            tmp  = list(set(np.arange(len(feature_space[user_i])))-set(states[u_i]))
+            random_action[u_i] = np.random.choice(list(set(np.arange(len(feature_space[user_i])))-set(states[u_i])),dqn.k,replace=False).tolist()
+            random_action_feature += [feature_space[user_i][jj] for jj in random_action[u_i]]
 
-lock = threading.Lock()
+        # 为了过滤第一次就不满足个数的情况。比如当用户相关的sku个数不足10个时，np.random.choice会报错，所以过滤这部分数据，其实，刚开始的时候，用户相关的
+        #   sku个数至少应该满足10个要求的。过滤之后，只剩90个user,如果没有下面的代码，则disp_2d_split_user还是100个，因此会报错。
+        #   这种方式不行，应该在最开始的时候满足用户相关的sku个数大于10的阈值。states_tr中的training_user的数量没有减少
 
-def validation(ii,out_):
-    global vali_sum,vali_cnt
-    if cmd_args.user_model=='LSTM':
-        vali_thread_eval = sess.run([train_loss_sum,train_prec1_sum,train_prec2_sum,train_event_cnt],
-                                    feed_dict={user_model.placeholder['clicked_feature']:out_['click_feature_v'][ii],
-                                               user_model.placeholder['ut_dispid_feature']:out_['u_t_dispid_feature_v'][ii],
-                                               user_model.placeholder['ut_dispid_ut']:out_['u_t_dispid_split_ut_v'][ii],
-                                               user_model.placeholder['ut_dispid']:out_['u_t_dispid_v'][ii],
-                                               user_model.placeholder['ut_clickid']:out_['u_t_clickid_v'][ii] ,
-                                               user_model.placeholder['ut_clickid_val']:np.ones(len(out_['u_t_clickid_v'][ii]), dtype=np.float32),
-                                               user_model.placeholder['click_sublist_index']:np.array(out_['click_sub_index_v'][ii], dtype=np.int64),
-                                               user_model.placeholder['ut_dense']:out_['user_time_dense_v'][ii],
-                                               user_model.placeholder['time']:out_['max_time_v'][ii],
-                                               user_model.placeholder['item_size']:out_['news_cnt_short_x_v'][ii]})
-    elif cmd_args.user_model == 'PW':
-        vali_thread_eval = sess.run([train_loss_sum,train_prec1_sum,train_prec2_sum,train_event_cnt],
-                                    feed_dict={user_model.placeholder['disp_current_feature']: out_['disp_current_feature_x_v'][ii],
-                                               user_model.placeholder['item_size']: out_['news_cnt_short_x_v'][ii],
-                                               user_model.placeholder['section_length']: out_['sec_cnt_x_v'][ii],
-                                               user_model.placeholder['click_indices']: out_['click_2d_x_v'][ii],
-                                               user_model.placeholder['click_values']: np.ones(len(out_['click_2d_x_v'][ii]), dtype=np.float32),
-                                               user_model.placeholder['disp_indices']: np.array(out_['disp_2d_x_v'][ii]),
-                                               user_model.placeholder['cumsum_tril_indices']: out_['tril_indice_v'][ii],
-                                               user_model.placeholder['cumsum_tril_value_indices']: np.array(out_['tril_value_indice_v'][ii], dtype=np.int64),
-                                               user_model.placeholder['click_2d_subindex']: out_['click_sub_index_2d_v'][ii],
-                                               user_model.placeholder['disp_2d_split_sec_ind']: out_['disp_2d_split_sec_v'][ii],
-                                               user_model.placeholder['Xs_clicked']: out_['feature_clicked_x_v'][ii]})
+        best_action = [random_action,random_action_feature]
+        data_collection['action'].extend(best_action[0])
 
-    lock.acquire()
-    vali_sum[0] += vali_thread_eval[0]
-    vali_sum[1] += vali_thread_eval[1]
-    vali_sum[2] += vali_thread_eval[2]
-    vali_cnt += vali_thread_eval[3]
-    lock.release()
+        #2. compute expected immediate reward
+        disp_2d_split_user = np.kron(np.arange(len(training_user)),np.ones(dqn.k))
+        # reward_feed_dict = {Xs_clicked: [], history_order_indices: [], history_user_indices: [], disp_2d_split_user_ind: [], disp_action_feature:[]}
+        reward_feed_dict={}
+        reward_feed_dict[env.placeholder['Xs_clicked']]=states_tr
+        reward_feed_dict[env.placeholder['history_order_indices']]=history_order_tr
+        reward_feed_dict[env.placeholder['history_user_indices']]=history_user_tr
+        reward_feed_dict[env.placeholder['disp_2d_split_user_ind']]=disp_2d_split_user
+        reward_feed_dict[env.placeholder['disp_action_feature']]=best_action[1]
 
+        # 为exp操作前的reward*对应的权重
+        # Reward_r = tf.segment_sum(tf.multiply(u_disp, p_disp), disp_2d_split_user_ind)
+        best_action_reward,transition_p,_,_ = env.conpute_reward(reward_feed_dict)
+
+        # 4. save to memory
+        y_value = best_action_reward
+        data_collection['y'].extend(y_value.tolist())##y存的是用户推荐引擎推荐的10个item，也即对用户曝光的10个item总的reward
+
+        # 5. sample new states
+        remove_set = []
+        for j in range(len(training_user)):
+            if len(feature_space[training_user[j]])-len(states[j]) <= dqn.k+1:
+                remove_set.append(j)
+
+            disp_item = best_action[0][j]
+            #transition_p[j, :]得到的是每个用户对k个item的权重
+            # 如果np.sum(transition_p[j,:]为1，则说明当前用户一定是选了一个，注意力被平均的分配到了10个item身上。
+            # 如果和不为1，则说明当前用户对此时的10个sku并不感兴趣
+            no_click = [max(1.0-np.sum(transition_p[j,:]),0.0)]
+            prob = np.array(transition_p[j,:].tolist()+no_click)
+            prob = prob/float(prob.sum())
+            # 模拟用户的选择
+            rand_choice = np.random.choice(disp_item+[-100],1,p = prob)
+            if rand_choice != -100:
+                states[j] += rand_choice.tolist()
+
+        previous_size = len(training_user)
+        states = [states[j] for j in range(previous_size) if j not in remove_set]
+        training_user = [training_user[j] for j in range(previous_size) if j not in remove_set]
+
+    return data_collection
+
+def data_collection_optimal_action(data_collection,args, env, dqn, states,training_user, feature_space):
+    for t in range(args.time_horizon):
+        data_collection['state'].extend(states)
+        data_collection['user'].extend(training_user)
+        # prepare to feed max_Q
+        action_mean_tr, action_std_tr, action_user_indice_tr, action_tensor_indice_tr, action_shape_tr, \
+        action_space_tr, states_tr, history_order_tr, history_user_tr, action_cnt_tr, \
+        action_space_cnt_tr, action_id_tr = dqn.form_max_q_feed_dict(training_user, states)
+
+        max_q_feed_dict = {}
+        max_q_feed_dict[dqn.placeholder['all_action_id']]=action_id_tr
+        max_q_feed_dict[dqn.placeholder['all_action_user_indices']]=action_user_indice_tr
+        max_q_feed_dict[dqn.placeholder['all_action_tensor_indices']]=action_tensor_indice_tr
+        max_q_feed_dict[dqn.placeholder['all_action_tensor_shape']]=action_shape_tr
+        max_q_feed_dict[dqn.placeholder['current_action_space']]=action_space_tr
+        max_q_feed_dict[dqn.placeholder['action_space_mean']]=action_mean_tr
+        max_q_feed_dict[dqn.placeholder['action_space_std']]=action_std_tr
+        max_q_feed_dict[env.placeholder['Xs_clicked']]=states_tr
+        max_q_feed_dict[dqn.placeholder['history_order_indices']]=history_order_tr
+        max_q_feed_dict[dqn.placeholder['history_user_indices']]=history_user_tr
+        max_q_feed_dict[dqn.placeholder['action_count']]=action_cnt_tr
+        max_q_feed_dict[dqn.placeholder['action_space_count']]=action_space_cnt_tr
+
+        # 1. find best recommend action
+        max_action,max_action_disp_feature = dqn.choose_action(max_q_feed_dict)
+        # 2. compute reward
+        disp_2d_split_user = np.kron(np.arange(len(training_user)),np.ones(dqn.k)).astype(int)
+        reward_feed_dict={}
+        reward_feed_dict[env.placeholder['Xs_clicked']]=states_tr
+        reward_feed_dict[env.placeholder['history_order_indices']]=history_order_tr
+        reward_feed_dict[env.placeholder['history_user_indices']]=history_user_tr
+        reward_feed_dict[env.placeholder['disp_2d_split_user_ind']]=disp_2d_split_user
+        reward_feed_dict[env.placeholder['disp_action_feature']]=max_action
+        _, transition_p,u_disp,_ = env.conpute_reward(reward_feed_dict)
+        reward_u = np.reshape(u_disp,[-1,dqn.k])
+        # 3. sample new states
+        states, training_user, old_training_user, old__new_states, sampled_reward, remove_set = \
+            env.sample_new_states_for_train(training_user, states, transition_p, reward_u, feature_space, max_action, dqn.k)
+
+        # 4. compute one-step delayed reward
+        action_mean_tr_old, action_std_tr_old, action_user_indice_tr_old, action_tensor_indice_tr_old, action_shape_tr_old, \
+        action_space_tr_old, states_tr_old, history_order_tr_old, history_user_tr_old, action_cnt_tr_old, action_space_cnt_tr_old, \
+        action_id_tr_old = dqn.form_max_q_feed_dict(old_training_user, old__new_states)
+
+        max_q_feed_dict = {}
+        max_q_feed_dict[dqn.placeholder['all_action_id']]=action_id_tr_old
+        max_q_feed_dict[dqn.placeholder['all_action_user_indices']]=action_user_indice_tr_old
+        max_q_feed_dict[dqn.placeholder['all_action_tensor_indices']]=action_tensor_indice_tr_old
+        max_q_feed_dict[dqn.placeholder['all_action_tensor_shape']]=action_shape_tr_old
+        max_q_feed_dict[dqn.placeholder['current_action_space']]=action_space_tr_old
+        max_q_feed_dict[dqn.placeholder['action_space_mean']]=action_mean_tr_old
+        max_q_feed_dict[dqn.placeholder['action_space_std']]=action_std_tr_old
+        max_q_feed_dict[env.placeholder['Xs_clicked']]=states_tr_old
+        max_q_feed_dict[dqn.placeholder['history_order_indices']]=history_order_tr_old
+        max_q_feed_dict[dqn.placeholder['history_user_indices']]=history_user_tr_old
+        max_q_feed_dict[dqn.placeholder['action_count']]=action_cnt_tr_old
+        max_q_feed_dict[dqn.placeholder['action_space_count']]=action_space_cnt_tr_old
+
+        max_q_value = dqn.get_max_q_value(max_q_feed_dict)
+
+        #4. save to memory
+        y_value = sampled_reward+args.gamma*max_q_value
+        data_collection['y'].extend(y_value.tolist())
+
+    return data_collection
+
+def train_with_random_action(args,env,dqn,train_user,feature_space):
+    training_user = np.random.choice(train_user, args.training_batch_size, replace=False).tolist()
+    states = [[] for _ in range(len(training_user))]
+    data_size_init = len(training_user)*args.time_horizon + 100
+    data_collection = {'user':deque(maxlen=data_size_init),'state':deque(maxlen=data_size_init),
+                       'action':deque(maxlen=data_size_init),'y':deque(maxlen=data_size_init)}
+    data_collection = data_collection_random_action(data_collection,args, env, dqn, states, training_user,feature_space)
+
+    # START TRAINING for this batch of users
+    num_samples = len(data_collection['user'])
+    batch_iterations = int(np.ceil(num_samples * 5 / args.sample_batch_size))
+    # data_collection相当于是从环境中收集到的数据
+    for n in range(batch_iterations):
+        batch_sample = np.random.choice(len(data_collection['user']),args.training_batch_size,replace=False)
+        states_batch = [data_collection['state'][c] for c in batch_sample]
+        user_batch = [data_collection['user'][c] for c in batch_sample]
+        action_batch = [data_collection['action'][c] for c in batch_sample]
+        y_batch = [data_collection['y'][c] for c in batch_sample]
+        loss_val = train_on_batch(user_batch,states_batch,action_batch,y_batch,feature_space,dqn,env)
+
+        if np.mod(n,250) == 0:
+            loss_val = list(loss_val[-dqn.k:])
+            log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            print_loss = ' '
+            for kkk in range(dqn.k):
+                print_loss += ' %.5g,'
+            print('AAAAA',loss_val,print_loss)
+            print(('%s: init itr(%d), training loss:'+print_loss) % tuple([log_time, n]+loss_val))
+
+    print('finish init iteration!!!!!!!')
+
+    # save model
+    dqn.save('init-q')
+
+def train_on_batch(user_batch,states_batch,action_batch,y_batch,feature_space,dqn,env):
+    action_ids_k_tr,action_space_tr,states_feature_tr,history_order_tr, \
+    history_user_tr,action_mean_tr,action_std_tr = dqn.form_loss_feed_dict(user_batch,states_batch,action_batch,feature_space)
+
+    q_feed_dict={}
+    q_feed_dict[dqn.placeholder['current_action_space']]=action_space_tr#(120,65)
+    q_feed_dict[dqn.placeholder['action_space_mean']]=action_mean_tr#(5,65)
+    q_feed_dict[dqn.placeholder['action_space_std']]=action_std_tr#(5,65)
+    q_feed_dict[env.placeholder['Xs_clicked']]=states_feature_tr#(21,65)
+    q_feed_dict[env.placeholder['history_order_indices']]=history_order_tr#(21,)
+    q_feed_dict[env.placeholder['history_user_indices']]=history_user_tr#(21,)
+    q_feed_dict[dqn.placeholder['y_label']]=y_batch#(5,)
+
+
+    action_k_id = ['action_k_{}'.format(i) for i in np.arange(dqn.k)]
+    for ii in range(dqn.k):
+        q_feed_dict[dqn.placeholder[action_k_id[ii]]] = action_ids_k_tr[ii]#(5,)
+
+
+    loss_val = dqn.train_on_batch(q_feed_dict)
+    loss_val = np.round(loss_val,10)
+    return loss_val
+
+def test_during_training(current_best_reward,test_user,time_horizon,dqn,env,feature_space):
+    # initialize empty states
+    states = [[] for _ in range(len(test_user))]
+    sim_u_reward = {}
+
+    for t in range(time_horizon):
+        action_mean_tr,action_std_tr,action_user_indice_tr,action_tensor_indice_tr,action_shape_tr,\
+        action_space_tr,states_tr,history_order_tr,history_user_tr,action_cnt_tr,\
+        action_space_cnt_tr,action_id_tr = dqn.form_max_q_feed_dict(test_user,states,feature_space)
+
+        max_q_feed_dict = {}
+        max_q_feed_dict[dqn.placeholder['all_action_id']]=action_id_tr
+        max_q_feed_dict[dqn.placeholder['all_action_user_indices']]=action_user_indice_tr
+        max_q_feed_dict[dqn.placeholder['all_action_tensor_indices']]=action_tensor_indice_tr
+        max_q_feed_dict[dqn.placeholder['all_action_tensor_shape']]=action_shape_tr
+        max_q_feed_dict[dqn.placeholder['current_action_space']]=action_space_tr
+        max_q_feed_dict[dqn.placeholder['action_space_mean']]=action_mean_tr
+        max_q_feed_dict[dqn.placeholder['action_space_std']]=action_std_tr
+        max_q_feed_dict[env.placeholder['Xs_clicked']]=states_tr
+        max_q_feed_dict[dqn.placeholder['history_order_indices']]=history_order_tr
+        max_q_feed_dict[dqn.placeholder['history_user_indices']]=history_user_tr
+        max_q_feed_dict[dqn.placeholder['action_count']]=action_cnt_tr
+        max_q_feed_dict[dqn.placeholder['action_space_count']]=action_space_cnt_tr
+
+        # 1. find best recommend action
+        max_action,max_action_disp_feature = dqn.choose_action(max_q_feed_dict)
+        # 2. compute reward
+        disp_2d_split_user = np.kron(np.arange(len(test_user)),np.ones(dqn.k)).astype(int)
+        reward_feed_dict={}
+        reward_feed_dict[env.placeholder['Xs_clicked']]=states_tr
+        reward_feed_dict[env.placeholder['history_order_indices']]=history_order_tr
+        reward_feed_dict[env.placeholder['history_user_indices']]=history_user_tr
+        reward_feed_dict[env.placeholder['disp_2d_split_user_ind']]=disp_2d_split_user
+        reward_feed_dict[env.placeholder['disp_action_feature']]=max_action
+        _, transition_p,u_disp,_ = env.conpute_reward(reward_feed_dict)
+        reward_u = np.reshape(u_disp,[-1,dqn.k])
+
+        # 5. sample reward and new states
+        sim_vali_user ,states,sim_u_reward = env.sample_new_states(sim_vali_user,states,transition_p,reward_u,sim_u_reward,feature_space,max_action,env.k)
+
+        if len(sim_vali_user) ==0:
+            break
+
+    _,_,_,_,new_best_reward = env.compute_average_reward(sim_vali_user,sim_u_reward,current_best_reward)
+    return new_best_reward
+
+def train_with_optimal_action(args,env,dqn,train_user,feature_space):
+    data_size = args.time_horizon * args.sample_batch_size + 100
+    current_best_reward = 0.0
+    for itr in range(args.iterations):
+        training_start_point = (itr*args.sample_batch_size)%25000
+        training_user = train_user[training_start_point:training_start_point+ args.sample_batch_size]
+
+        # initialize empty states
+        states = [[] for _ in len(training_user)]
+        data_collection = {'user': deque(maxlen=data_size), 'state': deque(maxlen=data_size),
+                           'action': deque(maxlen=data_size), 'y': deque(maxlen=data_size)}
+        data_collection = data_collection_optimal_action(data_collection,args, env, dqn, states,training_user, feature_space)
+
+        # START TRAINING for this batch of users
+        num_samples = len(data_collection['user'])
+        batch_iterations = int(np.ceil(num_samples * 5 / args.training_batch_size))
+        for n in range(batch_iterations):
+            batch_sample = np.random.choice(len(data_collection['user']),args.training_batch_size,replace=False)
+            states_batch = [data_collection['state'][c] for c in batch_sample]
+            user_batch = [data_collection['user'][c] for c in batch_sample]
+            action_batch = [data_collection['action'][c] for c in batch_sample]
+            y_batch = [data_collection['y'][c] for c in batch_sample]
+
+            loss_val = train_on_batch(user_batch,states_batch,action_batch,y_batch,feature_space,dqn,env)
+
+            if np.mod(n,250) == 0:
+                loss_val = list(loss_val[-dqn.k:])
+                log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                print_loss = ' '
+                for kkk in range(dqn.k):
+                    print_loss += ' %.5g,'
+                print(('%s: init itr(%d), training loss:'+print_loss) % tuple([log_time, n]+loss_val))
+
+        print('finish iteration %d' % itr)
+
+        # TEST
+        new_reward = test_during_training(current_best_reward)
+        if new_reward > current_best_reward:
+            save_path = os.path.join(args.model_path, 'best-reward')
+            dqn.save('best-reward')
+            current_best_reward = new_reward
+
+
+
+
+def main(args):
+    env = Enviroment(args)
+    feature_space,train_user,vali_user,test_user = env.initialize_environment()
+    dqn = DQN(env,args)
+
+    train_with_random_action(args,env,dqn,train_user,feature_space)
+
+    # save_path = os.path.join(args.model_path, 'best-reward')
+    # dqn.restore('best-reward')
+    dqn.restore('init-q')
+    # _ = repeated_test(0.0, num_test)
 
 if __name__ == '__main__':
     cmd_args = get_options()
-    print('current args:{}'.format(cmd_args))
-
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    t1 = time.time()
-    print('%s,start '%log_time)
-    dataset = Dataset(cmd_args)
-    dataset.init_dataset()
-
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, load data completed" % log_time)
-
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, start to construct graph" % log_time)
-
-    if cmd_args.user_model=='LSTM':
-        user_model = UserModelLSTM(dataset.f_dim,cmd_args)
-    elif cmd_args.user_model=='PW':
-        user_model = UserModelPW(dataset.f_dim,cmd_args)
-    else:
-        print('using LSTM User model instead.')
-        user_model = UserModelLSTM(dataset.f_dim,cmd_args)
-
-    user_model.construct_placeholder()
-    train_opt,train_loss,train_prec1,train_prec2,train_loss_sum,train_prec1_sum,train_prec2_sum,train_event_cnt = \
-        user_model.construct_model(is_training=True,reuse=False)
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, graph completed" % log_time)
-
-    sess = tf.Session()
-    sess.run(tf.global_variables_initializer())
-
-    #prepare validation data
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, start prepare vali data" % log_time)
-    out_vali =  dataset.prepare_validation_data(cmd_args.num_thread,dataset.vali_user)
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, prepare validation data, completed" % log_time)
-
-    #prepare test data
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, start prepare test data" % log_time)
-    out_test =  dataset.prepare_validation_data(cmd_args.num_thread,dataset.test_user)
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("%s, prepare test data end" % log_time)
-
-    best_metric = [100000.0, 0.0, 0.0]
-    vali_path =cmd_args.save_dir
-    if not os.path.exists(vali_path):
-        os.makedirs(vali_path)
-
-    saver = tf.compat.v1.train.Saver(max_to_keep=None)
-
-    for i in tqdm(range(cmd_args.num_iters)):
-        # training_start_point = (i * cmd_args.batch_size) % (len(dataset.train_user))
-        # training_user = dataset.train_user[training_start_point: min(training_start_point + cmd_args.batch_size, len(dataset.train_user))]
-        # training_user = np.random.choice(dataset.train_user,cmd_args.batch_size,replace=False)
-        training_user = dataset.get_batch_user(cmd_args.batch_size)
-        out_train =  dataset.data_process_for_placeholder(training_user)
-        if cmd_args.user_model == 'LSTM':
-            loss,_ = sess.run([train_loss,train_opt],feed_dict={user_model.placeholder['clicked_feature']:out_train['click_feature'],
-                                          user_model.placeholder['ut_dispid_feature']:out_train['u_t_dispid_feature'],
-                                          user_model.placeholder['ut_dispid_ut']:out_train['u_t_dispid_split_ut'],
-                                          user_model.placeholder['ut_dispid']:out_train['u_t_dispid'],
-                                          user_model.placeholder['ut_clickid']:out_train['u_t_clickid'] ,
-                                          user_model.placeholder['ut_clickid_val']:np.ones(len(out_train['u_t_clickid']), dtype=np.float32),
-                                          user_model.placeholder['click_sublist_index']:np.array(out_train['click_sub_index'], dtype=np.int64),
-                                          user_model.placeholder['ut_dense']:out_train['user_time_dense'],
-                                          user_model.placeholder['time']:out_train['max_time'],
-                                          user_model.placeholder['item_size']:out_train['news_cnt_short_x']})
-
-        elif cmd_args.user_model=='PW':
-            loss,_ = sess.run([train_loss,train_opt], feed_dict={user_model.placeholder['disp_current_feature']: out_train['disp_current_feature_x'],
-                                           user_model.placeholder['item_size']: out_train['news_cnt_short_x'],
-                                           user_model.placeholder['section_length']: out_train['sec_cnt_x'],
-                                           user_model.placeholder['click_indices']: out_train['click_2d_x'],
-                                           user_model.placeholder['click_values']: np.ones(len(out_train['click_2d_x']), dtype=np.float32),
-                                           user_model.placeholder['disp_indices']: np.array(out_train['disp_2d_x']),
-                                           user_model.placeholder['cumsum_tril_indices']: out_train['tril_indice'],
-                                           user_model.placeholder['cumsum_tril_value_indices']: np.array(out_train['tril_value_indice'], dtype=np.int64),
-                                           user_model.placeholder['click_2d_subindex']: out_train['click_sub_index_2d'],
-                                           user_model.placeholder['disp_2d_split_sec_ind']: out_train['disp_2d_split_sec'],
-                                           user_model.placeholder['Xs_clicked']: out_train['feature_clicked_x']})
-
-        if np.mod(i,10)==0:
-            if i==0:
-                log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                print("%s, start first iteration validation" % log_time)
-            vali_loss_prc = multithread_compute_validation(out_vali)
-            if i == 0:
-                log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                print("%s, first iteration validation complete" % log_time)
-
-            log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            print("%s: itr%d, vali: %.5f, %.5f, %.5f" %
-                  (log_time, i, vali_loss_prc[0], vali_loss_prc[1], vali_loss_prc[2]))
-
-            if vali_loss_prc[0]<best_metric[0]:
-                best_metric[0] = vali_loss_prc[0]
-                best_save_path = os.path.join(vali_path,'best-loss')
-                best_save_path = saver.save(sess,best_save_path)
-            if vali_loss_prc[1]>best_metric[1]:
-                best_save_path = os.path.join(vali_path, 'best-pre1')
-                best_save_path = saver.save(sess, best_save_path)
-            if vali_loss_prc[2] > best_metric[2]:
-                best_metric[2] = vali_loss_prc[2]
-                best_save_path = os.path.join(vali_path, 'best-pre2')
-                best_save_path = saver.save(sess, best_save_path)
-
-        log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print("%s, iteration %d train complete" % (log_time, i))
-
-    # test
-    best_save_path = os.path.join(vali_path, 'best-loss')
-    saver.restore(sess,best_save_path)
-    test_loss_prc = multithread_compute_validation(out_test)
-    vali_loss_prc = multithread_compute_validation(out_vali)
-    print("test!!!loss!!!, test: %.5f, vali: %.5f" % (test_loss_prc[0], vali_loss_prc[0]))
-
-    best_save_path = os.path.join(vali_path, 'best-pre1')
-    saver.restore(sess, best_save_path)
-    test_loss_prc = multithread_compute_validation(out_test)
-    vali_loss_prc = multithread_compute_validation(out_vali)
-    print("test!!!pre1!!!, test: %.5f, vali: %.5f" % (test_loss_prc[1], vali_loss_prc[1]))
-
-    best_save_path = os.path.join(vali_path, 'best-pre2')
-    saver.restore(sess, best_save_path)
-    test_loss_prc = multithread_compute_validation(out_test)
-    vali_loss_prc = multithread_compute_validation(out_vali)
-    print("test!!!pre2!!!, test: %.5f, vali: %.5f" % (test_loss_prc[2], vali_loss_prc[2]))
-
-    log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    t2 = time.time()
-    print("%s, end.\t time cost:%s m" % (log_time,(t2-t1)/60))
+    print('>>>>>>>>>>>',cmd_args,'<<<<<<<<<<<<<<<<<<<<<<')
+    main(cmd_args)
