@@ -14,6 +14,7 @@ import numpy as np
 from collections import deque
 from itertools import chain
 import os
+from utils.yjp_decorator import cost_time_def
 
 class DQN():
     def __init__(self,env,args):
@@ -257,7 +258,7 @@ class DQN():
 
             # return max_q_value,max_action,max_action_disp_features,max_q_feed_dict
 
-    def form_init_Q_feed_dict(self,user_set,states_id,feature_space):
+    def form_init_Q_feed_dict(self,user_set,states_id):
         # states_feature = np.zeros([len(user_set), _f_dim], dtype=np.float32)
         states_feature = [[] for _ in range(len(user_set))]
         history_order = [[] for _ in range(len(user_set))] #np.zeros([len(user_set)], dtype=np.int64)
@@ -271,7 +272,7 @@ class DQN():
             else:
                 states_feature[uu] =deque(maxlen=self.band_size)
                 for idd in states_id[uu]:# 用户点击的item
-                    states_feature[uu].append(feature_space[user][idd])
+                    states_feature[uu].append(self.env.feature_space[user][idd])
 
                 states_feature[uu] = list(states_feature[uu])
                 id_cnt = len(states_feature[uu])
@@ -283,7 +284,7 @@ class DQN():
         history_user = list(chain.from_iterable(history_user))
         return states_feature,history_order,history_user
 
-    def form_max_q_feed_dict(self,user_set,states_id,feature_space):
+    def form_max_q_feed_dict(self,user_set,states_id):
         # states_feature = np.zeros([len(user_set), _f_dim], dtype=np.float32)
 
         states_feature = [[] for _ in range(len(user_set))]
@@ -320,7 +321,7 @@ class DQN():
             else:
                 states_feature[uu] = deque(maxlen=self.band_size)
                 for idd in states_id[uu]:
-                    states_feature[uu].append(feature_space[user][idd])
+                    states_feature[uu].append(self.env.feature_space[user][idd])
 
                 states_feature[uu] = list(states_feature[uu])
                 id_cnt= len(states_feature[uu])
@@ -328,10 +329,10 @@ class DQN():
                 history_user[uu] = list(uu*np.ones(id_cnt,dtype=np.int64))
 
 
-            action_candidate = np.array(list(set(np.arange(len(feature_space[user])))-set(states_id[uu])))
+            action_candidate = np.array(list(set(np.arange(len(self.env.feature_space[user])))-set(states_id[uu])))
 
             for idd in action_candidate:
-                candidate_action.append(feature_space[user][idd])
+                candidate_action.append(self.env.feature_space[user][idd])
 
             candidate_action_mean[uu]=np.mean(np.array(candidate_action),axis=0)
             candidate_action_std[uu] = np.std(np.array(candidate_action),axis=0)
@@ -358,7 +359,7 @@ class DQN():
             action_tensor_indice += map(lambda x:[uu,x],np.arange(action_cnt[uu]))
 
             # action space
-            action_space +=feature_space[user]
+            action_space +=self.env.feature_space[user]
 
         action_cnt =np.cumsum(action_cnt)
         action_cnt = [0] + list(action_cnt[:-1])
@@ -372,7 +373,8 @@ class DQN():
         return candidate_action_mean,candidate_action_std,action_user_indice,action_tensor_indice,action_shape,\
                action_space,states_feature,history_order,history_user,action_cnt,action_space_cnt,action_id
 
-    def form_loss_feed_dict(self,user_set,states_id,action_id,feature_space):
+    @cost_time_def
+    def form_loss_feed_dict(self,user_set,states_id,action_id):
         states_feature = [[] for _ in range(len(user_set))]
         history_order = [[] for _ in range(len(user_set))]  # np.zeros([len(user_set)], dtype=np.int64)
         history_user = [[] for _ in range(len(user_set))]  # np.arange(len(user_set), dtype=np.int64)
@@ -394,16 +396,16 @@ class DQN():
             else:
                 states_feature[uu] = deque(maxlen=self.band_size)
                 for idd in states_id[uu]:
-                    states_feature[uu].append(feature_space[user][idd])
+                    states_feature[uu].append(self.env.feature_space[user][idd])
 
                 states_feature[uu] = list(states_feature[uu])
                 id_cnt = len(states_feature[uu])
                 history_order[uu] = np.arange(id_cnt, dtype=np.int64).tolist()
                 history_user[uu] = list(uu * np.ones(id_cnt, dtype=np.int64))
 
-            action_candidate = np.array(list(set(np.arange(len(feature_space[user]))) - set(states_id[uu])))
+            action_candidate = np.array(list(set(np.arange(len(self.env.feature_space[user]))) - set(states_id[uu])))
             for idd in action_candidate:
-                candidate_action.append(feature_space[user][idd])
+                candidate_action.append(self.env.feature_space[user][idd])
 
             candidate_action_mean[uu] = np.mean(np.array(candidate_action), axis=0).tolist()
             candidate_action_std[uu] = np.std(np.array(candidate_action), axis=0).tolist()
@@ -415,7 +417,7 @@ class DQN():
 
 
             # action space
-            action_space += feature_space[user]
+            action_space += self.env.feature_space[user]
 
         states_feature = list(chain.from_iterable(states_feature))
         history_order = list(chain.from_iterable(history_order))
@@ -423,6 +425,7 @@ class DQN():
 
         return action_ids_k,action_space,states_feature,history_order,history_user,candidate_action_mean,candidate_action_std
 
+    @cost_time_def
     def train_on_batch(self,q_feed_dict):
         _,loss_k = self.sess.run([self.train_op_k,self.loss_k],feed_dict=q_feed_dict)
         return loss_k

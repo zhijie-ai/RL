@@ -44,9 +44,9 @@ class Enviroment():
         file = open(filename, 'rb')
         self.train_user_click = pickle.load(file)
         self.train_user_noclick = pickle.load(file)
-        train_user = self.train_user_click+self.train_user_noclick
-        vali_user = pickle.load(file)
-        test_user = pickle.load(file)
+        self.train_user = self.train_user_click+self.train_user_noclick
+        self.vali_user = pickle.load(file)
+        self.test_user = pickle.load(file)
         self.size_user = pickle.load(file)
         self.size_item = pickle.load(file)
         file.close()
@@ -65,15 +65,14 @@ class Enviroment():
         self.user_emb_dict = {id2key_user.get(ind,'UNK'):emb.tolist() for ind,emb in enumerate(self.user_embedding)}
         file.close()
 
-        feature_space=defaultdict(list)
+        self.feature_space=defaultdict(list)
         for ind in range(self.size_user):
             u = data_behavior[ind][0]
             disp_id = data_behavior[ind][1]
             for id in disp_id:
                 emb = self.sku_emb_dict.get(id,random_emb)
-                feature_space[u].append(emb)
+                self.feature_space[u].append(emb)
 
-        return feature_space,train_user,vali_user,test_user
 
     def construct_placeholder(self):
 
@@ -144,7 +143,7 @@ class Enviroment():
 
 
     def initialize_environment(self,reuse=False):
-        feature_space,train_user,vali_user,test_user = self.format_feature_space()
+        self.format_feature_space()
         self.construct_placeholder()
         print(['_k', self.k, '_noclick_weight', self.noclick_weight])
 
@@ -158,7 +157,6 @@ class Enviroment():
         best_save_path = os.path.join(self.save_dir, 'best-loss')
         self.saver.restore(self.sess, best_save_path)
 
-        return feature_space,train_user,vali_user,test_user
 
     def conpute_reward(self,reward_feed_dict):
         # 1. reward
@@ -166,7 +164,7 @@ class Enviroment():
         Reward_1 = tf.segment_sum(self.p_disp, self.placeholder['disp_2d_split_user_ind'])
         trans_p = tf.reshape(self.p_disp, [-1, self.k])
 
-        Reward_r,trans_p = self.sess.run([Reward_r,trans_p],feed_dict=reward_feed_dict)
+        Reward_r,trans_p,u_disp = self.sess.run([Reward_r,trans_p,self.u_disp],feed_dict=reward_feed_dict)
         # u_disp,p_disp,exp_u_disp,u1,u2 = self.sess.run([self.u_disp,self.p_disp,self.exp_u_disp,
         #                                           self.scatter_sum_exp_disp,self.disp_2d_split_user_ind],feed_dict=reward_feed_dict)
         # # 错误的代码中reward_r的shape为(10, 100)，因为tf.exp(u_disp)用的是未变形的变量
@@ -181,15 +179,15 @@ class Enviroment():
 
 
 
-        return Reward_r,trans_p,self.u_disp,reward_feed_dict
+        return Reward_r,trans_p,u_disp,reward_feed_dict
 
-    def sample_new_states(self,sim_vali_user,states,trasition_p,reward_u,sim_user_reward,feature_space,best_action_id,_k):
+    def sample_new_states(self,sim_vali_user,states,trasition_p,reward_u,sim_user_reward,best_action_id,_k):
         remove_set=[]
         for j in range(len(sim_vali_user)):
-            if len(feature_space[sim_vali_user[j]])-len(states[j])<=self.k+1:
+            if len(self.feature_space[sim_vali_user[j]])-len(states[j])<=self.k+1:
                 remove_set.append(j)
 
-            disp_item = best_action_id[j]
+            disp_item = best_action_id[j].tolist()
             no_click = [max(1.0-np.sum(trasition_p[j,:]),0.0)]
             prob = np.array(trasition_p[j,:].tolist()+no_click)
             #transition_p[j, :]得到的是每个用户对k个item的权重
@@ -238,15 +236,15 @@ class Enviroment():
         return user_avg_reward,current_avg_reward,clk_rate,current_avg_clkrate,current_best_rewrd
 
 
-    def sample_new_states_for_train(self,training_user, states, transition_p, reward_u, feature_space,  best_action_id, _k):
+    def sample_new_states_for_train(self,training_user, states, transition_p, reward_u,  best_action_id, _k):
         remove_set = []
         sampled_reward = []
         for j in range(len(training_user)):
             # 如果某个用户可选的action数量<某个阈值，则该用户不用再处理了
-            if len(feature_space[training_user[j]]) - len(states[j]) <= _k+1:
+            if len(self.feature_space[training_user[j]]) - len(states[j]) <= _k+1:
                 remove_set.append(j)
 
-            disp_item = best_action_id[j]
+            disp_item = best_action_id[j].tolist()
             no_click = [max(1.0 - np.sum(transition_p[j, :]), 0.0)]
             prob = np.array(transition_p[j, :].tolist()+no_click)
             prob = prob / float(prob.sum())
@@ -266,6 +264,21 @@ class Enviroment():
         return states_removed, training_user_removed, training_user, states, np.array(sampled_reward), remove_set
 
 
+    def save_results(self,time_horizon, sim_vali_user, sim_user_reward, user_avg_reward, mean_user_avg_reward, clk_rate, mean_clk_rate, filename):
+
+        print(['mean, reward of all experiments:', np.mean(mean_user_avg_reward)])
+        print(['std, reward of all experiments:', np.std(mean_user_avg_reward)])
+        print(['mean, click rate of all experiments:', np.mean(mean_clk_rate)])
+        print(['std, click rate of all experiments:', np.std(mean_clk_rate)])
+
+        with open(filename, 'wb') as handle:
+            pickle.dump(sim_vali_user, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(sim_user_reward, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(user_avg_reward, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(mean_user_avg_reward, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(clk_rate, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(mean_clk_rate, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(time_horizon, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 

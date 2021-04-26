@@ -1,0 +1,5 @@
+1. 训练阶段，在与环境交互收集数据的过程中，只需要(s,a,r)即可.r+gamma*r'
+    sample_new_states_for_train中并不会出现重复的用户，因此只需要sampled_reward=[]即可。
+
+2. 在test时，需要让用户经历完整的time步，比如time_horizon=6，我们要算用户的平均reward，因此sim_u_reward一个用户
+    会有time个数
