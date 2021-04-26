@@ -278,7 +278,7 @@ def train_with_greedy_action(args,env,dqn):
         print('finish iteration %d' % itr)
 
         # TEST
-        new_reward = test_during_training(current_best_reward,env.test_user[0:10],args.time_horizon,dqn,env)
+        new_reward = test_during_training(current_best_reward,env.test_user,args.time_horizon,dqn,env)
         if new_reward > current_best_reward:
             save_path = os.path.join(args.model_path, 'best-reward')
             dqn.save('best-reward')
