@@ -3,3 +3,6 @@
 
 2. 在test时，需要让用户经历完整的time步，比如time_horizon=6，我们要算用户的平均reward，因此sim_u_reward一个用户
     会有time个数
+
+RL的训练中， 有2个for循环，一个针对episode的外层循环，一个针对max len的内层循环。在推荐系统领域，用户应该就是对于的episode，每个用户与环境交互的数据
+    应该就是max len。

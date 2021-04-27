@@ -51,6 +51,7 @@ project_name = (root_path.split(os.path.sep))[-1]
 platform_ = platform.system()
 if platform_ == "Windows":
     log_file_path = str(root_path) + '/logs/' + project_name + "-" + date + '.log'
+    log_file_path = 'G:\\logs\log.log'
 else:
     log_file_path = '/home/logs/' + hostname + '.log'
 

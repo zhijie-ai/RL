@@ -14,10 +14,7 @@ import pickle,os
 from collections import defaultdict
 import numpy as np
 import tensorflow as tf
-import GAN_RL.yjp.code.global_v as gl
 from GAN_RL.yjp.code.options import get_options
-
-gl._init()
 
 class Enviroment():
     def __init__(self,args):
@@ -211,7 +208,7 @@ class Enviroment():
         sim_vali_user = [sim_vali_user[j] for j in range(previous_size) if j not in remove_set]
         return sim_vali_user,states,sim_user_reward
 
-    def compute_average_reward(self,sim_vali_user,sim_user_rewrd,current_best_rewrd):
+    def compute_average_reward(self,sim_vali_user,sim_user_rewrd,current_best_reward):
         user_avg_reward = []
         clk_rate = []
         for j in range(len(sim_vali_user)):
@@ -227,13 +224,13 @@ class Enviroment():
         current_avg_reward = np.mean(user_avg_reward)
         current_avg_clkrate = np.mean(clk_rate)
         best_or_not =''
-        if current_avg_reward>current_best_rewrd:
+        if current_avg_reward>current_best_reward:
             current_best_reward = current_avg_reward
             best_or_not = 'new best!!!'
 
         print(['mean avg reward', current_avg_reward, 'clk_rate:', current_avg_clkrate,  best_or_not])
 
-        return user_avg_reward,current_avg_reward,clk_rate,current_avg_clkrate,current_best_rewrd
+        return user_avg_reward,current_avg_reward,clk_rate,current_avg_clkrate,current_best_reward
 
 
     def sample_new_states_for_train(self,training_user, states, transition_p, reward_u,  best_action_id, _k):
@@ -279,7 +276,6 @@ class Enviroment():
             pickle.dump(clk_rate, handle, protocol=pickle.HIGHEST_PROTOCOL)
             pickle.dump(mean_clk_rate, handle, protocol=pickle.HIGHEST_PROTOCOL)
             pickle.dump(time_horizon, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
 
 
 if __name__ == '__main__':

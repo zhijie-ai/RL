@@ -33,7 +33,7 @@ def get_options(args=None):
     parser.add_argument('--resplit', type=eval, default=False)
     parser.add_argument('--num_thread', type=int, default=10, help='number of threadings')
     parser.add_argument('--learning_rate', type=float, default=1e-3, help='learning rate for env training')
-    parser.add_argument('--batch_size', type=int, default=128, help='batch size')
+    parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
     parser.add_argument('--num_iters', type=int, default=50, help='num of iterations for env training')
     # might change later to policy_grad method with attetion rather than lstm
     parser.add_argument('--rnn_hidden_dim', type=int, default=20, help='LSTM hidden sizes')
@@ -52,18 +52,16 @@ def get_options(args=None):
     parser.add_argument('--env_std', type=float, default=1e-3, help='std for normal initialization ')
 
     #-----------------------------------------dqn---------------------------------------------
-    parser.add_argument('--time_horizon', type=int, default=5, help='time step for collecting data with env')
-    parser.add_argument('--epochs', type=int, default=50, help='num of iterations for q learning')
+    parser.add_argument('--time_horizon', type=int, default=50, help='time step for collecting data with env')
     parser.add_argument('--dqn_type', type=str, default='offline', help='collection data with env online or offline.')
     parser.add_argument('--q_std', type=float, default=1e-2, help='std for dqn normal initialization .')
     parser.add_argument('--dqn_dims', type=str, default='256-32')
     parser.add_argument('--dqn_lr', type=float, default=1e-3, help='learning rate for q-learning')
     parser.add_argument('--min_value', type=float, default=-1000000000.0, help='min value')
-    parser.add_argument('--sample_batch_size', type=int, default=10,help='num of choosing user')
+    parser.add_argument('--sample_batch_size', type=int, default=1024,help='num of choosing user')
     parser.add_argument('--gamma', type=float, default=0.98)
-    parser.add_argument('--training_batch_size', type=int, default=10,help='batch size of training')
+    parser.add_argument('--training_batch_size', type=int, default=1024,help='batch size of training')
     parser.add_argument('--model_path', type =str,default ='../model/dqn/',help = 'dqn model path')
-    parser.add_argument('--num_test', type =int,default =50,help = 'num of test')
 
     opts = parser.parse_args(args)
 
