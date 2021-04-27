@@ -35,11 +35,11 @@ def train_with_random_action(dataset,env,dqn):
         training_user = env.train_user[ind:end]
         data_collection = dataset.data_collection(training_user)
         # START TRAINING for this batch of users
-        num_samples = len(data_collection['user'])
-        batch_iterations = int(np.ceil(num_samples / dataset.args.training_batch_size))
         # data_collection相当于是从环境中收集到的数据
-        for n in range(batch_iterations):
-            batch_sample = np.random.choice(len(data_collection['user']),dataset.args.training_batch_size,replace=False)
+        num_samples = len(data_collection['user'])
+        arr = np.arange(num_samples)
+        for n in range(0,num_samples,dataset.args.training_batch_size):
+            batch_sample = arr[n:n+dataset.args.training_batch_size]
             states_batch = [data_collection['state'][c] for c in batch_sample]
             user_batch = [data_collection['user'][c] for c in batch_sample]
             action_batch = [data_collection['action'][c] for c in batch_sample]
@@ -125,7 +125,7 @@ def validation(current_best_reward,dataset,env,dqn,sim_vali_user):
         if len(sim_vali_user) ==0:
             break
 
-    user_avg_reward,current_avg_reward,clk_rate,\
+    user_avg_reward,current_avg_reward,clk_rate, \
     current_avg_clkrate,best_reward = env.compute_average_reward(sim_vali_user,sim_u_reward,current_best_reward)
 
     lock.acquire()
@@ -140,7 +140,7 @@ def validation(current_best_reward,dataset,env,dqn,sim_vali_user):
 def train_with_greedy_action(dataset,env,dqn):
     # 用全部数据训练一遍
     current_best_reward = 0.0
-    for ind in tqdm(range(0,len(env.train_user),dataset.args.sample_batch_size)):
+    for ind in tqdm(range(0,len(env.train_user[0:dataset.args.sample_batch_size]),dataset.args.sample_batch_size)):
         end = ind+dataset.args.sample_batch_size
         training_user = env.train_user[ind:end]
 
@@ -149,9 +149,9 @@ def train_with_greedy_action(dataset,env,dqn):
 
         # START TRAINING for this batch of users
         num_samples = len(data_collection['user'])
-        batch_iterations = int(np.ceil(num_samples / dataset.args.training_batch_size))
-        for n in range(batch_iterations):
-            batch_sample = np.random.choice(len(data_collection['user']),dataset.args.training_batch_size,replace=False)
+        arr = np.arange(num_samples)
+        for n in range(0,num_samples,dataset.args.training_batch_size):
+            batch_sample = arr[n:n+dataset.args.training_batch_size]
             states_batch = [data_collection['state'][c] for c in batch_sample]
             user_batch = [data_collection['user'][c] for c in batch_sample]
             action_batch = [data_collection['action'][c] for c in batch_sample]
@@ -190,7 +190,7 @@ def main(args):
     # 参照强化学习的训练逻辑，EE问题。在收集数据的时候兼顾EE问题。此论文的思路将EE问题分开来解决。
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
-    train_with_random_action(dataset,env,dqn)
+    # train_with_random_action(dataset,env,dqn)
 
     # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_with_greedy_action(dataset,env,dqn)

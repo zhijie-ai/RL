@@ -244,6 +244,7 @@ class Enviroment():
             disp_item = best_action_id[j].tolist()
             no_click = [max(1.0 - np.sum(transition_p[j, :]), 0.0)]
             prob = np.array(transition_p[j, :].tolist()+no_click)
+            # print('===========',prob,no_click,transition_p[j, :].tolist())#[0.42553002 0.57446998] [0.5744699835777283] [0.42553001642227173]
             prob = prob / float(prob.sum())
             rand_choice = np.random.choice(disp_item + [-100], 1, p=prob)
 
