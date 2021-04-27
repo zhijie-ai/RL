@@ -140,7 +140,7 @@ def validation(current_best_reward,dataset,env,dqn,sim_vali_user):
 def train_with_greedy_action(dataset,env,dqn):
     # 用全部数据训练一遍
     current_best_reward = 0.0
-    for ind in tqdm(range(0,len(env.train_user[0:dataset.args.sample_batch_size]),dataset.args.sample_batch_size)):
+    for ind in tqdm(range(0,len(env.train_user),dataset.args.sample_batch_size)):
         end = ind+dataset.args.sample_batch_size
         training_user = env.train_user[ind:end]
 
@@ -190,7 +190,7 @@ def main(args):
     # 参照强化学习的训练逻辑，EE问题。在收集数据的时候兼顾EE问题。此论文的思路将EE问题分开来解决。
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
-    # train_with_random_action(dataset,env,dqn)
+    train_with_random_action(dataset,env,dqn)
 
     # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_with_greedy_action(dataset,env,dqn)
