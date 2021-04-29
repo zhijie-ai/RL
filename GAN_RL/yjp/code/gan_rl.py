@@ -16,11 +16,13 @@ import tensorflow as tf
 import threading
 from multiprocessing import Process
 from tqdm import tqdm
+from utils.yjp_decorator import cost_time_def
 
 from GAN_RL.yjp.code.options import get_options
 from GAN_RL.yjp.code.data_util import Dataset
 from GAN_RL.yjp.code.model import UserModelLSTM,UserModelPW
 
+@cost_time_def
 def multithread_compute_validation(out_):
     global vali_sum,vali_cnt
 
@@ -42,6 +44,7 @@ def multithread_compute_validation(out_):
 
 lock = threading.Lock()
 
+@cost_time_def
 def validation(ii,out_):
     global vali_sum,vali_cnt
     if cmd_args.user_model=='LSTM':

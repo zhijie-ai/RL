@@ -110,7 +110,7 @@ class Dataset():
     @cost_time_def
     def preprocess_data(self):
         click = self.filter_(self.click,min_count=7,max_count=20)
-        exposure = self.filter_(self.exposure,min_count=7,max_count=200)
+        exposure = self.filter_(self.exposure,min_count=7,max_count=40)
         click['is_click'] = 1
         exposure['is_click']=0
 
@@ -178,9 +178,9 @@ class Dataset():
 
 
     @cost_time_def
-    def gen_embedding(self,d_str='20210412'):
+    def gen_embedding(self,d_str):
         if d_str is None:
-            d_str = datetime.datetime.strftime('%Y%m%d')
+            d_str = datetime.datetime.now().strftime('%Y%m%d')
 
         path = '{}/'.format(d_str)
         sku_biases = pickle.load(open(path+'sku_biases.pickle','rb'))
@@ -237,7 +237,6 @@ class Dataset():
         self.f_dim = self.sku_embedding.shape[1]
         self.random_emb = np.random.randn(self.f_dim).tolist()
 
-    @cost_time_def
     def data_process_for_placeholder(self,user_set):
         if self.model_type=='PW':
             sec_cnt_x = 0
@@ -355,7 +354,6 @@ class Dataset():
             out['user_time_dense'] = user_time_dense
             return out
 
-    @cost_time_def
     def data_process_for_placeholder_L2(self,user_set):
         news_cnt_short_x=0
         u_t_dispid=[]
@@ -473,7 +471,6 @@ class Dataset():
             self.feature_click[u] = self.feature_click[u].tolist()
         self.max_disp_size = k_max
 
-    @cost_time_def
     def prepare_validation_data_L2(self,num_sets,v_user):
         vali_thread_u = [[] for _ in range(num_sets)]
         size_user_v = [[] for _ in range(num_sets)]
@@ -519,7 +516,6 @@ class Dataset():
 
         return out2
 
-    @cost_time_def
     def prepare_validation_data(self,num_sets,v_user):
         if self.model_type == 'PW':
             vali_thread_u = [[] for _ in range(num_sets)]
@@ -617,7 +613,7 @@ class Dataset():
 
     @cost_time_def
     def init_dataset(self):
-        # self.gen_embedding()
+        # self.gen_embedding()#'20210412'
         # self.preprocess_data()
         self.read_data()
         self.format_data()
