@@ -52,7 +52,8 @@ def get_options(args=None):
     parser.add_argument('--env_std', type=float, default=1e-3, help='std for normal initialization ')
 
     #-----------------------------------------dqn---------------------------------------------
-    parser.add_argument('--time_horizon', type=int, default=50, help='time step for collecting data with env')
+    parser.add_argument('--train_time_horizon', type=int, default=15, help='time step for collecting data with env while training')
+    parser.add_argument('--vali_time_horizon', type=int, default=15, help='time step for collecting data with env while validation or test')
     parser.add_argument('--dqn_type', type=str, default='offline', help='collection data with env online or offline.')
     parser.add_argument('--q_std', type=float, default=1e-2, help='std for dqn normal initialization .')
     parser.add_argument('--dqn_dims', type=str, default='256-32')
@@ -61,7 +62,9 @@ def get_options(args=None):
     parser.add_argument('--sample_batch_size', type=int, default=1024,help='num of choosing user')
     parser.add_argument('--gamma', type=float, default=0.98)
     parser.add_argument('--training_batch_size', type=int, default=1024,help='batch size of training')
+    parser.add_argument('--vali_batch_size', type=int, default=4000,help='batch size of validation')
     parser.add_argument('--model_path', type =str,default ='../model/dqn/',help = 'dqn model path')
+    parser.add_argument('--epoch', type =int,default =5,help = 'iteration for train')
 
     opts = parser.parse_args(args)
 

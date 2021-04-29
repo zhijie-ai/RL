@@ -28,13 +28,13 @@ class Dataset():
     @cost_time_def
     def data_collection(self, training_user,type='random'):
         states = [[] for _ in range(len(training_user))]
-        data_size_init = len(training_user)*self.args.time_horizon+100
+        data_size_init = len(training_user)*self.args.train_time_horizon+100
         data_collection = {'user':deque(maxlen=data_size_init),'state':deque(maxlen=data_size_init),
                            'action':deque(maxlen=data_size_init),'y':deque(maxlen=data_size_init)}
         if type=='random':
             # (1) first step: initialize Q as the expected rwd function
             # current_best_reward = 0.0
-            for t in range(self.args.time_horizon):
+            for t in range(self.args.train_time_horizon):
                 data_collection['state'].extend(states)
                 data_collection['user'].extend(training_user)
                 # prepare to feed max_Q
@@ -100,7 +100,7 @@ class Dataset():
                 states = [states[j] for j in range(previous_size) if j not in remove_set]
                 training_user = [training_user[j] for j in range(previous_size) if j not in remove_set]
         else:#greedy
-            for t in range(self.args.time_horizon):
+            for t in range(self.args.train_time_horizon):
                 data_collection['state'].extend(states)
                 data_collection['user'].extend(training_user)
                 # prepare to feed max_Q
@@ -155,7 +155,7 @@ class Dataset():
             thread_u[ii%num_sets].append(user_set[ii])
 
 
-        data_size_init = len(user_set)*self.args.time_horizon+100
+        data_size_init = len(user_set)*self.args.train_time_horizon+100
         data_collection = {'user':deque(maxlen=data_size_init),'state':deque(maxlen=data_size_init),
                            'action':deque(maxlen=data_size_init),'y':deque(maxlen=data_size_init)}
 

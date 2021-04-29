@@ -221,16 +221,16 @@ class Enviroment():
             avg_cumsum_reward = cusum_reward/np.arange(1,len(cusum_reward)+1)
             user_avg_reward.append(avg_cumsum_reward[-1])
 
-        current_avg_reward = np.mean(user_avg_reward)
-        current_avg_clkrate = np.mean(clk_rate)
-        best_or_not =''
-        if current_avg_reward>current_best_reward:
-            current_best_reward = current_avg_reward
-            best_or_not = 'new best!!!'
+        current_sum_reward = np.sum(user_avg_reward)
+        current_sum_clkrate = np.sum(clk_rate)
 
-        print(['mean avg reward', current_avg_reward, 'clk_rate:', current_avg_clkrate,  best_or_not])
+        # best_or_not =''
+        # if current_avg_reward>current_best_reward:
+        #     current_best_reward = current_avg_reward
+        #     best_or_not = 'new best!!!'
+        # print(['mean avg reward', current_avg_reward, 'clk_rate:', current_avg_clkrate,  best_or_not])
 
-        return user_avg_reward,current_avg_reward,clk_rate,current_avg_clkrate,current_best_reward
+        return current_sum_reward,current_sum_clkrate
 
 
     def sample_new_states_for_train(self,training_user, states, transition_p, reward_u,  best_action_id, _k):
@@ -284,3 +284,5 @@ if __name__ == '__main__':
     print('current args:{}'.format(cmd_args))
     env = Enviroment(cmd_args)
     env.initialize_environment()
+    print(len(env.train_user))
+    np.save('vali_user',env.vali_user)
