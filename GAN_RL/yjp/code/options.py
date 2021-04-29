@@ -62,7 +62,7 @@ def get_options(args=None):
     parser.add_argument('--sample_batch_size', type=int, default=1024,help='num of choosing user')
     parser.add_argument('--gamma', type=float, default=0.98)
     parser.add_argument('--training_batch_size', type=int, default=1024,help='batch size of training')
-    parser.add_argument('--vali_batch_size', type=int, default=4000,help='batch size of validation')
+    parser.add_argument('--vali_batch_size', type=int, default=2000,help='batch size of validation')
     parser.add_argument('--model_path', type =str,default ='../model/dqn/',help = 'dqn model path')
     parser.add_argument('--epoch', type =int,default =5,help = 'iteration for train')
 
