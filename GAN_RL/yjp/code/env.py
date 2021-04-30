@@ -25,6 +25,7 @@ class Enviroment():
         self.noclick_weight = args.noclick_weight
         self.band_size = args.pw_band_size
         self.pw_dim = args.pw_dim
+        self.user_model = args.user_model
         self.save_dir = args.save_dir
         self.hidden_dims = args.dims
         self.std = args.env_std
@@ -151,7 +152,7 @@ class Enviroment():
         self.saver = tf.compat.v1.train.Saver(max_to_keep=None)
         # self.sess.run(tf.global_variables_initializer())
         self.sess.run(tf.variables_initializer(self.agg_variables))
-        best_save_path = os.path.join(self.save_dir, 'best-loss')
+        best_save_path = os.path.join(self.save_dir,self.user_model, 'best-loss')
         self.saver.restore(self.sess, best_save_path)
 
 

@@ -135,7 +135,7 @@ if __name__ == '__main__':
     print("%s, prepare test data end" % log_time)
 
     best_metric = [100000.0, 0.0, 0.0]
-    vali_path =cmd_args.save_dir
+    vali_path =os.path.join(cmd_args.save_dir,cmd_args.user_model)
     if not os.path.exists(vali_path):
         os.makedirs(vali_path)
 
