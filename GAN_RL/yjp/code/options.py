@@ -34,7 +34,7 @@ def get_options(args=None):
     parser.add_argument('--num_thread', type=int, default=10, help='number of threadings')
     parser.add_argument('--learning_rate', type=float, default=1e-3, help='learning rate for env training')
     parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
-    parser.add_argument('--num_iters', type=int, default=50, help='num of iterations for env training')
+    parser.add_argument('--num_iters', type=int, default=100, help='num of iterations for env training')
     # might change later to policy_grad method with attetion rather than lstm
     parser.add_argument('--rnn_hidden_dim', type=int, default=20, help='LSTM hidden sizes')
     parser.add_argument('--pw_dim', type=int, default=4, help='position weight dim')

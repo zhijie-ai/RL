@@ -22,6 +22,12 @@ from GAN_RL.yjp.code.options import get_options
 from GAN_RL.yjp.code.data_util import Dataset
 from GAN_RL.yjp.code.model import UserModelLSTM,UserModelPW
 
+import warnings
+warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore',category=FutureWarning,module='tensorflow')
+warnings.filterwarnings('ignore',category=UserWarning,module='tensorflow')
+warnings.filterwarnings('ignore',category=DeprecationWarning,module='tensorflow')
+
 @cost_time_def
 def multithread_compute_validation(out_):
     global vali_sum,vali_cnt

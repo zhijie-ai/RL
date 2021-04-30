@@ -20,6 +20,8 @@ from collections import defaultdict
 
 
 class Dataset():
+
+    @cost_time_def
     def __init__(self,args):
         self.click = pd.read_csv(args.click_path)
         self.exposure = pd.read_csv(args.exposure_path)
@@ -93,7 +95,7 @@ class Dataset():
     def split_dataset(self,data):
         data = data.sample(frac=1).reset_index(drop=True)
         user_ids = data.user_id.unique()
-        train_user,test_user = train_test_split(user_ids,test_size=0.2)
+        train_user,test_user = train_test_split(user_ids,test_size=0.1)
         train_user,val_user = train_test_split(train_user,test_size=0.1)
         data['split_tag']=3
 
@@ -110,7 +112,7 @@ class Dataset():
     @cost_time_def
     def preprocess_data(self):
         click = self.filter_(self.click,min_count=7,max_count=20)
-        exposure = self.filter_(self.exposure,min_count=7,max_count=40)
+        exposure = self.filter_(self.exposure,min_count=7,max_count=80)
         click['is_click'] = 1
         exposure['is_click']=0
 
@@ -171,18 +173,15 @@ class Dataset():
         pickle.dump(size_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(size_item, file, protocol=pickle.HIGHEST_PROTOCOL)
         file.close()
-        print('size_user:{}\tsize_item:{}\tnum of train user:{}'
-              '\tnum of vali user:{}\tnum of test user:{}\tclick train user:{}\t'
-              ' no click train user:{}'.format(size_user,size_item,len(train_user_noclick+train_user_click),len(vali_user),
-                                               len(test_user),len(train_user_click),len(train_user_noclick)))
 
 
     @cost_time_def
-    def gen_embedding(self,d_str):
+    def gen_embedding(self,d_str=None):
         if d_str is None:
             d_str = datetime.datetime.now().strftime('%Y%m%d')
 
-        path = '{}/'.format(d_str)
+        path = '{}/{}/'.format(self.embedding_path,d_str)
+        print('>>>>>>>>>>>>>>>>>>>>>embedding path:{}'.format(path))
         sku_biases = pickle.load(open(path+'sku_biases.pickle','rb'))
         sku_embeddings= pickle.load(open(path+'sku_embeddings.pickle','rb'))
         user_biases= pickle.load(open(path+'user_biases.pickle','rb'))
@@ -613,17 +612,18 @@ class Dataset():
 
     @cost_time_def
     def init_dataset(self):
-        # self.gen_embedding()#'20210412'
-        # self.preprocess_data()
+        self.gen_embedding()#'20210412'
+        self.preprocess_data()
         self.read_data()
         self.format_data()
-
         print('---------------------------size_user:{}\tsize_item:{}\tnum of train user:{}'
-              '\tnum of vali user:{}\tnum of test user:{}'.format(self.size_user,self.size_item,len(self.train_user),len(self.vali_user),len(self.test_user)))
+              '\tnum of vali user:{}\tnum of test user:{}\tclick train user:{}\t'
+              ' no click train user:{}'.format(self.size_user,self.size_item,len(self.train_user_noclick+self.train_user_click),len(self.vali_user),
+                                               len(self.test_user),len(self.train_user_click),len(self.train_user_noclick)))
 
     def get_batch_user(self,batch_size):
-        user_click = np.random.choice(self.train_user_click,batch_size-10,replace=False).tolist()
-        user_noclick = np.random.choice(self.train_user_noclick,10,replace=False).tolist()
+        user_click = np.random.choice(self.train_user_click,124,replace=False).tolist()
+        user_noclick = np.random.choice(self.train_user_noclick,900,replace=False).tolist()
         return np.array(user_click+user_noclick)
 
 
@@ -633,7 +633,8 @@ if __name__ == '__main__':
     args = get_options()
     dataset = Dataset(args)
 
-    dataset.preprocess_data()
+    dataset.init_dataset()
+    # dataset.preprocess_data()
     # dataset.read_data()
     # dataset.format_data()
 
