@@ -100,6 +100,7 @@ class UserModelLSTM():
         precision_2_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],top2_compare))
         precision_1 = precision_1_sum/event_cnt
         precision_2 = precision_2_sum/event_cnt
+        self.all_variables = tf.trainable_variables()
 
         return loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
 
@@ -124,7 +125,7 @@ class UserModelLSTM():
         # utility
         u_net = mlp(combine_feature,self.hidden_dims,1,activation=tf.nn.elu,sd=1e-1,act_last=False)
         self.u_net = tf.reshape(u_net,[-1])
-        self.min_trainable_variables = tf.trainable_variables
+        self.min_trainable_variables = tf.trainable_variables()
 
 
     def construct_computation_graph_policy(self):
@@ -188,6 +189,7 @@ class UserModelLSTM():
         # lossL2_max = tf.add_n([tf.nn.l2_loss(v) for v in max_trainable_variables if 'bias' not in v.name]) * _regularity
         train_min_op = opt.minimize(loss_min,var_list=self.min_trainable_variables)
         train_max_op = opt.minimize(loss_max,var_list=max_trainable_variables)
+        self.all_variables = tf.trainable_variables()
 
         self.init_variables = list(set(tf.global_variables())-set(self.min_trainable_variables))
 
