@@ -32,6 +32,7 @@ class DQN():
         self.placeholder = {}
 
         self.sess=tf.compat.v1.InteractiveSession()
+        self.global_step = tf.train.get_or_create_global_step()#trainable=False
         self._init()
         self.sess.run(tf.global_variables_initializer())
         self.saver =tf.compat.v1.train.Saver()
@@ -130,7 +131,7 @@ class DQN():
                 opt_k[ii] = tf.train.AdamOptimizer(learning_rate=self.lr)
 
                 train_variable_k[ii] = list(set(tf.trainable_variables())-set(current_variables))
-                self.train_op_k[ii] = opt_k[ii].minimize(self.loss_k[ii],var_list=train_variable_k[ii])
+                self.train_op_k[ii] = opt_k[ii].minimize(self.loss_k[ii],var_list=train_variable_k[ii],global_step=self.global_step)
 
             # self.sess.run(tf.variables_initializer(list(set(tf.global_variables())-set(agg_variables))))
 
@@ -178,7 +179,7 @@ class DQN():
                 opt_k[ii] = tf.train.AdamOptimizer(learning_rate=self.lr)
 
                 train_variable_k[ii] = list(set(tf.trainable_variables())-set(current_variables))
-                train_op_k[ii] = opt_k[ii].minimize(loss_k[ii],var_list=train_variable_k[ii])
+                train_op_k[ii] = opt_k[ii].minimize(loss_k[ii],var_list=train_variable_k[ii],global_step=self.global_step)
 
             # self.sess.run(tf.variables_initializer(list(set(tf.global_variables())-set(agg_variables))))
 
@@ -259,8 +260,8 @@ class DQN():
             # return max_q_value,max_action,max_action_disp_features,max_q_feed_dict
 
     def train_on_batch(self,q_feed_dict):
-        _,loss_k = self.sess.run([self.train_op_k,self.loss_k],feed_dict=q_feed_dict)
-        return loss_k
+        _,loss_k,step = self.sess.run([self.train_op_k,self.loss_k,self.global_step],feed_dict=q_feed_dict)
+        return loss_k,step
 
     def save(self,model_name):
         save_path = os.path.join(self.model_path, model_name)
@@ -269,7 +270,6 @@ class DQN():
 
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
-        self.sess.run(tf.variables_initializer(self.agg_variables))
         self.saver.restore(self.sess, best_save_path)
         print('model loaded success!!!!')
 

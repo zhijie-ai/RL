@@ -21,7 +21,7 @@ import pandas as pd
 
 
 client = init_redis_pool(db=6)
-city_recall_path = project_root_path+'/GAN_RL/yjp/data/sqls/exposure.sql'
+city_recall_path = project_root_path+'/GAN_RL/yjp/data/sqls2/exposure.sql'
 city_recall_sql = read_sql(city_recall_path)
 
 @cost_time_def
@@ -35,12 +35,11 @@ def train(date_s,city_recall_sql,hostname=None,port=None):
     if hostname and port and city_recall_sql:
         import utils.impala_process as imp
         data = imp.get_data_sql_with_columns(hostname,port,city_recall_sql)
-        print(data.shape,data.info())
     else:# 本地测试
         data = ld.get_data_from_csv(root_path + '/GAN_RL/yjp/data/exposure.csv')
 
     t2 = time.time()
-    print('fetching data cost:{} m'.format((t2 - t1) / 60))
+    print('fetching data cost:{} m,sql:{},{}'.format((t2 - t1) / 60,city_recall_sql,data.shape))
     return data
 
 if __name__ == '__main__':

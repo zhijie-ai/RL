@@ -23,9 +23,9 @@ class Dataset():
 
     @cost_time_def
     def __init__(self,args):
-        self.click = pd.read_csv(args.click_path)
-        self.exposure = pd.read_csv(args.exposure_path)
-        print('data shape:',self.click.shape,self.exposure.shape)
+        # self.click = pd.read_csv(args.click_path)
+        # self.exposure = pd.read_csv(args.exposure_path)
+        # print('data shape:',self.click.shape,self.exposure.shape)
         self.model_type = args.user_model
         self.band_size = args.pw_band_size
         self.data_folder = args.data_folder
@@ -50,7 +50,7 @@ class Dataset():
                 return 2
             # 定义2min内如果用户对某个sku有多条点击即认定为重复数据
 
-            delta = datetime.timedelta(minutes=2)
+            delta = datetime.timedelta(seconds=8)
             end = ser+delta
             if len(ser) == 1:
                 return 1
@@ -84,14 +84,23 @@ class Dataset():
         data.drop('flag',axis=1,inplace=True)
         return data
 
-    def filter_(self,data,min_count=7,max_count=10000):
+    def filter_(self,data,min_count=4,max_count=80,total=10):
+        #为了方便后面根据session_app字段过滤时速度较快
+        data['session_app_']= data.session_app.apply(hash)
         # 去掉重复数据,把当前7天看成一个session,因为代码里，data_behavior每个用户然有多条记录，但最终也是合并成一条
-        data = data.drop_duplicates(['user_id','sku_id'])
+        # data = data.drop_duplicates(['user_id','sku_id'])
         # data = data.sort_values(by=['user_id','time'])
+
+        # 过滤用户在一个session中曝光的sku数量太少
+        tmp = data.groupby('session_app_').size()
+        data = data[np.in1d(data.session_app_,tmp[(tmp>=min_count) & (tmp<=max_count)].index)]
+        # 过滤用户总的曝光的sku数量很小的情况
         tmp = data.groupby('user_id').size()
-        data = data[np.in1d(data.user_id,tmp[(tmp>=min_count) & (tmp<=max_count)].index)]
+        data = data[np.in1d(data.user_id,tmp[tmp>=total].index)]
+        data = data.drop('session_app_',axis=1)
         return data
 
+    @cost_time_def
     def split_dataset(self,data):
         data = data.sample(frac=1).reset_index(drop=True)
         user_ids = data.user_id.unique()
@@ -106,21 +115,26 @@ class Dataset():
         test_ind = data[data.user_id.isin(test_user)].index
         data.loc[test_ind,'split_tag']=2
 
-        data = data.sort_values(by=['user_id','time'])
+        data = data.sort_values(by=['session_app','time'])
         return data
 
     @cost_time_def
     def preprocess_data(self):
-        click = self.filter_(self.click,min_count=7,max_count=20)
-        exposure = self.filter_(self.exposure,min_count=7,max_count=80)
-        click['is_click'] = 1
-        exposure['is_click']=0
+        # click = self.filter_(self.click,min_count=7,max_count=20)
+        # user = np.random.choice(self.exposure.user_id.unique(),10000,replace=False)
+        # self.exposure = self.exposure[np.in1d(self.exposure.user_id,user)]
 
+        click = self.click
+        click['is_click'] = 1
+        exposure = self.filter_(self.exposure)#结合后面的dqn，k=10，曝光的数据至少也是10
+        exposure['is_click']=0
         # 过滤click 不在exposure中的数据
-        click = pd.merge(click,exposure[['user_id','sku_id']],on=['user_id','sku_id'])
+        click = pd.merge(click,exposure[['user_id','sku_id','session_app']].drop_duplicates(),on=['user_id','sku_id','session_app'])
 
         behavior_data = pd.concat([click,exposure])
         print('final shape:',click.shape,exposure.shape,'behavior_data.shape',behavior_data.shape)
+        del click,exposure,self.click,self.exposure
+
 
         # 切分数据
         behavior_data = self.split_dataset(behavior_data)
@@ -129,50 +143,50 @@ class Dataset():
         size_user = sizes['user_id']
         size_item = sizes['sku_id']
 
-        print(sizes,behavior_data.head())
+        print(sizes)
         data_behavior = [[] for _ in range(size_user)]
 
-        train_user_noclick=[]
-        train_user_click=[]
+        train_user =[]
         vali_user = []
         test_user = []
 
+        data_u_gb = behavior_data.groupby(by='user_id')
         for ind,user in enumerate(behavior_data.user_id.unique()):
             data_behavior[ind] = [[], [], []]
             data_behavior[ind][0] = user
-            data_u = behavior_data[behavior_data.user_id==user]
+            # data_u = behavior_data[behavior_data.user_id==user]
+            data_u = data_u_gb.get_group(user)
             split_tag = list(data_u['split_tag'])[0]
             if split_tag == 0:
-                if len(data_u[data_u.is_click==1]) ==0:
-                    train_user_noclick.append(user)
-                else:
-                    train_user_click.append(user)
+                train_user.append(user)
             elif split_tag == 1:
                 vali_user.append(user)
             else:
                 test_user.append(user)
 
-            data_behavior[ind][1].extend(data_u['sku_id'].tolist())
-            data_behavior[ind][2].extend(data_u[data_u.is_click==1]['sku_id'].tolist())#同时间段点击的item
-
+            data_u_sess = data_u.groupby(by='session_app')
+            for sess in data_u.session_app.unique():
+                # data_sess = data_u[data_u.session_app==sess]
+                data_sess = data_u_sess.get_group(sess)
+                data_behavior[ind][1].append(data_sess[data_sess.is_click==0]['sku_id'].tolist())#曝光数据
+                data_behavior[ind][2].append(data_sess[data_sess.is_click==1]['sku_id'].tolist())#同时间段点击的item，点击数据
 
         # new_features = np.eye(size_item)
         filename = self.data_folder+'data_behavior.pkl'
         file = open(filename, 'wb')
-        # print (data_behavior)
         pickle.dump(data_behavior, file, protocol=pickle.HIGHEST_PROTOCOL)
         # pickle.dump(new_features, file, protocol=pickle.HIGHEST_PROTOCOL)
         file.close()
 
         filename = self.data_folder+'user-split.pkl'
         file = open(filename, 'wb')
-        pickle.dump(train_user_click, file, protocol=pickle.HIGHEST_PROTOCOL)
-        pickle.dump(train_user_noclick, file, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(train_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(vali_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(test_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(size_user, file, protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(size_item, file, protocol=pickle.HIGHEST_PROTOCOL)
         file.close()
+        print('>>>>>function preprocess_data finished~~~~~<<<<<<<<<<<<')
 
 
     @cost_time_def
@@ -180,7 +194,7 @@ class Dataset():
         if d_str is None:
             d_str = datetime.datetime.now().strftime('%Y%m%d')
 
-        path = '{}/{}/'.format(self.embedding_path,d_str)
+        path = '{}{}/'.format(self.embedding_path,d_str)
         print('>>>>>>>>>>>>>>>>>>>>>embedding path:{}'.format(path))
         sku_biases = pickle.load(open(path+'sku_biases.pickle','rb'))
         sku_embeddings= pickle.load(open(path+'sku_embeddings.pickle','rb'))
@@ -212,15 +226,13 @@ class Dataset():
             self.data_behavior = pickle.load(f)
         filename = self.data_folder+'user-split.pkl'
         file = open(filename, 'rb')
-        self.train_user_click = pickle.load(file)
-        self.train_user_noclick = pickle.load(file)
+        self.train_user = pickle.load(file)
         self.vali_user = pickle.load(file)
         self.test_user = pickle.load(file)
         self.size_user = pickle.load(file)
         self.size_item = pickle.load(file)
         file.close()
 
-        self.train_user = self.train_user_click+self.train_user_noclick
 
         filename =self.data_folder+'embedding.pkl'
         file = open(filename, 'rb')
@@ -253,7 +265,9 @@ class Dataset():
             disp_current_feature_x=[]
             click_sub_index_2d=[]
 
+            u_idx = 0
             for u in user_set:
+                u_idx+=1
                 t_indice = []
 
                 for kk in range(min(self.band_size-1,self.data_time[u]-1)):
@@ -280,7 +294,6 @@ class Dataset():
                 new_cnt_x += self.data_news_cnt[u]
                 disp_current_feature_x += map(lambda x:self.feature[u][x],[idd[1] for idd in self.data_disp[u]])
                 feature_clicked_x += self.feature_click[u]
-
 
             out={}
             out['click_2d_x']=click_2d_x
@@ -418,8 +431,6 @@ class Dataset():
 
     @cost_time_def
     def format_data(self):
-        k_max = max([len(d_b[1]) for d_b in self.data_behavior])
-
         # self.data_click = [[] for _ in range(self.size_user)]
         # self.data_disp = [[] for _ in range(self.size_user)]
         # self.data_time = np.zeros(self.size_user,dtype=np.int)
@@ -436,31 +447,33 @@ class Dataset():
 
         for ind in range(self.size_user):
             u = self.data_behavior[ind][0]
-            click_t=len(self.data_behavior[ind][2])
-            self.data_time[u]=click_t
+            # (1) count number of clicks
+            click_t = np.sum([len(t) for t in self.data_behavior[ind][2]])
+
+            self.data_time[u] = click_t
 
             news_dict = {}
             self.feature_click[u] = np.zeros([click_t,self.f_dim])
             click_t = 0
 
-            disp_list = self.data_behavior[ind][1]
-            pick_list = self.data_behavior[ind][2]
+            for event in range(len(self.data_behavior[ind][1])):
+                disp_list = self.data_behavior[ind][1][event]
+                pick_list = self.data_behavior[ind][2][event]
 
-            for id in disp_list:
-                if id not in news_dict:
-                    news_dict[id] = len(news_dict)
+                for id in disp_list:
+                    if id not in news_dict:
+                        news_dict[id] = len(news_dict)
 
-            for id in pick_list:#如果用户没有点击，当一个batch内的所有user都没有点击的话，那就会报错
-                self.data_click[u].append([click_t,news_dict[id]])
-                self.feature_click[u][click_t] = self.sku_emb_dict.get(id,self.random_emb)
+                for id in pick_list:
+                    self.data_click[u].append([click_t,news_dict[id]])
+                    self.feature_click[u][click_t] = self.sku_emb_dict.get(id,self.random_emb)
+                    for idd in disp_list:
+                        self.data_disp[u].append([click_t,news_dict[idd]])
+                    click_t += 1
 
-                for idd in disp_list:
-                    self.data_disp[u].append([click_t,news_dict[idd]])
 
-                click_t += 1
 
             self.data_news_cnt[u]=len(news_dict)
-
             self.feature[u]=np.zeros([self.data_news_cnt[u],self.f_dim])
 
             for id in news_dict:
@@ -468,7 +481,6 @@ class Dataset():
 
             self.feature[u]=self.feature[u].tolist()
             self.feature_click[u] = self.feature_click[u].tolist()
-        self.max_disp_size = k_max
 
     def prepare_validation_data_L2(self,num_sets,v_user):
         vali_thread_u = [[] for _ in range(num_sets)]
@@ -515,6 +527,7 @@ class Dataset():
 
         return out2
 
+    @cost_time_def
     def prepare_validation_data(self,num_sets,v_user):
         if self.model_type == 'PW':
             vali_thread_u = [[] for _ in range(num_sets)]
@@ -612,19 +625,19 @@ class Dataset():
 
     @cost_time_def
     def init_dataset(self):
-        self.gen_embedding()#'20210412'
-        self.preprocess_data()
+        # self.gen_embedding()#'20210412'
+        # self.preprocess_data()
         self.read_data()
         self.format_data()
         print('---------------------------size_user:{}\tsize_item:{}\tnum of train user:{}'
-              '\tnum of vali user:{}\tnum of test user:{}\tclick train user:{}\t'
-              ' no click train user:{}'.format(self.size_user,self.size_item,len(self.train_user_noclick+self.train_user_click),len(self.vali_user),
-                                               len(self.test_user),len(self.train_user_click),len(self.train_user_noclick)))
+              '\tnum of vali user:{}\tnum of test user:{}'.format(self.size_user,self.size_item,len(self.train_user),
+                                                                  len(self.vali_user),len(self.test_user)))
 
     def get_batch_user(self,batch_size):
-        user_click = np.random.choice(self.train_user_click,124,replace=False).tolist()
-        user_noclick = np.random.choice(self.train_user_noclick,900,replace=False).tolist()
-        return np.array(user_click+user_noclick)
+        # user_click = np.random.choice(self.train_user_click,124,replace=False).tolist()
+        # user_noclick = np.random.choice(self.train_user_noclick,900,replace=False).tolist()
+        # return np.array(user_click+user_noclick)
+        return np.random.choice(self.train_user,batch_size,replace=False)
 
 
 
@@ -634,7 +647,4 @@ if __name__ == '__main__':
     dataset = Dataset(args)
 
     dataset.init_dataset()
-    # dataset.preprocess_data()
-    # dataset.read_data()
-    # dataset.format_data()
-
+    dataset.data_process_for_placeholder(dataset.vali_user)

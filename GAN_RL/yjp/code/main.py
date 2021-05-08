@@ -27,6 +27,12 @@ from tqdm import tqdm
 
 np.set_printoptions(suppress=True)
 
+import warnings
+warnings.filterwarnings('ignore',category=FutureWarning,module='tensorflow')
+warnings.filterwarnings('ignore',category=UserWarning,module='tensorflow')
+warnings.filterwarnings('ignore',category=DeprecationWarning,module='tensorflow')
+warnings.filterwarnings('ignore')
+
 lock = threading.Lock()
 
 @cost_time_def
@@ -147,16 +153,16 @@ def train_on_epoch(data_collection,dataset,dqn):
         y_batch = [data_collection['y'][c] for c in batch_sample]
 
         q_feed_dict = dataset.data_prepare_for_loss_placeholder(user_batch,states_batch,action_batch,y_batch)
-        loss_val = dqn.train_on_batch(q_feed_dict)
+        loss_val,step = dqn.train_on_batch(q_feed_dict)
         loss_val = np.round(loss_val,10)
 
-        if np.mod(n,250) == 0:
+        if np.mod(step//10,10) == 0:#因为global_step是10的倍数，训练一次，实际上minimize 10次,而minimine 10次相当于是1次train
             loss_val = list(loss_val[-dqn.k:])
             log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             print_loss = ' '
             for kkk in range(dqn.k):
                 print_loss += ' %.5g,'
-            print(('%s: greedy itr(%d), training loss:'+print_loss) % tuple([log_time, n]+loss_val))
+            print(('%s: itr(%d), training loss:'+print_loss) % tuple([log_time, step//10]+loss_val))
 
 @cost_time_def
 def train_with_greedy_action(dataset,env,dqn,train_user):
@@ -197,7 +203,7 @@ def main(args):
     # 参照强化学习的训练逻辑，EE问题。在收集数据的时候兼顾EE问题。此论文的思路将EE问题分开来解决。
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
-    # train_with_random_action(dataset,dqn,env.train_user)
+    train_with_random_action(dataset,dqn,env.train_user)
 
     # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)

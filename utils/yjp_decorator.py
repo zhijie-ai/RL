@@ -50,7 +50,7 @@ def cost_time_def(func):
 
             arg_lst.append(', '.join(pairs))
         arg_str = ', '.join(arg_lst)
-        log.logger.info('[%0.10fm] %s ' % (elapsed, name))
+        log.logger.info('[%0.10f m] %s ' % (elapsed, name))
         return result
 
     return clocked

@@ -20,6 +20,7 @@ class Enviroment():
     def __init__(self,args):
         self.data_folder = args.data_folder
         self.random_seed = args.random_seed
+        self.model_path = os.path.join(args.save_dir,args.user_model)
 
         self.k = args.k
         self.noclick_weight = args.noclick_weight
@@ -40,9 +41,7 @@ class Enviroment():
 
         filename = self.data_folder+'user-split.pkl'
         file = open(filename, 'rb')
-        self.train_user_click = pickle.load(file)
-        self.train_user_noclick = pickle.load(file)
-        self.train_user = self.train_user_click+self.train_user_noclick
+        self.train_user = pickle.load(file)
         self.vali_user = pickle.load(file)
         self.test_user = pickle.load(file)
         self.size_user = pickle.load(file)
@@ -64,12 +63,15 @@ class Enviroment():
         file.close()
 
         self.feature_space=defaultdict(list)
+        # [self.feature_space[line[0]].append(self.sku_emb_dict.get(sku,random_emb)) for line in data_behavior for sku in line[1]]
         for ind in range(self.size_user):
             u = data_behavior[ind][0]
-            disp_id = data_behavior[ind][1]
-            for id in disp_id:
-                emb = self.sku_emb_dict.get(id,random_emb)
-                self.feature_space[u].append(emb)
+
+            for event in range(len(data_behavior[ind][1])):
+                disp_id = data_behavior[ind][1][event]
+                for id in disp_id:
+                    emb = self.sku_emb_dict.get(id,random_emb)
+                    self.feature_space[u].append(emb)
 
 
     def construct_placeholder(self):
@@ -131,9 +133,6 @@ class Enviroment():
         scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
         self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
 
-        self.agg_variables = tf.compat.v1.trainable_variables()
-
-
         self.exp_u_disp = exp_u_disp
         self.scatter_sum_exp_disp = scatter_sum_exp_disp
         self.disp_2d_split_user_ind = self.placeholder['disp_2d_split_user_ind']
@@ -149,11 +148,16 @@ class Enviroment():
             self._init_graph()
 
 
-        self.saver = tf.compat.v1.train.Saver(max_to_keep=None)
+        self.agg_variables = tf.compat.v1.trainable_variables()
+        self.saver = tf.compat.v1.train.Saver(var_list=self.agg_variables,max_to_keep=None)
         # self.sess.run(tf.global_variables_initializer())
         self.sess.run(tf.variables_initializer(self.agg_variables))
-        best_save_path = os.path.join(self.save_dir,self.user_model, 'best-loss')
+        self.restore('best-loss')
+
+    def restore(self,model_name):
+        best_save_path = os.path.join(self.model_path, model_name)
         self.saver.restore(self.sess, best_save_path)
+        print('model:{} loaded success!!!!'.format(model_name))
 
 
     def conpute_reward(self,reward_feed_dict):

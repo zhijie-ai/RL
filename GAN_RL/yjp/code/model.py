@@ -10,6 +10,8 @@
 #               不胜人生一场醉。                 #
 #-----------------------------------------------
 import tensorflow as tf
+import numpy as np
+import os
 
 def mlp(x,hidden_dims,output_dim,activation,sd,act_last=False):
     hidden_dims = tuple(map(int,hidden_dims.split('-')))
@@ -32,6 +34,10 @@ class UserModelLSTM():
         self.hidden_dims = args.dims
         self.lr = args.learning_rate
         self.max_disp_size=max_disp_size
+
+        self.model_path = os.path.join(args.save_dir,args.user_model)
+        self.global_step = tf.compat.v1.train.get_or_create_global_step()
+        self.sess = tf.compat.v1.InteractiveSession()
 
     def construct_placeholder(self):
         self.placeholder['clicked_feature'] = tf.compat.v1.placeholder(tf.float32,(None,None,self.f_dim))
@@ -78,9 +84,9 @@ class UserModelLSTM():
         sum_click_u_tensor = tf.sparse_reduce_sum(click_u_tensor,axis=2)
 
         loss_tmp = -sum_click_u_tensor+tf.log(disp_sum_exp_u_tensor+1)
-        loss_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],loss_tmp))
-        event_cnt = tf.reduce_sum(self.placeholder['ut_dense'])
-        loss = loss_sum/event_cnt
+        self.loss_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],loss_tmp))
+        self.event_cnt = tf.reduce_sum(self.placeholder['ut_dense'])
+        self.loss =self.loss_sum/self.event_cnt
 
         dense_exp_disp_util = tf.sparse_tensor_to_dense(disp_exp_u_tensor,default_value=0.0,validate_indices=False)
 
@@ -92,17 +98,15 @@ class UserModelLSTM():
 
         top_2_disp = tf.nn.top_k(dense_exp_disp_util,k=2,sorted=False)[1]
         argmax_compare = tf.cast(tf.equal(argmax_click,argmax_disp),tf.float32)
-        precision_1_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],argmax_compare))
+        self.precision_1_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],argmax_compare))
         tmpshape = tf.concat([tf.cast(tf.reshape(batch_size,[-1]),tf.int64),
                               tf.reshape(self.placeholder['time'],[-1]),
                               tf.constant([1],dtype=tf.int64)],0)
         top2_compare = tf.reduce_sum(tf.cast(tf.equal(tf.reshape(argmax_click,tmpshape),tf.cast(top_2_disp,tf.int64)),tf.float32),axis=2)
-        precision_2_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],top2_compare))
-        precision_1 = precision_1_sum/event_cnt
-        precision_2 = precision_2_sum/event_cnt
-        self.all_variables = tf.trainable_variables()
+        self.precision_2_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],top2_compare))
+        self.precision_1 = self.precision_1_sum/self.event_cnt
+        self.precision_2 = self.precision_2_sum/self.event_cnt
 
-        return loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
 
 
     # 下面的这2个construct_computation_graph_u和construct_computation_graph_policy感觉可有可无，因为是在main_gan_L2_regularized_yelp.py文件中使用的
@@ -126,7 +130,6 @@ class UserModelLSTM():
         u_net = mlp(combine_feature,self.hidden_dims,1,activation=tf.nn.elu,sd=1e-1,act_last=False)
         self.u_net = tf.reshape(u_net,[-1])
         self.min_trainable_variables = tf.trainable_variables()
-
 
     def construct_computation_graph_policy(self):
         batch_size=tf.shape(self.placeholder['clicked_feature'])[1]
@@ -189,7 +192,6 @@ class UserModelLSTM():
         # lossL2_max = tf.add_n([tf.nn.l2_loss(v) for v in max_trainable_variables if 'bias' not in v.name]) * _regularity
         train_min_op = opt.minimize(loss_min,var_list=self.min_trainable_variables)
         train_max_op = opt.minimize(loss_max,var_list=max_trainable_variables)
-        self.all_variables = tf.trainable_variables()
 
         self.init_variables = list(set(tf.global_variables())-set(self.min_trainable_variables))
 
@@ -197,16 +199,77 @@ class UserModelLSTM():
 
     def construct_model(self,is_training,reuse=False):
         with tf.variable_scope('model',reuse=reuse):
-            loss, precision_1, precision_2, loss_sum, precision_1_sum, precision_2_sum, event_cnt = self.construct_computation_graph()
+            self.construct_computation_graph()
 
         if is_training:
-            global_step = tf.Variable(0,trainable=False)
-            learning_rate = tf.train.exponential_decay(self.lr,global_step,100000,0.96,staircase=True)
+            # tf.train.get_or_create_global_step()
+            learning_rate=tf.train.exponential_decay(self.lr,self.global_step,100000,0.96,staircase=True)
             opt = tf.train.AdamOptimizer(learning_rate=learning_rate)
-            train_op = opt.minimize(loss,global_step=global_step)
-            return train_op,loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
-        else:
-            return loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
+            self.train_op = opt.minimize(self.loss,global_step=self.global_step)
+
+    def init_model(self):
+        if not os.path.exists(self.model_path):
+            os.makedirs(self.model_path)
+
+        self.construct_placeholder()
+        self.construct_model(is_training=True,reuse=False)
+        self.all_variables = tf.compat.v1.trainable_variables()
+        self.sess.run(tf.global_variables_initializer())
+        self.saver = tf.compat.v1.train.Saver(var_list=self.all_variables,max_to_keep=None)
+
+    def train_on_batch(self,out_train):
+        loss,step,precision_1,precision_2,_ = self.sess.run([self.loss,self.global_step,self.precision_1,self.precision_2,self.train_op],
+                                    feed_dict={self.placeholder['clicked_feature']:out_train['click_feature'],
+                                              self.placeholder['ut_dispid_feature']:out_train['u_t_dispid_feature'],
+                                              self.placeholder['ut_dispid_ut']:out_train['u_t_dispid_split_ut'],
+                                              self.placeholder['ut_dispid']:out_train['u_t_dispid'],
+                                              self.placeholder['ut_clickid']:out_train['u_t_clickid'] ,
+                                              self.placeholder['ut_clickid_val']:np.ones(len(out_train['u_t_clickid']), dtype=np.float32),
+                                              self.placeholder['click_sublist_index']:np.array(out_train['click_sub_index'], dtype=np.int64),
+                                              self.placeholder['ut_dense']:out_train['user_time_dense'],
+                                              self.placeholder['time']:out_train['max_time'],
+                                              self.placeholder['item_size']:out_train['news_cnt_short_x']})
+        return loss,step,precision_1,precision_2
+
+    def save(self,model_name):
+        save_path = os.path.join(self.model_path, model_name)
+        self.saver.save(self.sess,save_path)
+        print('model saved success!!!!')
+
+    def restore(self,model_name):
+        best_save_path = os.path.join(self.model_path, model_name)
+        self.saver.restore(self.sess, best_save_path)
+        print('model loaded success!!!!')
+
+    def validation_on_batch_multi(self,out_,ii):
+        vali_thread_eval = self.sess.run([self.loss_sum,self.precision_1_sum,self.precision_2_sum,self.event_cnt],
+                                    feed_dict={self.placeholder['clicked_feature']:out_['click_feature_v'][ii],
+                                               self.placeholder['ut_dispid_feature']:out_['u_t_dispid_feature_v'][ii],
+                                               self.placeholder['ut_dispid_ut']:out_['u_t_dispid_split_ut_v'][ii],
+                                               self.placeholder['ut_dispid']:out_['u_t_dispid_v'][ii],
+                                               self.placeholder['ut_clickid']:out_['u_t_clickid_v'][ii] ,
+                                               self.placeholder['ut_clickid_val']:np.ones(len(out_['u_t_clickid_v'][ii]), dtype=np.float32),
+                                               self.placeholder['click_sublist_index']:np.array(out_['click_sub_index_v'][ii], dtype=np.int64),
+                                               self.placeholder['ut_dense']:out_['user_time_dense_v'][ii],
+                                               self.placeholder['time']:out_['max_time_v'][ii],
+                                               self.placeholder['item_size']:out_['news_cnt_short_x_v'][ii]})
+
+        return vali_thread_eval
+
+    def validation_on_batch(self,out_):
+        vali_thread_eval = self.sess.run([self.loss,self.precision_1,self.precision_2],
+                                         feed_dict={self.placeholder['clicked_feature']:out_['click_feature'],
+                                                    self.placeholder['ut_dispid_feature']:out_['u_t_dispid_feature'],
+                                                    self.placeholder['ut_dispid_ut']:out_['u_t_dispid_split_ut'],
+                                                    self.placeholder['ut_dispid']:out_['u_t_dispid'],
+                                                    self.placeholder['ut_clickid']:out_['u_t_clickid'] ,
+                                                    self.placeholder['ut_clickid_val']:np.ones(len(out_['u_t_clickid']), dtype=np.float32),
+                                                    self.placeholder['click_sublist_index']:np.array(out_['click_sub_index'], dtype=np.int64),
+                                                    self.placeholder['ut_dense']:out_['user_time_dense'],
+                                                    self.placeholder['time']:out_['max_time'],
+                                                    self.placeholder['item_size']:out_['news_cnt_short_x']})
+
+        return vali_thread_eval
 
 
 class UserModelPW():
@@ -217,6 +280,9 @@ class UserModelPW():
         self.lr = args.learning_rate
         self.pw_dim = args.pw_dim
         self.band_size=args.pw_band_size
+        self.model_path = os.path.join(args.save_dir,args.user_model)
+        self.global_step = tf.compat.v1.train.get_or_create_global_step()
+        self.sess = tf.compat.v1.InteractiveSession()
 
     def construct_placeholder(self):
         self.placeholder['disp_current_feature']=tf.compat.v1.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
@@ -269,9 +335,9 @@ class UserModelPW():
         # (6) loss and precision
         click_tensor=tf.SparseTensor(self.placeholder['click_indices'],self.placeholder['click_values'],denseshape)
         click_cnt = tf.sparse_reduce_sum(click_tensor,axis=1)
-        loss_sum = tf.reduce_sum(-sum_click_u_bar_ut+tf.log(sum_exp_disp_ubar_ut))
-        event_cnt=tf.reduce_sum(click_cnt)
-        loss = loss_sum/event_cnt
+        self.loss_sum = tf.reduce_sum(-sum_click_u_bar_ut+tf.log(sum_exp_disp_ubar_ut))
+        self.event_cnt=tf.reduce_sum(click_cnt)
+        self.loss = self.loss_sum/self.event_cnt
 
         exp_disp_ubar_ut = tf.SparseTensor(self.placeholder['disp_indices'],tf.reshape(exp_u_disp,[-1]),denseshape)
         dense_exp_disp_util = tf.sparse_tensor_to_dense(exp_disp_ubar_ut,default_value=0.0,validate_indices=False)
@@ -280,30 +346,92 @@ class UserModelPW():
 
         top_2_disp=tf.nn.top_k(dense_exp_disp_util,k=2,sorted=False)[1]
 
-        precision_1_sum = tf.reduce_sum(tf.cast(tf.equal(argmax_click,argmax_disp),tf.float32))
-        precision_1 = precision_1_sum/event_cnt
-        precision_2_sum = tf.reduce_sum(tf.cast(tf.equal(tf.reshape(argmax_click,[-1,1]),tf.cast(top_2_disp,tf.int64)),tf.float32))
-        precision_2 = precision_2_sum/event_cnt
+        self.precision_1_sum = tf.reduce_sum(tf.cast(tf.equal(argmax_click,argmax_disp),tf.float32))
+        self.precision_1 = self.precision_1_sum/self.event_cnt
+        self.precision_2_sum = tf.reduce_sum(tf.cast(tf.equal(tf.reshape(argmax_click,[-1,1]),tf.cast(top_2_disp,tf.int64)),tf.float32))
+        self.precision_2 = self.precision_2_sum/self.event_cnt
 
         self.lossL2 = tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables() if 'bias' not in v.name])*0.06
-        # self.all_variables = tf.global_variables()
-        self.all_variables = tf.trainable_variables()
-        return loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
+
 
     def construct_model(self,is_training,reuse=False):
-        global lossL2
         with tf.variable_scope('model',reuse=reuse):
-            loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt = self.construct_computation_graph()
+            self.construct_computation_graph()
 
         if is_training:
-            global_step = tf.Variable(0,trainable=False)
             # tf.train.get_or_create_global_step()
-            learning_rate=tf.train.exponential_decay(self.lr,global_step,100000,0.96,staircase=True)
+            learning_rate=tf.train.exponential_decay(self.lr,self.global_step,100000,0.96,staircase=True)
             opt = tf.train.AdamOptimizer(learning_rate=learning_rate)
-            train_op = opt.minimize(loss,global_step=global_step)
-            return train_op,loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
-        else:
-            return loss,precision_1,precision_2,loss_sum,precision_1_sum,precision_2_sum,event_cnt
+            self.train_op = opt.minimize(self.loss,global_step=self.global_step)
+
+    def init_model(self):
+        if not os.path.exists(self.model_path):
+            os.makedirs(self.model_path)
+
+        self.construct_placeholder()
+        self.construct_model(is_training=True,reuse=False)
+        self.all_variables = tf.compat.v1.trainable_variables()
+        self.sess.run(tf.global_variables_initializer())
+        self.saver = tf.compat.v1.train.Saver(var_list=self.all_variables,max_to_keep=None)
+
+
+    def train_on_batch(self,out_train):
+
+        loss,step,precision_1,precision_2,_ = self.sess.run([self.loss,self.global_step,self.precision_1,self.precision_2,self.train_op],
+                                                            feed_dict={self.placeholder['disp_current_feature']: out_train['disp_current_feature_x'],
+                                                                        self.placeholder['item_size']: out_train['news_cnt_short_x'],
+                                                                        self.placeholder['section_length']: out_train['sec_cnt_x'],
+                                                                        self.placeholder['click_indices']: out_train['click_2d_x'],
+                                                                        self.placeholder['click_values']: np.ones(len(out_train['click_2d_x']), dtype=np.float32),
+                                                                        self.placeholder['disp_indices']: np.array(out_train['disp_2d_x']),
+                                                                        self.placeholder['cumsum_tril_indices']: out_train['tril_indice'],
+                                                                        self.placeholder['cumsum_tril_value_indices']: np.array(out_train['tril_value_indice'], dtype=np.int64),
+                                                                        self.placeholder['click_2d_subindex']: out_train['click_sub_index_2d'],
+                                                                        self.placeholder['disp_2d_split_sec_ind']: out_train['disp_2d_split_sec'],
+                                                                        self.placeholder['Xs_clicked']: out_train['feature_clicked_x']})
+        return loss,step,precision_1,precision_2
+
+    def save(self,model_name):
+        save_path = os.path.join(self.model_path, model_name)
+        self.saver.save(self.sess,save_path)
+        print('model:{} saved success!!!!'.format(model_name))
+
+    def restore(self,model_name):
+        best_save_path = os.path.join(self.model_path, model_name)
+        self.saver.restore(self.sess, best_save_path)
+        print('model:{} loaded success!!!!'.format(model_name))
+
+    def validation_on_batch_multi(self,out_,ii):
+        vali_thread_eval = self.sess.run([self.loss_sum,self.precision_1_sum,self.precision_2_sum,self.event_cnt],
+                                                            feed_dict={self.placeholder['disp_current_feature']: out_['disp_current_feature_x_v'][ii],
+                                                                       self.placeholder['item_size']: out_['news_cnt_short_x_v'][ii],
+                                                                       self.placeholder['section_length']: out_['sec_cnt_x_v'][ii],
+                                                                       self.placeholder['click_indices']: out_['click_2d_x_v'][ii],
+                                                                       self.placeholder['click_values']: np.ones(len(out_['click_2d_x_v'][ii]), dtype=np.float32),
+                                                                       self.placeholder['disp_indices']: np.array(out_['disp_2d_x_v'][ii]),
+                                                                       self.placeholder['cumsum_tril_indices']: out_['tril_indice_v'][ii],
+                                                                       self.placeholder['cumsum_tril_value_indices']: np.array(out_['tril_value_indice_v'][ii], dtype=np.int64),
+                                                                       self.placeholder['click_2d_subindex']: out_['click_sub_index_2d_v'][ii],
+                                                                       self.placeholder['disp_2d_split_sec_ind']: out_['disp_2d_split_sec_v'][ii],
+                                                                       self.placeholder['Xs_clicked']: out_['feature_clicked_x_v'][ii]})
+
+        return vali_thread_eval
+
+    def validation_on_batch(self,out_):
+        vali_thread_eval = self.sess.run([self.loss,self.precision_1,self.precision_2],
+                                         feed_dict={self.placeholder['disp_current_feature']: out_['disp_current_feature_x'],
+                                                    self.placeholder['item_size']: out_['news_cnt_short_x'],
+                                                    self.placeholder['section_length']: out_['sec_cnt_x'],
+                                                    self.placeholder['click_indices']: out_['click_2d_x'],
+                                                    self.placeholder['click_values']: np.ones(len(out_['click_2d_x']), dtype=np.float32),
+                                                    self.placeholder['disp_indices']: np.array(out_['disp_2d_x']),
+                                                    self.placeholder['cumsum_tril_indices']: out_['tril_indice'],
+                                                    self.placeholder['cumsum_tril_value_indices']: np.array(out_['tril_value_indice'], dtype=np.int64),
+                                                    self.placeholder['click_2d_subindex']: out_['click_sub_index_2d'],
+                                                    self.placeholder['disp_2d_split_sec_ind']: out_['disp_2d_split_sec'],
+                                                    self.placeholder['Xs_clicked']: out_['feature_clicked_x']})
+
+        return vali_thread_eval
 
 
 

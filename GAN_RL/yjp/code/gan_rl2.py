@@ -68,44 +68,41 @@ def validation(model, out_, ii):
 
 
 @cost_time_def
-def train_on_epoch(model, out_vali, i, epochs):
-    for ind in range(0, len(dataset.train_user), cmd_args.batch_size):
-        training_user = dataset.train_user[ind:ind + cmd_args.batch_size]
-        out_train = dataset.data_process_for_placeholder(training_user)
-        loss, step, precision_1, precision_2 = model.train_on_batch(out_train)
+def train_on_batch(model, out_train,out_vali, i, epochs):
+    loss, step, precision_1, precision_2 = model.train_on_batch(out_train)
 
-        if np.mod(step, 10) == 0:
+    if np.mod(step, 10) == 0:
+        log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print("%s, itr: %d, epoch:[%d/%d], completed user:[%d/%d] loss: %.5f, "
+              "precision_1: %.5f, precision_2: %.5f" % (
+              log_time, step, i + 1, epochs, min(len(dataset.train_user), ind + cmd_args.batch_size),
+              len(dataset.train_user),
+              loss, precision_1,
+              precision_2,
+              ))
+
+    if np.mod(step, 100) == 0:
+        if i == 0:
             log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            print("%s, itr: %d, epoch:[%d/%d], completed user:[%d/%d] loss: %.5f, "
-                  "precision_1: %.5f, precision_2: %.5f" % (
-                      log_time, step, i + 1, epochs, min(len(dataset.train_user), ind + cmd_args.batch_size),
-                      len(dataset.train_user),
-                      loss, precision_1,
-                      precision_2,
-                  ))
-
-        if np.mod(step, 100) == 0:
-            if i == 0:
-                log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                print("%s, start first iteration validation" % log_time)
-            vali_loss_prc = model.validation_on_batch(out_vali)
-            if i == 0:
-                log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                print("%s, first iteration validation complete" % log_time)
-
+            print("%s, start first iteration validation" % log_time)
+        vali_loss_prc = model.validation_on_batch(out_vali)
+        if i == 0:
             log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            print(">>>>>>>>%s: itr: %d, vali: %.5f, %.5f, %.5f<<<<<<<<" %
-                  (log_time, step, vali_loss_prc[0], vali_loss_prc[1], vali_loss_prc[2]))
+            print("%s, first iteration validation complete" % log_time)
 
-            if vali_loss_prc[0] < best_metric[0]:
-                best_metric[0] = vali_loss_prc[0]
-                user_model.save('best-loss')
-            if vali_loss_prc[1] > best_metric[1]:
-                best_metric[1] = vali_loss_prc[1]
-                user_model.save('best-pre1')
-            if vali_loss_prc[2] > best_metric[2]:
-                best_metric[2] = vali_loss_prc[2]
-                user_model.save('best-pre2')
+        log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(">>>>>>>>%s: itr: %d, vali: %.5f, %.5f, %.5f<<<<<<<<" %
+              (log_time, step, vali_loss_prc[0], vali_loss_prc[1], vali_loss_prc[2]))
+
+        if vali_loss_prc[0] < best_metric[0]:
+            best_metric[0] = vali_loss_prc[0]
+            user_model.save('best-loss')
+        if vali_loss_prc[1] > best_metric[1]:
+            best_metric[1] = vali_loss_prc[1]
+            user_model.save('best-pre1')
+        if vali_loss_prc[2] > best_metric[2]:
+            best_metric[2] = vali_loss_prc[2]
+            user_model.save('best-pre2')
 
 
 if __name__ == '__main__':
@@ -154,16 +151,16 @@ if __name__ == '__main__':
 
     best_metric = [100000.0, 0.0, 0.0]
 
-    for i in tqdm(range(cmd_args.num_iters)):
-        # training_start_point = (i * cmd_args.batch_size) % (len(dataset.train_user))
-        # training_user = dataset.train_user[training_start_point: min(training_start_point + cmd_args.batch_size, len(dataset.train_user))]
-        # training_user = np.random.choice(dataset.train_user,cmd_args.batch_size,replace=False)
-        # training_user = dataset.get_batch_user(cmd_args.batch_size)
+    for ind in range(0, len(dataset.train_user), cmd_args.batch_size):
+        end = ind+cmd_args.batch_size
+        training_user = dataset.train_user[ind:end]
+        out_train = dataset.data_process_for_placeholder(training_user)
 
-        train_on_epoch(user_model, out_vali, i, cmd_args.num_iters)
+        for epoch in cmd_args.num_iters:
+            train_on_batch(user_model,out_train,out_vali, epoch, cmd_args.num_iters)
 
-        log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print("%s, epoch %d train complete" % (log_time, i))
+        print('finish iteration!! completed user [%d/%d]' % (end,len(dataset.train_user)))
+
 
     # test
     user_model.restore('best-loss')
@@ -184,4 +181,3 @@ if __name__ == '__main__':
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     t2 = time.time()
     print("%s, end.\t time cost:%s m" % (log_time, (t2 - t1) / 60))
-
