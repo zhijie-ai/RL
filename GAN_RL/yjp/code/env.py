@@ -129,6 +129,7 @@ class Enviroment():
         # (5)
         self.u_disp = tf.reshape(self.u_disp, [-1])
         exp_u_disp = tf.exp(self.u_disp)
+        #当_noclick_weight的结果不足以影响每个用户的sum时，此时，sum会为1.
         sum_exp_disp = tf.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
         scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
         self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)

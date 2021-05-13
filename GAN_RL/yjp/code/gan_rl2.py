@@ -67,18 +67,19 @@ def validation(model, out_, ii):
     lock.release()
 
 
-@cost_time_def
-def train_on_batch(model, out_train,out_vali, i, epochs):
-    loss, step, precision_1, precision_2 = model.train_on_batch(out_train)
+def train_on_batch(model, out_train, out_vali, i):
+    loss, step, precision_1, precision_2= model.train_on_batch(out_train)
+    losses.append(loss)
+    prec1.append(precision_1)
+    prec2.append(precision_2)
 
     if np.mod(step, 10) == 0:
         log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print("%s, itr: %d, epoch:[%d/%d], completed user:[%d/%d] loss: %.5f, "
+        print("%s, itr: %d, loss: %.5f, "
               "precision_1: %.5f, precision_2: %.5f" % (
-              log_time, step, i + 1, epochs, min(len(dataset.train_user), ind + cmd_args.batch_size),
-              len(dataset.train_user),
-              loss, precision_1,
-              precision_2,
+                  log_time, step,
+                  loss, precision_1,
+                  precision_2,
               ))
 
     if np.mod(step, 100) == 0:
@@ -105,6 +106,9 @@ def train_on_batch(model, out_train,out_vali, i, epochs):
             user_model.save('best-pre2')
 
 
+losses = []
+prec1 = []
+prec2 = []
 if __name__ == '__main__':
     cmd_args = get_options()
     print('current args:{}'.format(cmd_args))
@@ -149,18 +153,24 @@ if __name__ == '__main__':
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print("%s, prepare test data end" % log_time)
 
+    import pickle
+    file = open('dataset_{}.pkl'.format(cmd_args.user_model), 'wb')
+    pickle.dump(out_vali_multi, file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(out_vali, file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(out_test, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
+
     best_metric = [100000.0, 0.0, 0.0]
 
-    for ind in range(0, len(dataset.train_user), cmd_args.batch_size):
-        end = ind+cmd_args.batch_size
+    for ind in tqdm(range(0, len(dataset.train_user), cmd_args.batch_size)):
+        end = ind + cmd_args.batch_size
         training_user = dataset.train_user[ind:end]
         out_train = dataset.data_process_for_placeholder(training_user)
 
-        for epoch in cmd_args.num_iters:
-            train_on_batch(user_model,out_train,out_vali, epoch, cmd_args.num_iters)
+        for epoch in range(cmd_args.num_iters):
+            train_on_batch(user_model, out_train, out_vali, epoch)
 
-        print('finish iteration!! completed user [%d/%d]' % (end,len(dataset.train_user)))
-
+        print('finish iteration!! completed user [%d/%d]' % (end, len(dataset.train_user)))
 
     # test
     user_model.restore('best-loss')
@@ -181,3 +191,10 @@ if __name__ == '__main__':
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     t2 = time.time()
     print("%s, end.\t time cost:%s m" % (log_time, (t2 - t1) / 60))
+
+    file = open('analysis2_{}.pkl'.format(cmd_args.user_model), 'wb')
+    import pickle
+    pickle.dump(losses, file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(prec1, file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(prec2, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()

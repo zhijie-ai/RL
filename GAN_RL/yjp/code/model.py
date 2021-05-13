@@ -32,8 +32,10 @@ class UserModelLSTM():
         self.placeholder = {}
         self.rnn_hidden=args.rnn_hidden_dim
         self.hidden_dims = args.dims
-        self.lr = args.learning_rate
+        self.lr = args.init_learning_rate
         self.max_disp_size=max_disp_size
+        self.clip_min_value=args.clip_min_value
+        self.clip_max_value=args.clip_max_value
 
         self.model_path = os.path.join(args.save_dir,args.user_model)
         self.global_step = tf.compat.v1.train.get_or_create_global_step()
@@ -77,13 +79,14 @@ class UserModelLSTM():
         # utility
         u_net = mlp(combine_feature,self.hidden_dims,1,activation=tf.nn.elu,sd=1e-1,act_last=False)
         u_net = tf.reshape(u_net,[-1])
+        u_net = tf.clip_by_value(u_net,self.clip_min_value,self.clip_max_value)
 
         click_u_tensor = tf.SparseTensor(self.placeholder['ut_clickid'],tf.gather(u_net,self.placeholder['click_sublist_index']),dense_shape=denseshape)
         disp_exp_u_tensor= tf.SparseTensor(self.placeholder['ut_dispid'],tf.exp(u_net),dense_shape=denseshape)#(user,time,id)
         disp_sum_exp_u_tensor = tf.sparse_reduce_sum(disp_exp_u_tensor,axis=2)
         sum_click_u_tensor = tf.sparse_reduce_sum(click_u_tensor,axis=2)
 
-        loss_tmp = -sum_click_u_tensor+tf.log(disp_sum_exp_u_tensor+1)
+        loss_tmp = -sum_click_u_tensor+tf.log(disp_sum_exp_u_tensor+1e-8)
         self.loss_sum = tf.reduce_sum(tf.multiply(self.placeholder['ut_dense'],loss_tmp))
         self.event_cnt = tf.reduce_sum(self.placeholder['ut_dense'])
         self.loss =self.loss_sum/self.event_cnt
@@ -203,8 +206,8 @@ class UserModelLSTM():
 
         if is_training:
             # tf.train.get_or_create_global_step()
-            learning_rate=tf.train.exponential_decay(self.lr,self.global_step,100000,0.96,staircase=True)
-            opt = tf.train.AdamOptimizer(learning_rate=learning_rate)
+            learning_rate=tf.train.exponential_decay(self.lr,self.global_step,100,0.9,staircase=True)
+            opt = tf.train.AdamOptimizer(learning_rate=0.001)
             self.train_op = opt.minimize(self.loss,global_step=self.global_step)
 
     def init_model(self):
@@ -218,7 +221,7 @@ class UserModelLSTM():
         self.saver = tf.compat.v1.train.Saver(var_list=self.all_variables,max_to_keep=None)
 
     def train_on_batch(self,out_train):
-        loss,step,precision_1,precision_2,_ = self.sess.run([self.loss,self.global_step,self.precision_1,self.precision_2,self.train_op],
+        loss,step,precision_1,precision_2,_= self.sess.run([self.loss,self.global_step,self.precision_1,self.precision_2,self.train_op],
                                     feed_dict={self.placeholder['clicked_feature']:out_train['click_feature'],
                                               self.placeholder['ut_dispid_feature']:out_train['u_t_dispid_feature'],
                                               self.placeholder['ut_dispid_ut']:out_train['u_t_dispid_split_ut'],
@@ -239,7 +242,7 @@ class UserModelLSTM():
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
         self.saver.restore(self.sess, best_save_path)
-        print('model loaded success!!!!')
+        print('model:{} loaded success!!!!'.format(model_name))
 
     def validation_on_batch_multi(self,out_,ii):
         vali_thread_eval = self.sess.run([self.loss_sum,self.precision_1_sum,self.precision_2_sum,self.event_cnt],
@@ -277,9 +280,11 @@ class UserModelPW():
         self.f_dim = f_dim
         self.placeholder = {}
         self.hidden_dims=args.dims
-        self.lr = args.learning_rate
+        self.lr = args.init_learning_rate
         self.pw_dim = args.pw_dim
         self.band_size=args.pw_band_size
+        self.clip_min_value=args.clip_min_value
+        self.clip_max_value=args.clip_max_value
         self.model_path = os.path.join(args.save_dir,args.user_model)
         self.global_step = tf.compat.v1.train.get_or_create_global_step()
         self.sess = tf.compat.v1.InteractiveSession()
@@ -325,9 +330,10 @@ class UserModelPW():
 
         #(5) compute utility
         u_disp = mlp(concate_disp_features,self.hidden_dims,1,tf.nn.relu,1e-3,act_last=False)
+        u_disp = tf.clip_by_value(u_disp,self.clip_min_value,self.clip_max_value)
 
         # (5)
-        exp_u_disp = tf.exp(u_disp)
+        exp_u_disp = tf.exp(u_disp)#当u_disp达到了一定的级别，比如>50,则exp_u_disp会很大，loss会出现为nan的情况,降低batch_size
         #公式中的正的部分
         sum_exp_disp_ubar_ut = tf.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_sec_ind'])
         ## 公式中负的部分
@@ -335,7 +341,8 @@ class UserModelPW():
         # (6) loss and precision
         click_tensor=tf.SparseTensor(self.placeholder['click_indices'],self.placeholder['click_values'],denseshape)
         click_cnt = tf.sparse_reduce_sum(click_tensor,axis=1)
-        self.loss_sum = tf.reduce_sum(-sum_click_u_bar_ut+tf.log(sum_exp_disp_ubar_ut))
+        self.loss_sum = tf.reduce_sum(-sum_click_u_bar_ut+tf.log(sum_exp_disp_ubar_ut+1e-8))
+
         self.event_cnt=tf.reduce_sum(click_cnt)
         self.loss = self.loss_sum/self.event_cnt
 
@@ -360,7 +367,7 @@ class UserModelPW():
 
         if is_training:
             # tf.train.get_or_create_global_step()
-            learning_rate=tf.train.exponential_decay(self.lr,self.global_step,100000,0.96,staircase=True)
+            learning_rate=tf.train.exponential_decay(self.lr,self.global_step,100,0.96,staircase=True)
             opt = tf.train.AdamOptimizer(learning_rate=learning_rate)
             self.train_op = opt.minimize(self.loss,global_step=self.global_step)
 
@@ -377,7 +384,7 @@ class UserModelPW():
 
     def train_on_batch(self,out_train):
 
-        loss,step,precision_1,precision_2,_ = self.sess.run([self.loss,self.global_step,self.precision_1,self.precision_2,self.train_op],
+        loss,step,precision_1,precision_2,_= self.sess.run([self.loss,self.global_step,self.precision_1,self.precision_2,self.train_op],
                                                             feed_dict={self.placeholder['disp_current_feature']: out_train['disp_current_feature_x'],
                                                                         self.placeholder['item_size']: out_train['news_cnt_short_x'],
                                                                         self.placeholder['section_length']: out_train['sec_cnt_x'],

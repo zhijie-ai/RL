@@ -17,15 +17,12 @@ from utils.yjp_decorator import cost_time_def
 from sklearn.model_selection import train_test_split
 import pickle
 from collections import defaultdict
+import numba as nb
 
 
 class Dataset():
 
-    @cost_time_def
     def __init__(self,args):
-        # self.click = pd.read_csv(args.click_path)
-        # self.exposure = pd.read_csv(args.exposure_path)
-        # print('data shape:',self.click.shape,self.exposure.shape)
         self.model_type = args.user_model
         self.band_size = args.pw_band_size
         self.data_folder = args.data_folder
@@ -231,6 +228,10 @@ class Dataset():
         self.test_user = pickle.load(file)
         self.size_user = pickle.load(file)
         self.size_item = pickle.load(file)
+
+        np.random.shuffle(self.train_user)
+        np.random.shuffle(self.vali_user)
+        np.random.shuffle(self.test_user)
         file.close()
 
 
@@ -623,8 +624,14 @@ class Dataset():
             out2['user_time_dense_v']=ut_dense_v
             return out2
 
+    def reading_raw(self):
+        self.click = pd.read_csv(args.click_path)
+        self.exposure = pd.read_csv(args.exposure_path)
+        print('data shape:',self.click.shape,self.exposure.shape)
+
     @cost_time_def
     def init_dataset(self):
+        # self.reading_raw()
         # self.gen_embedding()#'20210412'
         # self.preprocess_data()
         self.read_data()
@@ -647,4 +654,7 @@ if __name__ == '__main__':
     dataset = Dataset(args)
 
     dataset.init_dataset()
-    dataset.data_process_for_placeholder(dataset.vali_user)
+    import pickle
+    file = open('dataset.pkl', 'wb')
+    pickle.dump(dataset, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()

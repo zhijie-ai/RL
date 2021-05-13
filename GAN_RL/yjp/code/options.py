@@ -29,10 +29,13 @@ def get_options(args=None):
     parser.add_argument('--save_dir',type = str,default = '../model/save_dir/',help='save folder')
     parser.add_argument('--embedding_path',type = str,default = '/data1/ai-recall/bpr/model/',help='save folder')
     parser.add_argument('--random_seed',type = int,default = '1126',help='random seed')
+    parser.add_argument('--clip_min_value',type = float,default = -40.0,help='tf clip min value')
+    parser.add_argument('--clip_max_value',type = float,default = 40.0,help='tf clip max value')
 
     parser.add_argument('--resplit', type=eval, default=False)
     parser.add_argument('--num_thread', type=int, default=1, help='number of threadings')
     parser.add_argument('--learning_rate', type=float, default=1e-3, help='learning rate for env training')
+    parser.add_argument('--init_learning_rate', type=float, default=0.01, help='learning rate for env training')
     parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
     parser.add_argument('--num_iters', type=int, default=20, help='num of iterations for env training')
     # might change later to policy_grad method with attetion rather than lstm

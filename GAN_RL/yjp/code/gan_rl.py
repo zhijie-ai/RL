@@ -73,6 +73,9 @@ def train_on_epoch(model, out_vali, i, epochs):
         training_user = dataset.train_user[ind:ind + cmd_args.batch_size]
         out_train = dataset.data_process_for_placeholder(training_user)
         loss, step, precision_1, precision_2 = model.train_on_batch(out_train)
+        losses.append(loss)
+        prec1.append(precision_1)
+        prec2.append(precision_2)
 
         if np.mod(step, 10) == 0:
             log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -108,6 +111,9 @@ def train_on_epoch(model, out_vali, i, epochs):
                 user_model.save('best-pre2')
 
 
+losses = []
+prec1 = []
+prec2 = []
 if __name__ == '__main__':
     cmd_args = get_options()
     print('current args:{}'.format(cmd_args))
@@ -185,3 +191,9 @@ if __name__ == '__main__':
     t2 = time.time()
     print("%s, end.\t time cost:%s m" % (log_time, (t2 - t1) / 60))
 
+    file = open('analysis_{}.pkl'.format(cmd_args.user_model), 'wb')
+    import pickle
+    pickle.dump(losses, file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(prec1, file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(prec2, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
