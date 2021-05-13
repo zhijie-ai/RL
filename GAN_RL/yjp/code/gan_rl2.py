@@ -153,13 +153,6 @@ if __name__ == '__main__':
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print("%s, prepare test data end" % log_time)
 
-    import pickle
-    file = open('dataset_{}.pkl'.format(cmd_args.user_model), 'wb')
-    pickle.dump(out_vali_multi, file, protocol=pickle.HIGHEST_PROTOCOL)
-    pickle.dump(out_vali, file, protocol=pickle.HIGHEST_PROTOCOL)
-    pickle.dump(out_test, file, protocol=pickle.HIGHEST_PROTOCOL)
-    file.close()
-
     best_metric = [100000.0, 0.0, 0.0]
 
     for ind in tqdm(range(0, len(dataset.train_user), cmd_args.batch_size)):

@@ -13,22 +13,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis2_LSTM_50.pkl','rb')
+f = open('../data/analysis/analysis2_LSTM_50.pkl', 'rb')
 lstm_loss_ = pickle.load(f)
 lstm_p1_ = pickle.load(f)
 lstm_p2_ = pickle.load(f)
 f.close()
-f = open('../data/analysis2_PW_50.pkl','rb')
+f = open('../data/analysis/analysis2_PW_50.pkl', 'rb')
 pw_loss_ = pickle.load(f)
 pw_p1_ = pickle.load(f)
 pw_p2_ = pickle.load(f)
 f.close()
-f = open('../data/analysis2_PW_50.pkl','rb')
+f = open('../data/analysis/analysis2_PW_50.pkl', 'rb')
 lstm_loss = pickle.load(f)
 lstm_p1 = pickle.load(f)
 lstm_p2 = pickle.load(f)
 f.close()
-f = open('../data/analysis_PW_50.pkl','rb')
+f = open('../data/analysis/analysis_PW_50.pkl', 'rb')
 pw_loss = pickle.load(f)
 pw_p1 = pickle.load(f)
 pw_p2 = pickle.load(f)
@@ -90,20 +90,20 @@ def plot(data,label,name,num=10,ran=50):
 
 if __name__ == '__main__':
     #1. 对比pw和lstm效果的区别
-    plot([lstm_loss_,pw_loss_],['loss-lstm_','loss-pw_'],'loss_',num=1)
-    plot([lstm_p1_,pw_p1_],['p1-lstm_','p1-pw_'],'p1_',num=1)
-    plot([lstm_p2_,pw_p2_],['p2-lstm_','p2-pw_'],'p2_',num=1)
+    plot([lstm_loss_,pw_loss_],['loss-lstm_','loss-pw_'],'loss_',num=10)
+    plot([lstm_p1_,pw_p1_],['p1-lstm_','p1-pw_'],'p1_',num=10)
+    plot([lstm_p2_,pw_p2_],['p2-lstm_','p2-pw_'],'p2_',num=10)
 
-    plot([lstm_loss,pw_loss],['loss-lstm','loss-pw'],'loss',num=1)
-    plot([lstm_p1,pw_p1],['p1-lstm','p1-pw'],'p1',num=1)
-    plot([lstm_p2,pw_p2],['p2-lstm','p2-pw'],'p2',num=1)
+    plot([lstm_loss,pw_loss],['loss-lstm','loss-pw'],'loss',num=10)
+    plot([lstm_p1,pw_p1],['p1-lstm','p1-pw'],'p1',num=10)
+    plot([lstm_p2,pw_p2],['p2-lstm','p2-pw'],'p2',num=10)
 
     # 1. 对比循环方式的区别
     plot([lstm_loss_,lstm_loss],['loss-lstm_','loss-lstm'],'loss_lstm')
     plot([pw_loss_,pw_loss],['loss_pw_','loss_pw'],'loss_pw')
 
     plot([lstm_p1_,lstm_p1],['p1-lstm_','p1-lstm'],'p1_lstm')
-    plot([pw_p1_,pw_p1],['p1_pw_','p1-pw'],'p1_pw',num=1)
+    plot([pw_p1_,pw_p1],['p1_pw_','p1-pw'],'p1_pw',num=10)
 
     plot([lstm_p2_,lstm_p2],['p2-lstm_','p2-lstm'],'p2_lstm')
     plot([pw_p2_,pw_p2],['p2-pw_','p2-pw'],'p2_pw')
