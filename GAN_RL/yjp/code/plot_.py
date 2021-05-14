@@ -13,24 +13,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/analysis2_LSTM.pkl','rb')
-lstm_loss_ = pickle.load(f)
-lstm_p1_ = pickle.load(f)
-lstm_p2_ = pickle.load(f)
+f = open('../data/analysis/loss_random.pkl','rb')
+loss = pickle.load(f)
 f.close()
-f = open('../data/analysis/analysis_PW.pkl', 'rb')
-pw_loss = pickle.load(f)
-pw_p1 = pickle.load(f)
-pw_p2 = pickle.load(f)
-f.close()
+print(len(loss[0]),max(loss[0]))
+print(loss[0])
+print(loss[8])
+print(loss[9])
 
 
 num=10
 ran = 50
-def plot(data,label,name,num=10,ran=50):
+def plot(data,label,num=10,ran=50):
     plt.figure()
     for d,n in zip(data,label):
-        d = [np.mean(d[ind-num:ind+num]) for ind ,val in enumerate(d) if ind%ran==num]
         plt.plot(range(len(d)),d,label=n)
         plt.legend()
         plt.grid(True)
@@ -39,9 +35,8 @@ def plot(data,label,name,num=10,ran=50):
     plt.show()
 
 if __name__ == '__main__':
-    plot([lstm_loss_,pw_loss],['loss-lstm_','loss-pw'],'loss_',num=1)
-    plot([lstm_p1_,pw_p1],['p1-lstm_','p1-pw'],'p1_',num=1)
-    plot([lstm_p2_,pw_p2],['p2-lstm_','p2-pw'],'p2_',num=1)
+    plot([loss[0]],['loss_{}'.format(0)],num=1,ran=5)
+
 
 
 

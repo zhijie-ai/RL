@@ -111,6 +111,7 @@ prec1 = []
 prec2 = []
 if __name__ == '__main__':
     cmd_args = get_options()
+    cmd_args.save_dir = '../model/save_dir2/'
     print('current args:{}'.format(cmd_args))
 
     log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -185,7 +186,7 @@ if __name__ == '__main__':
     t2 = time.time()
     print("%s, end.\t time cost:%s m" % (log_time, (t2 - t1) / 60))
 
-    file = open('analysis2_{}.pkl'.format(cmd_args.user_model), 'wb')
+    file = open('data/analysis2_{}.pkl'.format(cmd_args.user_model), 'wb')
     import pickle
     pickle.dump(losses, file, protocol=pickle.HIGHEST_PROTOCOL)
     pickle.dump(prec1, file, protocol=pickle.HIGHEST_PROTOCOL)

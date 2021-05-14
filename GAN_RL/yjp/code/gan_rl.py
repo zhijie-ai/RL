@@ -10,9 +10,8 @@
 #               不胜人生一场醉。                 #
 # -----------------------------------------------
 # 根据论文的思路训练模型得到env
-import datetime, os, time
+import datetime, time
 import numpy as np
-import tensorflow as tf
 import threading
 from multiprocessing import Process
 from tqdm import tqdm
@@ -21,6 +20,7 @@ from utils.yjp_decorator import cost_time_def
 from GAN_RL.yjp.code.options import get_options
 from GAN_RL.yjp.code.data_util import Dataset
 from GAN_RL.yjp.code.model import UserModelLSTM, UserModelPW
+import pickle
 
 import warnings
 
@@ -191,7 +191,7 @@ if __name__ == '__main__':
     t2 = time.time()
     print("%s, end.\t time cost:%s m" % (log_time, (t2 - t1) / 60))
 
-    file = open('analysis_{}.pkl'.format(cmd_args.user_model), 'wb')
+    file = open('data/analysis_{}.pkl'.format(cmd_args.user_model), 'wb')
     import pickle
     pickle.dump(losses, file, protocol=pickle.HIGHEST_PROTOCOL)
     pickle.dump(prec1, file, protocol=pickle.HIGHEST_PROTOCOL)

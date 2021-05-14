@@ -27,6 +27,8 @@ class Dataset():
         self.band_size = args.pw_band_size
         self.data_folder = args.data_folder
         self.embedding_path = args.embedding_path
+        self.click_path = args.click_path
+        self.exposure_path = args.exposure_path
         self.random_seed = args.random_seed
 
         np.random.seed(self.random_seed)
@@ -136,6 +138,11 @@ class Dataset():
         # 切分数据
         behavior_data = self.split_dataset(behavior_data)
 
+        # 训练环境的时候，用户必须要有点击的数据，过滤没有点击操作的用户.
+        tmp = behavior_data.groupby(['user_id'])['is_click'].sum()
+        tmp = tmp[tmp>0]
+        behavior_data = behavior_data[behavior_data.user_id.isin(tmp.index)]
+
         sizes = behavior_data.nunique()
         size_user = sizes['user_id']
         size_item = sizes['sku_id']
@@ -167,6 +174,7 @@ class Dataset():
                 data_sess = data_u_sess.get_group(sess)
                 data_behavior[ind][1].append(data_sess[data_sess.is_click==0]['sku_id'].tolist())#曝光数据
                 data_behavior[ind][2].append(data_sess[data_sess.is_click==1]['sku_id'].tolist())#同时间段点击的item，点击数据
+
 
         # new_features = np.eye(size_item)
         filename = self.data_folder+'data_behavior.pkl'
@@ -271,11 +279,13 @@ class Dataset():
                 u_idx+=1
                 t_indice = []
 
-                for kk in range(min(self.band_size-1,self.data_time[u]-1)):
-                    t_indice += map(lambda x:[x + kk + 1 + sec_cnt_x,x + sec_cnt_x],np.arange(self.data_time[u]-(kk+1)))
+                for kk in range(min(self.band_size,self.data_time[u])):
+                    t_indice += map(lambda x:[x + kk + sec_cnt_x,x + sec_cnt_x],np.arange(self.data_time[u]-(kk)))
+
+
 
                 tril_indice+= t_indice
-                tril_value_indice += map(lambda x:(x[0] - x[1]-1),t_indice)
+                tril_value_indice += map(lambda x:(x[0] - x[1]),t_indice)
 
                 click_2d_tmp = map(lambda x:[x[0] + sec_cnt_x,x[1]],self.data_click[u])
                 click_2d_tmp = list(click_2d_tmp)
@@ -625,8 +635,8 @@ class Dataset():
             return out2
 
     def reading_raw(self):
-        self.click = pd.read_csv(args.click_path)
-        self.exposure = pd.read_csv(args.exposure_path)
+        self.click = pd.read_csv(self.click_path)
+        self.exposure = pd.read_csv(self.exposure_path)
         print('data shape:',self.click.shape,self.exposure.shape)
 
     @cost_time_def
@@ -654,7 +664,6 @@ if __name__ == '__main__':
     dataset = Dataset(args)
 
     dataset.init_dataset()
-    import pickle
-    file = open('dataset.pkl', 'wb')
-    pickle.dump(dataset, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file = open('data/dataset.obj','wb')
+    pickle.dump(dataset,file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()

@@ -88,6 +88,9 @@ class Dataset():
                     # 如果np.sum(transition_p[j,:]为1，则说明当前用户一定是选了一个，注意力被平均的分配到了10个item身上。
                     # 如果和不为1，则说明当前用户对此时的10个sku并不感兴趣
                     no_click = [max(1.0-np.sum(transition_p[j,:]),0.0)]
+                    p_ = np.sum(transition_p[j,:])
+                    if p_ == 1:
+                        print('attention catched!!!!!!',p_)
                     prob = np.array(transition_p[j,:].tolist()+no_click)
                     prob = prob/float(prob.sum())
                     # 模拟用户的选择

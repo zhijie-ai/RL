@@ -12,7 +12,7 @@
 # 用训练得到的env模型来训练强化学习模型
 from collections import deque
 from utils.yjp_decorator import cost_time_def
-
+import pickle
 import numpy as np
 
 from GAN_RL.yjp.code.dqn import DQN
@@ -37,6 +37,7 @@ lock = threading.Lock()
 
 @cost_time_def
 def train_with_random_action(dataset,dqn,train_user):
+    loss = [[] for _ in range(dqn.k)]
     for ind in tqdm(range(0,len(train_user),dataset.args.sample_batch_size)):
         t1 = time.time()
         end = ind+dataset.args.sample_batch_size
@@ -44,7 +45,7 @@ def train_with_random_action(dataset,dqn,train_user):
         data_collection = dataset.data_collection(training_user)
 
         for i in range(dataset.args.epoch):
-            train_on_epoch(data_collection,dataset,dqn)
+            train_on_epoch(data_collection,dataset,dqn,loss)
 
         end = end if end <len(train_user) else len(train_user)
         t2 = time.time()
@@ -52,6 +53,7 @@ def train_with_random_action(dataset,dqn,train_user):
         print('finish init iteration!! completed user [%d/%d]' % (end,len(train_user)))
     # save model
     dqn.save('init-q')
+    return loss
 
 def step(dataset,env,dqn,sim_vali_user,states,sim_u_reward):
     max_q_feed_dict,states_tr,history_order_tr,history_user_tr = dataset.format_max_q_feed_dict(sim_vali_user,states)
@@ -141,7 +143,8 @@ def validation_train(current_best_reward,dataset,env,dqn,sim_vali_user):
 
     return user_avg_reward, np.mean(clk_sum_rate) ,current_best_reward
 
-def train_on_epoch(data_collection,dataset,dqn):
+# @cost_time_def#0.5478950063 m
+def train_on_epoch(data_collection,dataset,dqn,loss):
     # START TRAINING for this batch of users
     num_samples = len(data_collection['user'])
     arr = np.arange(num_samples)
@@ -161,11 +164,13 @@ def train_on_epoch(data_collection,dataset,dqn):
             log_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             print_loss = ' '
             for kkk in range(dqn.k):
+                loss[kkk].append(loss_val[kkk])
                 print_loss += ' %.5g,'
             print(('%s: itr(%d), training loss:'+print_loss) % tuple([log_time, step//10]+loss_val))
 
 @cost_time_def
 def train_with_greedy_action(dataset,env,dqn,train_user):
+    loss = [[] for _ in range(dqn.k)]
     # 用全部数据训练一遍
     current_best_reward = 0.0
     for ind in tqdm(range(0,len(train_user),dataset.args.sample_batch_size)):
@@ -177,7 +182,7 @@ def train_with_greedy_action(dataset,env,dqn,train_user):
         data_collection = dataset.data_collection(training_user,'greedy')#394s sample_batch_size=1024
 
         for i in range(dataset.args.epoch):
-            train_on_epoch(data_collection,dataset,dqn)
+            train_on_epoch(data_collection,dataset,dqn,loss)
 
         end = end if end <len(train_user) else len(train_user)
         print('finish iteration!! completed user [%d/%d]' % (end,len(train_user)))
@@ -193,6 +198,8 @@ def train_with_greedy_action(dataset,env,dqn,train_user):
             dqn.save('best-reward')
             current_best_reward = new_reward
 
+    return loss
+
 @cost_time_def
 def main(args):
     env = Enviroment(args)
@@ -203,11 +210,17 @@ def main(args):
     # 参照强化学习的训练逻辑，EE问题。在收集数据的时候兼顾EE问题。此论文的思路将EE问题分开来解决。
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
-    train_with_random_action(dataset,dqn,env.train_user)
+    loss_random = train_with_random_action(dataset,dqn,env.train_user)
+    file = open('data/loss_random.pkl', 'wb')
+    pickle.dump(loss_random, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
 
-    # 使用贪婪策略收集的数据来训练我们的推荐引擎
-    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
-    train_with_greedy_action(dataset,env,dqn,train_user)
+    # # 使用贪婪策略收集的数据来训练我们的推荐引擎
+    # train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
+    # loss_greedy = train_with_greedy_action(dataset,env,dqn,train_user)
+    # file = open('data/loss_random.pkl', 'wb')
+    # pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
+    # file.close()
 
     # dqn.restore('init-q')
     # dqn.restore('best-reward')

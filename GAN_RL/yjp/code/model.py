@@ -383,7 +383,6 @@ class UserModelPW():
 
 
     def train_on_batch(self,out_train):
-
         loss,step,precision_1,precision_2,_= self.sess.run([self.loss,self.global_step,self.precision_1,self.precision_2,self.train_op],
                                                             feed_dict={self.placeholder['disp_current_feature']: out_train['disp_current_feature_x'],
                                                                         self.placeholder['item_size']: out_train['news_cnt_short_x'],
