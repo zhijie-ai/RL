@@ -321,7 +321,7 @@ class UserModelPW():
                                                  [self.placeholder['section_length'],self.placeholder['section_length']])
             click_history[ii] = tf.sparse_tensor_dense_matmul(cumsum_tril_matrix,self.placeholder['Xs_clicked'])
 
-        concat_history=tf.concat(click_history,axis=1)
+        concat_history=tf.concat(click_history,axis=1)#点击的特征
         disp_history_feature = tf.gather(concat_history,self.placeholder['disp_2d_split_sec_ind'])
 
         #(4) combine features

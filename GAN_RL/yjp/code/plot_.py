@@ -13,29 +13,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/loss_random.pkl','rb')
+f = open('../data/analysis/analysis_PW_data_model.pkl', 'rb')
 loss = pickle.load(f)
+p1 = pickle.load(f)
+p2 = pickle.load(f)
 f.close()
-print(len(loss[0]),max(loss[0]))
-print(loss[0])
-print(loss[8])
-print(loss[9])
 
 
 num=10
-ran = 50
-def plot(data,label,num=10,ran=50):
-    plt.figure()
-    for d,n in zip(data,label):
-        plt.plot(range(len(d)),d,label=n)
-        plt.legend()
-        plt.grid(True)
+ran = 15
+def plot(data):
+    data = [np.mean(data[ind-num:ind+num]) for ind ,val in enumerate(data) if ind%ran==num]
+    plt.plot(range(len(data)),data)
+    plt.legend()
+    plt.grid(True)
 
     # plt.savefig('jpg/{}'.format(name))
     plt.show()
 
 if __name__ == '__main__':
-    plot([loss[0]],['loss_{}'.format(0)],num=1,ran=5)
+    plot(loss)
 
 
 

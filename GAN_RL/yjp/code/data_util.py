@@ -279,13 +279,13 @@ class Dataset():
                 u_idx+=1
                 t_indice = []
 
-                for kk in range(min(self.band_size,self.data_time[u])):
-                    t_indice += map(lambda x:[x + kk + sec_cnt_x,x + sec_cnt_x],np.arange(self.data_time[u]-(kk)))
+                for kk in range(min(self.band_size-1,self.data_time[u]-1)):
+                    t_indice += map(lambda x:[x + kk + 1 + sec_cnt_x,x + sec_cnt_x],np.arange(self.data_time[u]-(kk+1)))
 
 
 
                 tril_indice+= t_indice
-                tril_value_indice += map(lambda x:(x[0] - x[1]),t_indice)
+                tril_value_indice += map(lambda x:(x[0] - x[1]-1),t_indice)
 
                 click_2d_tmp = map(lambda x:[x[0] + sec_cnt_x,x[1]],self.data_click[u])
                 click_2d_tmp = list(click_2d_tmp)

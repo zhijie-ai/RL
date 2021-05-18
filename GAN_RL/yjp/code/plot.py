@@ -13,22 +13,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/analysis2_LSTM_50.pkl', 'rb')
+f = open('../data/analysis/analysis2_LSTM_data_50.pkl', 'rb')
 lstm_loss_ = pickle.load(f)
 lstm_p1_ = pickle.load(f)
 lstm_p2_ = pickle.load(f)
 f.close()
-f = open('../data/analysis/analysis2_PW_50.pkl', 'rb')
+f = open('../data/analysis/analysis2_PW_data_50.pkl', 'rb')
 pw_loss_ = pickle.load(f)
 pw_p1_ = pickle.load(f)
 pw_p2_ = pickle.load(f)
 f.close()
-f = open('../data/analysis/analysis2_PW_50.pkl', 'rb')
+f = open('../data/analysis/analysis_LSTM_data_50.pkl', 'rb')
 lstm_loss = pickle.load(f)
 lstm_p1 = pickle.load(f)
 lstm_p2 = pickle.load(f)
 f.close()
-f = open('../data/analysis/analysis_PW_50.pkl', 'rb')
+f = open('../data/analysis/analysis_PW_data_50.pkl', 'rb')
 pw_loss = pickle.load(f)
 pw_p1 = pickle.load(f)
 pw_p2 = pickle.load(f)
@@ -45,7 +45,7 @@ def plot(data,label,name,num=10,ran=50):
         plt.legend()
         plt.grid(True)
 
-    plt.savefig('jpg/{}'.format(name))
+    plt.savefig('jpg5/{}'.format(name))
 
 
 
