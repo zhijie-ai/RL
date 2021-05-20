@@ -39,7 +39,6 @@ lock = threading.Lock()
 def train_with_random_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
     for ind in tqdm(range(0,len(train_user),dataset.args.sample_batch_size)):
-        t1 = time.time()
         end = ind+dataset.args.sample_batch_size
         training_user = train_user[ind:end]
         data_collection = dataset.data_collection(training_user)
@@ -48,8 +47,6 @@ def train_with_random_action(dataset,dqn,train_user):
             train_on_epoch(data_collection,dataset,dqn,loss)
 
         end = end if end <len(train_user) else len(train_user)
-        t2 = time.time()
-        print('BBB',t2-t1,len(data_collection['user']),len(data_collection['user'])/dataset.args.training_batch_size)
         print('finish init iteration!! completed user [%d/%d]' % (end,len(train_user)))
     # save model
     dqn.save('init-q')
@@ -125,8 +122,9 @@ def validation(current_best_reward,dataset,env,dqn,sim_vali_user):
     lock.release()
 
 @cost_time_def
-def validation_train(current_best_reward,dataset,env,dqn,sim_vali_user):
+def validation_train(current_best_reward,dataset,env,dqn,vali_user):
     sim_u_reward = {}
+    sim_vali_user = vali_user.copy()
     states = [[] for _ in range(len(sim_vali_user))]
 
     for t in range(dataset.args.vali_time_horizon):
@@ -135,7 +133,7 @@ def validation_train(current_best_reward,dataset,env,dqn,sim_vali_user):
         if len(sim_vali_user) ==0:
             break
 
-    user_sum_reward,clk_sum_rate = env.compute_average_reward(sim_vali_user,sim_u_reward,current_best_reward)
+    user_sum_reward,clk_sum_rate = env.compute_average_reward(vali_user,sim_u_reward,current_best_reward)
 
     user_avg_reward = np.mean(user_sum_reward)
     if user_avg_reward>current_best_reward:
@@ -176,7 +174,6 @@ def train_with_greedy_action(dataset,env,dqn,train_user):
     for ind in tqdm(range(0,len(train_user),dataset.args.sample_batch_size)):
         end = ind+dataset.args.sample_batch_size
         training_user = train_user[ind:end]
-        t1 = time.time()
 
         # initialize empty states
         data_collection = dataset.data_collection(training_user,'greedy')#394s sample_batch_size=1024
@@ -191,8 +188,6 @@ def train_with_greedy_action(dataset,env,dqn,train_user):
         # _,_,new_reward = multi_compute_validation(current_best_reward,dataset,env,dqn,env.vali_user)
         vali_user = np.random.choice(env.vali_user,dataset.args.vali_batch_size,replace=False)
         _,_,new_reward = validation_train(current_best_reward,dataset,env,dqn,vali_user)
-        t2 = time.time()
-        print('AAAAA',t2-t1,len(data_collection['user']),len(data_collection['user'])/dataset.args.training_batch_size)
         if new_reward > current_best_reward:
             save_path = os.path.join(dataset.args.model_path, 'best-reward')
             dqn.save('best-reward')
@@ -211,17 +206,17 @@ def main(args):
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
     loss_random = train_with_random_action(dataset,dqn,env.train_user)
-    file = open('data/loss_random.pkl', 'wb')
+    file = open('data/loss_random_{}.pkl'.format(args.noclick_weight), 'wb')
     pickle.dump(loss_random, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 
     # # 使用贪婪策略收集的数据来训练我们的推荐引擎
     # train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
     # loss_greedy = train_with_greedy_action(dataset,env,dqn,train_user)
-    # file = open('data/loss_random.pkl', 'wb')
+    # file = open('data/loss_greedy_{}_all.pkl'.format(args.noclick_weight), 'wb')
     # pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
     # file.close()
-
+    #
     # dqn.restore('init-q')
     # dqn.restore('best-reward')
     #

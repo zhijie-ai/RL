@@ -13,11 +13,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/analysis_PW_data_model.pkl', 'rb')
+f = open('../data/analysis/loss_random_0.3.pkl', 'rb')
 loss = pickle.load(f)
-p1 = pickle.load(f)
-p2 = pickle.load(f)
 f.close()
+print(loss[0])
+print(loss[1])
+print(loss[2])
 
 
 num=10
@@ -32,7 +33,7 @@ def plot(data):
     plt.show()
 
 if __name__ == '__main__':
-    plot(loss)
+    plot(loss[0])
 
 
 

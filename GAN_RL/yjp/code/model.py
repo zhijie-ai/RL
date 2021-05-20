@@ -79,7 +79,7 @@ class UserModelLSTM():
         # utility
         u_net = mlp(combine_feature,self.hidden_dims,1,activation=tf.nn.elu,sd=1e-1,act_last=False)
         u_net = tf.reshape(u_net,[-1])
-        u_net = tf.clip_by_value(u_net,self.clip_min_value,self.clip_max_value)
+        # u_net = tf.clip_by_value(u_net,self.clip_min_value,self.clip_max_value)
 
         click_u_tensor = tf.SparseTensor(self.placeholder['ut_clickid'],tf.gather(u_net,self.placeholder['click_sublist_index']),dense_shape=denseshape)
         disp_exp_u_tensor= tf.SparseTensor(self.placeholder['ut_dispid'],tf.exp(u_net),dense_shape=denseshape)#(user,time,id)
@@ -330,7 +330,7 @@ class UserModelPW():
 
         #(5) compute utility
         u_disp = mlp(concate_disp_features,self.hidden_dims,1,tf.nn.relu,1e-3,act_last=False)
-        u_disp = tf.clip_by_value(u_disp,self.clip_min_value,self.clip_max_value)
+        # u_disp = tf.clip_by_value(u_disp,self.clip_min_value,self.clip_max_value)
 
         # (5)
         exp_u_disp = tf.exp(u_disp)#当u_disp达到了一定的级别，比如>50,则exp_u_disp会很大，loss会出现为nan的情况,降低batch_size

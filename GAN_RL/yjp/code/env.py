@@ -129,7 +129,7 @@ class Enviroment():
         # (5)
         self.u_disp = tf.reshape(self.u_disp, [-1])
         exp_u_disp = tf.exp(self.u_disp)
-        #当_noclick_weight的结果不足以影响每个用户的sum时，此时，sum会为1.
+        #当_noclick_weight的结果不足以影响每个用户的sum时，此时，sum会为1.即noclick_weight和env计算出来的reward是同量级时。和就不会为1
         sum_exp_disp = tf.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
         scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
         self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
@@ -249,6 +249,9 @@ class Enviroment():
 
             disp_item = best_action_id[j].tolist()
             no_click = [max(1.0 - np.sum(transition_p[j, :]), 0.0)]
+            p_ = np.sum(transition_p[j,:])
+            if p_ == 1:
+                print('GGGGGGGGGGGG!!!!!!',p_)
             prob = np.array(transition_p[j, :].tolist()+no_click)
             # print('===========',prob,no_click,transition_p[j, :].tolist())#[0.42553002 0.57446998] [0.5744699835777283] [0.42553001642227173]
             prob = prob / float(prob.sum())

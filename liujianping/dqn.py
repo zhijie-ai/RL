@@ -66,7 +66,8 @@ class DQN():
             self.replay_buffer.popleft()
 
         if len(self.replay_buffer) > BATCH_SIZE:
-            self.train_Q_network()
+            loss = self.train_Q_network()
+            return loss
 
     def train_Q_network(self):
         self.time_step +=1
@@ -94,6 +95,12 @@ class DQN():
             self.action_input:action_batch,
             self.state_input:state_batch
         })
+        loss = self.session.run(self.cost,feed_dict={
+            self.y_input:y_batch,
+            self.action_input:action_batch,
+            self.state_input:state_batch
+        })
+        return loss
 
     def egreedy_action(self,state):
         Q_value = self.Q_value.eval(feed_dict={self.state_input:[state]})[0]
@@ -123,6 +130,7 @@ EPISODE = 3000 # Episode limitation
 STEP = 3000#step limitation in an episode
 TEST = 10# The number of experience test every 100 episode
 
+losses = []
 def main():
     # initialize OpenAI Gym env dqn agent
     env = gym.make(ENV_NAME)
@@ -139,7 +147,8 @@ def main():
             next_state,reward,done,_ = env.step(action)
             # Define reward for agent
             reward = -1 if done else 0.1
-            agent.perceive(state,action,reward,next_state,done)
+            loss = agent.perceive(state,action,reward,next_state,done)
+            losses.append(loss)
             state = next_state
             if done:
                 break
@@ -148,7 +157,7 @@ def main():
         if episode %100 == 0:
             total_reward = 0
             for i in range(TEST):
-                env.render()
+                # env.render()
                 action = agent.action(state) # direct action for test
                 state,reward,done,_ = env.step(action)
                 print(reward)
@@ -158,6 +167,19 @@ def main():
 
             ave_reward = total_reward/TEST
             print('episode:',episode,'Evaluation Average Reward:',ave_reward)
+
+    plot(losses)
+
+def plot(data):
+    import matplotlib.pyplot as plt
+    num=10
+    ran = 15
+    data = [np.mean(data[ind-num:ind+num]) for ind ,val in enumerate(data) if ind%ran==num]
+    plt.plot(range(len(data)),data)
+    plt.legend()
+    plt.grid(True)
+    # plt.show()
+    plt.savefig('dqn_loss.jpg')
 
 
 if __name__ == '__main__':

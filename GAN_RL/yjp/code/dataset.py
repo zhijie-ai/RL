@@ -71,7 +71,7 @@ class Dataset():
                 # 为exp操作前的reward*对应的权重
                 # Reward_r = tf.segment_sum(tf.multiply(u_disp, p_disp), disp_2d_split_user_ind)
                 # 计算的是用户的总reward
-                best_action_reward,transition_p,_,_ = self.env.conpute_reward(reward_feed_dict)
+                best_action_reward,transition_p,u_disp,_ = self.env.conpute_reward(reward_feed_dict)
 
                 # 4. save to memory
                 y_value = best_action_reward
@@ -79,6 +79,7 @@ class Dataset():
 
                 # 5. sample new states
                 remove_set = []
+                print('HHHHHHHH,max reward',np.max(u_disp))
                 for j in range(len(training_user)):
                     if len(self.env.feature_space[training_user[j]])-len(states[j]) <= self.dqn.k+1:
                         remove_set.append(j)
@@ -90,7 +91,7 @@ class Dataset():
                     no_click = [max(1.0-np.sum(transition_p[j,:]),0.0)]
                     p_ = np.sum(transition_p[j,:])
                     if p_ == 1:
-                        print('attention catched!!!!!!',p_)
+                        print('FFFFFFFFFF!!!!!!',p_)
                     prob = np.array(transition_p[j,:].tolist()+no_click)
                     prob = prob/float(prob.sum())
                     # 模拟用户的选择
@@ -123,6 +124,7 @@ class Dataset():
                 _, transition_p,u_disp,_ = self.env.conpute_reward(reward_feed_dict)
                 reward_u = np.reshape(u_disp,[-1,self.dqn.k])
                 # 3. sample new states
+                print('HHHHHHHH,max reward',np.max(u_disp))
                 states, training_user, old_training_user, next_states, sampled_reward, remove_set = \
                     self.env.sample_new_states_for_train(training_user, states, transition_p, reward_u, max_action, self.dqn.k)
 

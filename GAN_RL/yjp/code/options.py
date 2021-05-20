@@ -37,7 +37,7 @@ def get_options(args=None):
     parser.add_argument('--learning_rate', type=float, default=1e-3, help='learning rate for env training')
     parser.add_argument('--init_learning_rate', type=float, default=0.01, help='learning rate for env training')
     parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
-    parser.add_argument('--num_iters', type=int, default=20, help='num of iterations for env training')
+    parser.add_argument('--num_iters', type=int, default=50, help='num of iterations for env training')
     # might change later to policy_grad method with attetion rather than lstm
     parser.add_argument('--rnn_hidden_dim', type=int, default=20, help='LSTM hidden sizes')
     parser.add_argument('--pw_dim', type=int, default=4, help='position weight dim')
@@ -67,7 +67,7 @@ def get_options(args=None):
     parser.add_argument('--training_batch_size', type=int, default=1024,help='batch size of training')
     parser.add_argument('--vali_batch_size', type=int, default=2000,help='batch size of validation')
     parser.add_argument('--model_path', type =str,default ='../model/dqn/',help = 'dqn model path')
-    parser.add_argument('--epoch', type =int,default =2,help = 'iteration for train')
+    parser.add_argument('--epoch', type =int,default =5,help = 'iteration for train')
 
     opts = parser.parse_args(args)
 
