@@ -266,12 +266,12 @@ class DQN():
     def save(self,model_name):
         save_path = os.path.join(self.model_path, model_name)
         self.saver.save(self.sess,save_path)
-        print('model saved success!!!!')
+        print('model:{} saved success!!!!'.format(save_path))
 
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
         self.saver.restore(self.sess, best_save_path)
-        print('model loaded success!!!!')
+        print('model:{} loaded success!!!!'.format(best_save_path))
 
     def choose_action(self,max_q_feed_dict):
         max_action,max_action_disp_feature = self.sess.run([self.max_action,self.max_action_disp_features],feed_dict=max_q_feed_dict)

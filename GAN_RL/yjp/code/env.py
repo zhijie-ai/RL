@@ -30,6 +30,8 @@ class Enviroment():
         self.save_dir = args.save_dir
         self.hidden_dims = args.dims
         self.std = args.env_std
+        self.rnn_hidden=args.rnn_hidden_dim
+        self.threshold=args.threshold
         self.placeholder = {}
         self.sess=tf.compat.v1.InteractiveSession()
 
@@ -73,20 +75,18 @@ class Enviroment():
                     emb = self.sku_emb_dict.get(id,random_emb)
                     self.feature_space[u].append(emb)
 
-
     def construct_placeholder(self):
-
-        self.placeholder['disp_action_feature'] = tf.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
-        self.placeholder['Xs_clicked'] = tf.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
-
-        self.placeholder['news_size'] = tf.placeholder(dtype=tf.int64, shape=[])
-        self.placeholder['user_size'] = tf.placeholder(dtype=tf.int64, shape=[])
-        self.placeholder['disp_indices'] = tf.placeholder(dtype=tf.int64, shape=[None, 2])
-
-        self.placeholder['disp_2d_split_user_ind'] = tf.placeholder(dtype=tf.int64, shape=[None])
-
-        self.placeholder['history_order_indices'] = tf.placeholder(dtype=tf.int64, shape=[None])
-        self.placeholder['history_user_indices'] = tf.placeholder(dtype=tf.int64, shape=[None])
+        if self.user_model =='PW':
+            self.placeholder['disp_action_feature'] = tf.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
+            self.placeholder['Xs_clicked'] = tf.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
+            self.placeholder['disp_2d_split_user_ind'] = tf.placeholder(dtype=tf.int64, shape=[None])
+            self.placeholder['history_order_indices'] = tf.placeholder(dtype=tf.int64, shape=[None])
+            self.placeholder['history_user_indices'] = tf.placeholder(dtype=tf.int64, shape=[None])
+        else:
+            self.placeholder['clicked_feature'] = tf.compat.v1.placeholder(tf.float32,(None,None,self.f_dim))
+            self.placeholder['ut_dispid_feature'] = tf.compat.v1.placeholder(tf.float32,shape=[None,self.f_dim])
+            self.placeholder['ut_dispid_ut'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,2])
+            self.placeholder['disp_2d_split_user_ind'] = tf.placeholder(dtype=tf.int64, shape=[None])
 
     def mlp(self,x,hidden_dims,output_dim,activation,sd,act_last=False):
         hidden_dims = tuple(map(int,hidden_dims.split('-')))
@@ -102,43 +102,66 @@ class Enviroment():
                                    kernel_initializer=tf.truncated_normal_initializer(stddev=sd))
 
     def _init_graph(self):
+        if self.user_model == 'PW':
 
-        # (1) history feature --- net ---> clicked_feature
-        # (1) construct cumulative history
-        click_history = [[] for _ in range(self.pw_dim)]
-        position_weight = [[] for _ in range(self.pw_dim)]
-        for ii in range(self.pw_dim):
-            position_weight[ii] = tf.get_variable('p_w'+str(ii),[self.band_size],initializer=tf.constant_initializer(0.0001))
-            # np.arange(id_cnt) 当前用户上一时刻的点击的item的数量
-            position_weight_values = tf.gather(position_weight[ii],self.placeholder['history_order_indices'])
-            weighted_feature = tf.multiply(self.placeholder['Xs_clicked'],tf.reshape(position_weight_values,[-1,1]))
-            click_history[ii] = tf.segment_sum(weighted_feature,self.placeholder['history_user_indices'])
+            # (1) history feature --- net ---> clicked_feature
+            # (1) construct cumulative history
+            click_history = [[] for _ in range(self.pw_dim)]
+            position_weight = [[] for _ in range(self.pw_dim)]
+            for ii in range(self.pw_dim):
+                position_weight[ii] = tf.get_variable('p_w'+str(ii),[self.band_size],initializer=tf.constant_initializer(0.0001))
+                # np.arange(id_cnt) 当前用户上一时刻的点击的item的数量
+                position_weight_values = tf.gather(position_weight[ii],self.placeholder['history_order_indices'])
+                weighted_feature = tf.multiply(self.placeholder['Xs_clicked'],tf.reshape(position_weight_values,[-1,1]))
+                click_history[ii] = tf.segment_sum(weighted_feature,self.placeholder['history_user_indices'])
 
-        self.user_states = tf.concat(click_history,axis=1)
+            self.user_states = tf.concat(click_history,axis=1)
 
-        #disp_2d_split_user = np.kron(np.arange(len(training_user)), np.ones(_k))
-        disp_history_feature = tf.gather(self.user_states,self.placeholder['disp_2d_split_user_ind'])
+            #disp_2d_split_user = np.kron(np.arange(len(training_user)), np.ones(_k))
+            disp_history_feature = tf.gather(self.user_states,self.placeholder['disp_2d_split_user_ind'])
 
-        # (4) combine features
-        # disp_action_feature(40*20) 当前批次用户的所有展示的item，即曝光的item
-        concat_disp_features = tf.reshape(tf.concat([disp_history_feature,self.placeholder['disp_action_feature']],axis=1),
-                                          [-1,self.f_dim*self.pw_dim+self.f_dim])
+            # (4) combine features
+            # disp_action_feature(40*20) 当前批次用户的所有展示的item，即曝光的item
+            concat_disp_features = tf.reshape(tf.concat([disp_history_feature,self.placeholder['disp_action_feature']],axis=1),
+                                              [-1,self.f_dim*self.pw_dim+self.f_dim])
 
-        # (5) compute utility
-        self.u_disp = self.mlp(concat_disp_features,self.hidden_dims,1,tf.nn.elu,sd=self.std,act_last=False)
-        # (5)
-        self.u_disp = tf.reshape(self.u_disp, [-1])
-        exp_u_disp = tf.exp(self.u_disp)
-        #当_noclick_weight的结果不足以影响每个用户的sum时，此时，sum会为1.即noclick_weight和env计算出来的reward是同量级时。和就不会为1
-        sum_exp_disp = tf.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
-        scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
-        self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
+            # (5) compute utility
+            self.u_disp = self.mlp(concat_disp_features,self.hidden_dims,1,tf.nn.elu,sd=self.std,act_last=False)
+            # (5)
+            self.u_disp = tf.reshape(self.u_disp, [-1])
+            exp_u_disp = tf.exp(self.u_disp)
+            #当_noclick_weight的结果不足以影响每个用户的sum时，此时，sum会为1.即noclick_weight和env计算出来的reward是同量级时。和就不会为1
+            sum_exp_disp = tf.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
+            scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
+            self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
 
-        self.exp_u_disp = exp_u_disp
-        self.scatter_sum_exp_disp = scatter_sum_exp_disp
-        self.disp_2d_split_user_ind = self.placeholder['disp_2d_split_user_ind']
+        else:#LSTM
 
+            batch_size=tf.shape(self.placeholder['clicked_feature'])[1]
+            # construct lstm
+            # tf.nn.rnn_cell.BasicLSTMCell()
+            cell = tf.contrib.rnn.BasicLSTMCell(self.rnn_hidden,state_is_tuple=True)
+            initial_state = cell.zero_state(batch_size,tf.float32)
+            rnn_outputs,rnn_states = tf.nn.dynamic_rnn(cell,self.placeholder['clicked_feature'],initial_state=initial_state,time_major=True)
+            # rnn_outputs: (time, user=batch, rnn_hidden)
+            # (1) output forward one-step (2) then transpose
+            u_bar_feature = tf.concat([tf.zeros([1,batch_size,self.rnn_hidden],dtype=tf.float32),rnn_outputs],0)
+            u_bar_feature = tf.transpose(u_bar_feature,perm=[1,0,2])# (user, time, rnn_hidden)
+            # gather correspoding feature
+            u_bar_feature_gather = tf.gather_nd(u_bar_feature,self.placeholder['ut_dispid_ut'])
+            combine_feature= tf.concat([u_bar_feature_gather,self.placeholder['ut_dispid_feature']],axis=1)
+            # indices size
+            combine_feature = tf.reshape(combine_feature,[-1,self.rnn_hidden+self.f_dim])
 
+            # utility
+            u_net = self.mlp(combine_feature,self.hidden_dims,1,activation=tf.nn.elu,sd=1e-1,act_last=False)
+            self.u_disp = tf.reshape(u_net,[-1])
+
+            exp_u_disp = tf.exp(self.u_disp)
+            #当_noclick_weight的结果不足以影响每个用户的sum时，此时，sum会为1.即noclick_weight和env计算出来的reward是同量级时。和就不会为1
+            sum_exp_disp = tf.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
+            scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
+            self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
 
     def initialize_environment(self,reuse=False):
         self.format_feature_space()
@@ -158,7 +181,7 @@ class Enviroment():
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
         self.saver.restore(self.sess, best_save_path)
-        print('model:{} loaded success!!!!'.format(model_name))
+        print('model:{} loaded success!!!!'.format(best_save_path))
 
 
     def conpute_reward(self,reward_feed_dict):
@@ -168,17 +191,19 @@ class Enviroment():
         trans_p = tf.reshape(self.p_disp, [-1, self.k])
 
         Reward_r,trans_p,u_disp = self.sess.run([Reward_r,trans_p,self.u_disp],feed_dict=reward_feed_dict)
-        # u_disp,p_disp,exp_u_disp,u1,u2 = self.sess.run([self.u_disp,self.p_disp,self.exp_u_disp,
-        #                                           self.scatter_sum_exp_disp,self.disp_2d_split_user_ind],feed_dict=reward_feed_dict)
-        # # 错误的代码中reward_r的shape为(10, 100)，因为tf.exp(u_disp)用的是未变形的变量
-        # print('=================',Reward_r.shape,u_disp.shape,p_disp.shape,exp_u_disp.shape,u1.shape,u2.shape)
 
+        if self.user_model =='PW':
 
-        reward_feed_dict = {self.placeholder['Xs_clicked']: [],
-                            self.placeholder['history_order_indices']: [],
-                            self.placeholder['history_user_indices']: [],
-                            self.placeholder['disp_2d_split_user_ind']: [],
-                            self.placeholder['disp_action_feature']:[]}
+            reward_feed_dict = {self.placeholder['Xs_clicked']: [],
+                                self.placeholder['history_order_indices']: [],
+                                self.placeholder['history_user_indices']: [],
+                                self.placeholder['disp_2d_split_user_ind']: [],
+                                self.placeholder['disp_action_feature']:[]}
+        else:
+            reward_feed_dict = {self.placeholder['clicked_feature']: [],
+                                self.placeholder['ut_dispid_feature']: [],
+                                self.placeholder['ut_dispid_ut']: [],
+                                self.placeholder['disp_2d_split_user_ind']: []}
 
 
 
@@ -191,7 +216,7 @@ class Enviroment():
                 remove_set.append(j)
 
             disp_item = best_action_id[j].tolist()
-            no_click = [max(1.0-np.sum(trasition_p[j,:]),0.0)]
+            no_click = [max(1.0-(1.0 if np.sum(trasition_p[j,:])>self.threshold else np.sum(trasition_p[j,:])),0.0)]
             prob = np.array(trasition_p[j,:].tolist()+no_click)
             #transition_p[j, :]得到的是每个用户对k个item的权重
             # 如果np.sum(transition_p[j,:]为1，则说明当前用户一定是选了一个，注意力被平均的分配到了10个item身上。
@@ -248,12 +273,8 @@ class Enviroment():
                 remove_set.append(j)
 
             disp_item = best_action_id[j].tolist()
-            no_click = [max(1.0 - np.sum(transition_p[j, :]), 0.0)]
-            p_ = np.sum(transition_p[j,:])
-            if p_ == 1:
-                print('GGGGGGGGGGGG!!!!!!',p_)
+            no_click = [max(1.0 - (1.0 if np.sum(transition_p[j,:])>self.threshold else np.sum(transition_p[j,:])), 0.0)]
             prob = np.array(transition_p[j, :].tolist()+no_click)
-            # print('===========',prob,no_click,transition_p[j, :].tolist())#[0.42553002 0.57446998] [0.5744699835777283] [0.42553001642227173]
             prob = prob / float(prob.sum())
             rand_choice = np.random.choice(disp_item + [-100], 1, p=prob)
 
@@ -294,4 +315,3 @@ if __name__ == '__main__':
     env = Enviroment(cmd_args)
     env.initialize_environment()
     print(len(env.train_user))
-    np.save('vali_user',env.vali_user)

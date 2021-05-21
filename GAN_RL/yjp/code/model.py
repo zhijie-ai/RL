@@ -71,16 +71,17 @@ class UserModelLSTM():
         u_bar_feature = tf.concat([tf.zeros([1,batch_size,self.rnn_hidden],dtype=tf.float32),rnn_outputs],0)
         u_bar_feature = tf.transpose(u_bar_feature,perm=[1,0,2])# (user, time, rnn_hidden)
         # gather correspoding feature
-        u_bar_feature_gather = tf.gather_nd(u_bar_feature,self.placeholder['ut_dispid_ut'])
+        u_bar_feature_gather = tf.gather_nd(u_bar_feature,self.placeholder['ut_dispid_ut'])#[所有用户展示次数,rnn_hidden]
         combine_feature= tf.concat([u_bar_feature_gather,self.placeholder['ut_dispid_feature']],axis=1)
         # indices size
-        combine_feature = tf.reshape(combine_feature,[-1,self.rnn_hidden+self.f_dim])
+        combine_feature = tf.reshape(combine_feature,[-1,self.rnn_hidden+self.f_dim])#[该batch中所有用户的展示次数,rnn_hidden+f_dim]
 
         # utility
         u_net = mlp(combine_feature,self.hidden_dims,1,activation=tf.nn.elu,sd=1e-1,act_last=False)
         u_net = tf.reshape(u_net,[-1])
         # u_net = tf.clip_by_value(u_net,self.clip_min_value,self.clip_max_value)
 
+        #self.placeholder['ut_clickid']记录的是用户点击的数据[[u_idx,t,click_id],[u_idx,t,click_id]...]
         click_u_tensor = tf.SparseTensor(self.placeholder['ut_clickid'],tf.gather(u_net,self.placeholder['click_sublist_index']),dense_shape=denseshape)
         disp_exp_u_tensor= tf.SparseTensor(self.placeholder['ut_dispid'],tf.exp(u_net),dense_shape=denseshape)#(user,time,id)
         disp_sum_exp_u_tensor = tf.sparse_reduce_sum(disp_exp_u_tensor,axis=2)
@@ -237,12 +238,12 @@ class UserModelLSTM():
     def save(self,model_name):
         save_path = os.path.join(self.model_path, model_name)
         self.saver.save(self.sess,save_path)
-        print('model saved success!!!!')
+        print('model:{} saved success!!!!'.format(save_path))
 
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
         self.saver.restore(self.sess, best_save_path)
-        print('model:{} loaded success!!!!'.format(model_name))
+        print('model:{} loaded success!!!!'.format(best_save_path))
 
     def validation_on_batch_multi(self,out_,ii):
         vali_thread_eval = self.sess.run([self.loss_sum,self.precision_1_sum,self.precision_2_sum,self.event_cnt],
@@ -395,17 +396,18 @@ class UserModelPW():
                                                                         self.placeholder['click_2d_subindex']: out_train['click_sub_index_2d'],
                                                                         self.placeholder['disp_2d_split_sec_ind']: out_train['disp_2d_split_sec'],
                                                                         self.placeholder['Xs_clicked']: out_train['feature_clicked_x']})
+
         return loss,step,precision_1,precision_2
 
     def save(self,model_name):
         save_path = os.path.join(self.model_path, model_name)
         self.saver.save(self.sess,save_path)
-        print('model:{} saved success!!!!'.format(model_name))
+        print('model:{} saved success!!!!'.format(save_path))
 
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
         self.saver.restore(self.sess, best_save_path)
-        print('model:{} loaded success!!!!'.format(model_name))
+        print('model:{} loaded success!!!!'.format(best_save_path))
 
     def validation_on_batch_multi(self,out_,ii):
         vali_thread_eval = self.sess.run([self.loss_sum,self.precision_1_sum,self.precision_2_sum,self.event_cnt],

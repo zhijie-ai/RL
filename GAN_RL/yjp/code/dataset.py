@@ -75,11 +75,10 @@ class Dataset():
 
                 # 4. save to memory
                 y_value = best_action_reward
-                data_collection['y'].extend(y_value.tolist())##y存的是用户推荐引擎推荐的10个item，也即对用户曝光的10个item总的reward
+                data_collection['y'].extend(y_value.tolist())##y存的是用户推荐引擎推荐的10个item，也即对用户曝光的10个item总的加权reward
 
                 # 5. sample new states
                 remove_set = []
-                print('HHHHHHHH,max reward',np.max(u_disp))
                 for j in range(len(training_user)):
                     if len(self.env.feature_space[training_user[j]])-len(states[j]) <= self.dqn.k+1:
                         remove_set.append(j)
@@ -88,10 +87,7 @@ class Dataset():
                     #transition_p[j, :]得到的是每个用户对k个item的权重
                     # 如果np.sum(transition_p[j,:]为1，则说明当前用户一定是选了一个，注意力被平均的分配到了10个item身上。
                     # 如果和不为1，则说明当前用户对此时的10个sku并不感兴趣
-                    no_click = [max(1.0-np.sum(transition_p[j,:]),0.0)]
-                    p_ = np.sum(transition_p[j,:])
-                    if p_ == 1:
-                        print('FFFFFFFFFF!!!!!!',p_)
+                    no_click = [max(1.0-(1.0 if np.sum(transition_p[j,:])>self.args.threshold else np.sum(transition_p[j,:])),0.0)]
                     prob = np.array(transition_p[j,:].tolist()+no_click)
                     prob = prob/float(prob.sum())
                     # 模拟用户的选择
@@ -124,7 +120,6 @@ class Dataset():
                 _, transition_p,u_disp,_ = self.env.conpute_reward(reward_feed_dict)
                 reward_u = np.reshape(u_disp,[-1,self.dqn.k])
                 # 3. sample new states
-                print('HHHHHHHH,max reward',np.max(u_disp))
                 states, training_user, old_training_user, next_states, sampled_reward, remove_set = \
                     self.env.sample_new_states_for_train(training_user, states, transition_p, reward_u, max_action, self.dqn.k)
 
@@ -135,6 +130,21 @@ class Dataset():
                 #4. save to memory
                 y_value = sampled_reward+self.args.gamma*max_q_value
                 data_collection['y'].extend(y_value.tolist())
+
+
+        ind = np.random.permutation(len(data_collection['user']))
+        user = np.array(data_collection['user'])[ind].tolist()
+        data_collection['user'].clear()
+        data_collection['user'].extend(user)
+        user = np.array(data_collection['state'])[ind].tolist()
+        data_collection['state'].clear()
+        data_collection['state'].extend(user)
+        user = np.array(data_collection['action'])[ind].tolist()
+        data_collection['action'].clear()
+        data_collection['action'].extend(user)
+        user = np.array(data_collection['y'])[ind].tolist()
+        data_collection['y'].clear()
+        data_collection['y'].extend(user)
 
         return data_collection
 

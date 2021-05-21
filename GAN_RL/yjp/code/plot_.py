@@ -33,7 +33,7 @@ def plot(data):
     plt.show()
 
 if __name__ == '__main__':
-    plot(loss[0])
+    plot(loss[1])
 
 
 
