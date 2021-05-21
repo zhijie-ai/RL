@@ -136,15 +136,15 @@ class Dataset():
         user = np.array(data_collection['user'])[ind].tolist()
         data_collection['user'].clear()
         data_collection['user'].extend(user)
-        user = np.array(data_collection['state'])[ind].tolist()
+        state = np.array(data_collection['state'])[ind].tolist()
         data_collection['state'].clear()
-        data_collection['state'].extend(user)
-        user = np.array(data_collection['action'])[ind].tolist()
+        data_collection['state'].extend(state)
+        action = np.array(data_collection['action'])[ind].tolist()
         data_collection['action'].clear()
-        data_collection['action'].extend(user)
-        user = np.array(data_collection['y'])[ind].tolist()
+        data_collection['action'].extend(action)
+        y = np.array(data_collection['y'])[ind].tolist()
         data_collection['y'].clear()
-        data_collection['y'].extend(user)
+        data_collection['y'].extend(y)
 
         return data_collection
 

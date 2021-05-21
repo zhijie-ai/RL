@@ -24,7 +24,7 @@ print(loss[2])
 num=10
 ran = 15
 def plot(data):
-    data = [np.mean(data[ind-num:ind+num]) for ind ,val in enumerate(data) if ind%ran==num]
+    # data = [np.mean(data[ind-num:ind+num]) for ind ,val in enumerate(data) if ind%ran==num]
     plt.plot(range(len(data)),data)
     plt.legend()
     plt.grid(True)
@@ -33,7 +33,7 @@ def plot(data):
     plt.show()
 
 if __name__ == '__main__':
-    plot(loss[1])
+    plot(loss[6])
 
 
 

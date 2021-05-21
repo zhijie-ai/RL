@@ -206,22 +206,22 @@ def main(args):
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
     loss_random = train_with_random_action(dataset,dqn,env.train_user)
-    file = open('data/loss_random_{}.pkl'.format(args.noclick_weight), 'wb')
+    file = open('data/loss_random_{}_all.pkl'.format(args.noclick_weight), 'wb')
     pickle.dump(loss_random, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 
-    # # 使用贪婪策略收集的数据来训练我们的推荐引擎
-    # train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
-    # loss_greedy = train_with_greedy_action(dataset,env,dqn,train_user)
-    # file = open('data/loss_greedy_{}_all.pkl'.format(args.noclick_weight), 'wb')
-    # pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
-    # file.close()
-    #
-    # dqn.restore('init-q')
-    # dqn.restore('best-reward')
-    #
-    # print(multi_compute_validation(0.0,dataset,env,dqn,env.vali_user[:4000]))
-    # print(validation_train(0.0,dataset,env,dqn,env.test_user))
+    # 使用贪婪策略收集的数据来训练我们的推荐引擎
+    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
+    loss_greedy = train_with_greedy_action(dataset,env,dqn,train_user)
+    file = open('data/loss_greedy_{}_all.pkl'.format(args.noclick_weight), 'wb')
+    pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
+
+    dqn.restore('init-q')
+    dqn.restore('best-reward')
+
+    print(multi_compute_validation(0.0,dataset,env,dqn,env.vali_user[:4000]))
+    print(validation_train(0.0,dataset,env,dqn,env.test_user))
 
 
 
