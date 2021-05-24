@@ -84,9 +84,9 @@ def multi_compute_validation(current_best_reward,dataset,env,dqn,user_set):
     threads = []
     for ii in range(dataset.args.num_thread):
         if dataset.args.compu_type=='thread':
-            thread = threading.Thread(target=validation,args=(current_best_reward,dataset,env,dqn,thread_u[ii]))
+            thread = threading.Thread(target=validation,args=(dataset,env,dqn,thread_u[ii]))
         else:
-            thread = Process(target=validation,args=(current_best_reward,dataset,env,dqn,thread_u[ii]))
+            thread = Process(target=validation,args=(dataset,env,dqn,thread_u[ii]))
         thread.start()
         threads.append(thread)
 
@@ -101,10 +101,11 @@ def multi_compute_validation(current_best_reward,dataset,env,dqn,user_set):
 
 # 新启线程来运行
 @cost_time_def##1459.6893651485s
-def validation(current_best_reward,dataset,env,dqn,sim_vali_user):
+def validation(dataset,env,dqn,vali_user):
     # initialize empty states
     global user_sum_reward,sum_clk_rate
 
+    sim_vali_user = vali_user.copy()
     states = [[] for _ in range(len(sim_vali_user))]
     sim_u_reward = {}
 
@@ -114,7 +115,7 @@ def validation(current_best_reward,dataset,env,dqn,sim_vali_user):
         if len(sim_vali_user) ==0:
             break
 
-    user_sum_reward,clk_sum_rate = env.compute_average_reward(sim_vali_user,sim_u_reward)
+    user_sum_reward,clk_sum_rate = env.compute_average_reward(vali_user,sim_u_reward)
 
     lock.acquire()
     user_sum_reward += user_sum_reward
@@ -219,7 +220,7 @@ def main(args):
     # file.close()
     # dqn.restore('best-reward')
 
-    print(multi_compute_validation(0.0,dataset,env,dqn,env.vali_user[:4000]))
+    print(multi_compute_validation(0.0,dataset,env,dqn,env.test_user))
     print(validation_train(0.0,dataset,env,dqn,env.test_user))
 
 
@@ -230,4 +231,4 @@ if __name__ == '__main__':
     print('>>>>>>>>>>>',cmd_args,'<<<<<<<<<<<<<<<<<<<<<<')
     main(cmd_args)
     t2 = time.time()
-    print('finished!!!!!!,time cost:{} m'.format(t2-t1))
+    print('finished!!!!!!,time cost:{} m'.format((t2-t1)/60))

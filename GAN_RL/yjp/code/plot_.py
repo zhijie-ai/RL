@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/loss_greedy_0.15_all.pkl', 'rb')
+f = open('../data/analysis/loss_random_0.3.pkl', 'rb')
 loss = pickle.load(f)
 f.close()
 print(loss[0])
@@ -23,9 +23,10 @@ print(loss[2])
 
 num=10
 ran = 15
-def plot(data):
-    data = [np.mean(data[ind-num:ind+num]) for ind ,val in enumerate(data) if ind%ran==num]
-    plt.plot(range(len(data)),data)
+def plot(data_):
+    for ind,data in enumerate(data_):
+        data = [np.mean(data[ind-num:ind+num]) for ind ,val in enumerate(data) if ind%ran==num]
+        plt.plot(range(len(data)),data,label=ind)
     plt.legend()
     plt.grid(True)
 
@@ -33,7 +34,7 @@ def plot(data):
     plt.show()
 
 if __name__ == '__main__':
-    plot(loss[0])
+    plot(loss)
 
 
 
