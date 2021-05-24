@@ -239,7 +239,7 @@ class Enviroment():
         sim_vali_user = [sim_vali_user[j] for j in range(previous_size) if j not in remove_set]
         return sim_vali_user,states,sim_user_reward
 
-    def compute_average_reward(self,sim_vali_user,sim_user_rewrd,current_best_reward):
+    def compute_average_reward(self,sim_vali_user,sim_user_rewrd):
         user_avg_reward = []
         clk_rate = []
         for j in range(len(sim_vali_user)):
