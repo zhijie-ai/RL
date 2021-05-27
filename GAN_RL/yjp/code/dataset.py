@@ -17,6 +17,7 @@ from collections import deque
 from itertools import chain
 import threading
 from multiprocessing import Process
+from tqdm import tqdm
 
 class Dataset():
     def __init__(self,args,env,dqn):
@@ -24,6 +25,39 @@ class Dataset():
         self.env = env
         self.dqn = dqn
         self.lock = threading.Lock()
+
+    @cost_time_def
+    def data_collection_with_batch(self,train_user,type='random'):
+        data_size_init = len(train_user)*self.args.train_time_horizon+10
+        data_collection = {'user':deque(maxlen=data_size_init),'state':deque(maxlen=data_size_init),
+                           'action':deque(maxlen=data_size_init),'y':deque(maxlen=data_size_init)}
+
+        # initialize empty states
+        for ind_ in tqdm(range(0,len(train_user),self.args.sample_batch_size)):
+            end = ind_+self.args.sample_batch_size
+            training_user = train_user[ind_:end]
+            data_collection_ = self.data_collection(training_user,type)
+
+            data_collection['user'].extend(data_collection_['user'])
+            data_collection['state'].extend(data_collection_['state'])
+            data_collection['action'].extend(data_collection_['action'])
+            data_collection['y'].extend(data_collection_['y'])
+            del data_collection_
+
+        ind = np.random.permutation(len(data_collection['user']))
+        user = np.array(data_collection['user'])[ind].tolist()
+        data_collection['user'].clear()
+        data_collection['user'].extend(user)
+        state = np.array(data_collection['state'])[ind].tolist()
+        data_collection['state'].clear()
+        data_collection['state'].extend(state)
+        action = np.array(data_collection['action'])[ind].tolist()
+        data_collection['action'].clear()
+        data_collection['action'].extend(action)
+        y = np.array(data_collection['y'])[ind].tolist()
+        data_collection['y'].clear()
+        data_collection['y'].extend(y)
+        return data_collection
 
     @cost_time_def
     def data_collection(self, training_user,type='random'):
@@ -130,21 +164,6 @@ class Dataset():
                 #4. save to memory
                 y_value = sampled_reward+self.args.gamma*max_q_value
                 data_collection['y'].extend(y_value.tolist())
-
-
-        ind = np.random.permutation(len(data_collection['user']))
-        user = np.array(data_collection['user'])[ind].tolist()
-        data_collection['user'].clear()
-        data_collection['user'].extend(user)
-        state = np.array(data_collection['state'])[ind].tolist()
-        data_collection['state'].clear()
-        data_collection['state'].extend(state)
-        action = np.array(data_collection['action'])[ind].tolist()
-        data_collection['action'].clear()
-        data_collection['action'].extend(action)
-        y = np.array(data_collection['y'])[ind].tolist()
-        data_collection['y'].clear()
-        data_collection['y'].extend(y)
 
         return data_collection
 

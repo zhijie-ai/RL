@@ -77,16 +77,16 @@ class Enviroment():
 
     def construct_placeholder(self):
         if self.user_model =='PW':
-            self.placeholder['disp_action_feature'] = tf.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
-            self.placeholder['Xs_clicked'] = tf.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
-            self.placeholder['disp_2d_split_user_ind'] = tf.placeholder(dtype=tf.int64, shape=[None])
-            self.placeholder['history_order_indices'] = tf.placeholder(dtype=tf.int64, shape=[None])
-            self.placeholder['history_user_indices'] = tf.placeholder(dtype=tf.int64, shape=[None])
+            self.placeholder['disp_action_feature'] = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
+            self.placeholder['Xs_clicked'] = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
+            self.placeholder['disp_2d_split_user_ind'] = tf.compat.v1.placeholder(dtype=tf.int64, shape=[None])
+            self.placeholder['history_order_indices'] = tf.compat.v1.placeholder(dtype=tf.int64, shape=[None])
+            self.placeholder['history_user_indices'] = tf.compat.v1.placeholder(dtype=tf.int64, shape=[None])
         else:
             self.placeholder['clicked_feature'] = tf.compat.v1.placeholder(tf.float32,(None,None,self.f_dim))
             self.placeholder['ut_dispid_feature'] = tf.compat.v1.placeholder(tf.float32,shape=[None,self.f_dim])
             self.placeholder['ut_dispid_ut'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,2])
-            self.placeholder['disp_2d_split_user_ind'] = tf.placeholder(dtype=tf.int64, shape=[None])
+            self.placeholder['disp_2d_split_user_ind'] = tf.compat.v1.placeholder(dtype=tf.int64, shape=[None])
 
     def mlp(self,x,hidden_dims,output_dim,activation,sd,act_last=False):
         hidden_dims = tuple(map(int,hidden_dims.split('-')))
@@ -109,11 +109,11 @@ class Enviroment():
             click_history = [[] for _ in range(self.pw_dim)]
             position_weight = [[] for _ in range(self.pw_dim)]
             for ii in range(self.pw_dim):
-                position_weight[ii] = tf.get_variable('p_w'+str(ii),[self.band_size],initializer=tf.constant_initializer(0.0001))
+                position_weight[ii] = tf.compat.v1.get_variable('p_w'+str(ii),[self.band_size],initializer=tf.constant_initializer(0.0001))
                 # np.arange(id_cnt) 当前用户上一时刻的点击的item的数量
                 position_weight_values = tf.gather(position_weight[ii],self.placeholder['history_order_indices'])
-                weighted_feature = tf.multiply(self.placeholder['Xs_clicked'],tf.reshape(position_weight_values,[-1,1]))
-                click_history[ii] = tf.segment_sum(weighted_feature,self.placeholder['history_user_indices'])
+                weighted_feature = tf.math.multiply(self.placeholder['Xs_clicked'],tf.reshape(position_weight_values,[-1,1]))
+                click_history[ii] = tf.math.segment_sum(weighted_feature,self.placeholder['history_user_indices'])
 
             self.user_states = tf.concat(click_history,axis=1)
 
@@ -131,7 +131,7 @@ class Enviroment():
             self.u_disp = tf.reshape(self.u_disp, [-1])
             exp_u_disp = tf.exp(self.u_disp)
             #当_noclick_weight的结果不足以影响每个用户的sum时，此时，sum会为1.即noclick_weight和env计算出来的reward是同量级时。和就不会为1
-            sum_exp_disp = tf.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
+            sum_exp_disp = tf.math.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
             scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
             self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
 
@@ -168,7 +168,7 @@ class Enviroment():
         self.construct_placeholder()
         print(['_k', self.k, '_noclick_weight', self.noclick_weight])
 
-        with tf.variable_scope('model',reuse=reuse):
+        with tf.compat.v1.variable_scope('model',reuse=reuse):
             self._init_graph()
 
 

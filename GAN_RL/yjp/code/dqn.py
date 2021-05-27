@@ -207,6 +207,8 @@ class DQN():
             max_action_k = [[] for _ in range(self.k)]
             max_action_feature_k = [[] for _ in range(self.k)]
             to_avoid_repeat_tensor = tf.zeros(tf.cast(self.placeholder['all_action_tensor_shape'],tf.int32))
+
+            max_q_value=[]
             for ii in range(self.k):
                 # 构造Q_j的input（notation: j就是ii）
                 # 注意：max_action_feature_list是逐步变大，从length=0到length=_k - 1
@@ -244,7 +246,12 @@ class DQN():
                 max_action_feature_k_scatter = tf.gather(max_action_feature_k[ii],self.placeholder['all_action_user_indices'])
                 max_action_feature_list.append(max_action_feature_k_scatter)
 
-            self.max_q_value = tf.segment_max(q_value_all,self.placeholder['all_action_user_indices'])
+                max_q_val_k = tf.math.segment_max(q_value_all,self.placeholder['all_action_user_indices'])
+                max_q_value.append(max_q_val_k)
+
+
+            self.max_q_value = tf.math.reduce_max(max_q_value,axis=0)
+            # self.max_q_value = tf.math.segment_max(q_value_all,self.placeholder['all_action_user_indices'])
 
             self.max_action = tf.stack(max_action_k,axis=1)
             max_action_disp_features = tf.concat(max_action_feature_k,axis=1)
