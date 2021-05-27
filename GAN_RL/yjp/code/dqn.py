@@ -45,28 +45,28 @@ class DQN():
 
     def construct_placeholder(self):
         # max Q placeholder  这里定义argmax Q 和 max_Q
-        self.placeholder['all_action_user_indices'] = tf.placeholder(dtype=tf.int64, shape=[None])
-        self.placeholder['all_action_tensor_indices'] = tf.placeholder(dtype=tf.int64,shape=[None,2])
+        self.placeholder['all_action_user_indices'] = tf.compat.v1.placeholder(dtype=tf.int64, shape=[None])
+        self.placeholder['all_action_tensor_indices'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None,2])
         # 行当前batch的用户数，列为当前batch的用户中可选的action最大的数目。
-        self.placeholder['all_action_tensor_shape'] = tf.placeholder(dtype=tf.int64,shape=[2])
+        self.placeholder['all_action_tensor_shape'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[2])
 
         # action_cnt = np.cumsum(action_cnt)
         # action_cnt = [0] + list(action_cnt[:-1])
         # 当前用户之前的用户所有的可选的action的数量
-        self.placeholder['action_count'] = tf.placeholder(dtype=tf.int64,shape=[None])
+        self.placeholder['action_count'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
         #action_space_cnt[uu] = len(action_space)
-        self.placeholder['action_space_count'] = tf.placeholder(dtype=tf.int64,shape=[None])
+        self.placeholder['action_space_count'] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
 
         # online版本：建议直接把all_action_feature_gather作为placeholder，输入所有可以选的items的features
-        self.placeholder['all_action_id'] = tf.placeholder(dtype=tf.int64, shape=[None])
+        self.placeholder['all_action_id'] = tf.compat.v1.placeholder(dtype=tf.int64, shape=[None])
 
         #----------------------------Q and loss placeholder
         # 这里定义Q function还有对应的loss。定义的时候，假设同时处理一个batch的数据，所以稍微复杂一点。
         # 输出_k个Q function，_k个loss，_k个train op
-        self.placeholder['current_action_space'] = tf.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
-        self.placeholder['action_space_mean']=tf.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
-        self.placeholder['action_space_std']=tf.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
-        self.placeholder['y_label'] = tf.placeholder(dtype=tf.float32,shape=[None])
+        self.placeholder['current_action_space'] = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.f_dim])
+        self.placeholder['action_space_mean']=tf.compat.v1.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
+        self.placeholder['action_space_std']=tf.compat.v1.placeholder(dtype=tf.float32,shape=[None,self.f_dim])
+        self.placeholder['y_label'] = tf.compat.v1.placeholder(dtype=tf.float32,shape=[None])
 
     def mlp(self,x,hidden_dims,output_dim,activation,sd,act_last=False):
         hidden_dims = tuple(map(int,hidden_dims.split('-')))
@@ -94,7 +94,7 @@ class DQN():
             # action_k_id = [[] for _ in range(self.k)]
             action_k_id = ['action_k_{}'.format(i) for i in np.arange(self.k)]
             for ii in range(self.k):
-                self.placeholder[action_k_id[ii]] = tf.placeholder(dtype=tf.int64,shape=[None])
+                self.placeholder[action_k_id[ii]] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
             action_k_feature_gather = [[] for _ in range(self.k)]
             for ii in range(self.k):
                 # action_k_feature_gather[ii] 代表推荐的第ii个item的feature。（总共推荐_k个item）
@@ -145,7 +145,7 @@ class DQN():
         else:# online
             action_k_feature_gather = ['action_k_feature_gather:{}'.format(i) for i in np.arange(self.k)]
             for ii in range(self.k):
-                self.placeholder[action_k_feature_gather[ii]] = tf.placeholder(dtype=tf.int64,shape=[None])
+                self.placeholder[action_k_feature_gather[ii]] = tf.compat.v1.placeholder(dtype=tf.int64,shape=[None])
 
             # 定义Q: input：（user_states, action_states, action_feature）
             concate_input_k = [[] for _ in range(self.k)]
