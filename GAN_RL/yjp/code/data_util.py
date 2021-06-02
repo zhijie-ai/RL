@@ -641,14 +641,14 @@ class Dataset():
 
     @cost_time_def
     def init_dataset(self):
-        # self.reading_raw()
-        # self.gen_embedding()#'20210412'
-        # self.preprocess_data()
-        self.read_data()
-        self.format_data()
-        print('---------------------------size_user:{}\tsize_item:{}\tnum of train user:{}'
-              '\tnum of vali user:{}\tnum of test user:{}'.format(self.size_user,self.size_item,len(self.train_user),
-                                                                  len(self.vali_user),len(self.test_user)))
+        self.reading_raw()
+        self.gen_embedding()#'20210412'
+        self.preprocess_data()
+        # self.read_data()
+        # self.format_data()
+        # print('---------------------------size_user:{}\tsize_item:{}\tnum of train user:{}'
+        #       '\tnum of vali user:{}\tnum of test user:{}'.format(self.size_user,self.size_item,len(self.train_user),
+        #                                                           len(self.vali_user),len(self.test_user)))
 
     def get_batch_user(self,batch_size):
         # user_click = np.random.choice(self.train_user_click,124,replace=False).tolist()
@@ -664,6 +664,6 @@ if __name__ == '__main__':
     dataset = Dataset(args)
 
     dataset.init_dataset()
-    file = open('data/dataset.obj','wb')
-    pickle.dump(dataset,file, protocol=pickle.HIGHEST_PROTOCOL)
-    file.close()
+    # file = open('data/dataset.obj','wb')
+    # pickle.dump(dataset,file, protocol=pickle.HIGHEST_PROTOCOL)
+    # file.close()

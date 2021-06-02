@@ -250,8 +250,8 @@ class DQN():
                 max_q_value.append(max_q_val_k)
 
 
-            self.max_q_value = tf.math.reduce_max(max_q_value,axis=0)
-            # self.max_q_value = tf.math.segment_max(q_value_all,self.placeholder['all_action_user_indices'])
+            # self.max_q_value = tf.math.reduce_max(max_q_value,axis=0)
+            self.max_q_value = tf.math.segment_max(q_value_all,self.placeholder['all_action_user_indices'])
 
             self.max_action = tf.stack(max_action_k,axis=1)
             max_action_disp_features = tf.concat(max_action_feature_k,axis=1)
