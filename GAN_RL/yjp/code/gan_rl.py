@@ -191,7 +191,7 @@ if __name__ == '__main__':
     t2 = time.time()
     print("%s, end.\t time cost:%s m" % (log_time, (t2 - t1) / 60))
 
-    file = open('data/analysis_{}.pkl'.format(cmd_args.user_model), 'wb')
+    file = open('data/gan_rl_{}_{}.pkl'.format(cmd_args.user_model,cmd_args.num_iters), 'wb')
     import pickle
     pickle.dump(losses, file, protocol=pickle.HIGHEST_PROTOCOL)
     pickle.dump(prec1, file, protocol=pickle.HIGHEST_PROTOCOL)
