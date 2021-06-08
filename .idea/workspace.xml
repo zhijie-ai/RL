@@ -1,23 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="778c8d29-473a-41a8-a98a-0c7e7596b1c7" name="Default" comment="top k代码">
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/reinforce.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/utils/data_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/utils/env.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/utils/plot.py" afterDir="false" />
+    <list default="true" id="778c8d29-473a-41a8-a98a-0c7e7596b1c7" name="Default" comment="增加">
+      <change afterPath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/gan_rl_PW_50.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/RL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RL.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rl-rec-practice/topk/code/TopKReinforce.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl-rec-practice/topk/code/TopKReinforce.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/code/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAN_RL/yjp/code/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/code/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAN_RL/yjp/code/dqn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/code/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAN_RL/yjp/code/env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/code/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAN_RL/yjp/code/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/code/plot2.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAN_RL/yjp/code/plot2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/analysis2_LSTM.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/analysis2_PW.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/analysis_LSTM.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/analysis_PW.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.15_10.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.15_all.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_10.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_15.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_20.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_3.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_5 (2).pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_5 (3).pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_5.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_7 (1).pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_7.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_all.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_all_user.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_all_user_.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_max.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.3_max_.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.5_all.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.7_10.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_greedy_0.7_all.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_random_0.15_all.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_random_0.3.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_random_0.3_.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_random_0.3_all.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_random_0.3_batch.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_random_0.5_all.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAN_RL/yjp/data/analysis/loss_random_0.7_all.pkl" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -28,8 +72,10 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="b708606d-ade1-48e6-841f-97460a32ff8f" />
   <component name="ProjectId" id="1f2MLTS27LMYsBkouOW7YXp9JDV" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -37,9 +83,11 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/GAN_RL/yjp/data/analysis" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -49,43 +97,22 @@
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="G:\workspace\RL\rl-rec-practice" />
-      <recent name="G:\workspace\RL\rl-rec-practice\LIRD\impl1" />
-      <recent name="G:\workspace\RL" />
-      <recent name="G:\workspace\RL\rl_rec\data" />
-      <recent name="G:\workspace\RL\RL_Stock" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\workspace\RL\rl-rec-practice" />
-      <recent name="G:\workspace\RL\MorvanRL" />
-      <recent name="G:\workspace\RL\liujianping" />
-      <recent name="G:\workspace\RL\A3C" />
+      <recent name="G:\work_space_git\RL\GAN_RL\yjp\data\analysis" />
+      <recent name="G:\work_space_git\RL\GAN_RL\yjp\code" />
+      <recent name="G:\work_space_git\RL\rl-rec-practice\topk\code\jpg\top1" />
+      <recent name="G:\work_space_git\RL\GAN_RL\impl1" />
+      <recent name="G:\work_space_git\RL\rl-rec-practice\topk\code\model" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\work_space_git\RL\GAN_RL\yjp\data\analysis" />
+      <recent name="G:\work_space_git\RL\GAN_RL\yjp\code" />
+      <recent name="G:\work_space_git\RL\GAN_RL\yjp\data" />
+      <recent name="G:\work_space_git\RL\GAN_RL\yjp\data\sql2" />
+      <recent name="G:\work_space_git\RL\GAN_RL\yjp\data\save_dir" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.TopKReinforce">
-    <configuration name="GAN_PW2" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="RL" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GAN_RL" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GAN_RL/GAN_PW2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.plot2">
     <configuration name="T" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -94,12 +121,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/rl-rec-practice/topk/top1" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GAN_RL/yjp/code" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rl-rec-practice/topk/top1/T.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GAN_RL/yjp/code/T.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -108,7 +135,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="TopKReinforce" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="T2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -116,12 +143,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GAN_RL/yjp/code" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rl-rec-practice/topk/code/TopKReinforce.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GAN_RL/yjp/code/T2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -130,7 +157,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="build_estimator" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="plot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -138,12 +165,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/rl-rec-practice/LIRD/impl2" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GAN_RL/yjp/code" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rl-rec-practice/LIRD/impl2/build_estimator.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GAN_RL/yjp/code/plot.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -152,7 +179,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="mcst_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="plot2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -160,12 +187,34 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/liujianping" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GAN_RL/yjp/code" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/liujianping/mcst_example.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GAN_RL/yjp/code/plot2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plot_" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GAN_RL/yjp/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GAN_RL/yjp/code/plot_.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -214,19 +263,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.test_policy" />
-      <item itemvalue="Python.GAN_PW2" />
-      <item itemvalue="Python.mcst_example" />
-      <item itemvalue="Python.build_estimator" />
+      <item itemvalue="Python.plot" />
+      <item itemvalue="Python.plot_" />
+      <item itemvalue="Python.T2" />
+      <item itemvalue="Python.plot2" />
       <item itemvalue="Python.T" />
-      <item itemvalue="Python.TopKReinforce" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.TopKReinforce" />
+        <item itemvalue="Python.plot2" />
+        <item itemvalue="Python.plot_" />
         <item itemvalue="Python.T" />
-        <item itemvalue="Python.build_estimator" />
-        <item itemvalue="Python.mcst_example" />
-        <item itemvalue="Python.GAN_PW2" />
+        <item itemvalue="Python.plot" />
+        <item itemvalue="Python.T2" />
       </list>
     </recent_temporary>
   </component>
@@ -245,81 +294,490 @@
       <workItem from="1595813009670" duration="157000" />
       <workItem from="1595841581541" duration="80000" />
       <workItem from="1602205679841" duration="11952000" />
-      <workItem from="1602229652822" duration="18824000" />
+      <workItem from="1602229652822" duration="37912000" />
+      <workItem from="1602724598622" duration="160425000" />
+      <workItem from="1603938533528" duration="4785000" />
+      <workItem from="1603944337625" duration="111965000" />
+      <workItem from="1605142502126" duration="1287000" />
+      <workItem from="1605228610705" duration="249615000" />
+      <workItem from="1607562611228" duration="25336000" />
+      <workItem from="1608165195876" duration="18343000" />
+      <workItem from="1610584394215" duration="4127000" />
+      <workItem from="1611279631950" duration="19043000" />
+      <workItem from="1613696453080" duration="1404000" />
+      <workItem from="1613782795944" duration="8179000" />
+      <workItem from="1615508392105" duration="577000" />
+      <workItem from="1615769088713" duration="95630000" />
+      <workItem from="1617082507445" duration="241818000" />
+      <workItem from="1618533465645" duration="318160000" />
+      <workItem from="1620263151545" duration="41452000" />
+      <workItem from="1620367063540" duration="46546000" />
+      <workItem from="1620606989514" duration="38880000" />
+      <workItem from="1620783034406" duration="144186000" />
+      <workItem from="1621561572518" duration="17447000" />
+      <workItem from="1621816485823" duration="92167000" />
     </task>
-    <task id="LOCAL-00001" summary="add file">
-      <created>1602206375119</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
+    <task id="LOCAL-00041" summary="topK模型优化">
+      <created>1608025303605</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
       <option name="project" value="LOCAL" />
-      <updated>1602206375119</updated>
+      <updated>1608025303605</updated>
     </task>
-    <task id="LOCAL-00002" summary="top k代码">
-      <created>1602225597894</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
+    <task id="LOCAL-00042" summary="PPT">
+      <created>1608110993061</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
       <option name="project" value="LOCAL" />
-      <updated>1602225597894</updated>
+      <updated>1608110993061</updated>
     </task>
-    <task id="LOCAL-00003" summary="top k代码">
-      <created>1602237710696</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
+    <task id="LOCAL-00043" summary="PPT">
+      <created>1608190022948</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
       <option name="project" value="LOCAL" />
-      <updated>1602237710696</updated>
+      <updated>1608190022948</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00044" summary="PPT">
+      <created>1608191546565</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1608191546565</updated>
+    </task>
+    <task id="LOCAL-00045" summary="TOPK论文复现">
+      <created>1610087944879</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1610087944879</updated>
+    </task>
+    <task id="LOCAL-00046" summary="modify">
+      <created>1611114745951</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1611114745952</updated>
+    </task>
+    <task id="LOCAL-00047" summary="add &amp; modify files">
+      <created>1616147586627</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1616147586627</updated>
+    </task>
+    <task id="LOCAL-00048" summary="reward 回归模型">
+      <created>1616395159587</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1616395159588</updated>
+    </task>
+    <task id="LOCAL-00049" summary="reward 回归模型">
+      <created>1616742974082</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1616742974083</updated>
+    </task>
+    <task id="LOCAL-00050" summary="gan env rl">
+      <created>1616745599817</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1616745599819</updated>
+    </task>
+    <task id="LOCAL-00051" summary="gan-rl">
+      <created>1617183087021</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1617183087022</updated>
+    </task>
+    <task id="LOCAL-00052" summary="gan rl 模型分析">
+      <created>1617271269654</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1617271269656</updated>
+    </task>
+    <task id="LOCAL-00053" summary="gan rl 模型分析">
+      <created>1617357855424</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1617357855424</updated>
+    </task>
+    <task id="LOCAL-00054" summary="gan rl 模型分析">
+      <created>1617703064790</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1617703064790</updated>
+    </task>
+    <task id="LOCAL-00055" summary="gan rl 模型分析">
+      <created>1617776854891</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1617776854891</updated>
+    </task>
+    <task id="LOCAL-00056" summary="自己实现gan-rl模型">
+      <created>1617959154816</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1617959154816</updated>
+    </task>
+    <task id="LOCAL-00057" summary="自己实现gan-rl模型">
+      <created>1617962589482</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1617962589483</updated>
+    </task>
+    <task id="LOCAL-00058" summary="自己实现gan-rl模型">
+      <created>1618308108504</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1618308108504</updated>
+    </task>
+    <task id="LOCAL-00059" summary="自己实现gan-rl模型">
+      <created>1618566466920</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1618566466921</updated>
+    </task>
+    <task id="LOCAL-00060" summary="自己实现gan-rl模型,增加main文件">
+      <created>1618812131614</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1618812131614</updated>
+    </task>
+    <task id="LOCAL-00061" summary="自己实现gan-rl模型,代码调试">
+      <created>1618820990524</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1618820990524</updated>
+    </task>
+    <task id="LOCAL-00062" summary="自己实现gan-rl模型,代码调试,模型训练调试通过">
+      <created>1618904101838</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1618904101838</updated>
+    </task>
+    <task id="LOCAL-00063" summary="自己实现gan-rl模型,代码调试,模型训练调试通过">
+      <created>1618905124327</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1618905124327</updated>
+    </task>
+    <task id="LOCAL-00064" summary="自己实现gan-rl模型，实现dqn模型">
+      <created>1619172177645</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1619172177646</updated>
+    </task>
+    <task id="LOCAL-00065" summary="自己实现gan-rl模型，实现dqn模型,调试完成">
+      <created>1619404931686</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1619404931686</updated>
+    </task>
+    <task id="LOCAL-00066" summary="自己实现gan-rl模型，实现dqn模型,调试完成">
+      <created>1619405863836</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1619405863836</updated>
+    </task>
+    <task id="LOCAL-00067" summary="自己实现gan-rl模型，实现dqn模型,调试完成,修改validation为多线程。将用户数看作episode，time看作episode的长度">
+      <created>1619490849127</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1619490849127</updated>
+    </task>
+    <task id="LOCAL-00068" summary="自己实现gan-rl模型，实现dqn模型,调试完成">
+      <created>1619502131931</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1619502131932</updated>
+    </task>
+    <task id="LOCAL-00069" summary="自己实现gan-rl模型，实现dqn模型,调试完成">
+      <created>1619502219227</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1619502219227</updated>
+    </task>
+    <task id="LOCAL-00070" summary="自己实现gan-rl模型，实现dqn模型,调试完成">
+      <created>1619686389017</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1619686389017</updated>
+    </task>
+    <task id="LOCAL-00071" summary="自己实现gan-rl模型，实现dqn模型,调试完成">
+      <created>1619686472725</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1619686472725</updated>
+    </task>
+    <task id="LOCAL-00072" summary="代码优化">
+      <created>1619687890203</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1619687890203</updated>
+    </task>
+    <task id="LOCAL-00073" summary="自己实现gan-rl模型，实现dqn模型,调试完成">
+      <created>1619760396374</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1619760396374</updated>
+    </task>
+    <task id="LOCAL-00074" summary="将模型的保存路劲加上user_model作区分">
+      <created>1619760997611</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1619760997611</updated>
+    </task>
+    <task id="LOCAL-00075" summary="LSTM 模型增加all_variables属性">
+      <created>1619764154116</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1619764154116</updated>
+    </task>
+    <task id="LOCAL-00076" summary="代码优化">
+      <created>1620468135732</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1620468135733</updated>
+    </task>
+    <task id="LOCAL-00077" summary="代码优化及验证">
+      <created>1620870192590</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1620870192591</updated>
+    </task>
+    <task id="LOCAL-00078" summary="代码优化及验证">
+      <created>1620885607836</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1620885607836</updated>
+    </task>
+    <task id="LOCAL-00079" summary="修改pw模式构造三角矩阵的方式">
+      <created>1620964333715</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1620964333715</updated>
+    </task>
+    <task id="LOCAL-00080" summary="代码优化及验证,将三角矩阵的方式还原成原始方式">
+      <created>1621303606325</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1621303606325</updated>
+    </task>
+    <task id="LOCAL-00081" summary="代码优化及验证">
+      <created>1621491918841</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1621491918841</updated>
+    </task>
+    <task id="LOCAL-00082" summary="代码优化">
+      <created>1621577124536</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1621577124537</updated>
+    </task>
+    <task id="LOCAL-00083" summary="代码优化">
+      <created>1621587003482</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1621587003482</updated>
+    </task>
+    <task id="LOCAL-00084" summary="代码优化">
+      <created>1621828119779</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1621828119780</updated>
+    </task>
+    <task id="LOCAL-00085" summary="代码优化">
+      <created>1621844343770</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1621844343770</updated>
+    </task>
+    <task id="LOCAL-00086" summary="功能优化">
+      <created>1622098364282</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1622098364282</updated>
+    </task>
+    <task id="LOCAL-00087" summary="tf.placeholder-&gt;tf.compat.v1.placeholder">
+      <created>1622098937539</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1622098937539</updated>
+    </task>
+    <task id="LOCAL-00088" summary="增加">
+      <created>1622600304133</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1622600304133</updated>
+    </task>
+    <task id="LOCAL-00089" summary="模型优化">
+      <created>1622768829747</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1622768829747</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
-  </component>
-  <component name="TestHistory">
-    <history-entry file="Nosetests_in_GAN_PW2_py - 2020.04.09 at 14h 55m 28s.xml">
-      <configuration name="Nosetests in GAN_PW2.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Nosetests_in_test_policy_py - 2020.03.02 at 15h 20m 02s.xml">
-      <configuration name="Nosetests in test_policy.py" configurationId="tests" />
-    </history-entry>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add file" />
-    <MESSAGE value="top k代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="top k代码" />
+    <MESSAGE value="PPT" />
+    <MESSAGE value="TOPK论文复现" />
+    <MESSAGE value="modify" />
+    <MESSAGE value="add &amp; modify files" />
+    <MESSAGE value="reward 回归模型" />
+    <MESSAGE value="gan env rl" />
+    <MESSAGE value="gan-rl" />
+    <MESSAGE value="gan rl 模型分析" />
+    <MESSAGE value="自己实现gan-rl模型" />
+    <MESSAGE value="自己实现gan-rl模型,增加main文件" />
+    <MESSAGE value="自己实现gan-rl模型,代码调试" />
+    <MESSAGE value="自己实现gan-rl模型,代码调试,模型训练调试通过" />
+    <MESSAGE value="自己实现gan-rl模型，实现dqn模型" />
+    <MESSAGE value="自己实现gan-rl模型，实现dqn模型,调试完成,修改validation为多线程。将用户数看作episode，time看作episode的长度" />
+    <MESSAGE value="自己实现gan-rl模型，实现dqn模型,调试完成" />
+    <MESSAGE value="将模型的保存路劲加上user_model作区分" />
+    <MESSAGE value="LSTM 模型增加all_variables属性" />
+    <MESSAGE value="修改pw模式构造三角矩阵的方式" />
+    <MESSAGE value="代码优化及验证,将三角矩阵的方式还原成原始方式" />
+    <MESSAGE value="代码优化及验证" />
+    <MESSAGE value="代码优化" />
+    <MESSAGE value="功能优化" />
+    <MESSAGE value="tf.placeholder-&gt;tf.compat.v1.placeholder" />
+    <MESSAGE value="增加" />
+    <MESSAGE value="模型优化" />
+    <option name="LAST_COMMIT_MESSAGE" value="模型优化" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="530" y="111" key="CommitChangelistDialog2" timestamp="1602323925728">
+    <state x="828" y="28" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617182426315">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="530" y="111" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1602323925728" />
-    <state width="1879" height="329" key="GridCell.Tab.0.bottom" timestamp="1602491740733">
+    <state x="828" y="28" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1617182426315" />
+    <state x="584" y="323" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1622600113813">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1602491740733" />
-    <state width="1879" height="329" key="GridCell.Tab.0.center" timestamp="1602491740733">
+    <state x="584" y="323" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1622600113813" />
+    <state x="932" y="145" width="870" height="817" key="CommitChangelistDialog2" timestamp="1622768828464">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1602491740733" />
-    <state width="1879" height="329" key="GridCell.Tab.0.left" timestamp="1602491740733">
+    <state x="932" y="145" width="870" height="817" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1622768828464" />
+    <state x="215" y="86" width="1536" height="860" key="DiffContextDialog" timestamp="1622768676550">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1602491740733" />
-    <state width="1879" height="329" key="GridCell.Tab.0.right" timestamp="1602491740733">
+    <state x="215" y="86" width="1536" height="860" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1622768676550" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1617182350777">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1879" height="329" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1602491740733" />
-    <state x="483" y="163" key="SettingsEditor" timestamp="1602494808021">
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1617182350777" />
+    <state width="1879" height="129" key="GridCell.Tab.0.bottom" timestamp="1622793196460">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="483" y="163" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1602494808021" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1602323932524">
+    <state width="1879" height="129" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622793196460" />
+    <state width="1879" height="129" key="GridCell.Tab.0.center" timestamp="1622793196460">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1602323932524" />
-    <state x="604" y="262" width="1035" height="516" key="find.popup" timestamp="1602494830676">
+    <state width="1879" height="129" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622793196460" />
+    <state width="1879" height="129" key="GridCell.Tab.0.left" timestamp="1622793196460">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="604" y="262" width="1035" height="516" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1602494830676" />
+    <state width="1879" height="129" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622793196460" />
+    <state width="1879" height="129" key="GridCell.Tab.0.right" timestamp="1622793196460">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1879" height="129" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622793196460" />
+    <state width="1879" height="452" key="GridCell.Tab.1.bottom" timestamp="1621926373607">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1879" height="452" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1621926373607" />
+    <state width="1879" height="452" key="GridCell.Tab.1.center" timestamp="1621926373606">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1879" height="452" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1621926373606" />
+    <state width="1879" height="452" key="GridCell.Tab.1.left" timestamp="1621926373606">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1879" height="452" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1621926373606" />
+    <state width="1879" height="452" key="GridCell.Tab.1.right" timestamp="1621926373606">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1879" height="452" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1621926373606" />
+    <state x="781" y="231" key="RollbackChangesDialog" timestamp="1619340832912">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="781" y="231" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1619340832911" />
+    <state x="483" y="163" key="SettingsEditor" timestamp="1616058207135">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="483" y="163" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1616058207135" />
+    <state x="681" y="261" width="690" height="524" key="StructurePopup" timestamp="1621230502024">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="681" y="261" width="690" height="524" key="StructurePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1621230502024" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1622768837719">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1622768837719" />
+    <state x="391" y="38" width="1035" height="908" key="find.popup" timestamp="1622711135912">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="391" y="38" width="1035" height="908" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1622711135912" />
+    <state x="624" y="312" key="git4idea.merge.GitPullDialog" timestamp="1616131613355">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="624" y="312" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1616131613355" />
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup" timestamp="1620633960798">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1620633960798" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -335,9 +793,39 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GAN_RL/data_perform_pw.py</url>
+          <url>file://$PROJECT_DIR$/GAN_RL/impl1/data_perform_pw.py</url>
           <line>66</line>
           <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/RL-Recommendation-System/User Data Creation/User_Data.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/RL-Recommendation-System/User Data Creation/User_Data.py</url>
+          <line>57</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/rl-rec-practice/topk/code/TopKReinforce_rnn.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/rl-rec-practice/topk/code/TopKReinforce_rnn_prior.py</url>
+          <line>339</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/rl-rec-practice/LIRD/impl1/raw/LIRD.py</url>
+          <line>17</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/rl-rec-practice/topk/data/w2v.py</url>
+          <line>19</line>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -350,7 +838,64 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/RL$TopKReinforce.coverage" NAME="TopKReinforce Coverage Results" MODIFIED="1602490846004" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
-    <SUITE FILE_PATH="coverage/RL$T.coverage" NAME="T Coverage Results" MODIFIED="1595494662979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/top1" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_rnn2.coverage" NAME="TopKReinforce_rnn2 Coverage Results" MODIFIED="1606111241784" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$reinforce_load.coverage" NAME="reinforce_load Coverage Results" MODIFIED="1606209177753" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$t.coverage" NAME="t Coverage Results" MODIFIED="1617001938194" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl3" />
+    <SUITE FILE_PATH="coverage/RL$tmp.coverage" NAME="tmp Coverage Results" MODIFIED="1620638689572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$actor_critic.coverage" NAME="actor_critic Coverage Results" MODIFIED="1605834223878" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/liujianping" />
+    <SUITE FILE_PATH="coverage/RL$split_data__1_.coverage" NAME="split_data (1) Coverage Results" MODIFIED="1606094829240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$poetry.coverage" NAME="poetry Coverage Results" MODIFIED="1603792710819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/itchat_learn" />
+    <SUITE FILE_PATH="coverage/RL$Reward.coverage" NAME="Reward Coverage Results" MODIFIED="1615885527549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$T2.coverage" NAME="T2 Coverage Results" MODIFIED="1621403319308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1621393164357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/liujianping" />
+    <SUITE FILE_PATH="coverage/RL$T4.coverage" NAME="T4 Coverage Results" MODIFIED="1605510815796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$load.coverage" NAME="load Coverage Results" MODIFIED="1614145330066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_hustle2_.coverage" NAME="TopKReinforce_hustle2_ Coverage Results" MODIFIED="1604913722101" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$T7.coverage" NAME="T7 Coverage Results" MODIFIED="1617873977856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$Reward_load.coverage" NAME="Reward_load Coverage Results" MODIFIED="1604285382907" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$t4.coverage" NAME="t4 Coverage Results" MODIFIED="1616124161215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$User_Data.coverage" NAME="User_Data Coverage Results" MODIFIED="1603878421163" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RL-Recommendation-System/User Data Creation" />
+    <SUITE FILE_PATH="coverage/RL$cmd_args.coverage" NAME="cmd_args Coverage Results" MODIFIED="1604310845760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl2/ganrl/common" />
+    <SUITE FILE_PATH="coverage/RL$T8.coverage" NAME="T8 Coverage Results" MODIFIED="1617333212588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce.coverage" NAME="TopKReinforce Coverage Results" MODIFIED="1604911699124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$AC_CartPole.coverage" NAME="AC_CartPole Coverage Results" MODIFIED="1608604898345" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MorvanRL/8_Actor_Critic_Advantage" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_hustle3.coverage" NAME="TopKReinforce_hustle3 Coverage Results" MODIFIED="1605669489954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$data_utils.coverage" NAME="data_utils Coverage Results" MODIFIED="1602734399846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/utils" />
+    <SUITE FILE_PATH="coverage/RL$T3.coverage" NAME="T3 Coverage Results" MODIFIED="1614145071114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$utils.coverage" NAME="utils Coverage Results" MODIFIED="1603098481588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="E:/anaconda3/Lib/site-packages/recnn/data" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_hustle2.coverage" NAME="TopKReinforce_hustle2 Coverage Results" MODIFIED="1604542032544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$T__1_.coverage" NAME="T (1) Coverage Results" MODIFIED="1620975446302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$plot2.coverage" NAME="plot2 Coverage Results" MODIFIED="1622793196425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$T6.coverage" NAME="T6 Coverage Results" MODIFIED="1605606536305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$env.coverage" NAME="env Coverage Results" MODIFIED="1602731616799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE/utils" />
+    <SUITE FILE_PATH="coverage/RL$plot_.coverage" NAME="plot_ Coverage Results" MODIFIED="1622709876076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$GAN_PW2.coverage" NAME="GAN_PW2 Coverage Results" MODIFIED="1617271070621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$gen_data.coverage" NAME="gen_data Coverage Results" MODIFIED="1605685058189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/data" />
+    <SUITE FILE_PATH="coverage/RL$main_dqn.coverage" NAME="main Coverage Results" MODIFIED="1619342661572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$rl_recmd.coverage" NAME="rl_recmd Coverage Results" MODIFIED="1617354368261" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$T9.coverage" NAME="T9 Coverage Results" MODIFIED="1620721826624" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$Reward_keras.coverage" NAME="Reward_keras Coverage Results" MODIFIED="1604280022006" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$t6.coverage" NAME="t6 Coverage Results" MODIFIED="1616132979811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$T10.coverage" NAME="T10 Coverage Results" MODIFIED="1617357165058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_rnn_topK.coverage" NAME="TopKReinforce_rnn_topK Coverage Results" MODIFIED="1606968668983" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$T.coverage" NAME="T Coverage Results" MODIFIED="1622098061229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$w2v.coverage" NAME="w2v Coverage Results" MODIFIED="1610416288051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/data" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_rnn3.coverage" NAME="TopKReinforce_rnn3 Coverage Results" MODIFIED="1606123353916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$policy_gradient.coverage" NAME="policy_gradient Coverage Results" MODIFIED="1608603595507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/liujianping" />
+    <SUITE FILE_PATH="coverage/RL$T__2_.coverage" NAME="T (2) Coverage Results" MODIFIED="1620961985209" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$tf2_example.coverage" NAME="tf2_example Coverage Results" MODIFIED="1603360005757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$a3c.coverage" NAME="a3c Coverage Results" MODIFIED="1605836473784" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/liujianping" />
+    <SUITE FILE_PATH="coverage/RL$t7.coverage" NAME="t7 Coverage Results" MODIFIED="1616391575115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$T11.coverage" NAME="T11 Coverage Results" MODIFIED="1617766477726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$load__1_.coverage" NAME="load (1) Coverage Results" MODIFIED="1604389283068" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl2/dropbox" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce2.coverage" NAME="TopKReinforce2 Coverage Results" MODIFIED="1605230804316" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$plot.coverage" NAME="plot Coverage Results" MODIFIED="1621471599094" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/yjp/code" />
+    <SUITE FILE_PATH="coverage/RL$Nosetests_in_DQN_PW_py.coverage" NAME="Nosetests in DQN_PW.py Coverage Results" MODIFIED="1617182286633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAN_RL/impl1" />
+    <SUITE FILE_PATH="coverage/RL$T5.coverage" NAME="T5 Coverage Results" MODIFIED="1605511394195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$main.coverage" NAME="main Coverage Results" MODIFIED="1602735388974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE" />
+    <SUITE FILE_PATH="coverage/RL$MyModel.coverage" NAME="MyModel Coverage Results" MODIFIED="1603442163678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$TFIDF_States.coverage" NAME="TFIDF_States Coverage Results" MODIFIED="1603857938787" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RL-Recommendation-System/TFIDF-States" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_hustle.coverage" NAME="TopKReinforce_hustle Coverage Results" MODIFIED="1603335447957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
+    <SUITE FILE_PATH="coverage/RL$TopKReinforce_rnn.coverage" NAME="TopKReinforce_rnn Coverage Results" MODIFIED="1606098193875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rl-rec-practice/topk/code" />
   </component>
 </project>

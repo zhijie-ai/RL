@@ -33,9 +33,18 @@ class Enviroment():
         self.rnn_hidden=args.rnn_hidden_dim
         self.threshold=args.threshold
         self.placeholder = {}
-        self.sess=tf.compat.v1.InteractiveSession()
+        # self.sess=tf.compat.v1.InteractiveSession()
+        self.sess=self._init_session()
 
         np.random.seed(self.random_seed)
+
+    def _init_session(self):
+        # config = tf.ConfigProto(device_count={"gpu": 0})
+        # config.gpu_options.allow_growth = True
+
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
+        config = tf.ConfigProto(gpu_options=gpu_options)
+        return tf.Session(config=config)
 
     def format_feature_space(self):
         with open(self.data_folder+'data_behavior.pkl','rb') as f:
@@ -134,6 +143,8 @@ class Enviroment():
             sum_exp_disp = tf.math.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
             scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
             self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
+
+            self.exp_u_disp = exp_u_disp
 
         else:#LSTM
 

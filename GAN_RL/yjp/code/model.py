@@ -39,7 +39,16 @@ class UserModelLSTM():
 
         self.model_path = os.path.join(args.save_dir,args.user_model)
         self.global_step = tf.compat.v1.train.get_or_create_global_step()
-        self.sess = tf.compat.v1.InteractiveSession()
+        # self.sess = tf.compat.v1.InteractiveSession()
+        self.sess = self._init_session()
+
+    def _init_session(self):
+        # config = tf.ConfigProto(device_count={"gpu": 0})
+        # config.gpu_options.allow_growth = True
+
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
+        config = tf.ConfigProto(gpu_options=gpu_options)
+        return tf.Session(config=config)
 
     def construct_placeholder(self):
         self.placeholder['clicked_feature'] = tf.compat.v1.placeholder(tf.float32,(None,None,self.f_dim))
@@ -288,7 +297,16 @@ class UserModelPW():
         self.clip_max_value=args.clip_max_value
         self.model_path = os.path.join(args.save_dir,args.user_model)
         self.global_step = tf.compat.v1.train.get_or_create_global_step()
-        self.sess = tf.compat.v1.InteractiveSession()
+        # self.sess = tf.compat.v1.InteractiveSession()
+        self.sess = self._init_session()
+
+    def _init_session(self):
+        # config = tf.ConfigProto(device_count={"gpu": 0})
+        # config.gpu_options.allow_growth = True
+
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
+        config = tf.ConfigProto(gpu_options=gpu_options)
+        return tf.Session(config=config)
 
     def construct_placeholder(self):
         self.placeholder['disp_current_feature']=tf.compat.v1.placeholder(dtype=tf.float32,shape=[None,self.f_dim])

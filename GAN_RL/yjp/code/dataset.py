@@ -152,6 +152,7 @@ class Dataset():
                 reward_feed_dict[self.env.placeholder['disp_2d_split_user_ind']]=disp_2d_split_user
                 reward_feed_dict[self.env.placeholder['disp_action_feature']]=max_action_disp_feature
                 _, transition_p,u_disp,_ = self.env.conpute_reward(reward_feed_dict)
+                print('AAAAA',np.max(u_disp))
                 reward_u = np.reshape(u_disp,[-1,self.dqn.k])
                 # 3. sample new states
                 states, training_user, old_training_user, next_states, sampled_reward, remove_set = \

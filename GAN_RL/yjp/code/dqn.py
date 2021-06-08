@@ -31,12 +31,21 @@ class DQN():
         self.band_size = args.pw_band_size
         self.placeholder = {}
 
-        self.sess=tf.compat.v1.InteractiveSession()
+        # self.sess=tf.compat.v1.InteractiveSession()
+        self.sess=self._init_session()
         self.global_step = tf.train.get_or_create_global_step()#trainable=False
         self._init()
         self.sess.run(tf.global_variables_initializer())
         self.saver =tf.compat.v1.train.Saver()
         self.agg_variables = tf.compat.v1.trainable_variables()
+
+    def _init_session(self):
+        # config = tf.ConfigProto(device_count={"gpu": 0})
+        # config.gpu_options.allow_growth = True
+
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
+        config = tf.ConfigProto(gpu_options=gpu_options)
+        return tf.Session(config=config)
 
     def _init(self):
         self.construct_placeholder()

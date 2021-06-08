@@ -2,25 +2,12 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/MorvanRL/11_Dyna_Q" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/rl-rec-practice/LIRD/impl2" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/rl-rec-practice/ topK-off-policy-correction-REINFORCE" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/2_Q_Learning_maze" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/3_Sarsa_maze" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/4_Sarsa_lambda_maze" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/5.1_Double_DQN" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/5.2_Prioritized_Replay_DQN" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/5.3_Dueling_DQN" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/5_Deep_Q_Network" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/6_OpenAI_gym" />
-      <excludeFolder url="file://$MODULE_DIR$/MorvanRL/7_Policy_gradient_softmax" />
+      <sourceFolder url="file://$MODULE_DIR$/GAN_RL/impl1" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.6" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
-    <option name="projectConfiguration" value="Nosetests" />
     <option name="PROJECT_TEST_RUNNER" value="Nosetests" />
   </component>
 </module>
