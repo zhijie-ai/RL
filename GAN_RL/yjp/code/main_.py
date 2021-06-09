@@ -10,10 +10,10 @@
 #               不胜人生一场醉。                 #
 #-----------------------------------------------
 # 用训练得到的env模型来训练强化学习模型
-from collections import deque
 from utils.yjp_decorator import cost_time_def
 import pickle
 import numpy as np
+from collections import deque
 
 from GAN_RL.yjp.code.dqn import DQN
 from GAN_RL.yjp.code.env import Enviroment
@@ -38,18 +38,14 @@ lock = threading.Lock()
 @cost_time_def
 def train_with_random_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
-    for ind in tqdm(range(0,len(train_user),dataset.args.sample_batch_size)):
-        end = ind+dataset.args.sample_batch_size
-        training_user = train_user[ind:end]
-        data_collection = dataset.data_collection(training_user)
 
-        for i in range(dataset.args.epoch):
-            train_on_epoch(data_collection,dataset,dqn,loss)
+    data_collection = dataset.data_collection_with_batch(train_user)
 
-        end = end if end <len(train_user) else len(train_user)
-        print('finish init iteration!! completed user [%d/%d]' % (end,len(train_user)))
+    for _ in tqdm(range(dataset.args.epoch)):
+        train_on_epoch(data_collection,dataset,dqn,loss)
+
     # save model
-    dqn.save('init-q_')
+    dqn.save('init-q-batch')
     return loss
 
 def step(dataset,env,dqn,sim_vali_user,states,sim_u_reward):
@@ -155,7 +151,7 @@ def train_on_epoch(data_collection,dataset,dqn,loss):
         y_batch = [data_collection['y'][c] for c in batch_sample]
 
         q_feed_dict = dataset.data_prepare_for_loss_placeholder(user_batch,states_batch,action_batch,y_batch)
-        loss_val,step = dqn.train_on_batch(q_feed_dict)
+        loss_val,step,q_value_k = dqn.train_on_batch(q_feed_dict)
         loss_val = np.round(loss_val,10)
 
         if np.mod(step//10,10) == 0:#因为global_step是10的倍数，训练一次，实际上minimize 10次,而minimine 10次相当于是1次train
@@ -168,32 +164,24 @@ def train_on_epoch(data_collection,dataset,dqn,loss):
             print(('%s: itr(%d), training loss:'+print_loss) % tuple([log_time, step//10]+loss_val))
 
 @cost_time_def
-def train_with_greedy_action(dataset,env,dqn,train_user):
+def train_with_greedy_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
-    # 用全部数据训练一遍
-    current_best_reward = 0.0
-    for ind in tqdm(range(0,len(train_user),dataset.args.sample_batch_size)):
-        end = ind+dataset.args.sample_batch_size
-        training_user = train_user[ind:end]
 
-        # initialize empty states
-        data_collection = dataset.data_collection(training_user,'greedy')#394s sample_batch_size=1024
+    data_collection = dataset.data_collection_with_batch(train_user,'greedy')
 
-        for i in range(dataset.args.epoch):
-            train_on_epoch(data_collection,dataset,dqn,loss)
+    for _ in tqdm(range(dataset.args.epoch)):
+        train_on_epoch(data_collection,dataset,dqn,loss)
 
-        end = end if end <len(train_user) else len(train_user)
-        print('finish iteration!! completed user [%d/%d]' % (end,len(train_user)))
+    # # TEST
+    # # _,_,new_reward = multi_compute_validation(current_best_reward,dataset,env,dqn,env.vali_user)
+    # vali_user = np.random.choice(env.vali_user,dataset.args.vali_batch_size,replace=False)
+    # _,_,new_reward = validation_train(current_best_reward,dataset,env,dqn,vali_user)
+    # if new_reward > current_best_reward:
+    #     save_path = os.path.join(dataset.args.model_path, 'best-reward')
+    #     dqn.save('best-reward')
+    #     current_best_reward = new_reward
 
-        # TEST
-        # _,_,new_reward = multi_compute_validation(current_best_reward,dataset,env,dqn,env.vali_user)
-        vali_user = np.random.choice(env.vali_user,dataset.args.vali_batch_size,replace=False)
-        _,_,new_reward = validation_train(current_best_reward,dataset,env,dqn,vali_user)
-        if new_reward > current_best_reward:
-            save_path = os.path.join(dataset.args.model_path, 'best-reward')
-            dqn.save('best-reward-max_')
-            current_best_reward = new_reward
-
+    dqn.save('best-reward-{}'.format(dataset.args.epoch))
     return loss
 
 @cost_time_def
@@ -207,16 +195,16 @@ def main(args):
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
     # loss_random = train_with_random_action(dataset,dqn,env.train_user)
-    # file = open('data/loss_random_{}_.pkl'.format(args.noclick_weight), 'wb')
+    # file = open('data/loss_random_{}_batch.pkl'.format(args.noclick_weight), 'wb')
     # pickle.dump(loss_random, file, protocol=pickle.HIGHEST_PROTOCOL)
     # file.close()
 
-    # dqn.restore('init-q_')
+    # dqn.restore('init-q')
     # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
-    loss_greedy = train_with_greedy_action(dataset,env,dqn,env.train_user)
-    file = open('data/loss_greedy_{}_max_.pkl'.format(args.noclick_weight), 'wb')
-    pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
+    loss_greedy = train_with_greedy_action(dataset,dqn,train_user[0:100])
+    file = open('data/loss_greedy_{}_{}.pkl'.format(args.noclick_weight,args.epoch), 'wb')
+    pickle.dump(loss_greedy[0], file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 
     print(multi_compute_validation(0.0,dataset,env,dqn,env.vali_user))
@@ -225,9 +213,16 @@ def main(args):
 
 
 if __name__ == '__main__':
+    import sys
+    f = open('D:\\workspace\\RL\\GAN_RL\\yjp\\code\\logs\\main_greedy_0.3_10_0.0.0001.out','a')
+    # sys.stdout = f
+    # sys.stderr = f
+
+
     cmd_args = get_options()
     t1 = time.time()
     print('>>>>>>>>>>>',cmd_args,'<<<<<<<<<<<<<<<<<<<<<<')
     main(cmd_args)
     t2 = time.time()
     print('finished!!!!!!,time cost:{} m'.format((t2-t1)/60))
+    f.close()

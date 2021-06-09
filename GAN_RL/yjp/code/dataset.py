@@ -152,7 +152,6 @@ class Dataset():
                 reward_feed_dict[self.env.placeholder['disp_2d_split_user_ind']]=disp_2d_split_user
                 reward_feed_dict[self.env.placeholder['disp_action_feature']]=max_action_disp_feature
                 _, transition_p,u_disp,_ = self.env.conpute_reward(reward_feed_dict)
-                print('AAAAA',np.max(u_disp))
                 reward_u = np.reshape(u_disp,[-1,self.dqn.k])
                 # 3. sample new states
                 states, training_user, old_training_user, next_states, sampled_reward, remove_set = \
@@ -165,6 +164,20 @@ class Dataset():
                 #4. save to memory
                 y_value = sampled_reward+self.args.gamma*max_q_value
                 data_collection['y'].extend(y_value.tolist())
+
+        ind = np.random.permutation(len(data_collection['user']))
+        user = np.array(data_collection['user'])[ind].tolist()
+        data_collection['user'].clear()
+        data_collection['user'].extend(user)
+        state = np.array(data_collection['state'])[ind].tolist()
+        data_collection['state'].clear()
+        data_collection['state'].extend(state)
+        action = np.array(data_collection['action'])[ind].tolist()
+        data_collection['action'].clear()
+        data_collection['action'].extend(action)
+        y = np.array(data_collection['y'])[ind].tolist()
+        data_collection['y'].clear()
+        data_collection['y'].extend(y)
 
         return data_collection
 
@@ -318,7 +331,8 @@ class Dataset():
             candidate_action = []
 
             if len(states_id[uu]) == 0:
-                states_feature[uu]=np.zeros([1,self.dqn.f_dim],dtype=np.float32).tolist()
+                # states_feature[uu]=np.zeros([1,self.dqn.f_dim],dtype=np.float32).tolist()
+                states_feature[uu]=np.random.randn(1,self.dqn.f_dim).tolist()
                 history_order[uu].append(0)
                 history_user[uu].append(uu)
             else:

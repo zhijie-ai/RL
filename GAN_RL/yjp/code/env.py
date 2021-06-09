@@ -32,6 +32,8 @@ class Enviroment():
         self.std = args.env_std
         self.rnn_hidden=args.rnn_hidden_dim
         self.threshold=args.threshold
+        self.clip_min_value=args.clip_min_value
+        self.clip_max_value=args.clip_max_value
         self.placeholder = {}
         # self.sess=tf.compat.v1.InteractiveSession()
         self.sess=self._init_session()
@@ -136,6 +138,7 @@ class Enviroment():
 
             # (5) compute utility
             self.u_disp = self.mlp(concat_disp_features,self.hidden_dims,1,tf.nn.elu,sd=self.std,act_last=False)
+            self.u_disp = tf.clip_by_value(self.u_disp,self.clip_min_value,self.clip_max_value)
             # (5)
             self.u_disp = tf.reshape(self.u_disp, [-1])
             exp_u_disp = tf.exp(self.u_disp)
@@ -143,8 +146,6 @@ class Enviroment():
             sum_exp_disp = tf.math.segment_sum(exp_u_disp,self.placeholder['disp_2d_split_user_ind'])+float(np.exp(self.noclick_weight))
             scatter_sum_exp_disp = tf.gather(sum_exp_disp,self.placeholder['disp_2d_split_user_ind'])
             self.p_disp = tf.div(exp_u_disp,scatter_sum_exp_disp)
-
-            self.exp_u_disp = exp_u_disp
 
         else:#LSTM
 
@@ -191,6 +192,7 @@ class Enviroment():
 
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
+        best_save_path = best_save_path.replace('\\','/')
         self.saver.restore(self.sess, best_save_path)
         print('model:{} loaded success!!!!'.format(best_save_path))
 
