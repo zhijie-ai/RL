@@ -134,7 +134,7 @@ class Dataset():
                     prob = prob/float(prob.sum())
                     # 模拟用户的选择
                     rand_choice = np.random.choice(disp_item+[-100],1,p = prob)
-                    print('AAAA:{}\t{}\t{}\t{}\t{}\t{}'.format(np.max(reward_u[j]),np.sum(transition_p[j,:]),no_click,np.sort(prob)[-4:],prob[-1],rand_choice))
+                    # print('AAAA:{}\t{}\t{}\t{}\t{}\t{}'.format(np.max(reward_u[j]),np.sum(transition_p[j,:]),no_click,np.sort(prob)[-4:],prob[-1],rand_choice))
                     if rand_choice != -100:
                         states[j] += rand_choice.tolist()
 

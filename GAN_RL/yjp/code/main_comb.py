@@ -2,7 +2,7 @@
 # -*- encoding=utf-8 -*-                       #
 # __author__:'焉知飞鱼'                         #
 # CreateTime:                                  #
-#       2021/4/21 15:34                         #
+#       2021/6/9 17:28                         #
 #                                              #
 #               天下风云出我辈，                 #
 #               一入江湖岁月催。                 #
@@ -34,19 +34,6 @@ warnings.filterwarnings('ignore',category=DeprecationWarning,module='tensorflow'
 warnings.filterwarnings('ignore')
 
 lock = threading.Lock()
-
-@cost_time_def
-def train_with_random_action(dataset,dqn,train_user):
-    loss = [[] for _ in range(dqn.k)]
-
-    data_collection = dataset.data_collection_with_batch(train_user)
-
-    for _ in tqdm(range(dataset.args.epoch)):
-        train_on_epoch(data_collection,dataset,dqn,loss)
-
-    # save model
-    dqn.save('init-q-batch')
-    return loss
 
 def step(dataset,env,dqn,sim_vali_user,states,sim_u_reward):
     max_q_feed_dict,states_tr,history_order_tr,history_user_tr = dataset.format_max_q_feed_dict(sim_vali_user,states)
@@ -164,25 +151,16 @@ def train_on_epoch(data_collection,dataset,dqn,loss):
             print(('%s: itr(%d), training loss:'+print_loss) % tuple([log_time, step//10]+loss_val))
 
 @cost_time_def
-def train_with_greedy_action(dataset,dqn,train_user):
+def train(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
-    data_collection = dataset.data_collection_with_batch(train_user,'greedy')
+    data_collection = dataset.data_collection_all(train_user)
     print('train data length:{}'.format(len(data_collection['user'])))
 
     for _ in tqdm(range(dataset.args.epoch)):
         train_on_epoch(data_collection,dataset,dqn,loss)
 
-    # # TEST
-    # # _,_,new_reward = multi_compute_validation(current_best_reward,dataset,env,dqn,env.vali_user)
-    # vali_user = np.random.choice(env.vali_user,dataset.args.vali_batch_size,replace=False)
-    # _,_,new_reward = validation_train(current_best_reward,dataset,env,dqn,vali_user)
-    # if new_reward > current_best_reward:
-    #     save_path = os.path.join(dataset.args.model_path, 'best-reward')
-    #     dqn.save('best-reward')
-    #     current_best_reward = new_reward
-
-    dqn.save('best-reward-{}'.format(dataset.args.epoch))
+    dqn.save('best-reward-comb-{}'.format(dataset.args.epoch))
     return loss
 
 @cost_time_def
@@ -192,20 +170,10 @@ def main(args):
     dqn = DQN(env,args)
     dataset = Dataset(args,env,dqn)
 
-    # 参照强化学习的训练逻辑，EE问题。在收集数据的时候兼顾EE问题。此论文的思路将EE问题分开来解决。
-    #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
-    # 首先，根据随机策略来收集并训练
-    # loss_random = train_with_random_action(dataset,dqn,env.train_user)
-    # file = open('data/loss_random_{}_batch.pkl'.format(args.noclick_weight), 'wb')
-    # pickle.dump(loss_random, file, protocol=pickle.HIGHEST_PROTOCOL)
-    # file.close()
-
-    # dqn.restore('init-q')
-    # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
-    loss_greedy = train_with_greedy_action(dataset,dqn,train_user[0:6])
-    file = open('data/loss_greedy_{}_{}.pkl'.format(args.noclick_weight,args.epoch), 'wb')
-    pickle.dump(loss_greedy[0], file, protocol=pickle.HIGHEST_PROTOCOL)
+    loss_greedy = train(dataset,dqn,train_user)
+    file = open('data/loss_comb_{}_{}_{}_{}.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
+    pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 
     print(multi_compute_validation(0.0,dataset,env,dqn,env.vali_user))
@@ -214,16 +182,9 @@ def main(args):
 
 
 if __name__ == '__main__':
-    import sys
-    f = open('D:\\workspace\\RL\\GAN_RL\\yjp\\code\\logs\\main_greedy_0.3_10_0.0.0001.out','a')
-    # sys.stdout = f
-    # sys.stderr = f
-
-
     cmd_args = get_options()
     t1 = time.time()
     print('>>>>>>>>>>>',cmd_args,'<<<<<<<<<<<<<<<<<<<<<<')
     main(cmd_args)
     t2 = time.time()
     print('finished!!!!!!,time cost:{} m'.format((t2-t1)/60))
-    f.close()

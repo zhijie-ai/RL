@@ -13,7 +13,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/loss_greedy_0.3_10.pkl', 'rb')
+# f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024.pkl', 'rb')
+f = open('../data/analysis/loss_random_0.3.pkl', 'rb')
 loss = pickle.load(f)
 f.close()
 print(loss[0])

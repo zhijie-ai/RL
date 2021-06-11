@@ -40,12 +40,13 @@ def train_with_random_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_with_batch(train_user)
+    print('random train data length:{}'.format(len(data_collection['user'])))
 
     for _ in tqdm(range(dataset.args.epoch)):
         train_on_epoch(data_collection,dataset,dqn,loss)
 
     # save model
-    dqn.save('init-q-batch')
+    dqn.save('init-q')
     return loss
 
 def step(dataset,env,dqn,sim_vali_user,states,sim_u_reward):
@@ -168,6 +169,7 @@ def train_with_greedy_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_with_batch(train_user,'greedy')
+    print('greedy train data length:{}'.format(len(data_collection['user'])))
 
     for _ in tqdm(range(dataset.args.epoch)):
         train_on_epoch(data_collection,dataset,dqn,loss)
@@ -194,12 +196,12 @@ def main(args):
     # 参照强化学习的训练逻辑，EE问题。在收集数据的时候兼顾EE问题。此论文的思路将EE问题分开来解决。
     #   首先用随机策略收集数据，其次，在随机策略的训练基础上再使用贪婪策略来训练策略。
     # 首先，根据随机策略来收集并训练
-    # loss_random = train_with_random_action(dataset,dqn,env.train_user)
-    # file = open('data/loss_random_{}_batch.pkl'.format(args.noclick_weight), 'wb')
-    # pickle.dump(loss_random, file, protocol=pickle.HIGHEST_PROTOCOL)
-    # file.close()
+    loss_random = train_with_random_action(dataset,dqn,env.train_user)
+    file = open('data/loss_random_{}.pkl'.format(args.noclick_weight), 'wb')
+    pickle.dump(loss_random, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
 
-    # dqn.restore('init-q')
+    dqn.restore('init-q')
     # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
     loss_greedy = train_with_greedy_action(dataset,dqn,env.train_user)

@@ -48,6 +48,9 @@ class DQN():
         return tf.Session(config=config)
 
     def _init(self):
+        if not os.path.exists(self.model_path):
+            os.makedirs(self.model_path)
+
         self.construct_placeholder()
         self.construct_Q_and_loss()
         self.construct_max_Q()

@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/gan_rl_PW_50.pkl', 'rb')
+f = open('../data/analysis/gan_rl_PW_50_.pkl', 'rb')
 pw_loss = pickle.load(f)
 pw_p1 = pickle.load(f)
 pw_p2 = pickle.load(f)
