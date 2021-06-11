@@ -97,6 +97,7 @@ class Dataset():
         tmp = data.groupby('user_id').size()
         data = data[np.in1d(data.user_id,tmp[tmp>=total].index)]
         data = data.drop('session_app_',axis=1)
+        data = data.drop_duplicates()
         return data
 
     @cost_time_def
@@ -125,12 +126,14 @@ class Dataset():
 
         click = self.click
         click['is_click'] = 1
+
         exposure = self.filter_(self.exposure)#结合后面的dqn，k=10，曝光的数据至少也是10
         exposure['is_click']=0
         # 过滤click 不在exposure中的数据
         click = pd.merge(click,exposure[['user_id','sku_id','session_app']].drop_duplicates(),on=['user_id','sku_id','session_app'])
 
         behavior_data = pd.concat([click,exposure])
+        behavior_data = behavior_data.sort_values(by='time')
         print('final shape:',click.shape,exposure.shape,'behavior_data.shape',behavior_data.shape)
         del click,exposure,self.click,self.exposure
 
