@@ -115,7 +115,7 @@ class Dataset():
         test_ind = data[data.user_id.isin(test_user)].index
         data.loc[test_ind,'split_tag']=2
 
-        data = data.sort_values(by=['session_app','time'])
+        data = data.sort_values(by='time')
         return data
 
     @cost_time_def
@@ -133,7 +133,6 @@ class Dataset():
         click = pd.merge(click,exposure[['user_id','sku_id','session_app']].drop_duplicates(),on=['user_id','sku_id','session_app'])
 
         behavior_data = pd.concat([click,exposure])
-        behavior_data = behavior_data.sort_values(by='time')
         print('final shape:',click.shape,exposure.shape,'behavior_data.shape',behavior_data.shape)
         del click,exposure,self.click,self.exposure
 
