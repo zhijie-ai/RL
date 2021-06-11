@@ -44,17 +44,24 @@ class Dataset():
             data_collection['y'].extend(data_collection_['y'])
             del data_collection_
 
+        data_collection = self.permutation(data_collection)
+        return data_collection
+
+    def permutation(self,data_collection):
+        tmp = np.array(data_collection['state'])
+        not_none_ind = [index for index,d in enumerate(tmp) if d]
+
         ind = np.random.permutation(len(data_collection['user']))
-        user = np.array(data_collection['user'])[ind].tolist()
+        user = np.array(data_collection['user'])[ind][not_none_ind].tolist()
         data_collection['user'].clear()
         data_collection['user'].extend(user)
-        state = np.array(data_collection['state'])[ind].tolist()
+        state = np.array(data_collection['state'])[ind][not_none_ind].tolist()
         data_collection['state'].clear()
         data_collection['state'].extend(state)
-        action = np.array(data_collection['action'])[ind].tolist()
+        action = np.array(data_collection['action'])[ind][not_none_ind].tolist()
         data_collection['action'].clear()
         data_collection['action'].extend(action)
-        y = np.array(data_collection['y'])[ind].tolist()
+        y = np.array(data_collection['y'])[ind][not_none_ind].tolist()
         data_collection['y'].clear()
         data_collection['y'].extend(y)
         return data_collection
@@ -106,6 +113,7 @@ class Dataset():
                 # Reward_r = tf.segment_sum(tf.multiply(u_disp, p_disp), disp_2d_split_user_ind)
                 # 计算的是用户的总reward
                 best_action_reward,transition_p,u_disp,_ = self.env.conpute_reward(reward_feed_dict)
+                reward_u = np.reshape(u_disp,[-1,self.dqn.k])
 
                 # 4. save to memory
                 y_value = best_action_reward
@@ -126,6 +134,7 @@ class Dataset():
                     prob = prob/float(prob.sum())
                     # 模拟用户的选择
                     rand_choice = np.random.choice(disp_item+[-100],1,p = prob)
+                    print('AAAA:{}\t{}\t{}\t{}\t{}\t{}'.format(np.max(reward_u[j]),np.sum(transition_p[j,:]),no_click,np.sort(prob)[-4:],prob[-1],rand_choice))
                     if rand_choice != -100:
                         states[j] += rand_choice.tolist()
 
@@ -165,19 +174,28 @@ class Dataset():
                 y_value = sampled_reward+self.args.gamma*max_q_value
                 data_collection['y'].extend(y_value.tolist())
 
-        ind = np.random.permutation(len(data_collection['user']))
-        user = np.array(data_collection['user'])[ind].tolist()
-        data_collection['user'].clear()
-        data_collection['user'].extend(user)
-        state = np.array(data_collection['state'])[ind].tolist()
-        data_collection['state'].clear()
-        data_collection['state'].extend(state)
-        action = np.array(data_collection['action'])[ind].tolist()
-        data_collection['action'].clear()
-        data_collection['action'].extend(action)
-        y = np.array(data_collection['y'])[ind].tolist()
-        data_collection['y'].clear()
-        data_collection['y'].extend(y)
+        data_collection = self.permutation(data_collection)
+
+        return data_collection
+
+    def data_collection_all(self,training_user):
+        data_collection_random = self.data_collection_with_batch(training_user)
+        data_collection_greedy = self.data_collection_with_batch(training_user,'greedy')
+
+        data_size_init = len(data_collection_random['user'])+len(data_collection_greedy['user'])+10
+        data_collection = {'user':deque(maxlen=data_size_init),'state':deque(maxlen=data_size_init),
+                           'action':deque(maxlen=data_size_init),'y':deque(maxlen=data_size_init)}
+
+        data_collection['user'].extend(data_collection_random['user'])
+        data_collection['state'].extend(data_collection_random['state'])
+        data_collection['action'].extend(data_collection_random['action'])
+        data_collection['y'].extend(data_collection_random['y'])
+        data_collection['user'].extend(data_collection_greedy['user'])
+        data_collection['state'].extend(data_collection_greedy['state'])
+        data_collection['action'].extend(data_collection_greedy['action'])
+        data_collection['y'].extend(data_collection_greedy['y'])
+
+        data_collection = self.permutation(data_collection)
 
         return data_collection
 
@@ -331,8 +349,8 @@ class Dataset():
             candidate_action = []
 
             if len(states_id[uu]) == 0:
-                # states_feature[uu]=np.zeros([1,self.dqn.f_dim],dtype=np.float32).tolist()
-                states_feature[uu]=np.random.randn(1,self.dqn.f_dim).tolist()
+                states_feature[uu]=np.zeros([1,self.dqn.f_dim],dtype=np.float32).tolist()
+                # states_feature[uu]=np.random.randn(1,self.dqn.f_dim).tolist()
                 history_order[uu].append(0)
                 history_user[uu].append(uu)
             else:
