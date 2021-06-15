@@ -204,7 +204,7 @@ def main(args):
     dqn.restore('init-q')
     # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
-    loss_greedy = train_with_greedy_action(dataset,dqn,env.train_user)
+    loss_greedy = train_with_greedy_action(dataset,dqn,train_user)
     file = open('data/loss_greedy_{}_{}_{}_{}.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
     pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
