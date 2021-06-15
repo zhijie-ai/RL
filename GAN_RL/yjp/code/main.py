@@ -40,7 +40,9 @@ def train_with_random_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_with_batch(train_user)
+    np.save('data_collection_random',data_collection)
     print('random train data length:{}'.format(len(data_collection['user'])))
+
 
     for _ in tqdm(range(dataset.args.epoch)):
         train_on_epoch(data_collection,dataset,dqn,loss)
@@ -169,7 +171,7 @@ def train_with_greedy_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_with_batch(train_user,'greedy')
-    np.save('data_collection',data_collection)
+    np.save('data_collection_greedy',data_collection)
     print('greedy train data length:{}'.format(len(data_collection['user'])))
 
     for _ in tqdm(range(dataset.args.epoch)):
