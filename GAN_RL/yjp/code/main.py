@@ -169,6 +169,7 @@ def train_with_greedy_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_with_batch(train_user,'greedy')
+    np.save('data_collection',data_collection)
     print('greedy train data length:{}'.format(len(data_collection['user'])))
 
     for _ in tqdm(range(dataset.args.epoch)):
