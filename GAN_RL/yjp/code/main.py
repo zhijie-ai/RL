@@ -40,6 +40,10 @@ def train_with_random_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_with_batch(train_user)
+
+    file = open('data_collection_random.pkl', 'wb')
+    pickle.dump(data_collection, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
     np.save('data_collection_random',data_collection)
     print('random train data length:{}'.format(len(data_collection['user'])))
 
@@ -171,6 +175,10 @@ def train_with_greedy_action(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_with_batch(train_user,'greedy')
+    file = open('data_collection_greedy.pkl', 'wb')
+    pickle.dump(data_collection, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
+
     np.save('data_collection_greedy',data_collection)
     print('greedy train data length:{}'.format(len(data_collection['user'])))
 
@@ -207,8 +215,8 @@ def main(args):
     dqn.restore('init-q')
     # 使用贪婪策略收集的数据来训练我们的推荐引擎
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
-    loss_greedy = train_with_greedy_action(dataset,dqn,train_user)
-    file = open('data/loss_greedy_{}_{}_{}_{}.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
+    loss_greedy = train_with_greedy_action(dataset,dqn,env.train_user)
+    file = open('data/loss_greedy_{}_{}_{}_{}_all_user.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
     pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 
