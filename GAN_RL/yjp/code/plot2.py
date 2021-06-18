@@ -31,7 +31,6 @@ def plot(data,label,name,num=10,ran=50):
         plt.grid(True)
 
     plt.show()
-
     # plt.savefig('jpg7/{}'.format(name))
 
 

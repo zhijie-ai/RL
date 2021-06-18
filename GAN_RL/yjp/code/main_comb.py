@@ -172,7 +172,7 @@ def main(args):
 
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
     loss_greedy = train(dataset,dqn,env.train_user)
-    file = open('data/loss_comb_{}_{}_{}_{}_all_user.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
+    file = open('data/loss_comb_{}_{}_{}_{}_not_filtered_all.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
     pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 
