@@ -155,6 +155,10 @@ def train(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_all(train_user)
+    file = open('data_collection_comb_not_filtered_0.8.pkl', 'wb')
+    pickle.dump(data_collection, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
+
     print('train data length:{}'.format(len(data_collection['user'])))
 
     for _ in tqdm(range(dataset.args.epoch)):
@@ -171,8 +175,8 @@ def main(args):
     dataset = Dataset(args,env,dqn)
 
     train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
-    loss_greedy = train(dataset,dqn,env.train_user)
-    file = open('data/loss_comb_{}_{}_{}_{}_not_filtered_all.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
+    loss_greedy = train(dataset,dqn,train_user)
+    file = open('data/loss_comb_{}_{}_{}_{}_not_filtered_0.8.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
     pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 

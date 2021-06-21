@@ -188,7 +188,7 @@ class Enviroment():
         self.saver = tf.compat.v1.train.Saver(var_list=self.agg_variables,max_to_keep=None)
         # self.sess.run(tf.global_variables_initializer())
         self.sess.run(tf.variables_initializer(self.agg_variables))
-        self.restore('best-loss')
+        self.restore('best-loss_')
 
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)
@@ -291,7 +291,8 @@ class Enviroment():
             prob = prob / float(prob.sum())
             rand_choice = np.random.choice(disp_item + [-100], 1, p=prob)
             if j<=100:
-                print('AAAA:{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(np.round(np.sort(reward_u[j][-1:]),3),np.round(np.sort(np.exp(reward_u[j])[-1:]),3),
+                print('BBB',type(reward_u))
+                print('AAAA:{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(np.round(np.sort(reward_u[j])[-1:],3),np.round(np.sort(np.exp(reward_u[j]))[-1:],3),
                                                                        np.round([np.sum(transition_p[j,:])],3),np.round(no_click,3),
                                                                        np.round(np.sort(prob[:-1])[-4:],3),np.round(np.sort(np.exp(reward_u[j]))[-4:],3),
                                                                        np.round(np.sort(reward_u[j])[-4:],3),np.round(prob[-1],3),rand_choice))
