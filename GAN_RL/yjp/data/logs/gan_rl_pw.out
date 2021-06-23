@@ -1,0 +1,648 @@
+nohup: 忽略输入
+current args:Namespace(batch_size=1024, click_path='../data/raw/click.csv', clip_max_value=40.0, clip_min_value=-40.0, compu_type='thread', data_folder='../data/handled/', dims='256-32', dqn_dims='256-32', dqn_lr=0.001, dqn_type='offline', embedding_path='/data1/ai-recall/bpr/model/', env_std=0.001, epoch=10, exposure_path='../data/raw/exposure.csv', gamma=0.98, init_learning_rate=0.01, k=10, learning_rate=0.001, min_value=-1000000000.0, model_path='../model/dqn/', noclick_weight=0.3, num_iters=50, num_thread=1, pw_band_size=20, pw_dim=4, q_std=0.01, random_seed=1126, resplit=False, rnn_hidden_dim=20, sample_batch_size=1024, save_dir='../model/save_dir/', threshold=0.97, train_time_horizon=15, training_batch_size=1024, user_model='PW', vali_batch_size=2000, vali_time_horizon=15)
+2021-06-15 13:40:18,start 
+2021-06-15 13:40:32,761 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.2454557339 m] read_data 
+2021-06-15 13:42:44,618 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.1976092498 m] format_data 
+---------------------------size_user:93014	size_item:282725	num of train user:75392	num of vali user:8338	num of test user:9284
+2021-06-15 13:42:44,618 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.4430762331 m] init_dataset 
+2021-06-15 13:42:44, load data completed
+2021-06-15 13:42:44, start to construct graph
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:307: The name tf.GPUOptions is deprecated. Please use tf.compat.v1.GPUOptions instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:308: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:309: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-15 13:42:44.647385: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2021-06-15 13:42:44.662323: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2100000000 Hz
+2021-06-15 13:42:44.665785: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x3f4c2930 executing computations on platform Host. Devices:
+2021-06-15 13:42:44.665838: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2021-06-15 13:42:44.667428: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2021-06-15 13:42:45.345635: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: Tesla P40 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:37:00.0
+2021-06-15 13:42:45.345922: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-15 13:42:45.349260: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-15 13:42:45.352430: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2021-06-15 13:42:45.352824: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2021-06-15 13:42:45.356692: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2021-06-15 13:42:45.359342: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2021-06-15 13:42:45.366868: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2021-06-15 13:42:45.368695: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2021-06-15 13:42:45.368736: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-15 13:42:45.455685: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-15 13:42:45.455747: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2021-06-15 13:42:45.455762: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2021-06-15 13:42:45.458315: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11459 MB memory) -> physical GPU (device: 0, name: Tesla P40, pci bus id: 0000:37:00.0, compute capability: 6.1)
+2021-06-15 13:42:45.462718: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x406b9750 executing computations on platform CUDA. Devices:
+2021-06-15 13:42:45.462746: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): Tesla P40, Compute Capability 6.1
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:384: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:337: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:20: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:389: The name tf.train.exponential_decay is deprecated. Please use tf.compat.v1.train.exponential_decay instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:390: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+2021-06-15 13:42:46, graph completed
+2021-06-15 13:42:46, start prepare vali data
+2021-06-15 13:42:50,700 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0620536486 m] prepare_validation_data 
+2021-06-15 13:42:54, prepare validation data, completed
+2021-06-15 13:42:54, start prepare test data
+2021-06-15 13:43:12,008 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.2934823036 m] prepare_validation_data 
+2021-06-15 13:43:12, prepare test data end
+  0%|          | 0/50 [00:00<?, ?it/s]2021-06-15 13:43:13.721726: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+2021-06-15 13:43:13.746083: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-15 13:43:14, itr: 0, epoch:[1/50], completed user:[1024/75392] loss: 3.49961, precision_1: 0.06166, precision_2: 0.11476
+2021-06-15 13:43:14, start first iteration validation
+2021-06-15 13:43:22, first iteration validation complete
+>>>>>>>>2021-06-15 13:43:22: itr: 0, vali: 3.48327, 0.06197, 0.11692<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 13:43:38, itr: 10, epoch:[1/50], completed user:[11264/75392] loss: 3.49639, precision_1: 0.04205, precision_2: 0.08606
+2021-06-15 13:43:53, itr: 20, epoch:[1/50], completed user:[21504/75392] loss: 3.48744, precision_1: 0.05754, precision_2: 0.11140
+2021-06-15 13:44:26, itr: 30, epoch:[1/50], completed user:[31744/75392] loss: 3.47455, precision_1: 0.05879, precision_2: 0.11951
+2021-06-15 13:44:41, itr: 40, epoch:[1/50], completed user:[41984/75392] loss: 3.46331, precision_1: 0.06215, precision_2: 0.12630
+2021-06-15 13:44:56, itr: 50, epoch:[1/50], completed user:[52224/75392] loss: 3.47498, precision_1: 0.05800, precision_2: 0.11855
+2021-06-15 13:45:12, itr: 60, epoch:[1/50], completed user:[62464/75392] loss: 3.40634, precision_1: 0.05998, precision_2: 0.12092
+2021-06-15 13:45:46, itr: 70, epoch:[1/50], completed user:[72704/75392] loss: 3.39840, precision_1: 0.05779, precision_2: 0.11936
+2021-06-15 13:47:56,143 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6419924617 m] train_on_epoch 
+2021-06-15 13:47:56, epoch 0 train complete
+  2%|▏         | 1/50 [04:44<3:52:11, 284.31s/it]2021-06-15 13:48:07, itr: 80, epoch:[2/50], completed user:[7168/75392] loss: 3.42848, precision_1: 0.07138, precision_2: 0.13711
+2021-06-15 13:48:22, itr: 90, epoch:[2/50], completed user:[17408/75392] loss: 3.41486, precision_1: 0.06377, precision_2: 0.13048
+2021-06-15 13:48:38, itr: 100, epoch:[2/50], completed user:[27648/75392] loss: 3.44716, precision_1: 0.07165, precision_2: 0.13164
+>>>>>>>>2021-06-15 13:48:46: itr: 100, vali: 3.39346, 0.07051, 0.13754<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 13:49:20, itr: 110, epoch:[2/50], completed user:[37888/75392] loss: 3.39839, precision_1: 0.07086, precision_2: 0.13253
+2021-06-15 13:49:36, itr: 120, epoch:[2/50], completed user:[48128/75392] loss: 3.39852, precision_1: 0.06253, precision_2: 0.12834
+2021-06-15 13:49:51, itr: 130, epoch:[2/50], completed user:[58368/75392] loss: 3.36009, precision_1: 0.07304, precision_2: 0.14270
+2021-06-15 13:50:24, itr: 140, epoch:[2/50], completed user:[68608/75392] loss: 3.32816, precision_1: 0.07627, precision_2: 0.14616
+2021-06-15 13:52:41,334 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6447257519 m] train_on_epoch 
+2021-06-15 13:52:41, epoch 1 train complete
+  4%|▍         | 2/50 [09:29<3:47:51, 284.83s/it]2021-06-15 13:52:46, itr: 150, epoch:[3/50], completed user:[3072/75392] loss: 3.35965, precision_1: 0.07503, precision_2: 0.14703
+2021-06-15 13:53:02, itr: 160, epoch:[3/50], completed user:[13312/75392] loss: 3.34425, precision_1: 0.07685, precision_2: 0.14423
+2021-06-15 13:53:17, itr: 170, epoch:[3/50], completed user:[23552/75392] loss: 3.33150, precision_1: 0.08266, precision_2: 0.15728
+2021-06-15 13:53:51, itr: 180, epoch:[3/50], completed user:[33792/75392] loss: 3.31750, precision_1: 0.08080, precision_2: 0.15650
+2021-06-15 13:54:06, itr: 190, epoch:[3/50], completed user:[44032/75392] loss: 3.32529, precision_1: 0.07993, precision_2: 0.15250
+2021-06-15 13:54:22, itr: 200, epoch:[3/50], completed user:[54272/75392] loss: 3.30713, precision_1: 0.08644, precision_2: 0.15835
+>>>>>>>>2021-06-15 13:54:30: itr: 200, vali: 3.33359, 0.08191, 0.15425<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 13:55:04, itr: 210, epoch:[3/50], completed user:[64512/75392] loss: 3.38038, precision_1: 0.07314, precision_2: 0.14554
+2021-06-15 13:55:19, itr: 220, epoch:[3/50], completed user:[74752/75392] loss: 3.32185, precision_1: 0.08780, precision_2: 0.15946
+2021-06-15 13:57:25,380 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6489104430 m] train_on_epoch 
+2021-06-15 13:57:25, epoch 2 train complete
+  6%|▌         | 3/50 [14:13<3:42:50, 284.47s/it]2021-06-15 13:57:39, itr: 230, epoch:[4/50], completed user:[9216/75392] loss: 3.34268, precision_1: 0.07907, precision_2: 0.14655
+2021-06-15 13:57:55, itr: 240, epoch:[4/50], completed user:[19456/75392] loss: 3.30576, precision_1: 0.07942, precision_2: 0.14921
+2021-06-15 13:58:29, itr: 250, epoch:[4/50], completed user:[29696/75392] loss: 3.33400, precision_1: 0.08701, precision_2: 0.16073
+2021-06-15 13:58:44, itr: 260, epoch:[4/50], completed user:[39936/75392] loss: 3.34265, precision_1: 0.08336, precision_2: 0.15386
+2021-06-15 13:59:00, itr: 270, epoch:[4/50], completed user:[50176/75392] loss: 3.32071, precision_1: 0.08629, precision_2: 0.16308
+2021-06-15 13:59:16, itr: 280, epoch:[4/50], completed user:[60416/75392] loss: 3.36299, precision_1: 0.07976, precision_2: 0.14862
+2021-06-15 13:59:50, itr: 290, epoch:[4/50], completed user:[70656/75392] loss: 3.33183, precision_1: 0.08439, precision_2: 0.15396
+2021-06-15 14:02:02,439 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5286250313 m] train_on_epoch 
+2021-06-15 14:02:02, epoch 3 train complete
+  8%|▊         | 4/50 [18:50<3:35:51, 281.54s/it]2021-06-15 14:02:10, itr: 300, epoch:[5/50], completed user:[5120/75392] loss: 3.32419, precision_1: 0.08372, precision_2: 0.15140
+>>>>>>>>2021-06-15 14:02:19: itr: 300, vali: 3.31441, 0.08791, 0.16258<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 14:02:34, itr: 310, epoch:[5/50], completed user:[15360/75392] loss: 3.27694, precision_1: 0.08819, precision_2: 0.16659
+2021-06-15 14:03:08, itr: 320, epoch:[5/50], completed user:[25600/75392] loss: 3.27820, precision_1: 0.09448, precision_2: 0.17326
+2021-06-15 14:03:24, itr: 330, epoch:[5/50], completed user:[35840/75392] loss: 3.33795, precision_1: 0.08235, precision_2: 0.16307
+2021-06-15 14:03:39, itr: 340, epoch:[5/50], completed user:[46080/75392] loss: 3.31584, precision_1: 0.09585, precision_2: 0.17250
+2021-06-15 14:03:54, itr: 350, epoch:[5/50], completed user:[56320/75392] loss: 3.32254, precision_1: 0.09268, precision_2: 0.16636
+2021-06-15 14:04:27, itr: 360, epoch:[5/50], completed user:[66560/75392] loss: 3.35300, precision_1: 0.08014, precision_2: 0.15527
+2021-06-15 14:06:47,023 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6455374916 m] train_on_epoch 
+2021-06-15 14:06:47, epoch 4 train complete
+ 10%|█         | 5/50 [23:35<3:31:58, 282.64s/it]2021-06-15 14:06:48, itr: 370, epoch:[6/50], completed user:[1024/75392] loss: 3.32963, precision_1: 0.08776, precision_2: 0.15917
+2021-06-15 14:07:04, itr: 380, epoch:[6/50], completed user:[11264/75392] loss: 3.33801, precision_1: 0.08606, precision_2: 0.16368
+2021-06-15 14:07:38, itr: 390, epoch:[6/50], completed user:[21504/75392] loss: 3.33625, precision_1: 0.08661, precision_2: 0.15608
+2021-06-15 14:07:54, itr: 400, epoch:[6/50], completed user:[31744/75392] loss: 3.33596, precision_1: 0.09004, precision_2: 0.15676
+>>>>>>>>2021-06-15 14:08:02: itr: 400, vali: 3.31448, 0.08799, 0.16275<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 14:08:18, itr: 410, epoch:[6/50], completed user:[41984/75392] loss: 3.32224, precision_1: 0.08840, precision_2: 0.16651
+2021-06-15 14:08:33, itr: 420, epoch:[6/50], completed user:[52224/75392] loss: 3.35016, precision_1: 0.08596, precision_2: 0.15817
+2021-06-15 14:09:07, itr: 430, epoch:[6/50], completed user:[62464/75392] loss: 3.30717, precision_1: 0.08349, precision_2: 0.15947
+2021-06-15 14:09:23, itr: 440, epoch:[6/50], completed user:[72704/75392] loss: 3.34465, precision_1: 0.08908, precision_2: 0.15779
+2021-06-15 14:11:33,282 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6652693073 m] train_on_epoch 
+2021-06-15 14:11:33, epoch 5 train complete
+ 12%|█▏        | 6/50 [28:21<3:28:10, 283.88s/it]2021-06-15 14:11:44, itr: 450, epoch:[7/50], completed user:[7168/75392] loss: 3.32116, precision_1: 0.09060, precision_2: 0.16667
+2021-06-15 14:12:00, itr: 460, epoch:[7/50], completed user:[17408/75392] loss: 3.30818, precision_1: 0.09265, precision_2: 0.16430
+2021-06-15 14:12:34, itr: 470, epoch:[7/50], completed user:[27648/75392] loss: 3.36180, precision_1: 0.08760, precision_2: 0.15848
+2021-06-15 14:12:50, itr: 480, epoch:[7/50], completed user:[37888/75392] loss: 3.34421, precision_1: 0.08441, precision_2: 0.15621
+2021-06-15 14:13:06, itr: 490, epoch:[7/50], completed user:[48128/75392] loss: 3.35016, precision_1: 0.07812, precision_2: 0.15524
+2021-06-15 14:13:40, itr: 500, epoch:[7/50], completed user:[58368/75392] loss: 3.33211, precision_1: 0.08977, precision_2: 0.16618
+>>>>>>>>2021-06-15 14:13:48: itr: 500, vali: 3.31188, 0.08889, 0.16423<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 14:14:04, itr: 510, epoch:[7/50], completed user:[68608/75392] loss: 3.30904, precision_1: 0.09556, precision_2: 0.16694
+2021-06-15 14:16:21,330 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6941630562 m] train_on_epoch 
+2021-06-15 14:16:21, epoch 6 train complete
+ 14%|█▍        | 7/50 [33:09<3:24:25, 285.24s/it]2021-06-15 14:16:26, itr: 520, epoch:[8/50], completed user:[3072/75392] loss: 3.32762, precision_1: 0.08864, precision_2: 0.16306
+2021-06-15 14:16:42, itr: 530, epoch:[8/50], completed user:[13312/75392] loss: 3.31800, precision_1: 0.08521, precision_2: 0.16222
+2021-06-15 14:17:16, itr: 540, epoch:[8/50], completed user:[23552/75392] loss: 3.30569, precision_1: 0.09466, precision_2: 0.17410
+2021-06-15 14:17:32, itr: 550, epoch:[8/50], completed user:[33792/75392] loss: 3.29513, precision_1: 0.08916, precision_2: 0.16765
+2021-06-15 14:17:48, itr: 560, epoch:[8/50], completed user:[44032/75392] loss: 3.31131, precision_1: 0.09021, precision_2: 0.16830
+2021-06-15 14:18:23, itr: 570, epoch:[8/50], completed user:[54272/75392] loss: 3.29310, precision_1: 0.09363, precision_2: 0.17094
+2021-06-15 14:18:38, itr: 580, epoch:[8/50], completed user:[64512/75392] loss: 3.37151, precision_1: 0.08136, precision_2: 0.15098
+2021-06-15 14:18:55, itr: 590, epoch:[8/50], completed user:[74752/75392] loss: 3.31110, precision_1: 0.09038, precision_2: 0.16357
+2021-06-15 14:21:02,044 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5859761477 m] train_on_epoch 
+2021-06-15 14:21:02, epoch 7 train complete
+ 16%|█▌        | 8/50 [37:50<3:18:39, 283.80s/it]2021-06-15 14:21:16, itr: 600, epoch:[9/50], completed user:[9216/75392] loss: 3.32910, precision_1: 0.08298, precision_2: 0.15359
+>>>>>>>>2021-06-15 14:21:25: itr: 600, vali: 3.30872, 0.08931, 0.16494<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 14:21:59, itr: 610, epoch:[9/50], completed user:[19456/75392] loss: 3.29562, precision_1: 0.08906, precision_2: 0.15838
+2021-06-15 14:22:15, itr: 620, epoch:[9/50], completed user:[29696/75392] loss: 3.32642, precision_1: 0.08731, precision_2: 0.16269
+2021-06-15 14:22:31, itr: 630, epoch:[9/50], completed user:[39936/75392] loss: 3.33328, precision_1: 0.08580, precision_2: 0.16086
+2021-06-15 14:23:05, itr: 640, epoch:[9/50], completed user:[50176/75392] loss: 3.31092, precision_1: 0.09246, precision_2: 0.16751
+2021-06-15 14:23:21, itr: 650, epoch:[9/50], completed user:[60416/75392] loss: 3.35806, precision_1: 0.08148, precision_2: 0.15292
+2021-06-15 14:23:37, itr: 660, epoch:[9/50], completed user:[70656/75392] loss: 3.32667, precision_1: 0.08409, precision_2: 0.15668
+2021-06-15 14:25:51,323 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7216746887 m] train_on_epoch 
+2021-06-15 14:25:51, epoch 8 train complete
+ 18%|█▊        | 9/50 [42:39<3:15:05, 285.51s/it]2021-06-15 14:26:00, itr: 670, epoch:[10/50], completed user:[5120/75392] loss: 3.31763, precision_1: 0.08478, precision_2: 0.15655
+2021-06-15 14:26:35, itr: 680, epoch:[10/50], completed user:[15360/75392] loss: 3.27190, precision_1: 0.09141, precision_2: 0.16873
+2021-06-15 14:26:51, itr: 690, epoch:[10/50], completed user:[25600/75392] loss: 3.26517, precision_1: 0.09196, precision_2: 0.17310
+2021-06-15 14:27:07, itr: 700, epoch:[10/50], completed user:[35840/75392] loss: 3.33077, precision_1: 0.08578, precision_2: 0.16441
+>>>>>>>>2021-06-15 14:27:15: itr: 700, vali: 3.30965, 0.09038, 0.16513<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 14:27:31, itr: 710, epoch:[10/50], completed user:[46080/75392] loss: 3.28828, precision_1: 0.10031, precision_2: 0.17488
+2021-06-15 14:28:06, itr: 720, epoch:[10/50], completed user:[56320/75392] loss: 3.30055, precision_1: 0.09330, precision_2: 0.16945
+2021-06-15 14:28:21, itr: 730, epoch:[10/50], completed user:[66560/75392] loss: 3.34159, precision_1: 0.08391, precision_2: 0.15997
+2021-06-15 14:30:41,951 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7445775668 m] train_on_epoch 
+2021-06-15 14:30:42, epoch 9 train complete
+ 20%|██        | 10/50 [47:30<3:11:23, 287.09s/it]2021-06-15 14:30:43, itr: 740, epoch:[11/50], completed user:[1024/75392] loss: 3.32446, precision_1: 0.08506, precision_2: 0.15782
+2021-06-15 14:31:18, itr: 750, epoch:[11/50], completed user:[11264/75392] loss: 3.33203, precision_1: 0.08998, precision_2: 0.16368
+2021-06-15 14:31:34, itr: 760, epoch:[11/50], completed user:[21504/75392] loss: 3.32925, precision_1: 0.08814, precision_2: 0.16067
+2021-06-15 14:31:50, itr: 770, epoch:[11/50], completed user:[31744/75392] loss: 3.33180, precision_1: 0.08729, precision_2: 0.16081
+2021-06-15 14:32:06, itr: 780, epoch:[11/50], completed user:[41984/75392] loss: 3.31715, precision_1: 0.09070, precision_2: 0.17050
+2021-06-15 14:32:40, itr: 790, epoch:[11/50], completed user:[52224/75392] loss: 3.34473, precision_1: 0.08835, precision_2: 0.16073
+2021-06-15 14:32:56, itr: 800, epoch:[11/50], completed user:[62464/75392] loss: 3.30409, precision_1: 0.08525, precision_2: 0.16107
+>>>>>>>>2021-06-15 14:33:04: itr: 800, vali: 3.30896, 0.09067, 0.16618<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 14:33:21, itr: 810, epoch:[11/50], completed user:[72704/75392] loss: 3.34065, precision_1: 0.08865, precision_2: 0.16201
+2021-06-15 14:35:31,347 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7280407151 m] train_on_epoch 
+2021-06-15 14:35:31, epoch 10 train complete
+ 22%|██▏       | 11/50 [52:19<3:07:04, 287.80s/it]2021-06-15 14:35:43, itr: 820, epoch:[12/50], completed user:[7168/75392] loss: 3.31830, precision_1: 0.09141, precision_2: 0.16844
+2021-06-15 14:36:17, itr: 830, epoch:[12/50], completed user:[17408/75392] loss: 3.30706, precision_1: 0.09111, precision_2: 0.16399
+2021-06-15 14:36:33, itr: 840, epoch:[12/50], completed user:[27648/75392] loss: 3.35359, precision_1: 0.08929, precision_2: 0.15971
+2021-06-15 14:36:50, itr: 850, epoch:[12/50], completed user:[37888/75392] loss: 3.33837, precision_1: 0.08379, precision_2: 0.15698
+2021-06-15 14:37:24, itr: 860, epoch:[12/50], completed user:[48128/75392] loss: 3.34282, precision_1: 0.08013, precision_2: 0.15639
+2021-06-15 14:37:40, itr: 870, epoch:[12/50], completed user:[58368/75392] loss: 3.32522, precision_1: 0.09025, precision_2: 0.16313
+2021-06-15 14:37:56, itr: 880, epoch:[12/50], completed user:[68608/75392] loss: 3.30264, precision_1: 0.09631, precision_2: 0.16649
+2021-06-15 14:40:13,197 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6047375878 m] train_on_epoch 
+2021-06-15 14:40:13, epoch 11 train complete
+ 24%|██▍       | 12/50 [57:01<3:01:07, 285.99s/it]2021-06-15 14:40:18, itr: 890, epoch:[13/50], completed user:[3072/75392] loss: 3.32154, precision_1: 0.08788, precision_2: 0.16760
+2021-06-15 14:40:52, itr: 900, epoch:[13/50], completed user:[13312/75392] loss: 3.31591, precision_1: 0.08805, precision_2: 0.16443
+>>>>>>>>2021-06-15 14:41:00: itr: 900, vali: 3.30680, 0.09000, 0.16601<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 14:41:16, itr: 910, epoch:[13/50], completed user:[23552/75392] loss: 3.30158, precision_1: 0.09627, precision_2: 0.17820
+2021-06-15 14:41:32, itr: 920, epoch:[13/50], completed user:[33792/75392] loss: 3.29014, precision_1: 0.08978, precision_2: 0.17012
+2021-06-15 14:42:06, itr: 930, epoch:[13/50], completed user:[44032/75392] loss: 3.31004, precision_1: 0.09251, precision_2: 0.16907
+2021-06-15 14:42:22, itr: 940, epoch:[13/50], completed user:[54272/75392] loss: 3.29333, precision_1: 0.09588, precision_2: 0.17199
+2021-06-15 14:42:38, itr: 950, epoch:[13/50], completed user:[64512/75392] loss: 3.36857, precision_1: 0.08298, precision_2: 0.15083
+2021-06-15 14:42:55, itr: 960, epoch:[13/50], completed user:[74752/75392] loss: 3.30663, precision_1: 0.09069, precision_2: 0.16479
+2021-06-15 14:45:01,268 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7114937544 m] train_on_epoch 
+2021-06-15 14:45:01, epoch 12 train complete
+ 26%|██▌       | 13/50 [1:01:49<2:56:44, 286.62s/it]2021-06-15 14:45:35, itr: 970, epoch:[14/50], completed user:[9216/75392] loss: 3.32461, precision_1: 0.08502, precision_2: 0.15657
+2021-06-15 14:45:51, itr: 980, epoch:[14/50], completed user:[19456/75392] loss: 3.29429, precision_1: 0.08859, precision_2: 0.15636
+2021-06-15 14:46:07, itr: 990, epoch:[14/50], completed user:[29696/75392] loss: 3.32448, precision_1: 0.08776, precision_2: 0.16586
+2021-06-15 14:46:23, itr: 1000, epoch:[14/50], completed user:[39936/75392] loss: 3.33120, precision_1: 0.08483, precision_2: 0.16249
+>>>>>>>>2021-06-15 14:46:31: itr: 1000, vali: 3.30615, 0.09046, 0.16611<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 14:47:05, itr: 1010, epoch:[14/50], completed user:[50176/75392] loss: 3.30709, precision_1: 0.09262, precision_2: 0.16925
+2021-06-15 14:47:21, itr: 1020, epoch:[14/50], completed user:[60416/75392] loss: 3.35243, precision_1: 0.08335, precision_2: 0.15220
+2021-06-15 14:47:37, itr: 1030, epoch:[14/50], completed user:[70656/75392] loss: 3.32288, precision_1: 0.08817, precision_2: 0.16062
+2021-06-15 14:49:50,288 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7246588945 m] train_on_epoch 
+2021-06-15 14:49:50, epoch 13 train complete
+ 28%|██▊       | 14/50 [1:06:38<2:52:24, 287.34s/it]2021-06-15 14:50:17, itr: 1040, epoch:[15/50], completed user:[5120/75392] loss: 3.31633, precision_1: 0.08796, precision_2: 0.15927
+2021-06-15 14:50:33, itr: 1050, epoch:[15/50], completed user:[15360/75392] loss: 3.26965, precision_1: 0.08988, precision_2: 0.17195
+2021-06-15 14:50:49, itr: 1060, epoch:[15/50], completed user:[25600/75392] loss: 3.26024, precision_1: 0.09244, precision_2: 0.17498
+2021-06-15 14:51:05, itr: 1070, epoch:[15/50], completed user:[35840/75392] loss: 3.32823, precision_1: 0.08667, precision_2: 0.16634
+2021-06-15 14:51:39, itr: 1080, epoch:[15/50], completed user:[46080/75392] loss: 3.28453, precision_1: 0.10180, precision_2: 0.17860
+2021-06-15 14:51:55, itr: 1090, epoch:[15/50], completed user:[56320/75392] loss: 3.29822, precision_1: 0.09160, precision_2: 0.16837
+2021-06-15 14:52:11, itr: 1100, epoch:[15/50], completed user:[66560/75392] loss: 3.33927, precision_1: 0.08265, precision_2: 0.16154
+>>>>>>>>2021-06-15 14:52:19: itr: 1100, vali: 3.30763, 0.09079, 0.16649<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 14:54:58,460 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.0428401152 m] train_on_epoch 
+2021-06-15 14:54:58, epoch 14 train complete
+ 30%|███       | 15/50 [1:11:46<2:51:16, 293.62s/it]2021-06-15 14:55:00, itr: 1110, epoch:[16/50], completed user:[1024/75392] loss: 3.32200, precision_1: 0.08791, precision_2: 0.15842
+2021-06-15 14:55:16, itr: 1120, epoch:[16/50], completed user:[11264/75392] loss: 3.33005, precision_1: 0.08998, precision_2: 0.16579
+2021-06-15 14:55:32, itr: 1130, epoch:[16/50], completed user:[21504/75392] loss: 3.32881, precision_1: 0.08982, precision_2: 0.15853
+2021-06-15 14:55:48, itr: 1140, epoch:[16/50], completed user:[31744/75392] loss: 3.33015, precision_1: 0.08794, precision_2: 0.16130
+2021-06-15 14:56:23, itr: 1150, epoch:[16/50], completed user:[41984/75392] loss: 3.31472, precision_1: 0.09116, precision_2: 0.16943
+2021-06-15 14:56:39, itr: 1160, epoch:[16/50], completed user:[52224/75392] loss: 3.34245, precision_1: 0.08819, precision_2: 0.16041
+2021-06-15 14:56:55, itr: 1170, epoch:[16/50], completed user:[62464/75392] loss: 3.29746, precision_1: 0.08653, precision_2: 0.16267
+2021-06-15 14:57:12, itr: 1180, epoch:[16/50], completed user:[72704/75392] loss: 3.33694, precision_1: 0.08952, precision_2: 0.16201
+2021-06-15 14:59:40,467 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6036568443 m] train_on_epoch 
+2021-06-15 14:59:40, epoch 15 train complete
+ 32%|███▏      | 16/50 [1:16:28<2:44:24, 290.13s/it]2021-06-15 14:59:52, itr: 1190, epoch:[17/50], completed user:[7168/75392] loss: 3.31541, precision_1: 0.09318, precision_2: 0.16877
+2021-06-15 15:00:08, itr: 1200, epoch:[17/50], completed user:[17408/75392] loss: 3.30377, precision_1: 0.09311, precision_2: 0.16523
+>>>>>>>>2021-06-15 15:00:17: itr: 1200, vali: 3.30641, 0.09153, 0.16674<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 15:00:33, itr: 1210, epoch:[17/50], completed user:[27648/75392] loss: 3.35018, precision_1: 0.08898, precision_2: 0.16171
+2021-06-15 15:01:07, itr: 1220, epoch:[17/50], completed user:[37888/75392] loss: 3.33769, precision_1: 0.08675, precision_2: 0.15885
+2021-06-15 15:01:24, itr: 1230, epoch:[17/50], completed user:[48128/75392] loss: 3.34174, precision_1: 0.08127, precision_2: 0.15639
+2021-06-15 15:01:39, itr: 1240, epoch:[17/50], completed user:[58368/75392] loss: 3.32441, precision_1: 0.08800, precision_2: 0.16216
+2021-06-15 15:01:56, itr: 1250, epoch:[17/50], completed user:[68608/75392] loss: 3.30015, precision_1: 0.09556, precision_2: 0.16442
+2021-06-15 15:04:30,773 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7444883227 m] train_on_epoch 
+2021-06-15 15:04:30, epoch 16 train complete
+ 34%|███▍      | 17/50 [1:21:18<2:39:35, 290.18s/it]2021-06-15 15:04:35, itr: 1260, epoch:[18/50], completed user:[3072/75392] loss: 3.31977, precision_1: 0.08879, precision_2: 0.16624
+2021-06-15 15:04:52, itr: 1270, epoch:[18/50], completed user:[13312/75392] loss: 3.31372, precision_1: 0.09042, precision_2: 0.16601
+2021-06-15 15:05:08, itr: 1280, epoch:[18/50], completed user:[23552/75392] loss: 3.29961, precision_1: 0.09729, precision_2: 0.17630
+2021-06-15 15:05:42, itr: 1290, epoch:[18/50], completed user:[33792/75392] loss: 3.28858, precision_1: 0.08978, precision_2: 0.17043
+2021-06-15 15:05:58, itr: 1300, epoch:[18/50], completed user:[44032/75392] loss: 3.30588, precision_1: 0.09359, precision_2: 0.17122
+>>>>>>>>2021-06-15 15:06:07: itr: 1300, vali: 3.30830, 0.09092, 0.16670<<<<<<<<
+2021-06-15 15:06:23, itr: 1310, epoch:[18/50], completed user:[54272/75392] loss: 3.29079, precision_1: 0.09783, precision_2: 0.17408
+2021-06-15 15:06:39, itr: 1320, epoch:[18/50], completed user:[64512/75392] loss: 3.36555, precision_1: 0.08268, precision_2: 0.15186
+2021-06-15 15:07:13, itr: 1330, epoch:[18/50], completed user:[74752/75392] loss: 3.30473, precision_1: 0.09175, precision_2: 0.16631
+2021-06-15 15:09:20,501 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7334905426 m] train_on_epoch 
+2021-06-15 15:09:20, epoch 17 train complete
+ 36%|███▌      | 18/50 [1:26:08<2:34:41, 290.04s/it]2021-06-15 15:09:35, itr: 1340, epoch:[19/50], completed user:[9216/75392] loss: 3.32288, precision_1: 0.08439, precision_2: 0.15766
+2021-06-15 15:09:51, itr: 1350, epoch:[19/50], completed user:[19456/75392] loss: 3.28980, precision_1: 0.09139, precision_2: 0.16118
+2021-06-15 15:10:07, itr: 1360, epoch:[19/50], completed user:[29696/75392] loss: 3.32161, precision_1: 0.08852, precision_2: 0.16813
+2021-06-15 15:10:41, itr: 1370, epoch:[19/50], completed user:[39936/75392] loss: 3.32874, precision_1: 0.08629, precision_2: 0.16086
+2021-06-15 15:10:57, itr: 1380, epoch:[19/50], completed user:[50176/75392] loss: 3.30691, precision_1: 0.09436, precision_2: 0.16989
+2021-06-15 15:11:13, itr: 1390, epoch:[19/50], completed user:[60416/75392] loss: 3.35116, precision_1: 0.08306, precision_2: 0.15091
+2021-06-15 15:11:48, itr: 1400, epoch:[19/50], completed user:[70656/75392] loss: 3.32132, precision_1: 0.08878, precision_2: 0.16334
+>>>>>>>>2021-06-15 15:11:56: itr: 1400, vali: 3.30573, 0.09199, 0.16753<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 15:14:09,578 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7221097509 m] train_on_epoch 
+2021-06-15 15:14:09, epoch 18 train complete
+ 38%|███▊      | 19/50 [1:30:57<2:29:42, 289.75s/it]2021-06-15 15:14:18, itr: 1410, epoch:[20/50], completed user:[5120/75392] loss: 3.31438, precision_1: 0.08781, precision_2: 0.16109
+2021-06-15 15:14:34, itr: 1420, epoch:[20/50], completed user:[15360/75392] loss: 3.26750, precision_1: 0.09202, precision_2: 0.17195
+2021-06-15 15:14:50, itr: 1430, epoch:[20/50], completed user:[25600/75392] loss: 3.25862, precision_1: 0.09432, precision_2: 0.17389
+2021-06-15 15:15:24, itr: 1440, epoch:[20/50], completed user:[35840/75392] loss: 3.32504, precision_1: 0.08622, precision_2: 0.16858
+2021-06-15 15:15:40, itr: 1450, epoch:[20/50], completed user:[46080/75392] loss: 3.28084, precision_1: 0.10403, precision_2: 0.18038
+2021-06-15 15:15:57, itr: 1460, epoch:[20/50], completed user:[56320/75392] loss: 3.30108, precision_1: 0.09144, precision_2: 0.16605
+2021-06-15 15:16:31, itr: 1470, epoch:[20/50], completed user:[66560/75392] loss: 3.33830, precision_1: 0.08359, precision_2: 0.16107
+2021-06-15 15:18:50,859 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5889313102 m] train_on_epoch 
+2021-06-15 15:18:51, epoch 19 train complete
+ 40%|████      | 20/50 [1:35:39<2:23:36, 287.21s/it]2021-06-15 15:18:52, itr: 1480, epoch:[21/50], completed user:[1024/75392] loss: 3.32043, precision_1: 0.08821, precision_2: 0.16187
+2021-06-15 15:19:08, itr: 1490, epoch:[21/50], completed user:[11264/75392] loss: 3.32884, precision_1: 0.08998, precision_2: 0.16624
+2021-06-15 15:19:24, itr: 1500, epoch:[21/50], completed user:[21504/75392] loss: 3.32695, precision_1: 0.09105, precision_2: 0.15868
+>>>>>>>>2021-06-15 15:19:33: itr: 1500, vali: 3.30555, 0.09138, 0.16687<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 15:20:08, itr: 1510, epoch:[21/50], completed user:[31744/75392] loss: 3.32754, precision_1: 0.08810, precision_2: 0.16291
+2021-06-15 15:20:24, itr: 1520, epoch:[21/50], completed user:[41984/75392] loss: 3.31422, precision_1: 0.09085, precision_2: 0.16697
+2021-06-15 15:20:40, itr: 1530, epoch:[21/50], completed user:[52224/75392] loss: 3.33941, precision_1: 0.08899, precision_2: 0.16201
+2021-06-15 15:20:56, itr: 1540, epoch:[21/50], completed user:[62464/75392] loss: 3.29745, precision_1: 0.08477, precision_2: 0.16251
+2021-06-15 15:21:31, itr: 1550, epoch:[21/50], completed user:[72704/75392] loss: 3.33724, precision_1: 0.08923, precision_2: 0.16172
+2021-06-15 15:23:41,452 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7461014549 m] train_on_epoch 
+2021-06-15 15:23:41, epoch 20 train complete
+ 42%|████▏     | 21/50 [1:40:29<2:19:18, 288.23s/it]2021-06-15 15:23:53, itr: 1560, epoch:[22/50], completed user:[7168/75392] loss: 3.31528, precision_1: 0.09415, precision_2: 0.17264
+2021-06-15 15:24:09, itr: 1570, epoch:[22/50], completed user:[17408/75392] loss: 3.30341, precision_1: 0.09296, precision_2: 0.16646
+2021-06-15 15:24:43, itr: 1580, epoch:[22/50], completed user:[27648/75392] loss: 3.35007, precision_1: 0.08914, precision_2: 0.16079
+2021-06-15 15:24:59, itr: 1590, epoch:[22/50], completed user:[37888/75392] loss: 3.33680, precision_1: 0.08597, precision_2: 0.15994
+2021-06-15 15:25:15, itr: 1600, epoch:[22/50], completed user:[48128/75392] loss: 3.33940, precision_1: 0.08041, precision_2: 0.15653
+>>>>>>>>2021-06-15 15:25:24: itr: 1600, vali: 3.30842, 0.09059, 0.16649<<<<<<<<
+2021-06-15 15:25:40, itr: 1610, epoch:[22/50], completed user:[58368/75392] loss: 3.32430, precision_1: 0.08977, precision_2: 0.16345
+2021-06-15 15:26:14, itr: 1620, epoch:[22/50], completed user:[68608/75392] loss: 3.30058, precision_1: 0.09616, precision_2: 0.16709
+2021-06-15 15:28:31,451 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7319241166 m] train_on_epoch 
+2021-06-15 15:28:31, epoch 21 train complete
+ 44%|████▍     | 22/50 [1:45:19<2:14:45, 288.76s/it]2021-06-15 15:28:36, itr: 1630, epoch:[23/50], completed user:[3072/75392] loss: 3.31957, precision_1: 0.09061, precision_2: 0.16730
+2021-06-15 15:28:53, itr: 1640, epoch:[23/50], completed user:[13312/75392] loss: 3.31359, precision_1: 0.09011, precision_2: 0.16648
+2021-06-15 15:29:28, itr: 1650, epoch:[23/50], completed user:[23552/75392] loss: 3.29862, precision_1: 0.09759, precision_2: 0.17601
+2021-06-15 15:29:44, itr: 1660, epoch:[23/50], completed user:[33792/75392] loss: 3.28832, precision_1: 0.09195, precision_2: 0.17105
+2021-06-15 15:30:00, itr: 1670, epoch:[23/50], completed user:[44032/75392] loss: 3.30550, precision_1: 0.09144, precision_2: 0.16769
+2021-06-15 15:30:16, itr: 1680, epoch:[23/50], completed user:[54272/75392] loss: 3.28707, precision_1: 0.09843, precision_2: 0.17633
+2021-06-15 15:30:50, itr: 1690, epoch:[23/50], completed user:[64512/75392] loss: 3.36537, precision_1: 0.08415, precision_2: 0.15318
+2021-06-15 15:31:06, itr: 1700, epoch:[23/50], completed user:[74752/75392] loss: 3.30378, precision_1: 0.09358, precision_2: 0.16768
+>>>>>>>>2021-06-15 15:31:15: itr: 1700, vali: 3.30434, 0.09117, 0.16699<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 15:33:22,444 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7442429225 m] train_on_epoch 
+2021-06-15 15:33:22, epoch 22 train complete
+ 46%|████▌     | 23/50 [1:50:10<2:10:14, 289.43s/it]2021-06-15 15:33:37, itr: 1710, epoch:[24/50], completed user:[9216/75392] loss: 3.32214, precision_1: 0.08549, precision_2: 0.15829
+2021-06-15 15:33:53, itr: 1720, epoch:[24/50], completed user:[19456/75392] loss: 3.29019, precision_1: 0.09139, precision_2: 0.16351
+2021-06-15 15:34:28, itr: 1730, epoch:[24/50], completed user:[29696/75392] loss: 3.31936, precision_1: 0.08822, precision_2: 0.16707
+2021-06-15 15:34:44, itr: 1740, epoch:[24/50], completed user:[39936/75392] loss: 3.32934, precision_1: 0.08548, precision_2: 0.16232
+2021-06-15 15:35:00, itr: 1750, epoch:[24/50], completed user:[50176/75392] loss: 3.30549, precision_1: 0.09595, precision_2: 0.17036
+2021-06-15 15:35:35, itr: 1760, epoch:[24/50], completed user:[60416/75392] loss: 3.35140, precision_1: 0.08248, precision_2: 0.15263
+2021-06-15 15:35:50, itr: 1770, epoch:[24/50], completed user:[70656/75392] loss: 3.32203, precision_1: 0.08923, precision_2: 0.15910
+2021-06-15 15:38:04,713 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5982859770 m] train_on_epoch 
+2021-06-15 15:38:04, epoch 23 train complete
+ 48%|████▊     | 24/50 [1:54:52<2:04:29, 287.28s/it]2021-06-15 15:38:13, itr: 1780, epoch:[25/50], completed user:[5120/75392] loss: 3.31580, precision_1: 0.08902, precision_2: 0.15882
+2021-06-15 15:38:29, itr: 1790, epoch:[25/50], completed user:[15360/75392] loss: 3.26888, precision_1: 0.09172, precision_2: 0.17256
+2021-06-15 15:39:04, itr: 1800, epoch:[25/50], completed user:[25600/75392] loss: 3.26132, precision_1: 0.09495, precision_2: 0.17436
+>>>>>>>>2021-06-15 15:39:12: itr: 1800, vali: 3.30517, 0.09178, 0.16762<<<<<<<<
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 15:39:29, itr: 1810, epoch:[25/50], completed user:[35840/75392] loss: 3.32474, precision_1: 0.08742, precision_2: 0.16902
+2021-06-15 15:39:45, itr: 1820, epoch:[25/50], completed user:[46080/75392] loss: 3.28221, precision_1: 0.10046, precision_2: 0.17860
+2021-06-15 15:40:20, itr: 1830, epoch:[25/50], completed user:[56320/75392] loss: 3.30112, precision_1: 0.09422, precision_2: 0.16806
+2021-06-15 15:40:35, itr: 1840, epoch:[25/50], completed user:[66560/75392] loss: 3.33743, precision_1: 0.08469, precision_2: 0.16295
+2021-06-15 15:42:56,806 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7537866950 m] train_on_epoch 
+2021-06-15 15:42:56, epoch 24 train complete
+ 50%|█████     | 25/50 [1:59:44<2:00:18, 288.72s/it]2021-06-15 15:42:58, itr: 1850, epoch:[26/50], completed user:[1024/75392] loss: 3.31977, precision_1: 0.08746, precision_2: 0.15917
+2021-06-15 15:43:15, itr: 1860, epoch:[26/50], completed user:[11264/75392] loss: 3.33035, precision_1: 0.09013, precision_2: 0.16503
+2021-06-15 15:43:50, itr: 1870, epoch:[26/50], completed user:[21504/75392] loss: 3.32678, precision_1: 0.09181, precision_2: 0.15991
+2021-06-15 15:44:05, itr: 1880, epoch:[26/50], completed user:[31744/75392] loss: 3.32727, precision_1: 0.08907, precision_2: 0.16372
+2021-06-15 15:44:21, itr: 1890, epoch:[26/50], completed user:[41984/75392] loss: 3.31639, precision_1: 0.09300, precision_2: 0.16651
+2021-06-15 15:44:38, itr: 1900, epoch:[26/50], completed user:[52224/75392] loss: 3.34171, precision_1: 0.08755, precision_2: 0.16185
+>>>>>>>>2021-06-15 15:44:47: itr: 1900, vali: 3.30765, 0.09161, 0.16800<<<<<<<<
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 15:45:21, itr: 1910, epoch:[26/50], completed user:[62464/75392] loss: 3.29709, precision_1: 0.08461, precision_2: 0.16299
+2021-06-15 15:45:38, itr: 1920, epoch:[26/50], completed user:[72704/75392] loss: 3.33691, precision_1: 0.09010, precision_2: 0.16376
+2021-06-15 15:47:48,749 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7614165505 m] train_on_epoch 
+2021-06-15 15:47:48, epoch 25 train complete
+ 52%|█████▏    | 26/50 [2:04:36<1:55:52, 289.69s/it]2021-06-15 15:48:00, itr: 1930, epoch:[27/50], completed user:[7168/75392] loss: 3.31481, precision_1: 0.09528, precision_2: 0.17200
+2021-06-15 15:48:35, itr: 1940, epoch:[27/50], completed user:[17408/75392] loss: 3.30146, precision_1: 0.09512, precision_2: 0.16584
+2021-06-15 15:48:51, itr: 1950, epoch:[27/50], completed user:[27648/75392] loss: 3.34944, precision_1: 0.08868, precision_2: 0.16339
+2021-06-15 15:49:07, itr: 1960, epoch:[27/50], completed user:[37888/75392] loss: 3.33570, precision_1: 0.08644, precision_2: 0.16057
+2021-06-15 15:49:23, itr: 1970, epoch:[27/50], completed user:[48128/75392] loss: 3.34086, precision_1: 0.08113, precision_2: 0.15768
+2021-06-15 15:49:57, itr: 1980, epoch:[27/50], completed user:[58368/75392] loss: 3.32308, precision_1: 0.08832, precision_2: 0.16377
+2021-06-15 15:50:13, itr: 1990, epoch:[27/50], completed user:[68608/75392] loss: 3.30054, precision_1: 0.09393, precision_2: 0.16501
+2021-06-15 15:52:30,910 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5943339547 m] train_on_epoch 
+2021-06-15 15:52:31, epoch 26 train complete
+ 54%|█████▍    | 27/50 [2:09:19<1:50:10, 287.43s/it]2021-06-15 15:52:36, itr: 2000, epoch:[28/50], completed user:[3072/75392] loss: 3.31851, precision_1: 0.08940, precision_2: 0.16775
+>>>>>>>>2021-06-15 15:52:44: itr: 2000, vali: 3.30491, 0.09182, 0.16806<<<<<<<<
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 15:53:19, itr: 2010, epoch:[28/50], completed user:[13312/75392] loss: 3.31225, precision_1: 0.08932, precision_2: 0.16522
+2021-06-15 15:53:35, itr: 2020, epoch:[28/50], completed user:[23552/75392] loss: 3.29867, precision_1: 0.09656, precision_2: 0.17557
+2021-06-15 15:53:51, itr: 2030, epoch:[28/50], completed user:[33792/75392] loss: 3.28806, precision_1: 0.09241, precision_2: 0.16981
+2021-06-15 15:54:07, itr: 2040, epoch:[28/50], completed user:[44032/75392] loss: 3.30464, precision_1: 0.09205, precision_2: 0.17168
+2021-06-15 15:54:41, itr: 2050, epoch:[28/50], completed user:[54272/75392] loss: 3.28707, precision_1: 0.09858, precision_2: 0.17603
+2021-06-15 15:54:57, itr: 2060, epoch:[28/50], completed user:[64512/75392] loss: 3.36463, precision_1: 0.08371, precision_2: 0.15333
+2021-06-15 15:55:13, itr: 2070, epoch:[28/50], completed user:[74752/75392] loss: 3.30378, precision_1: 0.09404, precision_2: 0.16783
+2021-06-15 15:57:20,928 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7241615733 m] train_on_epoch 
+2021-06-15 15:57:21, epoch 27 train complete
+ 56%|█████▌    | 28/50 [2:14:09<1:45:40, 288.21s/it]2021-06-15 15:57:35, itr: 2080, epoch:[29/50], completed user:[9216/75392] loss: 3.32211, precision_1: 0.08736, precision_2: 0.15923
+2021-06-15 15:58:11, itr: 2090, epoch:[29/50], completed user:[19456/75392] loss: 3.28768, precision_1: 0.09170, precision_2: 0.16226
+2021-06-15 15:58:27, itr: 2100, epoch:[29/50], completed user:[29696/75392] loss: 3.32046, precision_1: 0.08625, precision_2: 0.16647
+>>>>>>>>2021-06-15 15:58:35: itr: 2100, vali: 3.30409, 0.09107, 0.16749<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 15:58:52, itr: 2110, epoch:[29/50], completed user:[39936/75392] loss: 3.32959, precision_1: 0.08515, precision_2: 0.16086
+2021-06-15 15:59:27, itr: 2120, epoch:[29/50], completed user:[50176/75392] loss: 3.30557, precision_1: 0.09595, precision_2: 0.16862
+2021-06-15 15:59:42, itr: 2130, epoch:[29/50], completed user:[60416/75392] loss: 3.35102, precision_1: 0.08435, precision_2: 0.15148
+2021-06-15 15:59:59, itr: 2140, epoch:[29/50], completed user:[70656/75392] loss: 3.32120, precision_1: 0.08848, precision_2: 0.16001
+2021-06-15 16:02:14,003 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7586788853 m] train_on_epoch 
+2021-06-15 16:02:14, epoch 28 train complete
+ 58%|█████▊    | 29/50 [2:19:02<1:41:23, 289.67s/it]2021-06-15 16:02:22, itr: 2150, epoch:[30/50], completed user:[5120/75392] loss: 3.31031, precision_1: 0.09054, precision_2: 0.16048
+2021-06-15 16:02:57, itr: 2160, epoch:[30/50], completed user:[15360/75392] loss: 3.26816, precision_1: 0.09325, precision_2: 0.17149
+2021-06-15 16:03:13, itr: 2170, epoch:[30/50], completed user:[25600/75392] loss: 3.25747, precision_1: 0.09793, precision_2: 0.17624
+2021-06-15 16:03:29, itr: 2180, epoch:[30/50], completed user:[35840/75392] loss: 3.32290, precision_1: 0.08831, precision_2: 0.17036
+2021-06-15 16:04:04, itr: 2190, epoch:[30/50], completed user:[46080/75392] loss: 3.27964, precision_1: 0.10374, precision_2: 0.18143
+2021-06-15 16:04:20, itr: 2200, epoch:[30/50], completed user:[56320/75392] loss: 3.29862, precision_1: 0.09160, precision_2: 0.16713
+>>>>>>>>2021-06-15 16:04:28: itr: 2200, vali: 3.30594, 0.09079, 0.16691<<<<<<<<
+2021-06-15 16:04:44, itr: 2210, epoch:[30/50], completed user:[66560/75392] loss: 3.33628, precision_1: 0.08454, precision_2: 0.16437
+2021-06-15 16:07:05,447 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7466907223 m] train_on_epoch 
+2021-06-15 16:07:05, epoch 29 train complete
+ 60%|██████    | 30/50 [2:23:53<1:36:44, 290.20s/it]2021-06-15 16:07:07, itr: 2220, epoch:[31/50], completed user:[1024/75392] loss: 3.32015, precision_1: 0.08881, precision_2: 0.15977
+2021-06-15 16:07:42, itr: 2230, epoch:[31/50], completed user:[11264/75392] loss: 3.32876, precision_1: 0.09284, precision_2: 0.16654
+2021-06-15 16:07:58, itr: 2240, epoch:[31/50], completed user:[21504/75392] loss: 3.32471, precision_1: 0.09288, precision_2: 0.15838
+2021-06-15 16:08:14, itr: 2250, epoch:[31/50], completed user:[31744/75392] loss: 3.32595, precision_1: 0.08891, precision_2: 0.16324
+2021-06-15 16:08:30, itr: 2260, epoch:[31/50], completed user:[41984/75392] loss: 3.31309, precision_1: 0.09362, precision_2: 0.17004
+2021-06-15 16:09:04, itr: 2270, epoch:[31/50], completed user:[52224/75392] loss: 3.33191, precision_1: 0.08867, precision_2: 0.16376
+2021-06-15 16:09:20, itr: 2280, epoch:[31/50], completed user:[62464/75392] loss: 3.29610, precision_1: 0.08493, precision_2: 0.16379
+2021-06-15 16:09:37, itr: 2290, epoch:[31/50], completed user:[72704/75392] loss: 3.33519, precision_1: 0.09025, precision_2: 0.16332
+2021-06-15 16:11:48,465 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6000080705 m] train_on_epoch 
+2021-06-15 16:11:48, epoch 30 train complete
+ 62%|██████▏   | 31/50 [2:28:36<1:31:12, 288.05s/it]2021-06-15 16:12:19, itr: 2300, epoch:[32/50], completed user:[7168/75392] loss: 3.31398, precision_1: 0.09351, precision_2: 0.17006
+>>>>>>>>2021-06-15 16:12:27: itr: 2300, vali: 3.30431, 0.09167, 0.16747<<<<<<<<
+2021-06-15 16:12:43, itr: 2310, epoch:[32/50], completed user:[17408/75392] loss: 3.30120, precision_1: 0.09558, precision_2: 0.16584
+2021-06-15 16:12:59, itr: 2320, epoch:[32/50], completed user:[27648/75392] loss: 3.34986, precision_1: 0.08868, precision_2: 0.16309
+2021-06-15 16:13:15, itr: 2330, epoch:[32/50], completed user:[37888/75392] loss: 3.33815, precision_1: 0.08581, precision_2: 0.16010
+2021-06-15 16:13:50, itr: 2340, epoch:[32/50], completed user:[48128/75392] loss: 3.33997, precision_1: 0.08242, precision_2: 0.15667
+2021-06-15 16:14:05, itr: 2350, epoch:[32/50], completed user:[58368/75392] loss: 3.32331, precision_1: 0.08864, precision_2: 0.16458
+2021-06-15 16:14:22, itr: 2360, epoch:[32/50], completed user:[68608/75392] loss: 3.29844, precision_1: 0.09497, precision_2: 0.16545
+2021-06-15 16:16:39,384 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7422993779 m] train_on_epoch 
+2021-06-15 16:16:39, epoch 31 train complete
+ 64%|██████▍   | 32/50 [2:33:27<1:26:40, 288.91s/it]2021-06-15 16:16:44, itr: 2370, epoch:[33/50], completed user:[3072/75392] loss: 3.31659, precision_1: 0.08940, precision_2: 0.16684
+2021-06-15 16:17:19, itr: 2380, epoch:[33/50], completed user:[13312/75392] loss: 3.31298, precision_1: 0.08963, precision_2: 0.16806
+2021-06-15 16:17:35, itr: 2390, epoch:[33/50], completed user:[23552/75392] loss: 3.29687, precision_1: 0.09583, precision_2: 0.17571
+2021-06-15 16:17:51, itr: 2400, epoch:[33/50], completed user:[33792/75392] loss: 3.28938, precision_1: 0.09133, precision_2: 0.17136
+>>>>>>>>2021-06-15 16:17:59: itr: 2400, vali: 3.30318, 0.09159, 0.16705<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 16:18:34, itr: 2410, epoch:[33/50], completed user:[44032/75392] loss: 3.30470, precision_1: 0.09190, precision_2: 0.17014
+2021-06-15 16:18:49, itr: 2420, epoch:[33/50], completed user:[54272/75392] loss: 3.28647, precision_1: 0.10052, precision_2: 0.17603
+2021-06-15 16:19:05, itr: 2430, epoch:[33/50], completed user:[64512/75392] loss: 3.36346, precision_1: 0.08415, precision_2: 0.15215
+2021-06-15 16:19:22, itr: 2440, epoch:[33/50], completed user:[74752/75392] loss: 3.30252, precision_1: 0.09525, precision_2: 0.16905
+2021-06-15 16:21:28,767 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7283196092 m] train_on_epoch 
+2021-06-15 16:21:28, epoch 32 train complete
+ 66%|██████▌   | 33/50 [2:38:16<1:21:53, 289.05s/it]2021-06-15 16:22:03, itr: 2450, epoch:[34/50], completed user:[9216/75392] loss: 3.32094, precision_1: 0.08674, precision_2: 0.15954
+2021-06-15 16:22:18, itr: 2460, epoch:[34/50], completed user:[19456/75392] loss: 3.28694, precision_1: 0.09263, precision_2: 0.16133
+2021-06-15 16:22:34, itr: 2470, epoch:[34/50], completed user:[29696/75392] loss: 3.31865, precision_1: 0.08822, precision_2: 0.16798
+2021-06-15 16:23:09, itr: 2480, epoch:[34/50], completed user:[39936/75392] loss: 3.32998, precision_1: 0.08483, precision_2: 0.16265
+2021-06-15 16:23:25, itr: 2490, epoch:[34/50], completed user:[50176/75392] loss: 3.29927, precision_1: 0.09737, precision_2: 0.17099
+2021-06-15 16:23:41, itr: 2500, epoch:[34/50], completed user:[60416/75392] loss: 3.35059, precision_1: 0.08550, precision_2: 0.15349
+>>>>>>>>2021-06-15 16:23:49: itr: 2500, vali: 3.30221, 0.09278, 0.16777<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+2021-06-15 16:24:06, itr: 2510, epoch:[34/50], completed user:[70656/75392] loss: 3.31886, precision_1: 0.08953, precision_2: 0.16107
+2021-06-15 16:26:38,108 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.0598330617 m] train_on_epoch 
+2021-06-15 16:26:38, epoch 33 train complete
+ 68%|██████▊   | 34/50 [2:43:26<1:18:42, 295.14s/it]2021-06-15 16:26:46, itr: 2520, epoch:[35/50], completed user:[5120/75392] loss: 3.30894, precision_1: 0.09039, precision_2: 0.15988
+2021-06-15 16:27:02, itr: 2530, epoch:[35/50], completed user:[15360/75392] loss: 3.26582, precision_1: 0.09325, precision_2: 0.17471
+2021-06-15 16:27:18, itr: 2540, epoch:[35/50], completed user:[25600/75392] loss: 3.25521, precision_1: 0.09605, precision_2: 0.17891
+2021-06-15 16:27:34, itr: 2550, epoch:[35/50], completed user:[35840/75392] loss: 3.32325, precision_1: 0.08801, precision_2: 0.17156
+2021-06-15 16:28:08, itr: 2560, epoch:[35/50], completed user:[46080/75392] loss: 3.28192, precision_1: 0.10299, precision_2: 0.17964
+2021-06-15 16:28:24, itr: 2570, epoch:[35/50], completed user:[56320/75392] loss: 3.29460, precision_1: 0.09345, precision_2: 0.16806
+2021-06-15 16:28:40, itr: 2580, epoch:[35/50], completed user:[66560/75392] loss: 3.33349, precision_1: 0.08548, precision_2: 0.16280
+2021-06-15 16:31:18,240 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5795556426 m] train_on_epoch 
+2021-06-15 16:31:18, epoch 34 train complete
+ 70%|███████   | 35/50 [2:48:06<1:12:39, 290.64s/it]2021-06-15 16:31:20, itr: 2590, epoch:[36/50], completed user:[1024/75392] loss: 3.31830, precision_1: 0.08956, precision_2: 0.16277
+2021-06-15 16:31:36, itr: 2600, epoch:[36/50], completed user:[11264/75392] loss: 3.32834, precision_1: 0.09329, precision_2: 0.16805
+>>>>>>>>2021-06-15 16:31:45: itr: 2600, vali: 3.30132, 0.09310, 0.16843<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 16:32:01, itr: 2610, epoch:[36/50], completed user:[21504/75392] loss: 3.32377, precision_1: 0.09166, precision_2: 0.15868
+2021-06-15 16:32:18, itr: 2620, epoch:[36/50], completed user:[31744/75392] loss: 3.32521, precision_1: 0.08713, precision_2: 0.16227
+2021-06-15 16:32:53, itr: 2630, epoch:[36/50], completed user:[41984/75392] loss: 3.31079, precision_1: 0.09316, precision_2: 0.16667
+2021-06-15 16:33:09, itr: 2640, epoch:[36/50], completed user:[52224/75392] loss: 3.33321, precision_1: 0.08755, precision_2: 0.16233
+2021-06-15 16:33:24, itr: 2650, epoch:[36/50], completed user:[62464/75392] loss: 3.29358, precision_1: 0.08637, precision_2: 0.16651
+2021-06-15 16:33:59, itr: 2660, epoch:[36/50], completed user:[72704/75392] loss: 3.33157, precision_1: 0.09185, precision_2: 0.16463
+2021-06-15 16:36:10,329 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7622919718 m] train_on_epoch 
+2021-06-15 16:36:10, epoch 35 train complete
+ 72%|███████▏  | 36/50 [2:52:58<1:07:55, 291.07s/it]2021-06-15 16:36:21, itr: 2670, epoch:[37/50], completed user:[7168/75392] loss: 3.31190, precision_1: 0.09399, precision_2: 0.17103
+2021-06-15 16:36:38, itr: 2680, epoch:[37/50], completed user:[17408/75392] loss: 3.30049, precision_1: 0.09728, precision_2: 0.16770
+2021-06-15 16:36:54, itr: 2690, epoch:[37/50], completed user:[27648/75392] loss: 3.34732, precision_1: 0.08898, precision_2: 0.16385
+2021-06-15 16:37:29, itr: 2700, epoch:[37/50], completed user:[37888/75392] loss: 3.33712, precision_1: 0.08690, precision_2: 0.16026
+>>>>>>>>2021-06-15 16:37:37: itr: 2700, vali: 3.30375, 0.09282, 0.16854<<<<<<<<
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 16:37:54, itr: 2710, epoch:[37/50], completed user:[48128/75392] loss: 3.33780, precision_1: 0.08342, precision_2: 0.15739
+2021-06-15 16:38:10, itr: 2720, epoch:[37/50], completed user:[58368/75392] loss: 3.32187, precision_1: 0.08912, precision_2: 0.16522
+2021-06-15 16:38:26, itr: 2730, epoch:[37/50], completed user:[68608/75392] loss: 3.29844, precision_1: 0.09512, precision_2: 0.16338
+2021-06-15 16:41:03,052 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7629399975 m] train_on_epoch 
+2021-06-15 16:41:03, epoch 36 train complete
+ 74%|███████▍  | 37/50 [2:57:51<1:03:10, 291.57s/it]2021-06-15 16:41:08, itr: 2740, epoch:[38/50], completed user:[3072/75392] loss: 3.31512, precision_1: 0.09136, precision_2: 0.16790
+2021-06-15 16:41:24, itr: 2750, epoch:[38/50], completed user:[13312/75392] loss: 3.30989, precision_1: 0.08853, precision_2: 0.16554
+2021-06-15 16:41:40, itr: 2760, epoch:[38/50], completed user:[23552/75392] loss: 3.29612, precision_1: 0.09510, precision_2: 0.17425
+2021-06-15 16:42:15, itr: 2770, epoch:[38/50], completed user:[33792/75392] loss: 3.28614, precision_1: 0.09241, precision_2: 0.17167
+2021-06-15 16:42:31, itr: 2780, epoch:[38/50], completed user:[44032/75392] loss: 3.30352, precision_1: 0.09466, precision_2: 0.17275
+2021-06-15 16:42:47, itr: 2790, epoch:[38/50], completed user:[54272/75392] loss: 3.28141, precision_1: 0.10157, precision_2: 0.17468
+2021-06-15 16:43:03, itr: 2800, epoch:[38/50], completed user:[64512/75392] loss: 3.36086, precision_1: 0.08430, precision_2: 0.15538
+>>>>>>>>2021-06-15 16:43:12: itr: 2800, vali: 3.30204, 0.09217, 0.16881<<<<<<<<
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 16:43:47, itr: 2810, epoch:[38/50], completed user:[74752/75392] loss: 3.30224, precision_1: 0.09586, precision_2: 0.17012
+2021-06-15 16:45:55,149 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7483956019 m] train_on_epoch 
+2021-06-15 16:45:55, epoch 37 train complete
+ 76%|███████▌  | 38/50 [3:02:43<58:20, 291.73s/it]  2021-06-15 16:46:09, itr: 2820, epoch:[39/50], completed user:[9216/75392] loss: 3.32100, precision_1: 0.08596, precision_2: 0.16048
+2021-06-15 16:46:26, itr: 2830, epoch:[39/50], completed user:[19456/75392] loss: 3.28454, precision_1: 0.09232, precision_2: 0.16459
+2021-06-15 16:47:01, itr: 2840, epoch:[39/50], completed user:[29696/75392] loss: 3.31815, precision_1: 0.08943, precision_2: 0.16752
+2021-06-15 16:47:16, itr: 2850, epoch:[39/50], completed user:[39936/75392] loss: 3.32825, precision_1: 0.08629, precision_2: 0.16346
+2021-06-15 16:47:33, itr: 2860, epoch:[39/50], completed user:[50176/75392] loss: 3.29783, precision_1: 0.09642, precision_2: 0.16799
+2021-06-15 16:47:49, itr: 2870, epoch:[39/50], completed user:[60416/75392] loss: 3.34793, precision_1: 0.08435, precision_2: 0.15435
+2021-06-15 16:48:23, itr: 2880, epoch:[39/50], completed user:[70656/75392] loss: 3.31758, precision_1: 0.09165, precision_2: 0.16107
+2021-06-15 16:50:37,887 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5932711482 m] train_on_epoch 
+2021-06-15 16:50:38, epoch 38 train complete
+ 78%|███████▊  | 39/50 [3:07:26<52:59, 289.03s/it]2021-06-15 16:50:46, itr: 2890, epoch:[40/50], completed user:[5120/75392] loss: 3.30715, precision_1: 0.09039, precision_2: 0.16018
+2021-06-15 16:51:02, itr: 2900, epoch:[40/50], completed user:[15360/75392] loss: 3.26368, precision_1: 0.09340, precision_2: 0.17409
+>>>>>>>>2021-06-15 16:51:11: itr: 2900, vali: 3.30108, 0.09268, 0.16881<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 16:51:27, itr: 2910, epoch:[40/50], completed user:[25600/75392] loss: 3.25366, precision_1: 0.09652, precision_2: 0.17687
+2021-06-15 16:52:01, itr: 2920, epoch:[40/50], completed user:[35840/75392] loss: 3.32141, precision_1: 0.08846, precision_2: 0.17290
+2021-06-15 16:52:17, itr: 2930, epoch:[40/50], completed user:[46080/75392] loss: 3.27631, precision_1: 0.10374, precision_2: 0.18187
+2021-06-15 16:52:34, itr: 2940, epoch:[40/50], completed user:[56320/75392] loss: 3.29503, precision_1: 0.09515, precision_2: 0.16790
+2021-06-15 16:53:08, itr: 2950, epoch:[40/50], completed user:[66560/75392] loss: 3.33169, precision_1: 0.08595, precision_2: 0.16421
+2021-06-15 16:55:29,014 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7481344104 m] train_on_epoch 
+2021-06-15 16:55:29, epoch 39 train complete
+ 80%|████████  | 40/50 [3:12:17<48:16, 289.66s/it]2021-06-15 16:55:30, itr: 2960, epoch:[41/50], completed user:[1024/75392] loss: 3.31665, precision_1: 0.08926, precision_2: 0.16352
+2021-06-15 16:55:47, itr: 2970, epoch:[41/50], completed user:[11264/75392] loss: 3.32495, precision_1: 0.09420, precision_2: 0.16940
+2021-06-15 16:56:03, itr: 2980, epoch:[41/50], completed user:[21504/75392] loss: 3.32096, precision_1: 0.09074, precision_2: 0.16037
+2021-06-15 16:56:38, itr: 2990, epoch:[41/50], completed user:[31744/75392] loss: 3.32150, precision_1: 0.09020, precision_2: 0.16534
+2021-06-15 16:56:54, itr: 3000, epoch:[41/50], completed user:[41984/75392] loss: 3.30637, precision_1: 0.09285, precision_2: 0.16743
+>>>>>>>>2021-06-15 16:57:02: itr: 3000, vali: 3.30045, 0.09253, 0.16892<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 16:57:19, itr: 3010, epoch:[41/50], completed user:[52224/75392] loss: 3.32727, precision_1: 0.08771, precision_2: 0.16536
+2021-06-15 16:57:53, itr: 3020, epoch:[41/50], completed user:[62464/75392] loss: 3.29083, precision_1: 0.08701, precision_2: 0.16891
+2021-06-15 16:58:09, itr: 3030, epoch:[41/50], completed user:[72704/75392] loss: 3.33063, precision_1: 0.09054, precision_2: 0.16477
+2021-06-15 17:00:20,695 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7497086763 m] train_on_epoch 
+2021-06-15 17:00:20, epoch 40 train complete
+ 82%|████████▏ | 41/50 [3:17:08<43:32, 290.27s/it]2021-06-15 17:00:32, itr: 3040, epoch:[42/50], completed user:[7168/75392] loss: 3.30998, precision_1: 0.09335, precision_2: 0.17006
+2021-06-15 17:00:48, itr: 3050, epoch:[42/50], completed user:[17408/75392] loss: 3.29740, precision_1: 0.09914, precision_2: 0.16970
+2021-06-15 17:01:23, itr: 3060, epoch:[42/50], completed user:[27648/75392] loss: 3.34594, precision_1: 0.08806, precision_2: 0.16493
+2021-06-15 17:01:39, itr: 3070, epoch:[42/50], completed user:[37888/75392] loss: 3.33258, precision_1: 0.08690, precision_2: 0.15932
+2021-06-15 17:01:55, itr: 3080, epoch:[42/50], completed user:[48128/75392] loss: 3.33325, precision_1: 0.08342, precision_2: 0.15667
+2021-06-15 17:02:11, itr: 3090, epoch:[42/50], completed user:[58368/75392] loss: 3.31697, precision_1: 0.08977, precision_2: 0.16554
+2021-06-15 17:02:46, itr: 3100, epoch:[42/50], completed user:[68608/75392] loss: 3.29501, precision_1: 0.09467, precision_2: 0.16204
+>>>>>>>>2021-06-15 17:02:54: itr: 3100, vali: 3.30135, 0.09230, 0.16910<<<<<<<<
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 17:05:11,897 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7445401589 m] train_on_epoch 
+2021-06-15 17:05:12, epoch 41 train complete
+ 84%|████████▍ | 42/50 [3:22:00<38:44, 290.55s/it]2021-06-15 17:05:17, itr: 3110, epoch:[43/50], completed user:[3072/75392] loss: 3.31242, precision_1: 0.09136, precision_2: 0.16911
+2021-06-15 17:05:33, itr: 3120, epoch:[43/50], completed user:[13312/75392] loss: 3.30672, precision_1: 0.08932, precision_2: 0.16806
+2021-06-15 17:06:08, itr: 3130, epoch:[43/50], completed user:[23552/75392] loss: 3.28978, precision_1: 0.09715, precision_2: 0.17615
+2021-06-15 17:06:24, itr: 3140, epoch:[43/50], completed user:[33792/75392] loss: 3.28167, precision_1: 0.09443, precision_2: 0.17245
+2021-06-15 17:06:40, itr: 3150, epoch:[43/50], completed user:[44032/75392] loss: 3.29839, precision_1: 0.09466, precision_2: 0.17168
+2021-06-15 17:06:56, itr: 3160, epoch:[43/50], completed user:[54272/75392] loss: 3.27782, precision_1: 0.10187, precision_2: 0.17453
+2021-06-15 17:07:31, itr: 3170, epoch:[43/50], completed user:[64512/75392] loss: 3.35443, precision_1: 0.08357, precision_2: 0.15480
+2021-06-15 17:07:47, itr: 3180, epoch:[43/50], completed user:[74752/75392] loss: 3.29826, precision_1: 0.09540, precision_2: 0.17088
+2021-06-15 17:09:55,626 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6101877888 m] train_on_epoch 
+2021-06-15 17:09:55, epoch 42 train complete
+ 86%|████████▌ | 43/50 [3:26:43<33:39, 288.50s/it]2021-06-15 17:10:10, itr: 3190, epoch:[44/50], completed user:[9216/75392] loss: 3.31569, precision_1: 0.08564, precision_2: 0.15813
+2021-06-15 17:10:45, itr: 3200, epoch:[44/50], completed user:[19456/75392] loss: 3.28234, precision_1: 0.09248, precision_2: 0.16320
+>>>>>>>>2021-06-15 17:10:54: itr: 3200, vali: 3.29578, 0.09282, 0.16925<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 17:11:10, itr: 3210, epoch:[44/50], completed user:[29696/75392] loss: 3.31117, precision_1: 0.08837, precision_2: 0.16964
+2021-06-15 17:11:26, itr: 3220, epoch:[44/50], completed user:[39936/75392] loss: 3.31965, precision_1: 0.08727, precision_2: 0.16786
+2021-06-15 17:11:42, itr: 3230, epoch:[44/50], completed user:[50176/75392] loss: 3.29066, precision_1: 0.09595, precision_2: 0.16973
+2021-06-15 17:12:16, itr: 3240, epoch:[44/50], completed user:[60416/75392] loss: 3.34168, precision_1: 0.08593, precision_2: 0.15550
+2021-06-15 17:12:32, itr: 3250, epoch:[44/50], completed user:[70656/75392] loss: 3.31147, precision_1: 0.09211, precision_2: 0.16183
+2021-06-15 17:14:46,644 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7449684978 m] train_on_epoch 
+2021-06-15 17:14:46, epoch 43 train complete
+ 88%|████████▊ | 44/50 [3:31:34<28:55, 289.26s/it]2021-06-15 17:14:55, itr: 3260, epoch:[45/50], completed user:[5120/75392] loss: 3.29952, precision_1: 0.09114, precision_2: 0.15958
+2021-06-15 17:15:11, itr: 3270, epoch:[45/50], completed user:[15360/75392] loss: 3.25691, precision_1: 0.09631, precision_2: 0.17363
+2021-06-15 17:15:46, itr: 3280, epoch:[45/50], completed user:[25600/75392] loss: 3.25105, precision_1: 0.09620, precision_2: 0.17718
+2021-06-15 17:16:02, itr: 3290, epoch:[45/50], completed user:[35840/75392] loss: 3.31361, precision_1: 0.08846, precision_2: 0.17319
+2021-06-15 17:16:18, itr: 3300, epoch:[45/50], completed user:[46080/75392] loss: 3.26970, precision_1: 0.10686, precision_2: 0.18277
+>>>>>>>>2021-06-15 17:16:27: itr: 3300, vali: 3.29273, 0.09310, 0.16900<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 17:17:02, itr: 3310, epoch:[45/50], completed user:[56320/75392] loss: 3.28595, precision_1: 0.09546, precision_2: 0.17068
+2021-06-15 17:17:18, itr: 3320, epoch:[45/50], completed user:[66560/75392] loss: 3.32519, precision_1: 0.08689, precision_2: 0.16421
+2021-06-15 17:19:38,632 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7602967223 m] train_on_epoch 
+2021-06-15 17:19:38, epoch 44 train complete
+ 90%|█████████ | 45/50 [3:36:26<24:10, 290.08s/it]2021-06-15 17:19:40, itr: 3330, epoch:[46/50], completed user:[1024/75392] loss: 3.31120, precision_1: 0.09031, precision_2: 0.16442
+2021-06-15 17:19:56, itr: 3340, epoch:[46/50], completed user:[11264/75392] loss: 3.31671, precision_1: 0.09405, precision_2: 0.16745
+2021-06-15 17:20:31, itr: 3350, epoch:[46/50], completed user:[21504/75392] loss: 3.31507, precision_1: 0.09105, precision_2: 0.16174
+2021-06-15 17:20:47, itr: 3360, epoch:[46/50], completed user:[31744/75392] loss: 3.31384, precision_1: 0.09069, precision_2: 0.16648
+2021-06-15 17:21:03, itr: 3370, epoch:[46/50], completed user:[41984/75392] loss: 3.29703, precision_1: 0.09346, precision_2: 0.16851
+2021-06-15 17:21:37, itr: 3380, epoch:[46/50], completed user:[52224/75392] loss: 3.31984, precision_1: 0.08723, precision_2: 0.16584
+2021-06-15 17:21:53, itr: 3390, epoch:[46/50], completed user:[62464/75392] loss: 3.28130, precision_1: 0.08765, precision_2: 0.16939
+2021-06-15 17:22:09, itr: 3400, epoch:[46/50], completed user:[72704/75392] loss: 3.32319, precision_1: 0.09054, precision_2: 0.16579
+>>>>>>>>2021-06-15 17:22:18: itr: 3400, vali: 3.29020, 0.09287, 0.16942<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-06-15 17:24:29,255 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7345856388 m] train_on_epoch 
+2021-06-15 17:24:29, epoch 45 train complete
+ 92%|█████████▏| 46/50 [3:41:17<19:20, 290.24s/it]2021-06-15 17:24:40, itr: 3410, epoch:[47/50], completed user:[7168/75392] loss: 3.29838, precision_1: 0.09399, precision_2: 0.17119
+2021-06-15 17:25:15, itr: 3420, epoch:[47/50], completed user:[17408/75392] loss: 3.28600, precision_1: 0.09713, precision_2: 0.16924
+2021-06-15 17:25:31, itr: 3430, epoch:[47/50], completed user:[27648/75392] loss: 3.33270, precision_1: 0.08806, precision_2: 0.16631
+2021-06-15 17:25:47, itr: 3440, epoch:[47/50], completed user:[37888/75392] loss: 3.32184, precision_1: 0.08644, precision_2: 0.16150
+2021-06-15 17:26:22, itr: 3450, epoch:[47/50], completed user:[48128/75392] loss: 3.32322, precision_1: 0.08428, precision_2: 0.15710
+2021-06-15 17:26:37, itr: 3460, epoch:[47/50], completed user:[58368/75392] loss: 3.30562, precision_1: 0.09089, precision_2: 0.16538
+2021-06-15 17:26:53, itr: 3470, epoch:[47/50], completed user:[68608/75392] loss: 3.28273, precision_1: 0.09467, precision_2: 0.16501
+2021-06-15 17:29:11,257 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5843986909 m] train_on_epoch 
+2021-06-15 17:29:11, epoch 46 train complete
+ 94%|█████████▍| 47/50 [3:45:59<14:23, 287.77s/it]2021-06-15 17:29:16, itr: 3480, epoch:[48/50], completed user:[3072/75392] loss: 3.30282, precision_1: 0.09106, precision_2: 0.16851
+2021-06-15 17:29:51, itr: 3490, epoch:[48/50], completed user:[13312/75392] loss: 3.29599, precision_1: 0.08963, precision_2: 0.16901
+2021-06-15 17:30:07, itr: 3500, epoch:[48/50], completed user:[23552/75392] loss: 3.27597, precision_1: 0.09963, precision_2: 0.17688
+>>>>>>>>2021-06-15 17:30:16: itr: 3500, vali: 3.28649, 0.09266, 0.16927<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 17:30:32, itr: 3510, epoch:[48/50], completed user:[33792/75392] loss: 3.27195, precision_1: 0.09427, precision_2: 0.17337
+2021-06-15 17:30:48, itr: 3520, epoch:[48/50], completed user:[44032/75392] loss: 3.28697, precision_1: 0.09389, precision_2: 0.17306
+2021-06-15 17:31:22, itr: 3530, epoch:[48/50], completed user:[54272/75392] loss: 3.26258, precision_1: 0.10217, precision_2: 0.17558
+2021-06-15 17:31:38, itr: 3540, epoch:[48/50], completed user:[64512/75392] loss: 3.34527, precision_1: 0.08313, precision_2: 0.15274
+2021-06-15 17:31:55, itr: 3550, epoch:[48/50], completed user:[74752/75392] loss: 3.28576, precision_1: 0.09510, precision_2: 0.16738
+2021-06-15 17:34:03,172 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7474514405 m] train_on_epoch 
+2021-06-15 17:34:03, epoch 47 train complete
+ 96%|█████████▌| 48/50 [3:50:51<09:38, 289.01s/it]2021-06-15 17:34:37, itr: 3560, epoch:[49/50], completed user:[9216/75392] loss: 3.30244, precision_1: 0.08690, precision_2: 0.16017
+2021-06-15 17:34:52, itr: 3570, epoch:[49/50], completed user:[19456/75392] loss: 3.26945, precision_1: 0.09232, precision_2: 0.16661
+2021-06-15 17:35:08, itr: 3580, epoch:[49/50], completed user:[29696/75392] loss: 3.29768, precision_1: 0.09139, precision_2: 0.16873
+2021-06-15 17:35:25, itr: 3590, epoch:[49/50], completed user:[39936/75392] loss: 3.30841, precision_1: 0.08711, precision_2: 0.16770
+2021-06-15 17:36:00, itr: 3600, epoch:[49/50], completed user:[50176/75392] loss: 3.28181, precision_1: 0.09421, precision_2: 0.17052
+>>>>>>>>2021-06-15 17:36:08: itr: 3600, vali: 3.28315, 0.09215, 0.16935<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-06-15 17:36:24, itr: 3610, epoch:[49/50], completed user:[60416/75392] loss: 3.33232, precision_1: 0.08320, precision_2: 0.15651
+2021-06-15 17:36:40, itr: 3620, epoch:[49/50], completed user:[70656/75392] loss: 3.30018, precision_1: 0.08999, precision_2: 0.16001
+2021-06-15 17:38:55,660 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7566753308 m] train_on_epoch 
+2021-06-15 17:38:55, epoch 48 train complete
+ 98%|█████████▊| 49/50 [3:55:43<04:50, 290.05s/it]2021-06-15 17:39:23, itr: 3630, epoch:[50/50], completed user:[5120/75392] loss: 3.28688, precision_1: 0.08963, precision_2: 0.15806
+2021-06-15 17:39:38, itr: 3640, epoch:[50/50], completed user:[15360/75392] loss: 3.24589, precision_1: 0.09631, precision_2: 0.17440
+2021-06-15 17:39:54, itr: 3650, epoch:[50/50], completed user:[25600/75392] loss: 3.23866, precision_1: 0.09714, precision_2: 0.17624
+2021-06-15 17:40:11, itr: 3660, epoch:[50/50], completed user:[35840/75392] loss: 3.29993, precision_1: 0.08786, precision_2: 0.17290
+2021-06-15 17:40:45, itr: 3670, epoch:[50/50], completed user:[46080/75392] loss: 3.25483, precision_1: 0.10463, precision_2: 0.18187
+2021-06-15 17:41:01, itr: 3680, epoch:[50/50], completed user:[56320/75392] loss: 3.27614, precision_1: 0.09515, precision_2: 0.16929
+2021-06-15 17:41:17, itr: 3690, epoch:[50/50], completed user:[66560/75392] loss: 3.31220, precision_1: 0.09081, precision_2: 0.16625
+2021-06-15 17:43:37,441 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5903211395 m] train_on_epoch 
+2021-06-15 17:43:37, epoch 49 train complete
+100%|██████████| 50/50 [4:00:25<00:00, 287.57s/it]100%|██████████| 50/50 [4:00:25<00:00, 288.51s/it]
+WARNING:tensorflow:From /data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/training/saver.py:1276: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+model:../model/save_dir/PW/best-loss loaded success!!!!
+2021-06-15 17:46:08,087 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1742525260 m] validation 
+2021-06-15 17:48:33,735 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.5064868172 m] multithread_compute_validation 
+2021-06-15 17:50:52,869 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1551493684 m] validation 
+2021-06-15 17:52:59,872 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.3177734534 m] multithread_compute_validation 
+test!!!loss!!!, test: 3.27908, vali: 3.28315
+model:../model/save_dir/PW/best-pre1 loaded success!!!!
+2021-06-15 17:55:35,804 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1955332279 m] validation 
+2021-06-15 17:58:03,449 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6019904256 m] multithread_compute_validation 
+2021-06-15 18:00:22,621 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1586767077 m] validation 
+2021-06-15 18:02:33,028 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.3189869086 m] multithread_compute_validation 
+test!!!pre1!!!, test: 0.09395, vali: 0.09310
+model:../model/save_dir/PW/best-pre2 loaded success!!!!
+2021-06-15 18:05:10,445 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1702220241 m] validation 
+2021-06-15 18:07:37,544 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.6237903237 m] multithread_compute_validation 
+2021-06-15 18:09:55,908 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1512608329 m] validation 
+2021-06-15 18:12:06,875 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.3056271315 m] multithread_compute_validation 
+test!!!pre2!!!, test: 0.17211, vali: 0.16942
+2021-06-15 18:12:07, end.	 time cost:271.81706075668336 m
