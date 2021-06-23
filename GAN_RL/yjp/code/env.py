@@ -188,7 +188,7 @@ class Enviroment():
         self.saver = tf.compat.v1.train.Saver(var_list=self.agg_variables,max_to_keep=None)
         # self.sess.run(tf.global_variables_initializer())
         self.sess.run(tf.variables_initializer(self.agg_variables))
-        self.restore('best-loss_')
+        self.restore('best-loss')
 
     def restore(self,model_name):
         best_save_path = os.path.join(self.model_path, model_name)

@@ -50,3 +50,57 @@ main_greedy_max_.out 100%|██████████| 74/74 [7:02:29<00:00, 
 epoch=5最好
 
 用groupby比用filter快些
+
+根据log来判断
+数据量对模型的影响:
+通过对比可知，0.8和all结果差不多，选0.8，时间较短
+是否过滤数据 过不过滤均可，但过滤后时间短很多，故过滤
+main.py和main_comb.py:
+同样的条件，main_comb.py的方式时间短
+根据.out文件来选的话，0.8，filtered，main_comb.py
+
+根据png图片来判断
+数据量对模型的影响:
+comb_filtered_0.8与comb_filtered_all 前者好。0的loss下降的更好，其他差不多
+comb_not_filtered_0.8 and comb_not_filtered_all 虽然后者loss下降更低，但是不是很稳定，前者更稳定
+greedy_filtered_0.8 and greedy_filtered_all  前者更好
+greedy_not_filtered_0.8 and greedy_not_filtered_all 差不多
+random_filtered_0.8 and random_filtered_all 一样
+random_not_filtered_0.8 and random_not_filtered_all 一样
+选0.8
+是否过滤数据
+comb_filtered_0.8 and comb_not_filtered_0.8 过滤好
+comb_filtered_all and comb_not_filtered_all 虽然后者下降的更低，但是不太稳定。前者稳定
+greedy_filtered_0.8 and greedy_not_filtered_0.8 loss下降的差不多
+greedy_filtered_all and greedy_not_filtered_all loss差不多，但前者稳定
+random_filtered_0.8 and random_not_filtered_0.8 差不多  前者稳定
+random_filtered_all and random_not_filtered_all 差不多  前者稳定
+结论:过滤
+main.py和main_comb.py
+comb_filtered_0.8 and greedy_filtered_0.8 前者下降的好，也算稳定
+comb_filtered_all and greedy_filtered_all 前者下降的好
+comb_not_filtered_0.8 and greedy_not_filtered_0.8 后者下降的好些
+comb_not_filtered_all and greedy_not_filtered_all 后者下降的好
+结论采用main_comb的方式
+结论:采用0.8 filtered main_comb
+
+main_filterd_0.8
+random train data length:479447
+greedy train data length:414263
+main_filterd_all
+random train data length:479447
+greedy train data length:526079
+main_not_filter_0.8
+random train data length:1110120
+greedy train data length:888006
+main_not_filter_all
+greedy train data length:1110109
+
+main_comb_filterd_0.8
+train data length:526300
+main_comb_filterd_all
+train data length:682850
+main_comb_not_filterd_0.8
+train data length:1776204
+main_comb_not_filterd_all
+train data length:2220194

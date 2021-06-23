@@ -50,7 +50,6 @@ class Dataset():
     def permutation(self,data_collection):
         tmp = np.array(data_collection['state'])
         not_none_ind = [index for index,d in enumerate(tmp) if d]
-        not_none_ind =range(len(tmp))
 
         ind = np.random.permutation(len(data_collection['user']))
         user = np.array(data_collection['user'])[ind][not_none_ind].tolist()
