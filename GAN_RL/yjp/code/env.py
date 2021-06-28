@@ -290,11 +290,11 @@ class Enviroment():
             prob = np.array(transition_p[j, :].tolist()+no_click)
             prob = prob / float(prob.sum())
             rand_choice = np.random.choice(disp_item + [-100], 1, p=prob)
-            if j<=100:
-                print('AAAA:{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(np.max(reward_u[j]),np.round(np.sort(np.exp(reward_u[j]))[-1:],3),
-                                                                       np.round([np.sum(transition_p[j,:])],3),np.round(no_click,3),
-                                                                       np.round(np.sort(prob[:-1])[-4:],3),np.round(np.sort(np.exp(reward_u[j]))[-4:],3),
-                                                                       np.round(np.sort(reward_u[j])[-4:],3),np.round(prob[-1],3),rand_choice))
+            # if j<=100:
+            #     print('AAAA:{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(np.max(reward_u[j]),np.round(np.sort(np.exp(reward_u[j]))[-1:],3),
+            #                                                            np.round([np.sum(transition_p[j,:])],3),np.round(no_click,3),
+            #                                                            np.round(np.sort(prob[:-1])[-4:],3),np.round(np.sort(np.exp(reward_u[j]))[-4:],3),
+            #                                                            np.round(np.sort(reward_u[j])[-4:],3),np.round(prob[-1],3),rand_choice))
 
             if rand_choice[0] != -100:
                 states[j] += rand_choice.tolist()

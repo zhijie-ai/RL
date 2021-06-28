@@ -103,6 +103,10 @@ def validation(dataset,env,dqn,vali_user):
     lock.acquire()
     user_sum_reward += user_sum_reward
     sum_clk_rate += clk_sum_rate
+
+    file = open('data/comb_sim_u_reward_val.pkl', 'wb')
+    pickle.dump(sim_u_reward, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
     lock.release()
 
 @cost_time_def
@@ -122,6 +126,10 @@ def validation_train(current_best_reward,dataset,env,dqn,vali_user):
     user_avg_reward = user_sum_reward/len(vali_user)
     if user_avg_reward>current_best_reward:
         current_best_reward =user_avg_reward
+
+    file = open('data/comb_sim_u_reward_test.pkl', 'wb')
+    pickle.dump(sim_u_reward, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
 
     return user_avg_reward, clk_sum_rate/len(vali_user) ,current_best_reward
 
@@ -155,7 +163,7 @@ def train(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_all(train_user)
-    file = open('data_collection_comb.pkl', 'wb')
+    file = open('data/data_collection_comb_filtered_0.6.pkl', 'wb')
     pickle.dump(data_collection, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 
@@ -174,9 +182,9 @@ def main(args):
     dqn = DQN(env,args)
     dataset = Dataset(args,env,dqn)
 
-    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
+    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.6),replace=False)
     loss_greedy = train(dataset,dqn,train_user)
-    file = open('data/loss_comb_{}_{}_{}_{}.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
+    file = open('loss/loss_comb_{}_{}_{}_{}_filtered_0.6.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
     pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
 

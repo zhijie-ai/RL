@@ -50,21 +50,23 @@ class Dataset():
     def permutation(self,data_collection):
         tmp = np.array(data_collection['state'])
         not_none_ind = [index for index,d in enumerate(tmp) if d]
+        print('filter num :{}'.format(len(tmp)-len(not_none_ind)))
 
-        ind = np.random.permutation(len(data_collection['user']))
-        user = np.array(data_collection['user'])[ind][not_none_ind].tolist()
+        ind = np.random.permutation(len(not_none_ind))
+        user = np.array(data_collection['user'])[not_none_ind][ind].tolist()
         data_collection['user'].clear()
         data_collection['user'].extend(user)
-        state = np.array(data_collection['state'])[ind][not_none_ind].tolist()
+        state = np.array(data_collection['state'])[not_none_ind][ind].tolist()
         data_collection['state'].clear()
         data_collection['state'].extend(state)
-        action = np.array(data_collection['action'])[ind][not_none_ind].tolist()
+        action = np.array(data_collection['action'])[not_none_ind][ind].tolist()
         data_collection['action'].clear()
         data_collection['action'].extend(action)
-        y = np.array(data_collection['y'])[ind][not_none_ind].tolist()
+        y = np.array(data_collection['y'])[not_none_ind][ind].tolist()
         data_collection['y'].clear()
         data_collection['y'].extend(y)
         return data_collection
+
 
     @cost_time_def
     def data_collection(self, training_user,type='random'):
@@ -173,8 +175,6 @@ class Dataset():
                 #4. save to memory
                 y_value = sampled_reward+self.args.gamma*max_q_value
                 data_collection['y'].extend(y_value.tolist())
-
-        data_collection = self.permutation(data_collection)
 
         return data_collection
 
