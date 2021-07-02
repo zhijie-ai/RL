@@ -46,9 +46,12 @@ print(t_indice)
 mat = tf.SparseTensor(t_indice, cumsum_tril_value,dense_shape=shape)
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
-res = sess.run(mat)
-# print(res)
-print(sess.run(tf.sparse_tensor_to_dense(res)))
-# print(sess.run(tf.sparse_tensor_to_dense(mat)))
-
+res = sess.run(mat)#此时不需要index是有序的,直接run sparseTensor不需要index有序
+print(res)
+# print(sess.run(tf.sparse_tensor_to_dense(res)))  # 需要index有序
+# print(sess.run(tf.sparse_tensor_to_dense(mat)))  # 需要index有序
+print(sess.run(tf.sparse.to_dense(mat)))  # 需要index有序
+print(sess.run(tf.sparse.to_dense(res)))  # 需要index有序
+print(sess.run(tf.sparse_to_dense(t_indice,shape,0)))  # 需要传入三个tensor，代表sparse的3个维度。同时index要有序,显示deprecated
+#  也就是说，如果转成dense的话，index要有序
 

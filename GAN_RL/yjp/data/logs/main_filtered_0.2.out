@@ -1,0 +1,497 @@
+nohup: 忽略输入
+/data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/data1/anaconda3/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+>>>>>>>>>>> Namespace(batch_size=1024, click_path='../data/raw/click.csv', clip_max_value=40.0, clip_min_value=-40.0, compu_type='thread', data_folder='../data/handled/', dims='256-32', dqn_dims='256-32', dqn_lr=0.001, dqn_type='offline', embedding_path='/data1/ai-recall/bpr/model/', env_std=0.001, epoch=10, exposure_path='../data/raw/exposure.csv', gamma=0.98, init_learning_rate=0.01, k=10, learning_rate=0.001, min_value=-1000000000.0, model_path='../model/dqn/', noclick_weight=0.3, num_iters=50, num_thread=1, pw_band_size=20, pw_dim=4, q_std=0.01, random_seed=1126, resplit=False, rnn_hidden_dim=20, sample_batch_size=1024, save_dir='../model/save_dir/', threshold=0.97, train_time_horizon=15, training_batch_size=1024, user_model='PW', vali_batch_size=2000, vali_time_horizon=15) <<<<<<<<<<<<<<<<<<<<<<
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:47: The name tf.GPUOptions is deprecated. Please use tf.compat.v1.GPUOptions instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:48: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:49: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-29 09:53:17.674738: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2021-06-29 09:53:17.685907: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2100000000 Hz
+2021-06-29 09:53:17.690239: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x564d64d776e0 executing computations on platform Host. Devices:
+2021-06-29 09:53:17.690305: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2021-06-29 09:53:17.692136: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2021-06-29 09:53:18.415611: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: Tesla P40 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:37:00.0
+2021-06-29 09:53:18.415903: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-29 09:53:18.418318: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-29 09:53:18.421223: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2021-06-29 09:53:18.421558: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2021-06-29 09:53:18.424194: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2021-06-29 09:53:18.425479: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2021-06-29 09:53:18.430851: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2021-06-29 09:53:18.432442: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2021-06-29 09:53:18.432488: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-29 09:53:18.527163: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-29 09:53:18.527216: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2021-06-29 09:53:18.527235: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2021-06-29 09:53:18.530772: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11459 MB memory) -> physical GPU (device: 0, name: Tesla P40, pci bus id: 0000:37:00.0, compute capability: 6.1)
+2021-06-29 09:53:18.536402: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x564d658ac140 executing computations on platform CUDA. Devices:
+2021-06-29 09:53:18.536439: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): Tesla P40, Compute Capability 6.1
+['_k', 10, '_noclick_weight', 0.3]
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:106: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb70bd9390>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb70bd9390>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb70bd9390>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb70bd9390>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdc0b58acf8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdc0b58acf8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:148: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:190: The name tf.variables_initializer is deprecated. Please use tf.compat.v1.variables_initializer instead.
+
+WARNING:tensorflow:From /data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/training/saver.py:1276: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+model:../model/save_dir/PW/best-loss loaded success!!!!
+2021-06-29 09:53:38.901290: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: Tesla P40 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:37:00.0
+2021-06-29 09:53:38.901388: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-29 09:53:38.901420: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-29 09:53:38.901476: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2021-06-29 09:53:38.901513: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2021-06-29 09:53:38.901536: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2021-06-29 09:53:38.901569: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2021-06-29 09:53:38.901600: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2021-06-29 09:53:38.902945: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2021-06-29 09:53:38.902998: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-29 09:53:38.903011: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2021-06-29 09:53:38.903021: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2021-06-29 09:53:38.904394: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11459 MB memory) -> physical GPU (device: 0, name: Tesla P40, pci bus id: 0000:37:00.0, compute capability: 6.1)
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:36: The name tf.train.get_or_create_global_step is deprecated. Please use tf.compat.v1.train.get_or_create_global_step instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:132: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69ee4d68>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69ee4d68>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69ee4d68>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69ee4d68>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdbb6fe82e8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdbb6fe82e8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:143: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f074e0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f074e0>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f074e0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f074e0>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f074e0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f074e0>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f07390>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f07390>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f07390>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69f07390>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913f6e6d8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913f6e6d8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913b73f60>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913b73f60>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913b73f60>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913b73f60>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913a439e8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd913a439e8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9129db588>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9129db588>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9126fbeb8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9126fbeb8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69eadc18>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69eadc18>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9129db438>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9129db438>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9129db438>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9129db438>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9126b8630>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9126b8630>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dcba8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dcba8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dcba8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dcba8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69e6c7b8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fdb69e6c7b8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dcc50>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dcc50>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91b9fae10>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91b9fae10>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91e7814a8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91e7814a8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dc9e8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dc9e8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dc9e8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dc9e8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91ab98e10>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91ab98e10>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91e781b70>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91e781b70>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91e781b70>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91e781b70>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd918875f98>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd918875f98>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91616ff60>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91616ff60>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91616ff60>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91616ff60>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165cfcf8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165cfcf8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:240: sparse_to_dense (from tensorflow.python.ops.sparse_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Create a `tf.sparse.SparseTensor` and use `tf.sparse.to_dense` instead.
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160ca940>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160ca940>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160ca940>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160ca940>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165eecc0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165eecc0>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160f62e8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160f62e8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160f62e8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160f62e8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160f62e8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160f62e8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc978>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc978>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc978>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc978>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915e74a90>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915e74a90>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915d8f470>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915d8f470>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915d8f470>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915d8f470>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dce48>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9124dce48>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc8d0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc8d0>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc8d0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc8d0>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915dbf320>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915dbf320>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915bcac50>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915bcac50>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915bcac50>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915bcac50>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc978>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc978>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91b818f28>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91b818f28>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91b818f28>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd91b818f28>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915b49b70>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915b49b70>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915b43ac8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915b43ac8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915b43ac8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915b43ac8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc8d0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9160cc8d0>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165cfcf8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165cfcf8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165cfcf8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd9165cfcf8>>: AttributeError: module 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915a15e48>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting <bound method Dense.call of <tensorflow.python.layers.core.Dense object at 0x7fd915a15e48>>: AttributeError: module 'gast' has no attribute 'Index'
+  0%|          | 0/15 [00:00<?, ?it/s]2021-06-29 09:53:41.905480: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-29 09:53:46,433 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0790837765 m] data_collection 
+  7%|▋         | 1/15 [00:04<01:06,  4.75s/it]2021-06-29 09:53:50,974 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0756539702 m] data_collection 
+ 13%|█▎        | 2/15 [00:09<01:00,  4.68s/it]2021-06-29 09:53:55,526 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0758450667 m] data_collection 
+ 20%|██        | 3/15 [00:13<00:55,  4.65s/it]2021-06-29 09:54:00,052 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0754193346 m] data_collection 
+ 27%|██▋       | 4/15 [00:18<00:50,  4.61s/it]2021-06-29 09:54:04,859 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0800903559 m] data_collection 
+ 33%|███▎      | 5/15 [00:23<00:46,  4.67s/it]2021-06-29 09:54:12,179 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1219720523 m] data_collection 
+ 40%|████      | 6/15 [00:30<00:49,  5.46s/it]2021-06-29 09:54:16,839 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0776351253 m] data_collection 
+ 47%|████▋     | 7/15 [00:35<00:41,  5.22s/it]2021-06-29 09:54:21,962 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0853449225 m] data_collection 
+ 53%|█████▎    | 8/15 [00:40<00:36,  5.19s/it]2021-06-29 09:54:26,841 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0812865178 m] data_collection 
+ 60%|██████    | 9/15 [00:45<00:30,  5.10s/it]2021-06-29 09:54:31,669 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0804454764 m] data_collection 
+ 67%|██████▋   | 10/15 [00:49<00:25,  5.02s/it]2021-06-29 09:54:36,606 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0822488030 m] data_collection 
+ 73%|███████▎  | 11/15 [00:54<00:19,  4.99s/it]2021-06-29 09:54:41,534 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0821102858 m] data_collection 
+ 80%|████████  | 12/15 [00:59<00:14,  4.97s/it]2021-06-29 09:54:46,497 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0826919556 m] data_collection 
+ 87%|████████▋ | 13/15 [01:04<00:09,  4.97s/it]2021-06-29 09:54:51,475 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0829367479 m] data_collection 
+ 93%|█████████▎| 14/15 [01:09<00:04,  4.97s/it]2021-06-29 09:54:55,748 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0711656968 m] data_collection 
+100%|██████████| 15/15 [01:14<00:00,  4.76s/it]100%|██████████| 15/15 [01:14<00:00,  4.94s/it]
+filter num :77836
+2021-06-29 09:54:56,479 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.2465618531 m] data_collection_with_batch 
+random train data length:144250
+  0%|          | 0/10 [00:00<?, ?it/s]2021-06-29 09:54:58: itr(0), training loss:  4.7979, 4.7976, 4.7973, 4.7975, 4.7978, 4.7975, 4.7972, 4.7976, 4.7982, 4.7978,
+2021-06-29 09:55:15: itr(10), training loss:  4.9005, 4.7879, 4.7267, 4.6453, 4.5769, 4.5821, 4.3982, 4.2643, 4.3548, 4.2349,
+2021-06-29 09:55:32: itr(20), training loss:  4.5725, 4.3707, 4.2442, 4.1484, 3.9583, 3.9617, 3.8338, 3.522, 3.6526, 3.4567,
+2021-06-29 09:55:51: itr(30), training loss:  4.1603, 3.8626, 3.6338, 3.3158, 3.0241, 2.8322, 2.3973, 1.9744, 1.8317, 1.2727,
+2021-06-29 09:56:09: itr(40), training loss:  4.0495, 3.7134, 3.3319, 3.0844, 2.7671, 2.171, 2.1639, 2.0642, 1.9154, 1.6088,
+2021-06-29 09:56:26: itr(50), training loss:  4.3908, 4.0669, 3.6014, 3.1313, 2.7807, 2.5214, 2.0947, 1.5705, 1.3811, 1.0016,
+2021-06-29 09:56:44: itr(60), training loss:  4.1185, 3.7087, 3.2958, 2.8223, 2.5781, 2.2758, 1.896, 1.5794, 1.2126, 0.7213,
+2021-06-29 09:57:01: itr(70), training loss:  3.7018, 3.2082, 2.9532, 2.5269, 2.2364, 1.9391, 1.725, 1.3167, 0.95246, 0.54273,
+2021-06-29 09:57:19: itr(80), training loss:  3.6716, 3.3208, 2.9429, 2.5406, 2.1763, 1.9648, 1.6635, 1.2026, 0.85013, 0.41422,
+2021-06-29 09:57:36: itr(90), training loss:  4.2228, 3.7624, 3.3686, 3.0281, 2.4852, 2.274, 1.8652, 1.5587, 1.23, 0.5117,
+2021-06-29 09:57:53: itr(100), training loss:  3.8376, 3.5249, 3.2784, 2.9786, 2.4208, 2.0163, 1.7095, 1.2151, 0.82749, 0.38604,
+2021-06-29 09:58:11: itr(110), training loss:  4.4023, 4.0678, 3.6069, 3.2901, 2.7173, 2.2163, 1.8377, 1.2342, 0.76234, 0.4058,
+2021-06-29 09:58:28: itr(120), training loss:  4.3944, 3.9499, 3.5448, 3.0887, 2.4971, 2.1565, 1.8112, 1.3807, 0.8279, 0.3994,
+2021-06-29 09:58:45: itr(130), training loss:  4.0253, 3.6738, 3.389, 2.8978, 2.3267, 1.872, 1.5069, 1.1847, 0.83066, 0.38429,
+2021-06-29 09:59:02: itr(140), training loss:  3.4384, 3.2076, 3.0657, 2.8176, 2.556, 2.1415, 1.6979, 1.1459, 0.88161, 0.30123,
+ 10%|█         | 1/10 [04:06<36:56, 246.23s/it]2021-06-29 09:59:20: itr(150), training loss:  4.1038, 3.6735, 3.3571, 2.8869, 2.3484, 1.8017, 1.4017, 1.0685, 0.72514, 0.31684,
+2021-06-29 09:59:37: itr(160), training loss:  3.9846, 3.6927, 3.3976, 2.9097, 2.5822, 2.1209, 1.6734, 1.1807, 0.87436, 0.33586,
+2021-06-29 09:59:54: itr(170), training loss:  4.4108, 4.0771, 3.7136, 3.1765, 2.8845, 2.2712, 1.8538, 1.4777, 0.90349, 0.36827,
+2021-06-29 10:00:11: itr(180), training loss:  4.1895, 3.8562, 3.4332, 3.0936, 2.729, 2.3987, 1.9336, 1.518, 0.93305, 0.39636,
+2021-06-29 10:00:29: itr(190), training loss:  3.9304, 3.3732, 2.859, 2.5569, 2.1691, 1.8923, 1.4918, 1.2044, 0.70508, 0.31635,
+2021-06-29 10:00:47: itr(200), training loss:  4.2852, 3.7571, 3.3637, 2.767, 2.4402, 2.0006, 1.6134, 1.2017, 0.80714, 0.34947,
+2021-06-29 10:01:04: itr(210), training loss:  3.7623, 3.3728, 2.8682, 2.4516, 2.0249, 1.6847, 1.309, 0.91897, 0.5797, 0.28127,
+2021-06-29 10:01:24: itr(220), training loss:  4.4663, 4.0326, 3.5401, 3.0158, 2.6502, 2.2236, 1.892, 1.4553, 0.93213, 0.34373,
+2021-06-29 10:01:41: itr(230), training loss:  3.9891, 3.6682, 3.3282, 3.0653, 2.7113, 2.3535, 1.7868, 1.1303, 0.66361, 0.30341,
+2021-06-29 10:01:59: itr(240), training loss:  4.1528, 3.7666, 3.3516, 3.0654, 2.6734, 2.2903, 1.6986, 1.1765, 0.75852, 0.29116,
+2021-06-29 10:02:16: itr(250), training loss:  3.7787, 3.5509, 3.2233, 2.9389, 2.5443, 2.1443, 1.6199, 1.2554, 0.80993, 0.2659,
+2021-06-29 10:02:34: itr(260), training loss:  4.1353, 3.6802, 3.0541, 2.712, 2.3836, 2.0933, 1.6576, 1.2487, 0.89027, 0.30981,
+2021-06-29 10:02:52: itr(270), training loss:  3.8792, 3.4632, 3.0605, 2.837, 2.4834, 2.0259, 1.7026, 1.1629, 0.77623, 0.26399,
+2021-06-29 10:03:09: itr(280), training loss:  3.7042, 3.4495, 3.1209, 2.6051, 2.1981, 1.7077, 1.2944, 0.97282, 0.64411, 0.30916,
+ 20%|██        | 2/10 [08:14<32:54, 246.77s/it]2021-06-29 10:03:26: itr(290), training loss:  4.4833, 4.0908, 3.6575, 3.1932, 2.6821, 2.336, 1.6422, 1.1353, 0.83923, 0.33981,
+2021-06-29 10:03:43: itr(300), training loss:  4.3158, 3.8629, 3.5033, 3.111, 2.9306, 2.2793, 1.8053, 1.3165, 0.76893, 0.32812,
+2021-06-29 10:04:00: itr(310), training loss:  4.2204, 3.8506, 3.4496, 3.1264, 2.6533, 2.1402, 1.5982, 1.2767, 0.84207, 0.30653,
+2021-06-29 10:04:18: itr(320), training loss:  4.2816, 4.0116, 3.6804, 3.234, 2.7577, 2.2965, 1.7409, 1.2968, 0.81973, 0.32791,
+2021-06-29 10:04:36: itr(330), training loss:  3.9763, 3.4797, 2.9757, 2.7023, 2.4848, 2.1964, 1.813, 1.1286, 0.69156, 0.31716,
+2021-06-29 10:04:54: itr(340), training loss:  4.2955, 3.7875, 3.3412, 2.8522, 2.3654, 1.9856, 1.473, 1.07, 0.70421, 0.32008,
+2021-06-29 10:05:11: itr(350), training loss:  4.2273, 3.919, 3.5026, 3.0123, 2.4913, 1.992, 1.5356, 1.1991, 0.67197, 0.29418,
+2021-06-29 10:05:29: itr(360), training loss:  4.2035, 3.8066, 3.5068, 3.1495, 2.5828, 2.1274, 1.7872, 1.3364, 0.86222, 0.3038,
+2021-06-29 10:05:48: itr(370), training loss:  4.1325, 3.7971, 3.4418, 3.0227, 2.5663, 2.1573, 1.6349, 1.076, 0.7057, 0.3143,
+2021-06-29 10:06:05: itr(380), training loss:  3.9304, 3.6247, 3.2546, 2.7477, 2.2317, 1.796, 1.5186, 1.0675, 0.64392, 0.28828,
+2021-06-29 10:06:22: itr(390), training loss:  3.6036, 3.3708, 2.9471, 2.5994, 2.2628, 1.8066, 1.472, 1.0854, 0.84861, 0.27643,
+2021-06-29 10:06:39: itr(400), training loss:  4.2396, 3.7469, 3.4074, 3.0109, 2.5303, 1.9505, 1.5684, 1.1779, 0.86885, 0.28783,
+2021-06-29 10:06:56: itr(410), training loss:  3.9519, 3.663, 3.1314, 2.7275, 1.9967, 1.6269, 1.2484, 0.83103, 0.59179, 0.27613,
+2021-06-29 10:07:16: itr(420), training loss:  3.968, 3.6322, 3.3449, 2.9612, 2.3651, 1.8912, 1.6184, 1.2261, 0.88006, 0.2862,
+ 30%|███       | 3/10 [12:22<28:51, 247.32s/it]2021-06-29 10:07:33: itr(430), training loss:  4.023, 3.7023, 3.322, 2.9157, 2.6778, 2.1336, 1.7356, 1.2602, 0.95064, 0.31567,
+2021-06-29 10:07:50: itr(440), training loss:  3.6086, 3.2085, 2.8978, 2.4963, 2.1663, 1.7828, 1.3457, 1.0812, 0.79825, 0.26428,
+2021-06-29 10:08:08: itr(450), training loss:  3.9028, 3.5682, 3.2515, 2.751, 2.3205, 1.9022, 1.5284, 1.2049, 0.82286, 0.27525,
+2021-06-29 10:08:25: itr(460), training loss:  3.7143, 3.4165, 2.9796, 2.6345, 2.2032, 1.9528, 1.5764, 1.182, 0.6922, 0.25949,
+2021-06-29 10:08:43: itr(470), training loss:  3.8307, 3.4083, 3.0924, 2.7981, 2.213, 1.6816, 1.2633, 0.99322, 0.6096, 0.30772,
+2021-06-29 10:09:00: itr(480), training loss:  3.7943, 3.4527, 3.1934, 2.8663, 2.5025, 1.9996, 1.4273, 1.0129, 0.68059, 0.31549,
+2021-06-29 10:09:19: itr(490), training loss:  3.6925, 3.3349, 3.006, 2.5025, 2.0502, 1.6871, 1.2197, 0.97043, 0.59506, 0.25881,
+2021-06-29 10:09:37: itr(500), training loss:  4.0387, 3.7182, 3.2483, 2.7881, 2.1724, 1.8377, 1.369, 0.98393, 0.54292, 0.30599,
+2021-06-29 10:09:54: itr(510), training loss:  4.0241, 3.562, 3.3284, 2.8695, 2.3633, 2, 1.5723, 1.1804, 0.76462, 0.30846,
+2021-06-29 10:10:12: itr(520), training loss:  3.7379, 3.3181, 2.9966, 2.5911, 2.1438, 1.589, 1.1808, 0.82997, 0.55863, 0.26376,
+2021-06-29 10:10:29: itr(530), training loss:  3.9711, 3.6991, 3.2971, 2.8705, 2.4183, 2.1483, 1.8293, 1.0379, 0.71602, 0.27681,
+2021-06-29 10:10:46: itr(540), training loss:  3.4096, 3.0755, 2.6497, 2.25, 1.8701, 1.4912, 1.144, 0.74163, 0.49195, 0.24915,
+2021-06-29 10:11:04: itr(550), training loss:  3.6733, 3.2556, 3.0469, 2.6692, 2.1566, 1.8395, 1.3797, 0.98365, 0.62633, 0.28735,
+2021-06-29 10:11:21: itr(560), training loss:  3.6845, 3.4403, 2.9013, 2.5379, 2.2351, 1.9158, 1.5393, 1.1185, 0.65651, 0.28984,
+ 40%|████      | 4/10 [16:30<24:43, 247.27s/it]2021-06-29 10:11:38: itr(570), training loss:  3.7594, 3.4407, 3.0635, 2.6394, 2.2139, 1.8917, 1.467, 1.0998, 0.69419, 0.31335,
+2021-06-29 10:11:55: itr(580), training loss:  4.0495, 3.6234, 3.335, 2.8012, 2.3571, 2.0529, 1.5984, 1.1948, 0.88567, 0.28588,
+2021-06-29 10:12:12: itr(590), training loss:  3.8579, 3.5217, 3.0853, 2.6025, 2.2123, 1.8228, 1.3744, 1.0296, 0.61032, 0.27599,
+2021-06-29 10:12:30: itr(600), training loss:  4.2103, 3.7747, 3.1399, 2.7827, 2.3609, 2.0871, 1.766, 1.4459, 0.79821, 0.31121,
+2021-06-29 10:12:50: itr(610), training loss:  3.9781, 3.6073, 3.2627, 2.8921, 2.4954, 1.9471, 1.4796, 1.0931, 0.54887, 0.29953,
+2021-06-29 10:13:07: itr(620), training loss:  3.986, 3.56, 3.2359, 2.8412, 2.4246, 2.0239, 1.6216, 1.2664, 0.86951, 0.27758,
+2021-06-29 10:13:25: itr(630), training loss:  3.707, 3.2788, 2.8997, 2.5857, 2.2173, 1.836, 1.3914, 0.94791, 0.598, 0.27348,
+2021-06-29 10:13:42: itr(640), training loss:  3.5855, 3.1948, 2.819, 2.5688, 2.1836, 1.9526, 1.5673, 1.4319, 0.88119, 0.29541,
+2021-06-29 10:14:00: itr(650), training loss:  4.2811, 3.7827, 3.3933, 2.9646, 2.5686, 2.0648, 1.7443, 1.3256, 0.76162, 0.33021,
+2021-06-29 10:14:18: itr(660), training loss:  4.0702, 3.5842, 3.2241, 2.9192, 2.5123, 2.2546, 1.6232, 0.99778, 0.56299, 0.28178,
+2021-06-29 10:14:35: itr(670), training loss:  3.5615, 3.1302, 2.766, 2.2798, 1.9778, 1.8172, 1.4578, 1.1267, 0.76292, 0.24878,
+2021-06-29 10:14:52: itr(680), training loss:  3.9764, 3.6841, 3.472, 3.1732, 2.7855, 2.2633, 1.786, 1.3856, 0.80019, 0.27715,
+2021-06-29 10:15:10: itr(690), training loss:  3.6213, 3.3043, 2.8726, 2.4375, 1.9229, 1.742, 1.3524, 1.0988, 0.81389, 0.29091,
+2021-06-29 10:15:28: itr(700), training loss:  3.7228, 3.3127, 2.8643, 2.2721, 1.9515, 1.5438, 1.3055, 0.95965, 0.65901, 0.2456,
+ 50%|█████     | 5/10 [20:37<20:37, 247.45s/it]2021-06-29 10:15:44: itr(710), training loss:  4.4125, 3.7454, 3.2473, 2.8909, 2.3982, 1.9432, 1.5009, 1.0932, 0.73002, 0.32998,
+2021-06-29 10:16:01: itr(720), training loss:  4.0947, 3.8688, 3.6374, 3.0991, 2.6207, 2.0741, 1.6137, 1.0539, 0.76324, 0.3047,
+2021-06-29 10:16:18: itr(730), training loss:  4.4262, 3.9066, 3.5369, 3.0989, 2.5997, 2.1522, 1.6802, 1.2765, 0.89487, 0.3542,
+2021-06-29 10:16:36: itr(740), training loss:  3.9226, 3.6733, 3.2692, 2.92, 2.6031, 2.2892, 1.6604, 1.1817, 0.71452, 0.32092,
+2021-06-29 10:16:52: itr(750), training loss:  4.2777, 3.9948, 3.5976, 3.081, 2.4926, 2.1621, 1.8287, 1.4633, 0.93712, 0.27558,
+2021-06-29 10:17:10: itr(760), training loss:  4.0581, 3.7414, 3.4982, 3.0606, 2.6518, 2.1909, 1.6713, 1.0634, 0.6539, 0.30828,
+2021-06-29 10:17:28: itr(770), training loss:  3.7955, 3.3071, 2.9627, 2.593, 2.3185, 1.7538, 1.4037, 1.1072, 0.75342, 0.28389,
+2021-06-29 10:17:46: itr(780), training loss:  3.6621, 3.3109, 2.9696, 2.6609, 2.2689, 1.7833, 1.4984, 1.0123, 0.61243, 0.28645,
+2021-06-29 10:18:04: itr(790), training loss:  3.9474, 3.5924, 3.1451, 2.7848, 2.4632, 2.0478, 1.6839, 1.3221, 0.85418, 0.28173,
+2021-06-29 10:18:22: itr(800), training loss:  3.9078, 3.622, 3.1824, 3.0197, 2.5258, 2.0727, 1.4109, 0.86238, 0.52703, 0.27742,
+2021-06-29 10:18:42: itr(810), training loss:  4.1349, 3.7624, 3.3529, 2.9108, 2.4807, 2.0443, 1.555, 1.1201, 0.67683, 0.27653,
+2021-06-29 10:18:59: itr(820), training loss:  3.8576, 3.55, 3.1177, 2.6762, 2.3413, 1.8725, 1.5744, 1.1058, 0.62966, 0.27647,
+2021-06-29 10:19:16: itr(830), training loss:  3.8865, 3.5611, 3.1865, 2.7371, 2.4203, 1.9725, 1.5544, 1.1168, 0.7249, 0.26283,
+2021-06-29 10:19:34: itr(840), training loss:  3.6368, 3.4159, 3.0075, 2.8421, 2.419, 2.1981, 1.6731, 1.1865, 0.66256, 0.26727,
+ 60%|██████    | 6/10 [24:45<16:30, 247.62s/it]2021-06-29 10:19:50: itr(850), training loss:  3.9733, 3.6136, 2.9199, 2.5013, 2.1018, 1.7713, 1.4165, 1.1932, 0.64542, 0.27464,
+2021-06-29 10:20:08: itr(860), training loss:  3.855, 3.5201, 3.0445, 2.6145, 2.1051, 1.6671, 1.3316, 1.0329, 0.62679, 0.26841,
+2021-06-29 10:20:26: itr(870), training loss:  4.0337, 3.779, 3.489, 2.9934, 2.6161, 2.0085, 1.5973, 1.0701, 0.69264, 0.2533,
+2021-06-29 10:20:43: itr(880), training loss:  3.7277, 3.3664, 3.0119, 2.6798, 2.3543, 1.9799, 1.6438, 1.1369, 0.75455, 0.30606,
+2021-06-29 10:21:01: itr(890), training loss:  3.7198, 3.3966, 2.99, 2.725, 2.0792, 1.8284, 1.3406, 0.88055, 0.53182, 0.28224,
+2021-06-29 10:21:18: itr(900), training loss:  3.6857, 3.3294, 3.1201, 2.7845, 2.4894, 2.0262, 1.7881, 1.3166, 0.8395, 0.26746,
+2021-06-29 10:21:36: itr(910), training loss:  4.0883, 3.7622, 3.2348, 2.7287, 2.4082, 2.0943, 1.4941, 1.0806, 0.71743, 0.29958,
+2021-06-29 10:21:54: itr(920), training loss:  3.5776, 3.2743, 3.0162, 2.4896, 2.1095, 1.8749, 1.4775, 1.0772, 0.68825, 0.27327,
+2021-06-29 10:22:12: itr(930), training loss:  4.3561, 3.8788, 3.6833, 3.3281, 3.0499, 2.5905, 1.9491, 1.3147, 0.88433, 0.31736,
+2021-06-29 10:22:29: itr(940), training loss:  4.217, 3.8105, 3.3154, 2.8535, 2.3184, 1.7591, 1.3772, 1.0939, 0.68932, 0.3025,
+2021-06-29 10:22:47: itr(950), training loss:  3.9983, 3.6797, 3.2956, 2.8891, 2.3829, 1.8848, 1.5897, 1.2269, 0.73666, 0.29484,
+2021-06-29 10:23:04: itr(960), training loss:  4.0825, 3.7958, 3.3689, 2.8651, 2.5917, 2.2053, 1.6795, 1.1782, 0.73377, 0.3068,
+2021-06-29 10:23:21: itr(970), training loss:  3.5058, 3.0719, 2.748, 2.5566, 2.2497, 1.8211, 1.4071, 0.8986, 0.51469, 0.24125,
+2021-06-29 10:23:39: itr(980), training loss:  3.4574, 3.2426, 2.918, 2.5643, 2.0714, 1.7038, 1.4608, 1.0056, 0.56011, 0.27704,
+ 70%|███████   | 7/10 [28:52<12:22, 247.35s/it]2021-06-29 10:23:56: itr(990), training loss:  3.0616, 2.8192, 2.5599, 2.3303, 1.9692, 1.6648, 1.4701, 1.0272, 0.60154, 0.2248,
+2021-06-29 10:24:15: itr(1000), training loss:  3.8955, 3.5127, 3.118, 2.5883, 2.2183, 1.8146, 1.4384, 1.0672, 0.70234, 0.31536,
+2021-06-29 10:24:32: itr(1010), training loss:  3.7922, 3.485, 2.8495, 2.5059, 2.0458, 1.7202, 1.271, 0.98435, 0.55825, 0.29353,
+2021-06-29 10:24:50: itr(1020), training loss:  3.8548, 3.535, 3.218, 2.7898, 2.3553, 2.0405, 1.5633, 1.1964, 0.76829, 0.26526,
+2021-06-29 10:25:07: itr(1030), training loss:  3.8148, 3.5758, 3.1066, 2.6328, 2.2234, 1.8606, 1.511, 1.1351, 0.73745, 0.29313,
+2021-06-29 10:25:24: itr(1040), training loss:  3.547, 3.3571, 3.072, 2.8182, 2.4072, 1.8143, 1.4679, 0.93327, 0.4974, 0.26638,
+2021-06-29 10:25:42: itr(1050), training loss:  4.0454, 3.7844, 3.2638, 3.017, 2.7171, 2.2866, 1.901, 1.5706, 1.0023, 0.30862,
+2021-06-29 10:26:00: itr(1060), training loss:  4.4178, 4.0535, 3.7632, 3.5227, 2.6746, 2.2374, 1.8281, 1.3317, 0.69266, 0.31664,
+2021-06-29 10:26:18: itr(1070), training loss:  4.3409, 3.9311, 3.249, 2.736, 2.3953, 1.98, 1.5444, 1.2475, 0.79053, 0.2841,
+2021-06-29 10:26:35: itr(1080), training loss:  3.6971, 3.3933, 2.9484, 2.6605, 2.1915, 1.6045, 1.3714, 0.92139, 0.58334, 0.23826,
+2021-06-29 10:26:53: itr(1090), training loss:  3.9736, 3.7285, 3.3706, 2.95, 2.3971, 1.924, 1.4972, 1.1471, 0.72643, 0.27906,
+2021-06-29 10:27:10: itr(1100), training loss:  4.367, 3.7513, 3.1745, 2.8293, 2.5205, 2.1617, 1.5706, 1.3214, 0.91194, 0.27424,
+2021-06-29 10:27:27: itr(1110), training loss:  4.3015, 3.7457, 3.3408, 2.9794, 2.554, 2.1629, 1.7034, 1.2361, 0.77757, 0.27566,
+2021-06-29 10:27:44: itr(1120), training loss:  3.5591, 3.2477, 2.8357, 2.5423, 2.1079, 1.6142, 1.3739, 1.0624, 0.75276, 0.23881,
+ 80%|████████  | 8/10 [33:00<08:14, 247.43s/it]2021-06-29 10:28:02: itr(1130), training loss:  3.9551, 3.5336, 3.0889, 2.6537, 2.2916, 1.9107, 1.4839, 1.1206, 0.61437, 0.28355,
+2021-06-29 10:28:19: itr(1140), training loss:  4.1201, 3.8238, 3.3553, 2.7809, 2.3993, 2.0535, 1.465, 1.002, 0.65779, 0.31214,
+2021-06-29 10:28:36: itr(1150), training loss:  3.2712, 3.0339, 2.7883, 2.4165, 2.0899, 1.8579, 1.3116, 0.93577, 0.65106, 0.2814,
+2021-06-29 10:28:53: itr(1160), training loss:  3.8537, 3.3804, 2.9947, 2.4746, 2.1815, 1.6814, 1.2433, 0.82593, 0.42047, 0.26134,
+2021-06-29 10:29:10: itr(1170), training loss:  4.1066, 3.8359, 3.5949, 3.1453, 2.7152, 2.3708, 1.8196, 1.3173, 0.73526, 0.30446,
+2021-06-29 10:29:28: itr(1180), training loss:  4.1837, 3.6017, 3.1111, 2.9103, 2.3251, 1.9469, 1.6074, 1.2588, 0.72338, 0.2884,
+2021-06-29 10:29:48: itr(1190), training loss:  3.6805, 3.4082, 3.0524, 2.5629, 2.3759, 1.9561, 1.456, 1.088, 0.52988, 0.2727,
+2021-06-29 10:30:04: itr(1200), training loss:  3.4959, 3.1601, 2.714, 2.4644, 2.0234, 1.6887, 1.3699, 1.0447, 0.70402, 0.24475,
+2021-06-29 10:30:21: itr(1210), training loss:  3.9558, 3.5918, 3.2022, 2.8246, 2.2914, 1.8676, 1.5997, 1.1633, 0.64787, 0.29541,
+2021-06-29 10:30:39: itr(1220), training loss:  3.5723, 3.2359, 2.8262, 2.3593, 2.1686, 1.7476, 1.2418, 0.96539, 0.62022, 0.25863,
+2021-06-29 10:30:56: itr(1230), training loss:  4.3476, 3.997, 3.591, 3.1686, 2.8179, 2.3848, 2.0195, 1.4943, 1.0724, 0.31424,
+2021-06-29 10:31:12: itr(1240), training loss:  3.5521, 3.1332, 2.9024, 2.5332, 2.0577, 1.7517, 1.541, 1.1773, 0.65211, 0.274,
+2021-06-29 10:31:29: itr(1250), training loss:  4.0905, 3.8784, 3.6659, 3.2197, 2.8447, 2.3995, 1.8316, 1.3559, 0.70928, 0.30484,
+2021-06-29 10:31:47: itr(1260), training loss:  4.0379, 3.8671, 3.5372, 3.2447, 2.5498, 2.1458, 1.6496, 1.29, 0.84364, 0.31345,
+ 90%|█████████ | 9/10 [37:03<04:06, 246.31s/it]2021-06-29 10:32:03: itr(1270), training loss:  3.5316, 3.1189, 2.8817, 2.4153, 2.1684, 1.8022, 1.4321, 0.99089, 0.59999, 0.23857,
+2021-06-29 10:32:21: itr(1280), training loss:  3.7898, 3.5046, 3.0093, 2.6843, 2.2223, 1.6091, 1.31, 0.99462, 0.54264, 0.26317,
+2021-06-29 10:32:38: itr(1290), training loss:  3.9964, 3.7435, 3.4067, 2.8928, 2.4964, 1.9926, 1.6469, 1.1632, 0.74181, 0.26966,
+2021-06-29 10:32:56: itr(1300), training loss:  3.9939, 3.497, 3.0467, 2.6165, 2.3251, 2.0823, 1.7088, 1.2673, 0.75318, 0.31951,
+2021-06-29 10:33:13: itr(1310), training loss:  3.8853, 3.5824, 3.181, 3.0115, 2.5538, 2.0551, 1.67, 1.1671, 0.83125, 0.26786,
+2021-06-29 10:33:30: itr(1320), training loss:  4.1098, 3.5568, 3.1392, 2.7838, 2.5259, 2.0952, 1.6284, 1.2608, 0.77792, 0.33033,
+2021-06-29 10:33:49: itr(1330), training loss:  3.5944, 3.0899, 2.7144, 2.4687, 2.3574, 1.9458, 1.64, 0.96112, 0.62046, 0.24598,
+2021-06-29 10:34:06: itr(1340), training loss:  3.681, 3.418, 3.2446, 2.761, 2.4605, 1.9049, 1.557, 1.3368, 0.77673, 0.28384,
+2021-06-29 10:34:23: itr(1350), training loss:  3.5234, 3.2401, 2.9004, 2.6002, 2.2556, 1.9831, 1.59, 1.2265, 0.71271, 0.25894,
+2021-06-29 10:34:41: itr(1360), training loss:  3.8409, 3.4805, 3.1442, 2.7042, 2.2501, 1.8641, 1.5212, 0.9283, 0.63667, 0.2758,
+2021-06-29 10:34:58: itr(1370), training loss:  4.1904, 3.8194, 3.2979, 2.8382, 2.2654, 1.9619, 1.47, 1.1006, 0.61807, 0.26926,
+2021-06-29 10:35:16: itr(1380), training loss:  4.0592, 3.6261, 3.2799, 3.1216, 2.5527, 2.2162, 1.641, 1.1154, 0.73988, 0.33126,
+2021-06-29 10:35:34: itr(1390), training loss:  3.536, 3.1974, 2.9151, 2.6544, 2.4216, 2.0175, 1.5289, 1.1037, 0.67537, 0.25913,
+2021-06-29 10:35:52: itr(1400), training loss:  3.7502, 3.4017, 3.0063, 2.6477, 2.2501, 1.7819, 1.385, 1.0106, 0.73001, 0.29964,
+100%|██████████| 10/10 [41:10<00:00, 246.48s/it]100%|██████████| 10/10 [41:10<00:00, 247.08s/it]
+model:../model/dqn/init-q saved success!!!!
+2021-06-29 10:36:07,842 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [42.4359107852 m] train_with_random_action 
+model:../model/dqn/init-q loaded success!!!!
+  0%|          | 0/15 [00:00<?, ?it/s]2021-06-29 10:37:13,736 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0919749260 m] data_collection 
+  7%|▋         | 1/15 [01:05<15:17, 65.52s/it]2021-06-29 10:38:13,580 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.9973582347 m] data_collection 
+ 13%|█▎        | 2/15 [02:05<13:49, 63.82s/it]2021-06-29 10:39:23,178 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1599224011 m] data_collection 
+ 20%|██        | 3/15 [03:14<13:06, 65.55s/it]2021-06-29 10:40:28,571 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0898488879 m] data_collection 
+ 27%|██▋       | 4/15 [04:20<12:00, 65.50s/it]2021-06-29 10:41:35,263 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1114879926 m] data_collection 
+ 33%|███▎      | 5/15 [05:27<10:58, 65.86s/it]2021-06-29 10:42:40,158 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0815341989 m] data_collection 
+ 40%|████      | 6/15 [06:31<09:50, 65.57s/it]2021-06-29 10:43:46,067 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0984322111 m] data_collection 
+ 47%|████▋     | 7/15 [07:37<08:45, 65.67s/it]2021-06-29 10:44:47,051 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0163500190 m] data_collection 
+ 53%|█████▎    | 8/15 [08:38<07:29, 64.27s/it]2021-06-29 10:45:53,675 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1103539467 m] data_collection 
+ 60%|██████    | 9/15 [09:45<06:29, 64.97s/it]2021-06-29 10:46:57,969 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0715298494 m] data_collection 
+ 67%|██████▋   | 10/15 [10:49<05:23, 64.77s/it]2021-06-29 10:48:04,162 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1031718135 m] data_collection 
+ 73%|███████▎  | 11/15 [11:55<04:20, 65.20s/it]2021-06-29 10:49:07,578 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0568833868 m] data_collection 
+ 80%|████████  | 12/15 [12:59<03:13, 64.66s/it]2021-06-29 10:50:15,401 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1303310076 m] data_collection 
+ 87%|████████▋ | 13/15 [14:07<02:11, 65.61s/it]2021-06-29 10:51:23,616 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1368727406 m] data_collection 
+ 93%|█████████▎| 14/15 [15:15<01:06, 66.39s/it]2021-06-29 10:52:11,974 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.8058994651 m] data_collection 
+100%|██████████| 15/15 [16:03<00:00, 60.98s/it]100%|██████████| 15/15 [16:03<00:00, 64.25s/it]
+filter num :70225
+2021-06-29 10:52:12,759 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [16.0756986459 m] data_collection_with_batch 
+greedy train data length:151878
+  0%|          | 0/10 [00:00<?, ?it/s]2021-06-29 10:52:14: itr(1410), training loss:  5.1385, 5.309, 5.2532, 4.9377, 4.5899, 4.434, 4.3214, 4.3708, 4.3476, 4.4998,
+2021-06-29 10:52:31: itr(1420), training loss:  2.3011, 1.9308, 1.7387, 1.7385, 1.839, 1.6967, 1.5951, 1.2984, 1.1121, 0.47417,
+2021-06-29 10:52:48: itr(1430), training loss:  1.8497, 2.0418, 1.679, 0.99241, 0.64134, 0.46897, 0.49228, 0.78819, 0.69848, 0.34054,
+2021-06-29 10:53:05: itr(1440), training loss:  1.6674, 1.7653, 1.1777, 0.57471, 0.49601, 0.40466, 0.31215, 0.37473, 0.30241, 0.2099,
+2021-06-29 10:53:22: itr(1450), training loss:  1.7657, 1.8761, 1.2591, 0.59259, 0.39474, 0.35639, 0.32547, 0.31688, 0.28851, 0.26965,
+2021-06-29 10:53:39: itr(1460), training loss:  1.7787, 1.8267, 1.2272, 0.58888, 0.45275, 0.38846, 0.38268, 0.36644, 0.33884, 0.31254,
+2021-06-29 10:53:57: itr(1470), training loss:  1.4917, 1.5034, 0.96326, 0.47602, 0.32143, 0.28663, 0.27527, 0.26957, 0.2442, 0.22093,
+2021-06-29 10:54:14: itr(1480), training loss:  1.55, 1.5271, 0.93912, 0.46777, 0.31509, 0.28636, 0.27699, 0.25878, 0.23623, 0.22144,
+2021-06-29 10:54:32: itr(1490), training loss:  1.4799, 1.4751, 1.0591, 0.45909, 0.33414, 0.31025, 0.30401, 0.28736, 0.26843, 0.24513,
+2021-06-29 10:54:50: itr(1500), training loss:  1.6291, 1.6245, 1.0771, 0.49948, 0.36882, 0.36051, 0.34962, 0.33805, 0.32125, 0.30253,
+2021-06-29 10:55:07: itr(1510), training loss:  1.7001, 1.6945, 1.1652, 0.44552, 0.31502, 0.31381, 0.29969, 0.27322, 0.25117, 0.23092,
+2021-06-29 10:55:25: itr(1520), training loss:  1.6228, 1.6186, 1.0974, 0.46442, 0.309, 0.29977, 0.29354, 0.27921, 0.26261, 0.24358,
+2021-06-29 10:55:45: itr(1530), training loss:  1.4667, 1.4611, 1.0831, 0.43032, 0.31619, 0.30091, 0.28919, 0.27035, 0.24957, 0.22663,
+2021-06-29 10:56:03: itr(1540), training loss:  1.4537, 1.4532, 0.96462, 0.37805, 0.29677, 0.28422, 0.27602, 0.26006, 0.23898, 0.21868,
+2021-06-29 10:56:20: itr(1550), training loss:  1.574, 1.5554, 1.0696, 0.48445, 0.34998, 0.35198, 0.34539, 0.31723, 0.30362, 0.28796,
+ 10%|█         | 1/10 [04:20<39:07, 260.88s/it]2021-06-29 10:56:37: itr(1560), training loss:  1.5488, 1.5398, 1.1155, 0.41522, 0.30069, 0.31078, 0.30179, 0.28475, 0.26307, 0.24515,
+2021-06-29 10:56:54: itr(1570), training loss:  1.8844, 1.8808, 1.2368, 0.46696, 0.35502, 0.34727, 0.34077, 0.31317, 0.28686, 0.26502,
+2021-06-29 10:57:10: itr(1580), training loss:  1.8751, 1.8795, 1.2881, 0.44972, 0.29091, 0.30365, 0.29412, 0.26894, 0.25475, 0.23521,
+2021-06-29 10:57:28: itr(1590), training loss:  1.9291, 1.9282, 1.3868, 0.50228, 0.34117, 0.35347, 0.34443, 0.31372, 0.28339, 0.26716,
+2021-06-29 10:57:45: itr(1600), training loss:  1.5534, 1.5444, 1.0434, 0.40063, 0.31215, 0.32853, 0.32127, 0.2932, 0.27204, 0.25378,
+2021-06-29 10:58:02: itr(1610), training loss:  1.5239, 1.5181, 1.0658, 0.48806, 0.30355, 0.31157, 0.30358, 0.28151, 0.27141, 0.25924,
+2021-06-29 10:58:20: itr(1620), training loss:  1.3825, 1.3705, 1.0252, 0.51075, 0.3381, 0.3226, 0.31455, 0.28768, 0.27382, 0.26558,
+2021-06-29 10:58:37: itr(1630), training loss:  1.6065, 1.5997, 1.0945, 0.43697, 0.34206, 0.35067, 0.34161, 0.30596, 0.28685, 0.2675,
+2021-06-29 10:58:54: itr(1640), training loss:  1.4763, 1.4887, 1.0445, 0.38169, 0.27374, 0.29495, 0.28851, 0.26463, 0.25575, 0.23942,
+2021-06-29 10:59:12: itr(1650), training loss:  1.4702, 1.4619, 0.99322, 0.31923, 0.21964, 0.22056, 0.21479, 0.1886, 0.17998, 0.17278,
+2021-06-29 10:59:29: itr(1660), training loss:  1.209, 1.2035, 0.82349, 0.34526, 0.24589, 0.25202, 0.24704, 0.22487, 0.21661, 0.20761,
+2021-06-29 10:59:47: itr(1670), training loss:  1.9389, 1.9333, 1.33, 0.50101, 0.39365, 0.39832, 0.39257, 0.3576, 0.34903, 0.33723,
+2021-06-29 11:00:04: itr(1680), training loss:  1.5094, 1.4989, 1.0637, 0.35008, 0.25656, 0.27522, 0.27032, 0.24263, 0.234, 0.22208,
+2021-06-29 11:00:21: itr(1690), training loss:  1.4087, 1.4055, 0.96015, 0.44057, 0.24632, 0.27737, 0.27092, 0.24165, 0.24106, 0.23079,
+2021-06-29 11:00:38: itr(1700), training loss:  1.4577, 1.4493, 1.0265, 0.32207, 0.21956, 0.23757, 0.23451, 0.2134, 0.20561, 0.19474,
+ 20%|██        | 2/10 [08:36<34:35, 259.43s/it]2021-06-29 11:00:55: itr(1710), training loss:  1.5852, 1.5856, 1.0671, 0.39802, 0.22649, 0.27622, 0.26942, 0.23137, 0.23366, 0.21958,
+2021-06-29 11:01:12: itr(1720), training loss:  1.7854, 1.7865, 1.2153, 0.50892, 0.3498, 0.37043, 0.36697, 0.34619, 0.32482, 0.3094,
+2021-06-29 11:01:31: itr(1730), training loss:  1.581, 1.583, 1.032, 0.34637, 0.2298, 0.25896, 0.2545, 0.21844, 0.22426, 0.21107,
+2021-06-29 11:01:48: itr(1740), training loss:  1.3499, 1.3411, 1.0795, 0.46396, 0.32982, 0.36185, 0.35849, 0.33816, 0.31127, 0.29875,
+2021-06-29 11:02:06: itr(1750), training loss:  1.4386, 1.4327, 1.0444, 0.39179, 0.23474, 0.27696, 0.27253, 0.24944, 0.24685, 0.23562,
+2021-06-29 11:02:23: itr(1760), training loss:  1.7698, 1.7642, 1.2069, 0.35214, 0.22592, 0.26925, 0.26669, 0.24113, 0.22599, 0.21957,
+2021-06-29 11:02:40: itr(1770), training loss:  1.7088, 1.7162, 1.1808, 0.35536, 0.24172, 0.28682, 0.28244, 0.25491, 0.24335, 0.23609,
+2021-06-29 11:02:58: itr(1780), training loss:  1.5306, 1.5235, 1.06, 0.35847, 0.2426, 0.27984, 0.27483, 0.24426, 0.23804, 0.22744,
+2021-06-29 11:03:15: itr(1790), training loss:  1.605, 1.6, 1.1537, 0.37892, 0.2249, 0.2703, 0.26575, 0.23232, 0.23575, 0.22669,
+2021-06-29 11:03:32: itr(1800), training loss:  1.8562, 1.8521, 1.1343, 0.46865, 0.27133, 0.30689, 0.29953, 0.27925, 0.27854, 0.26998,
+2021-06-29 11:03:50: itr(1810), training loss:  1.2813, 1.2803, 0.94008, 0.34607, 0.23937, 0.2753, 0.27111, 0.23785, 0.23902, 0.22994,
+2021-06-29 11:04:08: itr(1820), training loss:  1.6722, 1.6716, 1.2231, 0.39607, 0.22957, 0.27017, 0.26354, 0.23339, 0.23254, 0.225,
+2021-06-29 11:04:25: itr(1830), training loss:  1.5169, 1.5147, 1.0491, 0.3393, 0.20035, 0.23552, 0.22654, 0.20087, 0.20645, 0.201,
+2021-06-29 11:04:42: itr(1840), training loss:  1.6014, 1.5992, 1.0689, 0.40669, 0.20953, 0.26656, 0.25207, 0.22668, 0.22808, 0.21734,
+2021-06-29 11:04:59: itr(1850), training loss:  1.5779, 1.5849, 1.1474, 0.33705, 0.2202, 0.23874, 0.23302, 0.20408, 0.20883, 0.21602,
+ 30%|███       | 3/10 [12:56<30:16, 259.46s/it]2021-06-29 11:05:16: itr(1860), training loss:  1.6847, 1.6867, 1.2043, 0.39614, 0.24216, 0.27986, 0.27614, 0.249, 0.25122, 0.24492,
+2021-06-29 11:05:33: itr(1870), training loss:  1.7794, 1.7757, 1.1932, 0.37842, 0.24621, 0.27208, 0.26032, 0.23347, 0.24192, 0.27492,
+2021-06-29 11:05:49: itr(1880), training loss:  1.6032, 1.6044, 1.114, 0.2603, 0.23949, 0.21883, 0.21481, 0.1979, 0.20451, 0.21085,
+2021-06-29 11:06:06: itr(1890), training loss:  1.5462, 1.5487, 1.0848, 0.37243, 0.18908, 0.2224, 0.21645, 0.18977, 0.1915, 0.21165,
+2021-06-29 11:06:23: itr(1900), training loss:  1.6473, 1.65, 1.0601, 0.35088, 0.20363, 0.22251, 0.21572, 0.18868, 0.18937, 0.2092,
+2021-06-29 11:06:41: itr(1910), training loss:  1.8545, 1.8504, 1.2625, 0.34446, 0.25841, 0.26705, 0.26032, 0.22715, 0.22787, 0.24137,
+2021-06-29 11:06:59: itr(1920), training loss:  1.5488, 1.5549, 1.0877, 0.2928, 0.20703, 0.20655, 0.20674, 0.17944, 0.17275, 0.19041,
+2021-06-29 11:07:18: itr(1930), training loss:  1.3617, 1.3671, 0.99918, 0.40781, 0.21459, 0.23699, 0.2303, 0.20342, 0.20677, 0.22515,
+2021-06-29 11:07:35: itr(1940), training loss:  1.5288, 1.5293, 0.97324, 0.30437, 0.22971, 0.21403, 0.20515, 0.18033, 0.18574, 0.20434,
+2021-06-29 11:07:52: itr(1950), training loss:  1.7482, 1.7413, 1.1536, 0.31756, 0.1771, 0.19976, 0.18822, 0.15925, 0.16544, 0.1838,
+2021-06-29 11:08:10: itr(1960), training loss:  1.47, 1.4724, 0.97128, 0.29875, 0.20547, 0.21799, 0.21371, 0.18645, 0.18085, 0.2018,
+2021-06-29 11:08:28: itr(1970), training loss:  1.4578, 1.4553, 0.94013, 0.35701, 0.2332, 0.20588, 0.23325, 0.22615, 0.18025, 0.19392,
+2021-06-29 11:08:44: itr(1980), training loss:  1.7749, 1.7746, 1.2325, 0.42013, 0.28596, 0.27654, 0.29031, 0.26645, 0.24786, 0.2748,
+2021-06-29 11:09:01: itr(1990), training loss:  1.6008, 1.5972, 1.0812, 0.35515, 0.19156, 0.21482, 0.20556, 0.17902, 0.17738, 0.21053,
+2021-06-29 11:09:18: itr(2000), training loss:  1.4544, 1.4545, 1.0975, 0.36909, 0.20176, 0.20561, 0.20732, 0.17407, 0.17187, 0.18992,
+ 40%|████      | 4/10 [17:13<25:51, 258.59s/it]2021-06-29 11:09:34: itr(2010), training loss:  1.7076, 1.7042, 1.1795, 0.39567, 0.24695, 0.25517, 0.2526, 0.22156, 0.21863, 0.24485,
+2021-06-29 11:09:51: itr(2020), training loss:  1.5284, 1.5344, 1.0192, 0.37049, 0.23227, 0.23354, 0.18761, 0.16513, 0.18444, 0.17468,
+2021-06-29 11:10:08: itr(2030), training loss:  1.5987, 1.5966, 1.033, 0.31632, 0.21192, 0.22473, 0.21145, 0.19143, 0.1984, 0.21182,
+2021-06-29 11:10:25: itr(2040), training loss:  1.6576, 1.6587, 1.0787, 0.35836, 0.20574, 0.22664, 0.21406, 0.18879, 0.18673, 0.22212,
+2021-06-29 11:10:42: itr(2050), training loss:  1.8501, 1.8487, 1.2235, 0.41689, 0.22999, 0.23456, 0.22659, 0.2095, 0.21139, 0.22824,
+2021-06-29 11:11:00: itr(2060), training loss:  1.6616, 1.6629, 1.0201, 0.31472, 0.18275, 0.17205, 0.16708, 0.15085, 0.15169, 0.16703,
+2021-06-29 11:11:17: itr(2070), training loss:  1.5171, 1.5216, 1.0208, 0.39799, 0.20093, 0.21236, 0.21458, 0.19666, 0.18799, 0.20965,
+2021-06-29 11:11:35: itr(2080), training loss:  1.3805, 1.3916, 0.92002, 0.30556, 0.18429, 0.19186, 0.18458, 0.16625, 0.16213, 0.19515,
+2021-06-29 11:11:52: itr(2090), training loss:  1.6441, 1.6439, 1.1115, 0.32936, 0.18462, 0.19298, 0.18773, 0.18102, 0.17425, 0.18944,
+2021-06-29 11:12:10: itr(2100), training loss:  1.5793, 1.5842, 1.0466, 0.35284, 0.20055, 0.21162, 0.20134, 0.18726, 0.18102, 0.20217,
+2021-06-29 11:12:27: itr(2110), training loss:  1.5517, 1.5501, 1.0875, 0.48332, 0.33391, 0.28895, 0.28927, 0.27328, 0.27091, 0.27149,
+2021-06-29 11:12:44: itr(2120), training loss:  1.4049, 1.3987, 0.99216, 0.34231, 0.21706, 0.20058, 0.19917, 0.18504, 0.18139, 0.19529,
+2021-06-29 11:13:03: itr(2130), training loss:  1.5754, 1.5738, 1.0701, 0.36102, 0.18602, 0.19699, 0.21616, 0.18838, 0.17235, 0.1898,
+2021-06-29 11:13:19: itr(2140), training loss:  1.3507, 1.3528, 0.88883, 0.29371, 0.19716, 0.2056, 0.18355, 0.16451, 0.16484, 0.19655,
+2021-06-29 11:13:37: itr(2150), training loss:  1.4676, 1.4662, 0.99786, 0.33748, 0.18896, 0.20108, 0.18347, 0.17185, 0.17748, 0.1821,
+ 50%|█████     | 5/10 [21:30<21:31, 258.20s/it]2021-06-29 11:13:53: itr(2160), training loss:  1.4224, 1.4217, 0.87128, 0.31191, 0.23223, 0.23631, 0.21129, 0.19097, 0.19612, 0.20611,
+2021-06-29 11:14:09: itr(2170), training loss:  1.6615, 1.6642, 1.07, 0.26163, 0.20464, 0.20574, 0.20194, 0.18315, 0.17824, 0.21846,
+2021-06-29 11:14:26: itr(2180), training loss:  1.4175, 1.4195, 0.94841, 0.29045, 0.20889, 0.2258, 0.21439, 0.19874, 0.19343, 0.20805,
+2021-06-29 11:14:44: itr(2190), training loss:  1.5253, 1.525, 1.0047, 0.36622, 0.19822, 0.2017, 0.20118, 0.18248, 0.17341, 0.20783,
+2021-06-29 11:15:02: itr(2200), training loss:  1.7796, 1.7798, 1.1491, 0.36681, 0.19739, 0.19913, 0.19018, 0.17014, 0.1681, 0.20483,
+2021-06-29 11:15:19: itr(2210), training loss:  1.755, 1.7533, 1.1445, 0.32383, 0.16904, 0.17587, 0.18189, 0.17334, 0.15621, 0.17332,
+2021-06-29 11:15:37: itr(2220), training loss:  1.6389, 1.639, 1.0303, 0.31243, 0.18085, 0.17998, 0.18197, 0.1684, 0.17097, 0.18022,
+2021-06-29 11:15:54: itr(2230), training loss:  1.5387, 1.5434, 1.0456, 0.37085, 0.26155, 0.2202, 0.21856, 0.21998, 0.20216, 0.21065,
+2021-06-29 11:16:12: itr(2240), training loss:  1.7579, 1.7562, 1.1821, 0.40065, 0.20043, 0.20743, 0.20087, 0.19058, 0.18984, 0.20801,
+2021-06-29 11:16:30: itr(2250), training loss:  1.519, 1.5216, 1.0327, 0.28754, 0.18896, 0.19334, 0.19469, 0.17484, 0.16873, 0.18879,
+2021-06-29 11:16:47: itr(2260), training loss:  1.3745, 1.3768, 0.90498, 0.33165, 0.18129, 0.18312, 0.18485, 0.16218, 0.16236, 0.18707,
+2021-06-29 11:17:04: itr(2270), training loss:  1.6402, 1.6436, 1.0338, 0.3504, 0.19646, 0.20065, 0.22802, 0.18075, 0.17338, 0.19758,
+2021-06-29 11:17:21: itr(2280), training loss:  1.6202, 1.6152, 1.1312, 0.38159, 0.18843, 0.19276, 0.22371, 0.18883, 0.17637, 0.19131,
+2021-06-29 11:17:38: itr(2290), training loss:  1.4837, 1.4838, 1.0027, 0.33227, 0.18612, 0.19076, 0.18861, 0.17439, 0.16758, 0.18221,
+2021-06-29 11:17:56: itr(2300), training loss:  1.4767, 1.4789, 1.0168, 0.39602, 0.21818, 0.20614, 0.20705, 0.17643, 0.17257, 0.19344,
+ 60%|██████    | 6/10 [25:47<17:11, 257.87s/it]2021-06-29 11:18:12: itr(2310), training loss:  1.4727, 1.472, 1.0071, 0.33558, 0.20124, 0.19916, 0.18221, 0.18033, 0.18204, 0.18042,
+2021-06-29 11:18:29: itr(2320), training loss:  1.6452, 1.6446, 1.1411, 0.44209, 0.29835, 0.30039, 0.28011, 0.26242, 0.25324, 0.25883,
+2021-06-29 11:18:47: itr(2330), training loss:  1.7481, 1.7482, 1.2675, 0.40043, 0.20702, 0.21063, 0.20557, 0.19623, 0.18786, 0.20196,
+2021-06-29 11:19:05: itr(2340), training loss:  1.463, 1.4653, 0.93259, 0.36105, 0.21056, 0.21085, 0.20907, 0.19014, 0.18667, 0.20891,
+2021-06-29 11:19:22: itr(2350), training loss:  1.5935, 1.5945, 1.0098, 0.362, 0.21252, 0.21547, 0.2198, 0.20326, 0.1956, 0.20245,
+2021-06-29 11:19:39: itr(2360), training loss:  1.6836, 1.6846, 1.0988, 0.38709, 0.24951, 0.25289, 0.25116, 0.23343, 0.23051, 0.2413,
+2021-06-29 11:19:56: itr(2370), training loss:  1.6332, 1.6322, 1.1137, 0.374, 0.2579, 0.25825, 0.25534, 0.24652, 0.24243, 0.2492,
+2021-06-29 11:20:13: itr(2380), training loss:  1.6678, 1.6692, 1.1478, 0.395, 0.27923, 0.22678, 0.22289, 0.20285, 0.19781, 0.20665,
+2021-06-29 11:20:31: itr(2390), training loss:  1.3957, 1.3969, 0.9378, 0.354, 0.21696, 0.21979, 0.21761, 0.20861, 0.21148, 0.21902,
+2021-06-29 11:20:49: itr(2400), training loss:  1.8721, 1.8759, 1.1478, 0.37657, 0.20322, 0.20567, 0.20042, 0.19137, 0.18986, 0.18336,
+2021-06-29 11:21:06: itr(2410), training loss:  1.5437, 1.5459, 1.0723, 0.33964, 0.18211, 0.18471, 0.18028, 0.17091, 0.16684, 0.17866,
+2021-06-29 11:21:24: itr(2420), training loss:  1.5686, 1.5754, 1.0297, 0.39717, 0.20732, 0.21387, 0.2157, 0.1935, 0.18831, 0.19374,
+2021-06-29 11:21:40: itr(2430), training loss:  1.6316, 1.6305, 1.1237, 0.39547, 0.2074, 0.20797, 0.20056, 0.18297, 0.18669, 0.19311,
+2021-06-29 11:21:57: itr(2440), training loss:  1.7879, 1.788, 1.1855, 0.42326, 0.21095, 0.21693, 0.23491, 0.19934, 0.19813, 0.21508,
+2021-06-29 11:22:14: itr(2450), training loss:  1.8105, 1.8091, 1.2822, 0.40474, 0.24381, 0.21103, 0.21654, 0.20343, 0.19552, 0.2,
+ 70%|███████   | 7/10 [30:04<12:53, 257.71s/it]2021-06-29 11:22:31: itr(2460), training loss:  1.5258, 1.5283, 0.97858, 0.26696, 0.15533, 0.15919, 0.15794, 0.1442, 0.14098, 0.14819,
+2021-06-29 11:22:48: itr(2470), training loss:  1.6546, 1.6564, 1.103, 0.37273, 0.27239, 0.27397, 0.24948, 0.24052, 0.2555, 0.24116,
+2021-06-29 11:23:06: itr(2480), training loss:  1.4868, 1.4876, 1.0264, 0.34996, 0.20019, 0.21061, 0.23436, 0.21298, 0.18415, 0.18318,
+2021-06-29 11:23:23: itr(2490), training loss:  1.4793, 1.4805, 0.91513, 0.37809, 0.21335, 0.17575, 0.1694, 0.15346, 0.16301, 0.17453,
+2021-06-29 11:23:41: itr(2500), training loss:  1.311, 1.314, 0.93897, 0.29777, 0.16387, 0.16428, 0.15868, 0.14778, 0.1535, 0.15601,
+2021-06-29 11:23:59: itr(2510), training loss:  1.4875, 1.49, 0.99255, 0.40612, 0.28512, 0.2077, 0.20461, 0.19624, 0.19695, 0.20394,
+2021-06-29 11:24:16: itr(2520), training loss:  1.5808, 1.5822, 1.1198, 0.39503, 0.24433, 0.2479, 0.24228, 0.23465, 0.23357, 0.23684,
+2021-06-29 11:24:35: itr(2530), training loss:  1.7234, 1.7224, 1.2148, 0.40313, 0.21152, 0.21067, 0.20347, 0.19872, 0.19149, 0.19044,
+2021-06-29 11:24:52: itr(2540), training loss:  1.2606, 1.2625, 0.85648, 0.32952, 0.20253, 0.18045, 0.17732, 0.16068, 0.156, 0.16203,
+2021-06-29 11:25:10: itr(2550), training loss:  1.5543, 1.5522, 1.0352, 0.32834, 0.1934, 0.19391, 0.18232, 0.17103, 0.17092, 0.1718,
+2021-06-29 11:25:26: itr(2560), training loss:  1.3233, 1.324, 0.9398, 0.30212, 0.17628, 0.18041, 0.17428, 0.17148, 0.16731, 0.16985,
+2021-06-29 11:25:43: itr(2570), training loss:  1.4261, 1.4274, 0.92064, 0.31946, 0.20917, 0.21378, 0.21041, 0.19983, 0.18778, 0.2011,
+2021-06-29 11:26:01: itr(2580), training loss:  1.3736, 1.3745, 0.84325, 0.27658, 0.15667, 0.1562, 0.1463, 0.14259, 0.1484, 0.14262,
+2021-06-29 11:26:18: itr(2590), training loss:  1.4279, 1.4289, 0.96921, 0.42121, 0.23391, 0.19726, 0.19028, 0.17384, 0.17341, 0.17592,
+2021-06-29 11:26:35: itr(2600), training loss:  1.7453, 1.7431, 1.1681, 0.4045, 0.24444, 0.21774, 0.2073, 0.201, 0.20338, 0.20416,
+ 80%|████████  | 8/10 [34:23<08:35, 257.92s/it]2021-06-29 11:26:51: itr(2610), training loss:  1.8205, 1.8236, 1.1966, 0.37926, 0.22456, 0.22696, 0.23676, 0.21297, 0.18534, 0.18992,
+2021-06-29 11:27:07: itr(2620), training loss:  1.6593, 1.6561, 1.1266, 0.36435, 0.24884, 0.21076, 0.18744, 0.17641, 0.18838, 0.184,
+2021-06-29 11:27:24: itr(2630), training loss:  1.7541, 1.7542, 1.108, 0.3332, 0.21344, 0.22259, 0.21719, 0.20623, 0.19654, 0.19542,
+2021-06-29 11:27:42: itr(2640), training loss:  1.4587, 1.459, 0.92884, 0.38548, 0.18793, 0.19243, 0.17569, 0.16991, 0.1841, 0.17007,
+2021-06-29 11:27:59: itr(2650), training loss:  1.5519, 1.5571, 1.0354, 0.2657, 0.1627, 0.1644, 0.15959, 0.15554, 0.15855, 0.15448,
+2021-06-29 11:28:17: itr(2660), training loss:  1.857, 1.8545, 1.2281, 0.37134, 0.22471, 0.18425, 0.17784, 0.17641, 0.17621, 0.16173,
+2021-06-29 11:28:34: itr(2670), training loss:  1.5779, 1.5776, 1.1031, 0.31647, 0.20302, 0.20666, 0.1972, 0.18605, 0.18551, 0.18516,
+2021-06-29 11:28:52: itr(2680), training loss:  1.6774, 1.6809, 1.0856, 0.40704, 0.22069, 0.21861, 0.21777, 0.20227, 0.19861, 0.19864,
+2021-06-29 11:29:10: itr(2690), training loss:  1.5097, 1.5139, 0.91139, 0.34394, 0.18808, 0.18703, 0.17657, 0.1705, 0.1643, 0.16451,
+2021-06-29 11:29:27: itr(2700), training loss:  1.7633, 1.7617, 1.1444, 0.32986, 0.16751, 0.17003, 0.16856, 0.16236, 0.15717, 0.16319,
+2021-06-29 11:29:44: itr(2710), training loss:  1.3983, 1.398, 0.83311, 0.28626, 0.18907, 0.18826, 0.17947, 0.17522, 0.17419, 0.17662,
+2021-06-29 11:30:02: itr(2720), training loss:  1.4418, 1.4436, 1.034, 0.38592, 0.19291, 0.17846, 0.17388, 0.16087, 0.1531, 0.1606,
+2021-06-29 11:30:20: itr(2730), training loss:  1.5673, 1.5708, 1.0168, 0.40347, 0.21426, 0.21901, 0.22046, 0.21409, 0.21107, 0.2106,
+2021-06-29 11:30:38: itr(2740), training loss:  1.754, 1.7563, 1.211, 0.34041, 0.1881, 0.18521, 0.1841, 0.19104, 0.17035, 0.16269,
+2021-06-29 11:30:54: itr(2750), training loss:  1.2525, 1.2464, 0.87221, 0.27777, 0.13125, 0.12698, 0.12949, 0.12394, 0.1191, 0.11988,
+ 90%|█████████ | 9/10 [38:42<04:18, 258.24s/it]2021-06-29 11:31:12: itr(2760), training loss:  1.4822, 1.4885, 1.0116, 0.39175, 0.21614, 0.21352, 0.20742, 0.20777, 0.18282, 0.1855,
+2021-06-29 11:31:29: itr(2770), training loss:  1.2812, 1.2826, 0.79811, 0.33258, 0.2271, 0.18832, 0.19771, 0.16938, 0.16684, 0.15933,
+2021-06-29 11:31:46: itr(2780), training loss:  1.6409, 1.6513, 1.1828, 0.30638, 0.19774, 0.20419, 0.19545, 0.18817, 0.18517, 0.17557,
+2021-06-29 11:32:03: itr(2790), training loss:  1.7266, 1.7252, 1.0604, 0.35115, 0.1797, 0.18227, 0.17743, 0.17444, 0.17572, 0.16451,
+2021-06-29 11:32:20: itr(2800), training loss:  1.5542, 1.5583, 1.0034, 0.34369, 0.19519, 0.19755, 0.19145, 0.18671, 0.18039, 0.18824,
+2021-06-29 11:32:38: itr(2810), training loss:  1.4835, 1.4819, 0.91496, 0.33448, 0.19255, 0.19152, 0.19018, 0.18884, 0.18481, 0.18143,
+2021-06-29 11:32:55: itr(2820), training loss:  1.6558, 1.6518, 1.0964, 0.42932, 0.21743, 0.21947, 0.21306, 0.19953, 0.19571, 0.20218,
+2021-06-29 11:33:12: itr(2830), training loss:  1.6347, 1.6387, 0.94977, 0.36282, 0.23588, 0.17771, 0.17253, 0.16428, 0.15924, 0.16138,
+2021-06-29 11:33:29: itr(2840), training loss:  1.6012, 1.602, 1.0304, 0.34489, 0.19242, 0.19026, 0.18856, 0.17702, 0.17119, 0.18348,
+2021-06-29 11:33:47: itr(2850), training loss:  1.3834, 1.3855, 0.83802, 0.36523, 0.16879, 0.16811, 0.16354, 0.15635, 0.15106, 0.14906,
+2021-06-29 11:34:04: itr(2860), training loss:  1.5079, 1.5067, 0.98305, 0.31742, 0.18345, 0.1868, 0.19118, 0.17215, 0.16521, 0.16815,
+2021-06-29 11:34:21: itr(2870), training loss:  1.4865, 1.4905, 0.99992, 0.40253, 0.28533, 0.27927, 0.27635, 0.26002, 0.25591, 0.26403,
+2021-06-29 11:34:38: itr(2880), training loss:  1.5149, 1.5164, 0.98182, 0.3651, 0.16654, 0.16783, 0.16435, 0.16067, 0.15447, 0.15755,
+2021-06-29 11:34:55: itr(2890), training loss:  1.8425, 1.8385, 1.1212, 0.31897, 0.17597, 0.1754, 0.16754, 0.16342, 0.15947, 0.15476,
+100%|██████████| 10/10 [42:57<00:00, 257.34s/it]100%|██████████| 10/10 [42:57<00:00, 257.74s/it]
+model:../model/dqn/best-reward-10 saved success!!!!
+2021-06-29 11:35:10,507 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [59.0381408970 m] train_with_greedy_action 
+2021-06-29 11:39:14,196 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [4.0613051693 m] validation 
+(2.0851858399276546, 0.2214649796114176, 2.0851858399276546)
+2021-06-29 11:43:47,851 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [4.5608244856 m] validation_train 
+(1.0433951639714345, 0.2210873545885394, 1.0433951639714345)
+2021-06-29 11:43:50,262 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [110.5433471719 m] main 
+finished!!!!!!,time cost:110.54336440960566 m

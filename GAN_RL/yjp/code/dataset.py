@@ -462,5 +462,8 @@ if __name__ == '__main__':
     dqn = DQN(env,cmd_args)
     dataset = Dataset(cmd_args,env,dqn)
 
-    data = dataset.multi_collect_data(env.train_user,cmd_args.num_thread)
-    print(len(data['user']))
+    # data = dataset.multi_collect_data(env.train_user,cmd_args.num_thread)
+    # print(len(data['user']))
+    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.2),replace=False)
+    data_collection = dataset.data_collection_all(train_user)
+    print('train data length:{}'.format(len(data_collection['user'])))

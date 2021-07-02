@@ -77,6 +77,7 @@ def multi_compute_validation(current_best_reward,dataset,env,dqn,user_set):
         thread.join()
 
     user_avg_reward = user_sum_reward/len(user_set)
+    print('AAAAA',len(user_set),user_sum_reward)
     if user_avg_reward> current_best_reward:
         current_best_reward = user_avg_reward
 
@@ -98,10 +99,10 @@ def validation(dataset,env,dqn,vali_user):
         if len(sim_vali_user) ==0:
             break
 
-    user_sum_reward,clk_sum_rate = env.compute_average_reward(vali_user,sim_u_reward)
+    user_sum_reward_,clk_sum_rate = env.compute_average_reward(vali_user,sim_u_reward)
 
     lock.acquire()
-    user_sum_reward += user_sum_reward
+    user_sum_reward += user_sum_reward_
     sum_clk_rate += clk_sum_rate
 
     lock.release()
@@ -119,8 +120,10 @@ def validation_train(current_best_reward,dataset,env,dqn,vali_user):
             break
 
     user_sum_reward,clk_sum_rate = env.compute_average_reward(vali_user,sim_u_reward)
+    print('EEEE',user_sum_reward)
 
     user_avg_reward = user_sum_reward/len(vali_user)
+    print('BBBB',len(vali_user),user_sum_reward)
     if user_avg_reward>current_best_reward:
         current_best_reward =user_avg_reward
 
@@ -171,14 +174,9 @@ def main(args):
     dqn = DQN(env,args)
     dataset = Dataset(args,env,dqn)
 
-    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.2),replace=False)
-    loss_greedy = train(dataset,dqn,train_user)
-    file = open('loss/loss_comb_{}_{}_{}_{}_filtered.pkl'.format(args.noclick_weight,args.epoch,args.dqn_lr,args.training_batch_size), 'wb')
-    pickle.dump(loss_greedy, file, protocol=pickle.HIGHEST_PROTOCOL)
-    file.close()
-
-    print(multi_compute_validation(0.0,dataset,env,dqn,env.vali_user))
-    print(validation_train(0.0,dataset,env,dqn,env.vali_user))
+    dqn.restore('best-reward-comb-10')
+    print(multi_compute_validation(0.0,dataset,env,dqn,env.test_user[:10]))
+    print(validation_train(0.0,dataset,env,dqn,env.test_user[:10]))
 
 
 if __name__ == '__main__':

@@ -51,7 +51,7 @@ def get_options(args=None):
 
     #-----------------------------------------env---------------------------------------------
     parser.add_argument('--k', type=int, default=10, help='num of recommendation for each time')
-    parser.add_argument('--noclick_weight', type=float, default=0.3, help='threshold for click. if >noclick_weight means user will having a positive callback ')
+    parser.add_argument('--noclick_weight', type=float, default=0.1, help='threshold for click. if >noclick_weight means user will having a positive callback ')
     parser.add_argument('--env_std', type=float, default=1e-3, help='std for normal initialization ')
 
     #-----------------------------------------dqn---------------------------------------------

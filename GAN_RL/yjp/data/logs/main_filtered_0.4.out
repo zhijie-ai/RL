@@ -1,0 +1,1198 @@
+nohup: 忽略输入
+>>>>>>>>>>> Namespace(batch_size=1024, click_path='../data/raw/click.csv', clip_max_value=40.0, clip_min_value=-40.0, compu_type='thread', data_folder='../data/handled/', dims='256-32', dqn_dims='256-32', dqn_lr=0.001, dqn_type='offline', embedding_path='/data1/ai-recall/bpr/model/', env_std=0.001, epoch=10, exposure_path='../data/raw/exposure.csv', gamma=0.98, init_learning_rate=0.01, k=10, learning_rate=0.001, min_value=-1000000000.0, model_path='../model/dqn/', noclick_weight=0.3, num_iters=50, num_thread=1, pw_band_size=20, pw_dim=4, q_std=0.01, random_seed=1126, resplit=False, rnn_hidden_dim=20, sample_batch_size=1024, save_dir='../model/save_dir/', threshold=0.97, train_time_horizon=15, training_batch_size=1024, user_model='PW', vali_batch_size=2000, vali_time_horizon=15) <<<<<<<<<<<<<<<<<<<<<<
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:47: The name tf.GPUOptions is deprecated. Please use tf.compat.v1.GPUOptions instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:48: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:49: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-29 09:29:25.863442: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2021-06-29 09:29:25.873213: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2100000000 Hz
+2021-06-29 09:29:25.877114: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x4dc1bd0 executing computations on platform Host. Devices:
+2021-06-29 09:29:25.877169: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2021-06-29 09:29:25.878684: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2021-06-29 09:29:26.548197: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: Tesla P40 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:37:00.0
+2021-06-29 09:29:26.548457: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-29 09:29:26.550712: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-29 09:29:26.553060: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2021-06-29 09:29:26.553374: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2021-06-29 09:29:26.555908: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2021-06-29 09:29:26.557152: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2021-06-29 09:29:26.562567: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2021-06-29 09:29:26.564112: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2021-06-29 09:29:26.564153: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-29 09:29:26.651577: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-29 09:29:26.651627: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2021-06-29 09:29:26.651640: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2021-06-29 09:29:26.653988: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11459 MB memory) -> physical GPU (device: 0, name: Tesla P40, pci bus id: 0000:37:00.0, compute capability: 6.1)
+2021-06-29 09:29:26.656586: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x58f67f0 executing computations on platform CUDA. Devices:
+2021-06-29 09:29:26.656612: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): Tesla P40, Compute Capability 6.1
+['_k', 10, '_noclick_weight', 0.3]
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:106: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:148: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/env.py:190: The name tf.variables_initializer is deprecated. Please use tf.compat.v1.variables_initializer instead.
+
+WARNING:tensorflow:From /data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/training/saver.py:1276: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+model:../model/save_dir/PW/best-loss loaded success!!!!
+2021-06-29 09:29:49.906158: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: Tesla P40 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:37:00.0
+2021-06-29 09:29:49.906228: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-06-29 09:29:49.906249: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-29 09:29:49.906271: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2021-06-29 09:29:49.906289: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2021-06-29 09:29:49.906305: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2021-06-29 09:29:49.906322: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2021-06-29 09:29:49.906342: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2021-06-29 09:29:49.907631: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2021-06-29 09:29:49.907668: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-29 09:29:49.907679: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2021-06-29 09:29:49.907688: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2021-06-29 09:29:49.908992: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11459 MB memory) -> physical GPU (device: 0, name: Tesla P40, pci bus id: 0000:37:00.0, compute capability: 6.1)
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:36: The name tf.train.get_or_create_global_step is deprecated. Please use tf.compat.v1.train.get_or_create_global_step instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:132: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:143: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/dqn.py:240: sparse_to_dense (from tensorflow.python.ops.sparse_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Create a `tf.sparse.SparseTensor` and use `tf.sparse.to_dense` instead.
+  0%|          | 0/74 [00:00<?, ?it/s]2021-06-29 09:29:52.613249: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-06-29 09:29:57,864 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0925541123 m] data_collection 
+  1%|▏         | 1/74 [00:05<06:45,  5.56s/it]2021-06-29 09:30:03,644 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0962928772 m] data_collection 
+  3%|▎         | 2/74 [00:11<06:49,  5.69s/it]2021-06-29 09:30:09,813 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1027724385 m] data_collection 
+  4%|▍         | 3/74 [00:17<06:59,  5.91s/it]2021-06-29 09:30:15,955 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1023127079 m] data_collection 
+  5%|▌         | 4/74 [00:23<07:00,  6.00s/it]2021-06-29 09:30:21,942 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0997288028 m] data_collection 
+  7%|▋         | 5/74 [00:29<06:53,  6.00s/it]2021-06-29 09:30:32,520 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1762562792 m] data_collection 
+  8%|▊         | 6/74 [00:40<08:33,  7.55s/it]2021-06-29 09:30:38,360 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0973018964 m] data_collection 
+  9%|▉         | 7/74 [00:46<07:48,  6.99s/it]2021-06-29 09:30:44,312 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0991468072 m] data_collection 
+ 11%|█         | 8/74 [00:52<07:19,  6.66s/it]2021-06-29 09:30:50,294 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0996605833 m] data_collection 
+ 12%|█▏        | 9/74 [00:57<06:59,  6.45s/it]2021-06-29 09:30:56,215 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0986317992 m] data_collection 
+ 14%|█▎        | 10/74 [01:03<06:42,  6.29s/it]2021-06-29 09:31:02,132 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0985821207 m] data_collection 
+ 15%|█▍        | 11/74 [01:09<06:28,  6.17s/it]2021-06-29 09:31:08,043 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0984796802 m] data_collection 
+ 16%|█▌        | 12/74 [01:15<06:17,  6.09s/it]2021-06-29 09:31:14,023 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0996191859 m] data_collection 
+ 18%|█▊        | 13/74 [01:21<06:09,  6.06s/it]2021-06-29 09:31:20,073 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1008024573 m] data_collection 
+ 19%|█▉        | 14/74 [01:27<06:03,  6.06s/it]2021-06-29 09:31:25,998 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0987092098 m] data_collection 
+ 20%|██        | 15/74 [01:33<05:54,  6.02s/it]2021-06-29 09:31:35,578 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1596250812 m] data_collection 
+ 22%|██▏       | 16/74 [01:43<06:51,  7.09s/it]2021-06-29 09:31:41,448 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0977874001 m] data_collection 
+ 23%|██▎       | 17/74 [01:49<06:23,  6.72s/it]2021-06-29 09:31:47,466 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1002738237 m] data_collection 
+ 24%|██▍       | 18/74 [01:55<06:04,  6.51s/it]2021-06-29 09:31:53,386 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0986312310 m] data_collection 
+ 26%|██▌       | 19/74 [02:01<05:48,  6.33s/it]2021-06-29 09:31:59,333 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0990673145 m] data_collection 
+ 27%|██▋       | 20/74 [02:07<05:35,  6.22s/it]2021-06-29 09:32:05,289 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0992291053 m] data_collection 
+ 28%|██▊       | 21/74 [02:12<05:25,  6.14s/it]2021-06-29 09:32:11,383 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1015407085 m] data_collection 
+ 30%|██▉       | 22/74 [02:19<05:18,  6.13s/it]2021-06-29 09:32:17,503 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1019696236 m] data_collection 
+ 31%|███       | 23/74 [02:25<05:12,  6.12s/it]2021-06-29 09:32:23,661 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1025843263 m] data_collection 
+ 32%|███▏      | 24/74 [02:31<05:06,  6.13s/it]2021-06-29 09:32:29,917 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1042207758 m] data_collection 
+ 34%|███▍      | 25/74 [02:37<05:02,  6.17s/it]2021-06-29 09:32:36,133 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1035781622 m] data_collection 
+ 35%|███▌      | 26/74 [02:43<04:56,  6.18s/it]2021-06-29 09:32:45,247 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1518494924 m] data_collection 
+ 36%|███▋      | 27/74 [02:52<05:31,  7.06s/it]2021-06-29 09:32:51,590 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1056843718 m] data_collection 
+ 38%|███▊      | 28/74 [02:59<05:14,  6.85s/it]2021-06-29 09:32:57,867 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1045775493 m] data_collection 
+ 39%|███▉      | 29/74 [03:05<05:00,  6.68s/it]2021-06-29 09:33:04,166 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1049462199 m] data_collection 
+ 41%|████      | 30/74 [03:11<04:48,  6.56s/it]2021-06-29 09:33:10,513 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1057561437 m] data_collection 
+ 42%|████▏     | 31/74 [03:18<04:39,  6.50s/it]2021-06-29 09:33:16,801 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1047654033 m] data_collection 
+ 43%|████▎     | 32/74 [03:24<04:30,  6.44s/it]2021-06-29 09:33:23,082 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1046428919 m] data_collection 
+ 45%|████▍     | 33/74 [03:30<04:21,  6.39s/it]2021-06-29 09:33:29,467 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1063686728 m] data_collection 
+ 46%|████▌     | 34/74 [03:37<04:15,  6.39s/it]2021-06-29 09:33:35,925 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1076042334 m] data_collection 
+ 47%|████▋     | 35/74 [03:43<04:09,  6.41s/it]2021-06-29 09:33:42,468 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1090025822 m] data_collection 
+ 49%|████▊     | 36/74 [03:50<04:05,  6.45s/it]2021-06-29 09:33:48,884 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1069009741 m] data_collection 
+ 50%|█████     | 37/74 [03:56<03:58,  6.44s/it]2021-06-29 09:33:55,479 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1098787189 m] data_collection 
+ 51%|█████▏    | 38/74 [04:03<03:53,  6.49s/it]2021-06-29 09:34:04,890 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1568041643 m] data_collection 
+ 53%|█████▎    | 39/74 [04:12<04:17,  7.36s/it]2021-06-29 09:34:11,318 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1070928256 m] data_collection 
+ 54%|█████▍    | 40/74 [04:19<04:00,  7.08s/it]2021-06-29 09:34:17,738 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1069697658 m] data_collection 
+ 55%|█████▌    | 41/74 [04:25<03:47,  6.88s/it]2021-06-29 09:34:24,381 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1106848200 m] data_collection 
+ 57%|█████▋    | 42/74 [04:32<03:37,  6.81s/it]2021-06-29 09:34:30,861 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1079545697 m] data_collection 
+ 58%|█████▊    | 43/74 [04:38<03:28,  6.71s/it]2021-06-29 09:34:37,473 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1101698160 m] data_collection 
+ 59%|█████▉    | 44/74 [04:45<03:20,  6.68s/it]2021-06-29 09:34:44,117 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1106862227 m] data_collection 
+ 61%|██████    | 45/74 [04:51<03:13,  6.67s/it]2021-06-29 09:34:50,722 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1100485841 m] data_collection 
+ 62%|██████▏   | 46/74 [04:58<03:06,  6.65s/it]2021-06-29 09:34:57,476 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1125422716 m] data_collection 
+ 64%|██████▎   | 47/74 [05:05<03:00,  6.68s/it]2021-06-29 09:35:04,195 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1119371454 m] data_collection 
+ 65%|██████▍   | 48/74 [05:11<02:54,  6.69s/it]2021-06-29 09:35:10,944 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1124269525 m] data_collection 
+ 66%|██████▌   | 49/74 [05:18<02:47,  6.71s/it]2021-06-29 09:35:17,854 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1151345531 m] data_collection 
+ 68%|██████▊   | 50/74 [05:25<02:42,  6.77s/it]2021-06-29 09:35:27,571 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1619069815 m] data_collection 
+ 69%|██████▉   | 51/74 [05:35<02:56,  7.65s/it]2021-06-29 09:35:34,384 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1135121663 m] data_collection 
+ 70%|███████   | 52/74 [05:42<02:42,  7.40s/it]2021-06-29 09:35:41,256 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1145013134 m] data_collection 
+ 72%|███████▏  | 53/74 [05:48<02:32,  7.24s/it]2021-06-29 09:35:48,128 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1144928773 m] data_collection 
+ 73%|███████▎  | 54/74 [05:55<02:22,  7.13s/it]2021-06-29 09:35:55,093 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1160527309 m] data_collection 
+ 74%|███████▍  | 55/74 [06:02<02:14,  7.08s/it]2021-06-29 09:36:01,947 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1141887705 m] data_collection 
+ 76%|███████▌  | 56/74 [06:09<02:06,  7.01s/it]2021-06-29 09:36:08,784 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1139134963 m] data_collection 
+ 77%|███████▋  | 57/74 [06:16<01:58,  6.96s/it]2021-06-29 09:36:15,657 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1145207167 m] data_collection 
+ 78%|███████▊  | 58/74 [06:23<01:50,  6.93s/it]2021-06-29 09:36:22,596 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1155967236 m] data_collection 
+ 80%|███████▉  | 59/74 [06:30<01:44,  6.94s/it]2021-06-29 09:36:29,663 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1177521030 m] data_collection 
+ 81%|████████  | 60/74 [06:37<01:37,  6.97s/it]2021-06-29 09:36:36,716 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1175088803 m] data_collection 
+ 82%|████████▏ | 61/74 [06:44<01:30,  7.00s/it]2021-06-29 09:36:43,834 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1185999990 m] data_collection 
+ 84%|████████▍ | 62/74 [06:51<01:24,  7.03s/it]2021-06-29 09:36:50,860 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1170560877 m] data_collection 
+ 85%|████████▌ | 63/74 [06:58<01:17,  7.03s/it]2021-06-29 09:36:58,054 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1198621829 m] data_collection 
+ 86%|████████▋ | 64/74 [07:05<01:10,  7.08s/it]2021-06-29 09:37:08,302 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1707601229 m] data_collection 
+ 88%|████████▊ | 65/74 [07:15<01:12,  8.03s/it]2021-06-29 09:37:15,391 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1181285381 m] data_collection 
+ 89%|████████▉ | 66/74 [07:23<01:01,  7.75s/it]2021-06-29 09:37:22,606 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1202127457 m] data_collection 
+ 91%|█████████ | 67/74 [07:30<00:53,  7.59s/it]2021-06-29 09:37:29,727 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1186399182 m] data_collection 
+ 92%|█████████▏| 68/74 [07:37<00:44,  7.45s/it]2021-06-29 09:37:36,987 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1209725658 m] data_collection 
+ 93%|█████████▎| 69/74 [07:44<00:36,  7.39s/it]2021-06-29 09:37:44,292 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1216975530 m] data_collection 
+ 95%|█████████▍| 70/74 [07:51<00:29,  7.37s/it]2021-06-29 09:37:51,432 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1189701716 m] data_collection 
+ 96%|█████████▌| 71/74 [07:59<00:21,  7.30s/it]2021-06-29 09:37:58,670 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1205933332 m] data_collection 
+ 97%|█████████▋| 72/74 [08:06<00:14,  7.28s/it]2021-06-29 09:38:05,871 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1199831168 m] data_collection 
+ 99%|█████████▊| 73/74 [08:13<00:07,  7.26s/it]2021-06-29 09:38:12,020 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1024510900 m] data_collection 
+100%|██████████| 74/74 [08:19<00:00,  6.92s/it]100%|██████████| 74/74 [08:19<00:00,  6.75s/it]
+filter num :386637
+2021-06-29 09:38:18,715 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [8.4394476175 m] data_collection_with_batch 
+random train data length:723508
+  0%|          | 0/10 [00:00<?, ?it/s]2021-06-29 09:38:21: itr(0), training loss:  3.78, 3.7798, 3.7798, 3.78, 3.7799, 3.78, 3.7798, 3.7796, 3.7795, 3.78,
+2021-06-29 09:38:36: itr(10), training loss:  3.2725, 3.2122, 3.1289, 3.1598, 3.0535, 3.0455, 3.0123, 2.9959, 2.9303, 2.9786,
+2021-06-29 09:38:50: itr(20), training loss:  3.0733, 2.9481, 2.8396, 2.9361, 2.7933, 2.7476, 2.6229, 2.5793, 2.3146, 2.3978,
+2021-06-29 09:39:05: itr(30), training loss:  3.0342, 2.8456, 2.5584, 2.4569, 2.0891, 1.8729, 1.495, 1.2347, 1.0117, 0.79349,
+2021-06-29 09:39:21: itr(40), training loss:  3.2705, 3.0331, 2.8618, 2.6016, 2.2485, 1.9288, 1.4236, 1.1231, 0.90686, 0.64345,
+2021-06-29 09:39:36: itr(50), training loss:  2.7423, 2.5028, 2.3047, 2.0984, 1.6807, 1.4581, 1.3217, 1.1224, 0.84341, 0.53335,
+2021-06-29 09:39:52: itr(60), training loss:  3.1908, 2.7527, 2.6261, 2.3607, 1.9417, 1.6712, 1.2732, 1.058, 0.75211, 0.47877,
+2021-06-29 09:40:07: itr(70), training loss:  2.5692, 2.2953, 1.9811, 1.6672, 1.3655, 1.3087, 0.9873, 0.73516, 0.48759, 0.3153,
+2021-06-29 09:40:23: itr(80), training loss:  2.9868, 2.7209, 2.4443, 2.3147, 1.9633, 1.589, 1.3226, 1.0959, 0.6926, 0.37481,
+2021-06-29 09:40:38: itr(90), training loss:  3.1027, 2.7296, 2.4602, 2.2115, 1.8141, 1.4256, 1.2725, 0.89247, 0.65389, 0.35764,
+2021-06-29 09:40:54: itr(100), training loss:  2.6599, 2.5504, 2.257, 1.9491, 1.7419, 1.5438, 1.2309, 0.92283, 0.60331, 0.30906,
+2021-06-29 09:41:10: itr(110), training loss:  3.4712, 3.1338, 2.9503, 2.6027, 2.2491, 1.9373, 1.5532, 1.24, 0.59525, 0.37215,
+2021-06-29 09:41:26: itr(120), training loss:  3.1247, 2.8491, 2.6436, 2.4022, 1.9393, 1.5141, 1.2197, 0.97883, 0.75245, 0.28623,
+2021-06-29 09:41:42: itr(130), training loss:  3.1887, 2.919, 2.6424, 2.3227, 1.9463, 1.6984, 1.1803, 0.96929, 0.61475, 0.29932,
+2021-06-29 09:41:59: itr(140), training loss:  2.5633, 2.3914, 1.9473, 1.7298, 1.5501, 1.349, 1.0841, 0.89238, 0.46001, 0.20736,
+2021-06-29 09:42:15: itr(150), training loss:  2.6895, 2.509, 2.2575, 1.9559, 1.7366, 1.348, 1.1142, 0.88946, 0.48165, 0.21774,
+2021-06-29 09:42:31: itr(160), training loss:  2.6849, 2.5068, 2.2846, 1.9598, 1.7359, 1.4629, 1.1695, 0.83066, 0.52919, 0.2204,
+2021-06-29 09:42:50: itr(170), training loss:  2.5149, 2.1484, 1.8934, 1.5936, 1.413, 1.3423, 1.137, 0.92403, 0.60698, 0.20012,
+2021-06-29 09:43:06: itr(180), training loss:  2.7069, 2.4567, 2.1732, 1.8717, 1.6906, 1.4515, 1.1885, 0.92007, 0.5417, 0.22549,
+2021-06-29 09:43:22: itr(190), training loss:  2.9973, 2.8046, 2.5758, 2.2211, 1.8712, 1.6091, 1.3078, 0.95447, 0.69047, 0.25708,
+2021-06-29 09:43:39: itr(200), training loss:  3.0375, 2.6965, 2.3922, 2.0348, 1.7677, 1.5742, 1.3138, 1.0335, 0.62564, 0.24738,
+2021-06-29 09:43:55: itr(210), training loss:  3.1394, 2.8107, 2.412, 2.0354, 1.7387, 1.4269, 1.084, 0.74817, 0.50944, 0.24037,
+2021-06-29 09:44:11: itr(220), training loss:  2.6257, 2.2936, 2.0533, 1.857, 1.5681, 1.2304, 1.0258, 0.79211, 0.55247, 0.21547,
+2021-06-29 09:44:28: itr(230), training loss:  2.9052, 2.5949, 2.322, 2.0052, 1.7326, 1.4189, 1.026, 0.71477, 0.44694, 0.25361,
+2021-06-29 09:44:45: itr(240), training loss:  2.6045, 2.2456, 2.0452, 1.7626, 1.5526, 1.2503, 0.97501, 0.67728, 0.41879, 0.20558,
+2021-06-29 09:45:02: itr(250), training loss:  2.3972, 2.0042, 1.8192, 1.6013, 1.4637, 1.214, 0.94408, 0.68834, 0.42932, 0.17111,
+2021-06-29 09:45:19: itr(260), training loss:  2.8249, 2.5219, 2.2423, 1.8006, 1.6754, 1.5042, 1.2148, 0.9202, 0.60966, 0.20636,
+2021-06-29 09:45:36: itr(270), training loss:  2.8774, 2.6326, 2.1678, 1.7863, 1.5663, 1.2113, 0.98485, 0.67756, 0.41697, 0.20167,
+2021-06-29 09:45:53: itr(280), training loss:  2.4874, 2.319, 2.0939, 1.6703, 1.4268, 1.2529, 1.0629, 0.82694, 0.57074, 0.1851,
+2021-06-29 09:46:11: itr(290), training loss:  2.7764, 2.2598, 2.0358, 1.6603, 1.4558, 1.1311, 0.84508, 0.61121, 0.37138, 0.21707,
+2021-06-29 09:46:28: itr(300), training loss:  2.8939, 2.6424, 2.3437, 2.1802, 1.8888, 1.6112, 1.2568, 1.0244, 0.72497, 0.21465,
+2021-06-29 09:46:44: itr(310), training loss:  2.4252, 2.3655, 2.0344, 1.5465, 1.2115, 0.97909, 0.77487, 0.57353, 0.31826, 0.15515,
+2021-06-29 09:47:01: itr(320), training loss:  2.8013, 2.5726, 2.2613, 1.9481, 1.7537, 1.4055, 1.2044, 0.68149, 0.39662, 0.20693,
+2021-06-29 09:47:18: itr(330), training loss:  2.6249, 2.411, 2.0983, 1.8169, 1.5757, 1.2953, 0.99211, 0.69188, 0.44449, 0.14016,
+2021-06-29 09:47:35: itr(340), training loss:  2.3963, 2.1999, 1.8818, 1.6248, 1.4474, 1.2689, 0.99474, 0.7142, 0.57333, 0.20035,
+2021-06-29 09:47:52: itr(350), training loss:  2.3084, 2.2109, 2.0384, 1.7347, 1.5088, 1.201, 1.0311, 0.75457, 0.49242, 0.16525,
+2021-06-29 09:48:10: itr(360), training loss:  2.5956, 2.4099, 2.1116, 1.7544, 1.499, 1.2352, 0.98174, 0.76149, 0.68856, 0.20753,
+2021-06-29 09:48:26: itr(370), training loss:  2.9041, 2.6366, 2.3208, 2.0856, 1.7744, 1.5158, 1.2534, 0.87561, 0.47285, 0.2262,
+2021-06-29 09:48:43: itr(380), training loss:  2.451, 2.2889, 2.0266, 1.8996, 1.7956, 1.5903, 1.1072, 0.82342, 0.59815, 0.19043,
+2021-06-29 09:49:01: itr(390), training loss:  2.6148, 2.2782, 2.0706, 1.8906, 1.6494, 1.1248, 0.74342, 0.62169, 0.42648, 0.20625,
+2021-06-29 09:49:18: itr(400), training loss:  2.6989, 2.4116, 1.9973, 1.7528, 1.4545, 1.2002, 0.80308, 0.57927, 0.35794, 0.17695,
+2021-06-29 09:49:38: itr(410), training loss:  2.5863, 2.3676, 2.0956, 1.8649, 1.539, 1.2643, 0.99797, 0.7097, 0.51597, 0.18186,
+2021-06-29 09:49:55: itr(420), training loss:  2.4139, 2.2257, 1.8672, 1.5618, 1.3717, 1.2839, 1.0417, 0.70731, 0.4963, 0.18645,
+2021-06-29 09:50:11: itr(430), training loss:  2.8425, 2.5533, 2.4063, 2.1479, 1.8193, 1.639, 1.3837, 1.0126, 0.63055, 0.22368,
+2021-06-29 09:50:28: itr(440), training loss:  2.4605, 2.2766, 2.189, 1.9132, 1.6399, 1.3723, 1.07, 0.88583, 0.50821, 0.18885,
+2021-06-29 09:50:45: itr(450), training loss:  2.632, 2.5025, 2.3736, 2.1081, 1.8085, 1.5914, 1.4241, 1.1222, 0.62922, 0.21086,
+2021-06-29 09:51:01: itr(460), training loss:  2.4318, 2.1994, 1.9213, 1.656, 1.3881, 1.0514, 0.89082, 0.76185, 0.51314, 0.20279,
+2021-06-29 09:51:18: itr(470), training loss:  2.4684, 2.2211, 1.9752, 1.6638, 1.4792, 1.2787, 1.0569, 0.80928, 0.60153, 0.18947,
+2021-06-29 09:51:34: itr(480), training loss:  2.5106, 1.9845, 1.7965, 1.5447, 1.2321, 0.99342, 0.66228, 0.51639, 0.3472, 0.16697,
+2021-06-29 09:51:51: itr(490), training loss:  2.3778, 2.1941, 1.9897, 1.761, 1.6359, 1.3435, 1.189, 1.0452, 0.56621, 0.18576,
+2021-06-29 09:52:08: itr(500), training loss:  2.2809, 2.1266, 2.0116, 1.6743, 1.4844, 1.2605, 1.0134, 0.72951, 0.41843, 0.16072,
+2021-06-29 09:52:24: itr(510), training loss:  2.2026, 2.0461, 1.8337, 1.6282, 1.4078, 1.2613, 1.0138, 0.79711, 0.44019, 0.18523,
+2021-06-29 09:52:40: itr(520), training loss:  2.5647, 2.3191, 2.0917, 1.8134, 1.5821, 1.2895, 0.98844, 0.76063, 0.45148, 0.1918,
+2021-06-29 09:52:57: itr(530), training loss:  2.4995, 2.2896, 2.0567, 1.7952, 1.5888, 1.3355, 1.0787, 0.70259, 0.47499, 0.21896,
+2021-06-29 09:53:13: itr(540), training loss:  2.1553, 2.0783, 1.8044, 1.5509, 1.3747, 1.1402, 0.87757, 0.80666, 0.52052, 0.17311,
+2021-06-29 09:53:30: itr(550), training loss:  2.4227, 2.2425, 2.0691, 1.8603, 1.5584, 1.3286, 1.0456, 0.75662, 0.5232, 0.19535,
+2021-06-29 09:53:46: itr(560), training loss:  2.6664, 2.5228, 2.3012, 2.1295, 1.9577, 1.5082, 1.1776, 0.90062, 0.57125, 0.21093,
+2021-06-29 09:54:02: itr(570), training loss:  2.5481, 2.3481, 2.1315, 1.9272, 1.5844, 1.3289, 1.0868, 0.67663, 0.38508, 0.17296,
+2021-06-29 09:54:19: itr(580), training loss:  2.3169, 2.0619, 1.808, 1.6287, 1.3732, 1.1264, 0.80932, 0.6668, 0.33124, 0.16508,
+2021-06-29 09:54:35: itr(590), training loss:  2.6623, 2.4701, 2.1635, 1.9208, 1.4721, 1.3525, 1.0073, 0.67083, 0.39698, 0.20118,
+2021-06-29 09:54:51: itr(600), training loss:  2.786, 2.4619, 2.1753, 1.8846, 1.5652, 1.169, 0.89501, 0.62986, 0.42478, 0.22724,
+2021-06-29 09:55:07: itr(610), training loss:  2.9312, 2.6894, 2.472, 2.1294, 1.823, 1.453, 1.0308, 0.69857, 0.4039, 0.20688,
+2021-06-29 09:55:23: itr(620), training loss:  2.5228, 2.3713, 2.243, 1.9082, 1.4395, 1.3189, 1.1084, 0.75362, 0.44845, 0.20941,
+2021-06-29 09:55:39: itr(630), training loss:  1.9797, 1.76, 1.673, 1.6054, 1.2307, 1.0134, 0.76292, 0.60108, 0.34777, 0.16266,
+2021-06-29 09:55:55: itr(640), training loss:  2.3681, 2.1071, 1.888, 1.7773, 1.5388, 1.3566, 0.98036, 0.66945, 0.39757, 0.17876,
+2021-06-29 09:56:14: itr(650), training loss:  2.6652, 2.4549, 2.112, 1.9282, 1.7016, 1.3491, 1.1161, 0.88324, 0.59493, 0.2172,
+2021-06-29 09:56:30: itr(660), training loss:  2.6986, 2.4563, 2.3082, 2.0861, 1.6414, 1.3762, 1.0467, 0.81735, 0.50642, 0.18315,
+2021-06-29 09:56:46: itr(670), training loss:  2.5356, 2.3777, 2.2498, 1.963, 1.6685, 1.2936, 0.94791, 0.61552, 0.39271, 0.18731,
+2021-06-29 09:57:02: itr(680), training loss:  2.4781, 2.3167, 2.1164, 1.8482, 1.5675, 1.2938, 0.82828, 0.64476, 0.3551, 0.16803,
+2021-06-29 09:57:17: itr(690), training loss:  2.4026, 2.2247, 2.003, 1.786, 1.5332, 1.3524, 1.0221, 0.70861, 0.48616, 0.16767,
+2021-06-29 09:57:33: itr(700), training loss:  2.2985, 2.1618, 1.8122, 1.5448, 1.3464, 1.2014, 0.77248, 0.56946, 0.22632, 0.16478,
+ 10%|█         | 1/10 [19:23<2:54:29, 1163.24s/it]2021-06-29 09:57:49: itr(710), training loss:  2.1343, 1.9488, 1.8151, 1.6047, 1.4139, 1.2137, 0.9811, 0.76075, 0.54402, 0.15001,
+2021-06-29 09:58:04: itr(720), training loss:  2.482, 2.2581, 2.0913, 1.9406, 1.5273, 1.2306, 1.0401, 0.8496, 0.62126, 0.21153,
+2021-06-29 09:58:20: itr(730), training loss:  2.7761, 2.5788, 2.3259, 2.1124, 1.6272, 1.3683, 0.96674, 0.73596, 0.43035, 0.20595,
+2021-06-29 09:58:36: itr(740), training loss:  2.3899, 2.1667, 1.9724, 1.7008, 1.5105, 1.3465, 1.1812, 0.85392, 0.37121, 0.16135,
+2021-06-29 09:58:51: itr(750), training loss:  2.4192, 2.1482, 1.9131, 1.6872, 1.4564, 1.2044, 0.84811, 0.61378, 0.37101, 0.15626,
+2021-06-29 09:59:07: itr(760), training loss:  2.2897, 2.1207, 1.8498, 1.6529, 1.3709, 1.1137, 0.9605, 0.67358, 0.39106, 0.17382,
+2021-06-29 09:59:23: itr(770), training loss:  2.198, 1.8566, 1.6342, 1.2445, 1.1464, 0.9297, 0.82278, 0.5325, 0.22781, 0.17716,
+2021-06-29 09:59:40: itr(780), training loss:  2.1456, 1.8897, 1.7106, 1.568, 1.3465, 1.1157, 0.92322, 0.66262, 0.33573, 0.1678,
+2021-06-29 09:59:56: itr(790), training loss:  2.3604, 2.1161, 1.8702, 1.4572, 1.2902, 1.0964, 0.83294, 0.65953, 0.42964, 0.17371,
+2021-06-29 10:00:12: itr(800), training loss:  2.3441, 2.08, 1.7853, 1.5728, 1.2009, 1, 0.8627, 0.62745, 0.44, 0.17803,
+2021-06-29 10:00:29: itr(810), training loss:  2.517, 2.2934, 2.1429, 1.9874, 1.7829, 1.382, 1.1769, 0.89466, 0.47368, 0.18554,
+2021-06-29 10:00:45: itr(820), training loss:  2.5357, 2.3017, 1.8918, 1.5126, 1.3134, 1.1344, 0.96875, 0.70159, 0.45677, 0.17746,
+2021-06-29 10:01:01: itr(830), training loss:  2.5249, 2.3669, 2.0792, 1.8272, 1.5455, 1.3185, 1.0721, 0.77514, 0.46665, 0.1903,
+2021-06-29 10:01:18: itr(840), training loss:  2.4011, 2.1402, 1.9275, 1.6155, 1.3563, 1.1139, 0.8822, 0.63876, 0.29316, 0.15745,
+2021-06-29 10:01:34: itr(850), training loss:  2.3176, 2.2049, 1.9514, 1.697, 1.39, 1.0881, 0.91023, 0.79182, 0.57433, 0.1656,
+2021-06-29 10:01:50: itr(860), training loss:  3.0045, 2.6578, 2.3874, 2.0776, 1.8873, 1.5125, 1.1574, 0.80883, 0.4052, 0.2219,
+2021-06-29 10:02:06: itr(870), training loss:  2.6555, 2.2432, 2.0635, 1.8529, 1.584, 1.3203, 0.93586, 0.78123, 0.51336, 0.18089,
+2021-06-29 10:02:23: itr(880), training loss:  2.4547, 2.2319, 2.0802, 1.8328, 1.5939, 1.2564, 0.935, 0.84145, 0.5225, 0.18589,
+2021-06-29 10:02:39: itr(890), training loss:  2.3343, 2.1697, 2.0572, 1.7344, 1.5534, 1.3299, 1.1453, 0.81364, 0.46006, 0.20219,
+2021-06-29 10:02:59: itr(900), training loss:  2.7196, 2.5492, 2.266, 2.0424, 1.7801, 1.2644, 1.0194, 0.66117, 0.42958, 0.21745,
+2021-06-29 10:03:15: itr(910), training loss:  2.8621, 2.5677, 2.2394, 2.0263, 1.761, 1.5821, 1.3086, 0.93502, 0.60567, 0.22646,
+2021-06-29 10:03:32: itr(920), training loss:  2.846, 2.5257, 2.1036, 1.8016, 1.3972, 1.0954, 0.77414, 0.41787, 0.27584, 0.18085,
+2021-06-29 10:03:49: itr(930), training loss:  2.5837, 2.4623, 2.1957, 1.8408, 1.5227, 1.2235, 1.0236, 0.73951, 0.34935, 0.19683,
+2021-06-29 10:04:06: itr(940), training loss:  2.6771, 2.3644, 2.0985, 1.8741, 1.754, 1.4607, 1.2127, 0.85381, 0.5503, 0.18417,
+2021-06-29 10:04:22: itr(950), training loss:  2.9815, 2.7207, 2.3681, 2.1527, 1.7839, 1.42, 1.2162, 1.0758, 0.62919, 0.20148,
+2021-06-29 10:04:39: itr(960), training loss:  2.3101, 2.0688, 1.8549, 1.5968, 1.4357, 1.0518, 0.84605, 0.5624, 0.30422, 0.17996,
+2021-06-29 10:04:56: itr(970), training loss:  2.2841, 2.0912, 1.9253, 1.7534, 1.5216, 1.3424, 1.0768, 0.59442, 0.45938, 0.23984,
+2021-06-29 10:05:14: itr(980), training loss:  2.6866, 2.6252, 2.3411, 2.0284, 1.616, 1.2593, 0.8982, 0.68832, 0.51945, 0.20767,
+2021-06-29 10:05:31: itr(990), training loss:  2.1656, 1.8976, 1.7533, 1.588, 1.3722, 1.1847, 0.91519, 0.62534, 0.41538, 0.16771,
+2021-06-29 10:05:48: itr(1000), training loss:  2.6055, 2.2725, 2.0857, 1.7662, 1.5073, 1.2823, 0.96442, 0.80218, 0.40818, 0.19886,
+2021-06-29 10:06:05: itr(1010), training loss:  2.6518, 2.4029, 2.1249, 1.7444, 1.5732, 1.3693, 1.0387, 0.53538, 0.33717, 0.18504,
+2021-06-29 10:06:23: itr(1020), training loss:  2.4733, 2.3731, 2.009, 1.7828, 1.6158, 1.3827, 1.1929, 0.96784, 0.49407, 0.22552,
+2021-06-29 10:06:40: itr(1030), training loss:  2.1596, 2.0393, 1.8238, 1.4593, 1.268, 1.0524, 0.90216, 0.57046, 0.33323, 0.16777,
+2021-06-29 10:06:58: itr(1040), training loss:  2.511, 2.2201, 2.0615, 1.8109, 1.6259, 1.3301, 1.099, 0.77076, 0.39766, 0.19406,
+2021-06-29 10:07:15: itr(1050), training loss:  2.293, 2.1463, 1.9062, 1.6927, 1.4844, 1.4083, 1.235, 0.90367, 0.59849, 0.20678,
+2021-06-29 10:07:33: itr(1060), training loss:  2.3029, 2.0669, 1.7422, 1.5736, 1.3562, 1.1412, 0.99215, 0.91062, 0.49297, 0.18111,
+2021-06-29 10:07:51: itr(1070), training loss:  2.121, 1.9303, 1.6254, 1.4276, 1.2292, 1.0217, 0.91653, 0.63746, 0.41698, 0.14137,
+2021-06-29 10:08:08: itr(1080), training loss:  2.3969, 2.2796, 2.1441, 1.6965, 1.3576, 1.079, 0.82907, 0.66396, 0.43339, 0.18564,
+2021-06-29 10:08:26: itr(1090), training loss:  2.7926, 2.4838, 2.2971, 1.974, 1.6495, 1.4846, 1.3273, 0.92841, 0.57582, 0.19291,
+2021-06-29 10:08:44: itr(1100), training loss:  2.8719, 2.5079, 2.2357, 2.0295, 1.7013, 1.4308, 1.1276, 0.84481, 0.55524, 0.20203,
+2021-06-29 10:09:01: itr(1110), training loss:  2.6258, 2.4375, 2.149, 1.8373, 1.5364, 1.1822, 1.0157, 0.70601, 0.52241, 0.20603,
+2021-06-29 10:09:19: itr(1120), training loss:  2.4795, 2.3716, 2.1679, 1.9924, 1.7593, 1.5756, 1.1299, 0.7734, 0.44954, 0.17963,
+2021-06-29 10:09:36: itr(1130), training loss:  2.6087, 2.4018, 2.1324, 1.9562, 1.6542, 1.4159, 1.1218, 0.94714, 0.58758, 0.20198,
+2021-06-29 10:09:56: itr(1140), training loss:  2.2028, 1.9051, 1.6107, 1.4466, 1.2099, 1.0834, 0.84271, 0.68909, 0.33778, 0.1745,
+2021-06-29 10:10:13: itr(1150), training loss:  2.476, 2.2268, 2.1125, 1.7689, 1.4948, 1.2822, 1.0434, 0.779, 0.3817, 0.20216,
+2021-06-29 10:10:30: itr(1160), training loss:  2.5054, 2.1919, 2.0333, 1.7281, 1.4864, 1.4035, 1.0514, 0.83398, 0.52451, 0.17107,
+2021-06-29 10:10:47: itr(1170), training loss:  2.7833, 2.5053, 2.3221, 2.0146, 1.6251, 1.2904, 0.87124, 0.61699, 0.34547, 0.18352,
+2021-06-29 10:11:04: itr(1180), training loss:  2.5341, 2.2951, 2.1436, 1.814, 1.4614, 1.2342, 1.0408, 0.90376, 0.49552, 0.18018,
+2021-06-29 10:11:21: itr(1190), training loss:  2.465, 2.1064, 1.8427, 1.512, 1.3034, 1.0563, 0.9715, 0.73299, 0.42939, 0.17298,
+2021-06-29 10:11:38: itr(1200), training loss:  2.5339, 2.3988, 2.1482, 1.8282, 1.5084, 1.2398, 0.9835, 0.72916, 0.54036, 0.19853,
+2021-06-29 10:11:54: itr(1210), training loss:  2.352, 2.0844, 1.7615, 1.6386, 1.4746, 1.2641, 1.0133, 0.51811, 0.35116, 0.19158,
+2021-06-29 10:12:11: itr(1220), training loss:  2.8128, 2.4529, 2.1385, 1.7997, 1.3272, 1.1234, 0.89081, 0.64422, 0.49197, 0.20685,
+2021-06-29 10:12:28: itr(1230), training loss:  2.1954, 2.033, 1.7841, 1.4803, 1.2076, 1.0786, 0.84624, 0.61547, 0.47116, 0.18949,
+2021-06-29 10:12:44: itr(1240), training loss:  2.4627, 2.2623, 2.0842, 1.8506, 1.6708, 1.4427, 1.0888, 0.82298, 0.43504, 0.19424,
+2021-06-29 10:13:01: itr(1250), training loss:  2.6733, 2.4583, 2.2537, 2.0127, 1.4946, 1.1799, 0.96105, 0.83621, 0.56913, 0.1891,
+2021-06-29 10:13:18: itr(1260), training loss:  2.9252, 2.631, 2.4003, 2.0564, 1.7362, 1.4096, 1.0527, 0.78018, 0.44959, 0.2047,
+2021-06-29 10:13:34: itr(1270), training loss:  2.7018, 2.4597, 2.1795, 2.0455, 1.9571, 1.6846, 1.3811, 0.92624, 0.53593, 0.19178,
+2021-06-29 10:13:51: itr(1280), training loss:  2.6482, 2.4022, 2.1933, 1.7731, 1.5648, 1.2091, 1.113, 0.80914, 0.45858, 0.17533,
+2021-06-29 10:14:07: itr(1290), training loss:  2.39, 2.2342, 1.8992, 1.7756, 1.5807, 1.2766, 0.86878, 0.59714, 0.32206, 0.16162,
+2021-06-29 10:14:23: itr(1300), training loss:  2.6523, 2.3498, 2.0891, 1.8323, 1.6178, 1.2338, 0.93982, 0.61356, 0.47051, 0.19315,
+2021-06-29 10:14:39: itr(1310), training loss:  2.4497, 2.2581, 2.0321, 1.7664, 1.5756, 1.2791, 1.0822, 0.76711, 0.61078, 0.19886,
+2021-06-29 10:14:55: itr(1320), training loss:  2.7407, 2.3422, 2.0817, 1.758, 1.5512, 1.3625, 1.0647, 0.77293, 0.37344, 0.19249,
+2021-06-29 10:15:11: itr(1330), training loss:  2.6347, 2.4076, 2.0935, 1.8152, 1.5488, 1.2337, 1.0317, 0.93163, 0.57596, 0.19346,
+2021-06-29 10:15:27: itr(1340), training loss:  2.551, 2.4, 2.1031, 1.636, 1.3306, 1.2041, 0.96832, 0.66764, 0.46481, 0.17345,
+2021-06-29 10:15:44: itr(1350), training loss:  2.8813, 2.7263, 2.5161, 2.1724, 1.9366, 1.6695, 1.1219, 0.73134, 0.45758, 0.20749,
+2021-06-29 10:16:00: itr(1360), training loss:  2.3054, 2.2187, 1.931, 1.6763, 1.4688, 1.119, 0.86662, 0.54673, 0.31808, 0.18439,
+2021-06-29 10:16:16: itr(1370), training loss:  2.3438, 2.1031, 1.9626, 1.7622, 1.4237, 1.2553, 0.99689, 0.56883, 0.22673, 0.13667,
+2021-06-29 10:16:35: itr(1380), training loss:  2.3362, 2.0979, 1.8957, 1.6866, 1.5603, 1.2604, 0.97354, 0.80475, 0.43217, 0.1559,
+2021-06-29 10:16:51: itr(1390), training loss:  2.461, 2.201, 2.052, 1.6863, 1.5385, 1.195, 0.95774, 0.66745, 0.37567, 0.18573,
+2021-06-29 10:17:06: itr(1400), training loss:  2.2801, 2.1354, 1.9455, 1.7252, 1.2053, 1.0065, 0.7757, 0.53165, 0.30121, 0.13903,
+2021-06-29 10:17:22: itr(1410), training loss:  2.3915, 2.233, 1.9335, 1.7483, 1.3417, 1.1134, 0.92688, 0.73449, 0.37696, 0.17338,
+ 20%|██        | 2/10 [39:07<2:36:44, 1175.55s/it]2021-06-29 10:17:37: itr(1420), training loss:  2.8513, 2.6515, 2.4148, 2.1266, 1.8827, 1.5653, 1.3097, 1.0224, 0.5806, 0.24152,
+2021-06-29 10:17:53: itr(1430), training loss:  2.7654, 2.4972, 2.1962, 1.9745, 1.6346, 1.3294, 0.97988, 0.63169, 0.41807, 0.1928,
+2021-06-29 10:18:09: itr(1440), training loss:  2.6444, 2.4643, 2.1755, 1.8353, 1.5704, 1.4173, 1.1599, 0.94319, 0.70571, 0.18861,
+2021-06-29 10:18:25: itr(1450), training loss:  2.5956, 2.4042, 2.0107, 1.7678, 1.6478, 1.3901, 1.1102, 0.83754, 0.42913, 0.17677,
+2021-06-29 10:18:41: itr(1460), training loss:  2.3538, 2.1742, 1.975, 1.7964, 1.5309, 1.2309, 1.067, 0.74734, 0.39819, 0.18799,
+2021-06-29 10:18:58: itr(1470), training loss:  2.7462, 2.5436, 2.4129, 2.091, 1.8518, 1.5348, 1.1113, 0.95338, 0.48488, 0.19398,
+2021-06-29 10:19:14: itr(1480), training loss:  2.2394, 1.9523, 1.8611, 1.59, 1.3333, 1.0043, 0.85943, 0.6862, 0.48652, 0.18332,
+2021-06-29 10:19:30: itr(1490), training loss:  2.3837, 2.1362, 1.8167, 1.6849, 1.4855, 1.3569, 1.1072, 0.74398, 0.40593, 0.16978,
+2021-06-29 10:19:46: itr(1500), training loss:  2.2313, 1.9798, 1.7524, 1.5059, 1.4186, 1.1677, 0.95065, 0.73206, 0.50431, 0.18835,
+2021-06-29 10:20:02: itr(1510), training loss:  2.7955, 2.5776, 2.3384, 2.151, 1.8401, 1.4663, 1.1371, 0.76072, 0.39982, 0.18992,
+2021-06-29 10:20:18: itr(1520), training loss:  2.7222, 2.507, 2.168, 1.9156, 1.4785, 1.282, 1.0104, 0.77231, 0.57052, 0.18142,
+2021-06-29 10:20:34: itr(1530), training loss:  2.3851, 2.1896, 1.8148, 1.6046, 1.4526, 1.0873, 0.785, 0.42989, 0.22304, 0.17422,
+2021-06-29 10:20:51: itr(1540), training loss:  2.3324, 2.1214, 1.8048, 1.5887, 1.437, 1.272, 1.1599, 0.85028, 0.47253, 0.16752,
+2021-06-29 10:21:07: itr(1550), training loss:  2.7732, 2.3728, 2.1004, 1.8523, 1.5836, 1.2863, 1.0968, 0.77664, 0.49657, 0.19312,
+2021-06-29 10:21:23: itr(1560), training loss:  2.7652, 2.4097, 2.1318, 1.681, 1.367, 1.1267, 0.88599, 0.6416, 0.34957, 0.2053,
+2021-06-29 10:21:40: itr(1570), training loss:  2.566, 2.3116, 2.0012, 1.737, 1.5145, 1.2709, 0.94366, 0.73657, 0.36782, 0.16364,
+2021-06-29 10:21:56: itr(1580), training loss:  2.4448, 2.3161, 2.1163, 2.0312, 1.551, 1.3029, 1.1331, 0.82699, 0.51317, 0.21014,
+2021-06-29 10:22:12: itr(1590), training loss:  2.4136, 2.1743, 1.9416, 1.6024, 1.3127, 1.1183, 0.90471, 0.57408, 0.41098, 0.14847,
+2021-06-29 10:22:29: itr(1600), training loss:  2.5762, 2.432, 2.24, 1.9363, 1.7328, 1.3852, 1.03, 0.6333, 0.30199, 0.17207,
+2021-06-29 10:22:46: itr(1610), training loss:  2.454, 2.1638, 1.927, 1.4744, 1.1741, 0.99633, 0.71468, 0.5603, 0.31123, 0.16037,
+2021-06-29 10:23:02: itr(1620), training loss:  2.6191, 2.346, 2.023, 1.8123, 1.5101, 1.1829, 1.0966, 0.83889, 0.59503, 0.16543,
+2021-06-29 10:23:22: itr(1630), training loss:  2.1136, 1.9003, 1.7574, 1.5607, 1.2677, 0.89572, 0.69228, 0.47531, 0.36417, 0.13801,
+2021-06-29 10:23:39: itr(1640), training loss:  2.5417, 2.4064, 2.2266, 1.96, 1.8597, 1.5148, 1.2902, 0.8735, 0.63658, 0.16815,
+2021-06-29 10:23:56: itr(1650), training loss:  2.7548, 2.4138, 2.2059, 1.887, 1.6941, 1.3504, 1.0756, 0.74217, 0.6002, 0.17607,
+2021-06-29 10:24:13: itr(1660), training loss:  2.5542, 2.4616, 2.2728, 2.0609, 1.8509, 1.4409, 1.175, 0.83322, 0.45975, 0.18748,
+2021-06-29 10:24:29: itr(1670), training loss:  2.0699, 1.88, 1.7339, 1.5341, 1.3147, 0.93803, 0.64295, 0.46648, 0.31069, 0.14793,
+2021-06-29 10:24:46: itr(1680), training loss:  2.5577, 2.3261, 2.0656, 1.7312, 1.4207, 1.2302, 1.1094, 0.72751, 0.54633, 0.17078,
+2021-06-29 10:25:03: itr(1690), training loss:  2.2954, 2.1288, 1.8206, 1.7057, 1.3017, 1.107, 0.81131, 0.56333, 0.44673, 0.18661,
+2021-06-29 10:25:20: itr(1700), training loss:  2.9122, 2.7272, 2.5131, 2.241, 2.0083, 1.4984, 1.2176, 0.79045, 0.47763, 0.19562,
+2021-06-29 10:25:38: itr(1710), training loss:  2.4755, 2.3353, 2.0428, 1.8824, 1.5642, 1.3126, 1.0703, 0.77862, 0.55902, 0.20983,
+2021-06-29 10:25:54: itr(1720), training loss:  2.8125, 2.6214, 2.2979, 1.9085, 1.6782, 1.4225, 1.131, 0.91337, 0.62239, 0.19191,
+2021-06-29 10:26:11: itr(1730), training loss:  1.9964, 1.889, 1.6912, 1.5697, 1.273, 1.1474, 0.88691, 0.58687, 0.35097, 0.12965,
+2021-06-29 10:26:29: itr(1740), training loss:  2.2301, 1.9832, 1.7806, 1.6746, 1.4041, 1.1688, 0.85153, 0.55758, 0.31171, 0.15404,
+2021-06-29 10:26:46: itr(1750), training loss:  2.4064, 2.1184, 1.866, 1.695, 1.5854, 1.3825, 1.019, 0.74545, 0.42565, 0.1737,
+2021-06-29 10:27:04: itr(1760), training loss:  2.5788, 2.3444, 1.9448, 1.6849, 1.2506, 1.1095, 0.822, 0.52716, 0.43138, 0.17194,
+2021-06-29 10:27:22: itr(1770), training loss:  2.4383, 2.1969, 1.9318, 1.7567, 1.5174, 1.2568, 0.95506, 0.73822, 0.46225, 0.16498,
+2021-06-29 10:27:39: itr(1780), training loss:  2.4063, 2.098, 1.7959, 1.4411, 1.206, 0.84891, 0.65422, 0.50759, 0.39619, 0.19607,
+2021-06-29 10:27:56: itr(1790), training loss:  2.3126, 2.0488, 1.8002, 1.5428, 1.4204, 1.2026, 0.8953, 0.70143, 0.35946, 0.1566,
+2021-06-29 10:28:14: itr(1800), training loss:  2.2381, 2.0381, 1.8812, 1.5772, 1.285, 1.0636, 0.85216, 0.58402, 0.44232, 0.16915,
+2021-06-29 10:28:31: itr(1810), training loss:  2.7574, 2.4698, 2.2556, 1.7241, 1.4481, 1.1903, 0.89829, 0.61102, 0.35913, 0.20445,
+2021-06-29 10:28:48: itr(1820), training loss:  2.6029, 2.4123, 2.1784, 2.0154, 1.6724, 1.4535, 1.2168, 0.93126, 0.51189, 0.2045,
+2021-06-29 10:29:04: itr(1830), training loss:  2.063, 1.9345, 1.8214, 1.5364, 1.3291, 1.0498, 0.8701, 0.59691, 0.33671, 0.136,
+2021-06-29 10:29:21: itr(1840), training loss:  2.5288, 2.3383, 2.1314, 1.983, 1.6467, 1.475, 1.0902, 0.79457, 0.58633, 0.17518,
+2021-06-29 10:29:38: itr(1850), training loss:  2.4427, 2.205, 2.0642, 1.9397, 1.6174, 1.3004, 0.96797, 0.70146, 0.42445, 0.15994,
+2021-06-29 10:29:55: itr(1860), training loss:  2.2963, 2.1074, 1.9414, 1.6207, 1.4644, 1.2243, 1.0428, 0.74016, 0.52624, 0.16544,
+2021-06-29 10:30:15: itr(1870), training loss:  2.2625, 2.102, 1.7152, 1.4951, 1.3715, 1.122, 0.87808, 0.72091, 0.52137, 0.14679,
+2021-06-29 10:30:31: itr(1880), training loss:  2.3122, 2.0108, 1.7563, 1.5357, 1.2705, 1.0239, 0.69835, 0.5203, 0.37189, 0.16324,
+2021-06-29 10:30:48: itr(1890), training loss:  2.2851, 2.1672, 1.9057, 1.6595, 1.5281, 1.3694, 1.1745, 0.71814, 0.45972, 0.18138,
+2021-06-29 10:31:04: itr(1900), training loss:  2.6002, 2.2523, 1.9844, 1.7912, 1.3932, 1.1437, 1.0054, 0.77977, 0.57116, 0.18073,
+2021-06-29 10:31:21: itr(1910), training loss:  2.4267, 2.1257, 1.8973, 1.6155, 1.4505, 1.1781, 0.89488, 0.75887, 0.46314, 0.1563,
+2021-06-29 10:31:38: itr(1920), training loss:  2.6132, 2.3431, 2.0848, 1.9001, 1.6738, 1.3646, 0.98494, 0.72497, 0.49121, 0.17877,
+2021-06-29 10:31:54: itr(1930), training loss:  2.1701, 1.978, 1.8322, 1.7604, 1.4872, 1.2143, 0.89381, 0.64141, 0.38876, 0.18175,
+2021-06-29 10:32:11: itr(1940), training loss:  2.8486, 2.462, 2.1563, 1.8629, 1.6532, 1.2253, 1.0455, 0.70698, 0.45837, 0.21065,
+2021-06-29 10:32:27: itr(1950), training loss:  2.4816, 2.1904, 1.8811, 1.677, 1.3596, 1.0489, 0.85603, 0.66273, 0.45692, 0.17865,
+2021-06-29 10:32:43: itr(1960), training loss:  2.476, 2.1794, 1.9962, 1.7581, 1.4278, 1.2515, 1.0036, 0.72434, 0.48218, 0.16894,
+2021-06-29 10:33:00: itr(1970), training loss:  2.1286, 1.999, 1.8206, 1.7125, 1.572, 1.3352, 1.0838, 0.85227, 0.55799, 0.1548,
+2021-06-29 10:33:16: itr(1980), training loss:  2.2107, 1.9718, 1.8052, 1.5106, 1.4726, 1.139, 0.8694, 0.73147, 0.49922, 0.13097,
+2021-06-29 10:33:32: itr(1990), training loss:  2.2067, 1.8922, 1.6554, 1.409, 1.2589, 1.0872, 0.81541, 0.58042, 0.37645, 0.16138,
+2021-06-29 10:33:49: itr(2000), training loss:  2.2587, 1.9978, 1.705, 1.5348, 1.3541, 1.0427, 0.85793, 0.66569, 0.3948, 0.18283,
+2021-06-29 10:34:05: itr(2010), training loss:  2.5005, 2.2504, 2.0462, 1.8265, 1.6342, 1.3598, 1.0956, 0.78851, 0.46976, 0.16612,
+2021-06-29 10:34:21: itr(2020), training loss:  2.8261, 2.6856, 2.4204, 2.0415, 1.643, 1.4673, 1.03, 0.7259, 0.43132, 0.17309,
+2021-06-29 10:34:37: itr(2030), training loss:  2.4038, 2.1739, 1.914, 1.7094, 1.5821, 1.3257, 0.87491, 0.61352, 0.38869, 0.17599,
+2021-06-29 10:34:53: itr(2040), training loss:  1.974, 1.831, 1.7131, 1.5712, 1.3275, 1.0453, 0.92192, 0.63812, 0.34647, 0.1306,
+2021-06-29 10:35:08: itr(2050), training loss:  2.4553, 2.1625, 1.9704, 1.7485, 1.5323, 1.2935, 1.0468, 0.77992, 0.27971, 0.18081,
+2021-06-29 10:35:24: itr(2060), training loss:  2.1297, 1.9794, 1.7666, 1.6456, 1.4308, 1.2236, 0.91197, 0.70913, 0.49504, 0.14936,
+2021-06-29 10:35:40: itr(2070), training loss:  2.3654, 2.0637, 1.8024, 1.6024, 1.3846, 1.2534, 1.1084, 0.72162, 0.4966, 0.15865,
+2021-06-29 10:35:56: itr(2080), training loss:  2.6024, 2.5263, 2.1993, 1.9443, 1.6866, 1.2784, 0.99547, 0.77241, 0.3398, 0.15246,
+2021-06-29 10:36:12: itr(2090), training loss:  2.2478, 2.1197, 1.8263, 1.7095, 1.4717, 1.2467, 1.0074, 0.6276, 0.31626, 0.16565,
+2021-06-29 10:36:27: itr(2100), training loss:  2.8228, 2.5788, 2.3178, 1.9533, 1.7129, 1.5157, 1.1635, 0.85273, 0.46224, 0.18299,
+2021-06-29 10:36:43: itr(2110), training loss:  2.4199, 2.2153, 2.13, 1.703, 1.5546, 1.2699, 1.0914, 0.82638, 0.54637, 0.16988,
+2021-06-29 10:37:01: itr(2120), training loss:  2.325, 2.0989, 1.961, 1.7908, 1.3764, 1.1586, 0.87666, 0.582, 0.42537, 0.17186,
+ 30%|███       | 3/10 [58:42<2:17:06, 1175.23s/it]2021-06-29 10:37:17: itr(2130), training loss:  2.1483, 1.9502, 1.7346, 1.4713, 1.2803, 1.0604, 0.76897, 0.52807, 0.36821, 0.16352,
+2021-06-29 10:37:32: itr(2140), training loss:  2.2664, 2.0824, 1.953, 1.7133, 1.4444, 1.1604, 0.78247, 0.55482, 0.2749, 0.14632,
+2021-06-29 10:37:48: itr(2150), training loss:  2.4086, 2.07, 1.7985, 1.4972, 1.2905, 1.1014, 0.85439, 0.6485, 0.42723, 0.13272,
+2021-06-29 10:38:04: itr(2160), training loss:  2.7522, 2.4188, 2.2378, 2.089, 1.8956, 1.4512, 1.0769, 0.81224, 0.51793, 0.16827,
+2021-06-29 10:38:20: itr(2170), training loss:  2.332, 1.9923, 1.7591, 1.5013, 1.3233, 1.1636, 0.8998, 0.7353, 0.43574, 0.15875,
+2021-06-29 10:38:36: itr(2180), training loss:  2.2409, 1.9883, 1.721, 1.5509, 1.335, 1.1309, 0.90809, 0.61476, 0.26995, 0.14853,
+2021-06-29 10:38:53: itr(2190), training loss:  2.4092, 2.2142, 1.8572, 1.4711, 1.2232, 0.94758, 0.68515, 0.45109, 0.28976, 0.13462,
+2021-06-29 10:39:09: itr(2200), training loss:  2.1889, 1.9588, 1.788, 1.5518, 1.3461, 1.1476, 0.93357, 0.64494, 0.42493, 0.15025,
+2021-06-29 10:39:25: itr(2210), training loss:  2.5412, 2.1195, 1.991, 1.8345, 1.6663, 1.5395, 1.0243, 0.76363, 0.60369, 0.18268,
+2021-06-29 10:39:42: itr(2220), training loss:  2.5062, 2.1625, 1.9038, 1.7317, 1.4337, 1.232, 1.0654, 0.71445, 0.43416, 0.1706,
+2021-06-29 10:39:57: itr(2230), training loss:  2.438, 2.1964, 1.936, 1.7415, 1.5685, 1.3315, 0.93672, 0.65014, 0.34999, 0.17687,
+2021-06-29 10:40:13: itr(2240), training loss:  2.7473, 2.4006, 2.1514, 1.9199, 1.6561, 1.3661, 1.1341, 0.69035, 0.44161, 0.14955,
+2021-06-29 10:40:30: itr(2250), training loss:  3.0119, 2.6697, 2.6032, 2.2459, 1.9528, 1.7046, 1.44, 1.1345, 0.55888, 0.17681,
+2021-06-29 10:40:45: itr(2260), training loss:  2.3224, 2.2514, 1.9711, 1.7242, 1.5619, 1.2559, 1.0004, 0.78065, 0.42718, 0.15834,
+2021-06-29 10:41:01: itr(2270), training loss:  2.6731, 2.4587, 2.1447, 1.8893, 1.7406, 1.5087, 1.2674, 0.93158, 0.75037, 0.16067,
+2021-06-29 10:41:17: itr(2280), training loss:  2.081, 1.8673, 1.6762, 1.2735, 1.0806, 0.88976, 0.74023, 0.55739, 0.35217, 0.1349,
+2021-06-29 10:41:33: itr(2290), training loss:  2.5751, 2.357, 2.1143, 1.6217, 1.3921, 1.103, 0.85801, 0.64823, 0.37779, 0.15949,
+2021-06-29 10:41:49: itr(2300), training loss:  2.6454, 2.5098, 2.1554, 1.8896, 1.6843, 1.4166, 1.1178, 0.88038, 0.53542, 0.15649,
+2021-06-29 10:42:06: itr(2310), training loss:  2.543, 2.3554, 2.1067, 1.9049, 1.6536, 1.3902, 1.0682, 0.75841, 0.30597, 0.15988,
+2021-06-29 10:42:22: itr(2320), training loss:  2.3886, 2.1948, 1.8822, 1.5962, 1.3023, 1.2099, 0.92445, 0.6692, 0.40821, 0.16724,
+2021-06-29 10:42:39: itr(2330), training loss:  2.5186, 2.2201, 2.0143, 1.8138, 1.5759, 1.3107, 1.0533, 0.75439, 0.31977, 0.1482,
+2021-06-29 10:42:55: itr(2340), training loss:  2.282, 1.9273, 1.7672, 1.5893, 1.4427, 1.1906, 0.94305, 0.69757, 0.50264, 0.14914,
+2021-06-29 10:43:12: itr(2350), training loss:  2.2132, 2.0399, 1.8605, 1.6207, 1.3058, 1.0602, 0.75695, 0.56966, 0.37295, 0.13916,
+2021-06-29 10:43:32: itr(2360), training loss:  2.2032, 1.9899, 1.8422, 1.6724, 1.4126, 1.2434, 0.97332, 0.74282, 0.40935, 0.13426,
+2021-06-29 10:43:48: itr(2370), training loss:  2.4862, 2.2869, 2.0208, 1.7954, 1.5395, 1.2613, 0.83219, 0.60243, 0.37651, 0.14243,
+2021-06-29 10:44:05: itr(2380), training loss:  2.1299, 1.8132, 1.6538, 1.3433, 1.177, 0.97653, 0.85401, 0.61454, 0.33067, 0.12008,
+2021-06-29 10:44:22: itr(2390), training loss:  2.5528, 2.4325, 2.1763, 1.9071, 1.7317, 1.4319, 1.2659, 0.93521, 0.53858, 0.13886,
+2021-06-29 10:44:39: itr(2400), training loss:  2.2484, 2.0283, 1.8244, 1.6316, 1.4326, 1.2234, 0.88136, 0.57181, 0.47672, 0.14293,
+2021-06-29 10:44:56: itr(2410), training loss:  2.3394, 1.9657, 1.6938, 1.5057, 1.2892, 1.0983, 0.81804, 0.58032, 0.37834, 0.13008,
+2021-06-29 10:45:14: itr(2420), training loss:  2.7917, 2.5157, 2.1852, 1.9796, 1.7296, 1.419, 1.2731, 1.0605, 0.68688, 0.17916,
+2021-06-29 10:45:31: itr(2430), training loss:  2.5377, 2.219, 1.9562, 1.6442, 1.439, 1.2945, 0.96533, 0.69661, 0.39707, 0.14949,
+2021-06-29 10:45:48: itr(2440), training loss:  2.6327, 2.4314, 2.2282, 1.9322, 1.679, 1.5056, 1.1014, 0.62529, 0.38855, 0.14313,
+2021-06-29 10:46:05: itr(2450), training loss:  2.4662, 2.175, 1.9116, 1.7291, 1.4632, 1.1945, 0.97614, 0.78841, 0.46444, 0.16618,
+2021-06-29 10:46:23: itr(2460), training loss:  3.0186, 2.7543, 2.4518, 2.1967, 1.9855, 1.5617, 1.2579, 0.87424, 0.49404, 0.13669,
+2021-06-29 10:46:41: itr(2470), training loss:  2.7608, 2.5887, 2.2496, 2.0226, 1.6437, 1.4384, 1.1833, 0.76501, 0.37963, 0.15705,
+2021-06-29 10:46:58: itr(2480), training loss:  2.4055, 2.2092, 1.9413, 1.7544, 1.5313, 1.3418, 1.0413, 0.67748, 0.315, 0.14259,
+2021-06-29 10:47:15: itr(2490), training loss:  2.4035, 2.1317, 2.0247, 1.8027, 1.5878, 1.2026, 1.0457, 0.84514, 0.48356, 0.11142,
+2021-06-29 10:47:33: itr(2500), training loss:  2.4827, 2.0923, 1.8838, 1.7086, 1.4463, 1.307, 1.1782, 1.0321, 0.47845, 0.13675,
+2021-06-29 10:47:51: itr(2510), training loss:  2.5653, 2.4277, 2.1227, 1.8947, 1.5554, 1.4123, 1.0771, 0.99708, 0.58604, 0.15317,
+2021-06-29 10:48:08: itr(2520), training loss:  2.623, 2.3729, 2.131, 1.8254, 1.6178, 1.2573, 0.97326, 0.59057, 0.41578, 0.16403,
+2021-06-29 10:48:25: itr(2530), training loss:  2.2192, 2.0623, 1.7817, 1.5955, 1.3851, 1.1632, 0.92514, 0.74413, 0.43829, 0.14589,
+2021-06-29 10:48:41: itr(2540), training loss:  2.3244, 2.0098, 1.7488, 1.5744, 1.4023, 1.205, 0.8872, 0.78314, 0.54842, 0.16975,
+2021-06-29 10:48:58: itr(2550), training loss:  2.7671, 2.599, 2.2375, 2.0061, 1.7784, 1.5133, 0.99984, 0.88731, 0.39318, 0.18913,
+2021-06-29 10:49:15: itr(2560), training loss:  2.815, 2.4221, 2.1548, 1.9265, 1.5408, 1.2878, 1.0494, 0.53952, 0.35254, 0.15259,
+2021-06-29 10:49:32: itr(2570), training loss:  2.653, 2.3211, 2.1012, 1.9209, 1.4886, 1.184, 0.98899, 0.72476, 0.40815, 0.16641,
+2021-06-29 10:49:49: itr(2580), training loss:  2.2482, 2.1957, 2.053, 1.846, 1.5401, 1.283, 0.9282, 0.6155, 0.40089, 0.13036,
+2021-06-29 10:50:05: itr(2590), training loss:  2.4533, 2.3351, 2.1278, 1.9034, 1.5924, 1.382, 0.92492, 0.53007, 0.35016, 0.14896,
+2021-06-29 10:50:25: itr(2600), training loss:  2.3176, 2.013, 1.763, 1.5022, 1.3826, 1.2486, 0.99738, 0.78913, 0.49837, 0.12841,
+2021-06-29 10:50:42: itr(2610), training loss:  2.5976, 2.4723, 2.3422, 1.9479, 1.7465, 1.4311, 1.1637, 0.9193, 0.48776, 0.1844,
+2021-06-29 10:50:59: itr(2620), training loss:  2.154, 1.976, 1.6578, 1.5571, 1.2505, 1.0716, 0.8575, 0.72054, 0.42405, 0.1324,
+2021-06-29 10:51:16: itr(2630), training loss:  2.8036, 2.4855, 2.1839, 1.9761, 1.8146, 1.4956, 1.1816, 0.8638, 0.69283, 0.22411,
+2021-06-29 10:51:32: itr(2640), training loss:  2.4385, 2.0523, 1.7499, 1.5847, 1.3789, 1.0905, 0.81423, 0.62959, 0.3644, 0.1487,
+2021-06-29 10:51:49: itr(2650), training loss:  2.4662, 2.2723, 1.9418, 1.6941, 1.5258, 1.3717, 1.1628, 0.84063, 0.3804, 0.14191,
+2021-06-29 10:52:05: itr(2660), training loss:  2.1849, 1.9289, 1.7291, 1.6098, 1.3373, 1.1807, 0.82816, 0.63418, 0.39721, 0.15303,
+2021-06-29 10:52:22: itr(2670), training loss:  2.499, 2.2591, 1.9795, 1.6611, 1.3824, 0.99357, 0.75237, 0.62001, 0.43197, 0.14808,
+2021-06-29 10:52:39: itr(2680), training loss:  2.0167, 1.8003, 1.5692, 1.4073, 1.1026, 0.76695, 0.55481, 0.44222, 0.2955, 0.15417,
+2021-06-29 10:52:55: itr(2690), training loss:  2.4741, 2.231, 2.0156, 1.6859, 1.4723, 1.2224, 1.0772, 0.74612, 0.41586, 0.12927,
+2021-06-29 10:53:11: itr(2700), training loss:  2.7381, 2.5473, 2.2739, 1.9698, 1.7638, 1.4928, 1.1946, 0.90983, 0.48598, 0.14609,
+2021-06-29 10:53:27: itr(2710), training loss:  2.3876, 2.253, 1.8278, 1.5743, 1.3265, 1.0528, 0.91362, 0.79427, 0.53236, 0.15645,
+2021-06-29 10:53:43: itr(2720), training loss:  2.6256, 2.5371, 2.2573, 2.0157, 1.7057, 1.2459, 1.1299, 0.78849, 0.50302, 0.14678,
+2021-06-29 10:53:59: itr(2730), training loss:  2.4397, 2.2408, 2.1027, 2.0512, 1.6811, 1.3546, 1.065, 0.74742, 0.52174, 0.15249,
+2021-06-29 10:54:15: itr(2740), training loss:  2.6601, 2.4192, 2.2372, 1.8946, 1.622, 1.3652, 1.1195, 0.84131, 0.35928, 0.16525,
+2021-06-29 10:54:31: itr(2750), training loss:  2.4031, 2.1278, 1.8779, 1.5879, 1.3743, 1.1809, 1.0167, 0.81952, 0.44123, 0.1528,
+2021-06-29 10:54:47: itr(2760), training loss:  2.4156, 2.1332, 1.8736, 1.5509, 1.3631, 1.0732, 0.86063, 0.58005, 0.25254, 0.14821,
+2021-06-29 10:55:03: itr(2770), training loss:  2.4949, 2.1767, 1.9886, 1.8082, 1.3684, 1.1333, 0.89053, 0.71078, 0.31201, 0.13982,
+2021-06-29 10:55:19: itr(2780), training loss:  2.7341, 2.3304, 1.9827, 1.7652, 1.3203, 1.0407, 0.86231, 0.66837, 0.32906, 0.18097,
+2021-06-29 10:55:35: itr(2790), training loss:  2.7014, 2.5336, 2.2246, 1.8338, 1.3958, 1.1157, 0.83911, 0.59805, 0.44594, 0.17785,
+2021-06-29 10:55:50: itr(2800), training loss:  2.6211, 2.4023, 2.1692, 1.8807, 1.5884, 1.1915, 0.8555, 0.72679, 0.51282, 0.16496,
+2021-06-29 10:56:05: itr(2810), training loss:  2.3895, 2.2108, 1.9456, 1.8999, 1.7017, 1.4216, 1.1021, 0.7541, 0.42434, 0.1814,
+2021-06-29 10:56:21: itr(2820), training loss:  2.5352, 2.2928, 1.9625, 1.7598, 1.5674, 1.2895, 1.0585, 0.78093, 0.45962, 0.16895,
+ 40%|████      | 4/10 [1:18:12<1:57:19, 1173.23s/it]2021-06-29 10:56:36: itr(2830), training loss:  2.6502, 2.371, 2.098, 1.8851, 1.7033, 1.3436, 1.1626, 0.95188, 0.56802, 0.1835,
+2021-06-29 10:56:55: itr(2840), training loss:  2.5555, 2.4036, 2.1726, 1.6444, 1.4736, 1.2393, 0.94396, 0.7737, 0.43464, 0.1433,
+2021-06-29 10:57:10: itr(2850), training loss:  3.1379, 2.835, 2.5024, 2.1907, 1.7654, 1.3188, 1.0725, 0.7374, 0.41852, 0.16676,
+2021-06-29 10:57:26: itr(2860), training loss:  2.5779, 2.3381, 2.153, 1.8269, 1.4204, 1.2293, 1.0245, 0.78683, 0.40958, 0.19812,
+2021-06-29 10:57:41: itr(2870), training loss:  2.5057, 2.2996, 2.0464, 1.8626, 1.5132, 1.2351, 1.0539, 0.83716, 0.45378, 0.15678,
+2021-06-29 10:57:57: itr(2880), training loss:  2.5518, 2.34, 2.1113, 1.8854, 1.6466, 1.4484, 1.3056, 0.94119, 0.48104, 0.12593,
+2021-06-29 10:58:12: itr(2890), training loss:  2.6097, 2.3322, 2.0238, 1.8206, 1.4848, 1.3002, 1.0567, 0.69128, 0.39521, 0.16399,
+2021-06-29 10:58:28: itr(2900), training loss:  2.5587, 2.3556, 2.2335, 1.9581, 1.7994, 1.4418, 1.1516, 0.97467, 0.4901, 0.11684,
+2021-06-29 10:58:44: itr(2910), training loss:  2.3108, 2.1439, 1.9368, 1.661, 1.517, 1.3287, 1.0488, 0.73794, 0.38001, 0.12596,
+2021-06-29 10:59:00: itr(2920), training loss:  2.4338, 2.2431, 2.0408, 1.7379, 1.5045, 1.281, 1.0475, 0.56357, 0.29566, 0.18819,
+2021-06-29 10:59:16: itr(2930), training loss:  2.4195, 2.2829, 2.076, 1.9722, 1.8208, 1.3747, 1.2443, 1.0679, 0.62686, 0.1678,
+2021-06-29 10:59:32: itr(2940), training loss:  2.7874, 2.5065, 2.3388, 1.9909, 1.6609, 1.4761, 1.1839, 0.78755, 0.49718, 0.18679,
+2021-06-29 10:59:49: itr(2950), training loss:  2.6193, 2.4075, 2.1694, 1.9388, 1.5396, 1.2099, 0.88416, 0.81853, 0.46743, 0.17987,
+2021-06-29 11:00:05: itr(2960), training loss:  2.2546, 2.1281, 1.9352, 1.796, 1.5485, 1.2953, 1.0939, 0.77459, 0.44977, 0.16544,
+2021-06-29 11:00:21: itr(2970), training loss:  2.2748, 1.9918, 1.9111, 1.7457, 1.5611, 1.3417, 1.0592, 0.91328, 0.46782, 0.14128,
+2021-06-29 11:00:37: itr(2980), training loss:  2.9163, 2.6016, 2.2665, 1.9912, 1.6875, 1.4565, 1.0499, 0.6808, 0.44176, 0.20217,
+2021-06-29 11:00:54: itr(2990), training loss:  2.4735, 2.2199, 2.0329, 1.7354, 1.5516, 1.2275, 0.89896, 0.67935, 0.39525, 0.14595,
+2021-06-29 11:01:10: itr(3000), training loss:  3.1264, 2.8433, 2.6061, 2.1713, 1.682, 1.2217, 0.98873, 0.76801, 0.47068, 0.1493,
+2021-06-29 11:01:27: itr(3010), training loss:  2.2618, 2.153, 1.8215, 1.5657, 1.3255, 1.0291, 0.8265, 0.61674, 0.4268, 0.15992,
+2021-06-29 11:01:43: itr(3020), training loss:  2.7874, 2.6734, 2.4095, 2.0164, 1.6887, 1.4247, 1.179, 0.74047, 0.38525, 0.14174,
+2021-06-29 11:02:00: itr(3030), training loss:  2.9182, 2.6084, 2.2305, 1.931, 1.5909, 1.3872, 1.1616, 0.77896, 0.53937, 0.14234,
+2021-06-29 11:02:16: itr(3040), training loss:  2.1714, 1.8586, 1.6891, 1.5094, 1.222, 1.0133, 0.6716, 0.38729, 0.28787, 0.13242,
+2021-06-29 11:02:33: itr(3050), training loss:  2.4996, 2.2334, 2.0026, 1.851, 1.7357, 1.4284, 1.1282, 0.76816, 0.50094, 0.17528,
+2021-06-29 11:02:49: itr(3060), training loss:  2.668, 2.3587, 2.238, 2.1199, 1.9388, 1.6748, 1.3781, 1.0263, 0.53605, 0.14934,
+2021-06-29 11:03:06: itr(3070), training loss:  2.3863, 2.1581, 1.9427, 1.6657, 1.5548, 1.269, 0.97393, 0.77063, 0.45194, 0.16985,
+2021-06-29 11:03:22: itr(3080), training loss:  2.2978, 1.9473, 1.8288, 1.6482, 1.5616, 1.3865, 1.0105, 0.77794, 0.46484, 0.14093,
+2021-06-29 11:03:42: itr(3090), training loss:  2.2987, 2.0071, 1.8708, 1.6288, 1.3734, 1.1169, 0.96745, 0.69888, 0.43393, 0.13542,
+2021-06-29 11:03:59: itr(3100), training loss:  2.1776, 1.8682, 1.7057, 1.5216, 1.1385, 0.88682, 0.55857, 0.36636, 0.25601, 0.15602,
+2021-06-29 11:04:16: itr(3110), training loss:  2.4551, 2.257, 2.0241, 1.7401, 1.4045, 1.0748, 0.90893, 0.68966, 0.39663, 0.13894,
+2021-06-29 11:04:33: itr(3120), training loss:  2.7938, 2.4858, 2.1634, 2.0109, 1.759, 1.5965, 1.2723, 0.95201, 0.78635, 0.17975,
+2021-06-29 11:04:50: itr(3130), training loss:  2.3015, 2.0386, 1.7995, 1.49, 1.2517, 1.0247, 0.83921, 0.50975, 0.30559, 0.13713,
+2021-06-29 11:05:07: itr(3140), training loss:  2.2124, 1.9356, 1.6751, 1.4877, 1.2494, 1.0291, 0.83093, 0.60896, 0.33336, 0.10569,
+2021-06-29 11:05:24: itr(3150), training loss:  2.5138, 2.2439, 2.0195, 1.7107, 1.3686, 1.1185, 0.78392, 0.49686, 0.25687, 0.12425,
+2021-06-29 11:05:42: itr(3160), training loss:  2.6576, 2.4773, 2.331, 1.9653, 1.5666, 1.2728, 0.9983, 0.69933, 0.44999, 0.15095,
+2021-06-29 11:06:00: itr(3170), training loss:  2.4031, 2.1903, 2.0082, 1.7566, 1.3709, 1.129, 0.86862, 0.67943, 0.40276, 0.1506,
+2021-06-29 11:06:17: itr(3180), training loss:  2.268, 2.011, 1.721, 1.4874, 1.1949, 1.0578, 0.88541, 0.69549, 0.4361, 0.14255,
+2021-06-29 11:06:34: itr(3190), training loss:  2.5016, 2.2468, 2.0801, 1.7708, 1.6344, 1.3151, 0.97588, 0.78951, 0.40468, 0.15206,
+2021-06-29 11:06:52: itr(3200), training loss:  2.6636, 2.3713, 2.0057, 1.7089, 1.4616, 1.2697, 0.95669, 0.61977, 0.31963, 0.14682,
+2021-06-29 11:07:09: itr(3210), training loss:  2.5623, 2.343, 2.1359, 1.9957, 1.726, 1.3445, 1.0593, 0.88081, 0.55195, 0.15881,
+2021-06-29 11:07:27: itr(3220), training loss:  2.4505, 2.1325, 2.0563, 1.9076, 1.6523, 1.3186, 1.0298, 0.70172, 0.52076, 0.1097,
+2021-06-29 11:07:44: itr(3230), training loss:  2.5084, 2.2177, 2.006, 1.781, 1.5688, 1.4422, 1.0222, 0.80793, 0.41537, 0.13693,
+2021-06-29 11:08:01: itr(3240), training loss:  3.2161, 2.9521, 2.5923, 2.3372, 2.0748, 1.7117, 1.2752, 0.91485, 0.66027, 0.15229,
+2021-06-29 11:08:18: itr(3250), training loss:  2.7217, 2.5244, 2.3413, 2.0067, 1.5153, 1.324, 0.97983, 0.69225, 0.43216, 0.15062,
+2021-06-29 11:08:35: itr(3260), training loss:  2.5964, 2.4224, 2.2357, 1.9304, 1.591, 1.3782, 1.0547, 0.85354, 0.58085, 0.16331,
+2021-06-29 11:08:53: itr(3270), training loss:  2.8572, 2.5976, 2.2406, 1.9625, 1.8055, 1.4744, 1.1513, 0.69975, 0.37192, 0.17166,
+2021-06-29 11:09:09: itr(3280), training loss:  2.3573, 2.0868, 1.9329, 1.7677, 1.5682, 1.3916, 1.232, 0.94473, 0.51074, 0.13214,
+2021-06-29 11:09:26: itr(3290), training loss:  2.5585, 2.3842, 2.1376, 1.9761, 1.6767, 1.4178, 1.0324, 0.70878, 0.55592, 0.13801,
+2021-06-29 11:09:43: itr(3300), training loss:  2.5764, 2.3191, 1.9963, 1.7158, 1.5133, 1.273, 0.97894, 0.78572, 0.45903, 0.13898,
+2021-06-29 11:10:00: itr(3310), training loss:  2.7798, 2.5862, 2.3354, 2.0172, 1.7578, 1.397, 1.1607, 0.79695, 0.61736, 0.1268,
+2021-06-29 11:10:16: itr(3320), training loss:  2.5662, 2.5006, 2.0483, 1.8298, 1.6553, 1.2958, 0.98972, 0.77908, 0.44193, 0.14638,
+2021-06-29 11:10:36: itr(3330), training loss:  2.4611, 2.2296, 1.9756, 1.7476, 1.5052, 1.2394, 1.0426, 0.68448, 0.39046, 0.15308,
+2021-06-29 11:10:52: itr(3340), training loss:  2.5153, 2.3627, 2.1291, 1.808, 1.538, 1.2151, 0.95494, 0.69605, 0.35373, 0.15575,
+2021-06-29 11:11:09: itr(3350), training loss:  2.6296, 2.3247, 2.0402, 1.7781, 1.4366, 1.2623, 0.97833, 0.60906, 0.48446, 0.15889,
+2021-06-29 11:11:25: itr(3360), training loss:  2.2271, 1.9708, 1.7486, 1.4655, 1.1974, 1.1157, 0.7766, 0.56947, 0.42471, 0.1328,
+2021-06-29 11:11:42: itr(3370), training loss:  2.9205, 2.422, 2.17, 1.9683, 1.7661, 1.3717, 1.0852, 0.99134, 0.60543, 0.18042,
+2021-06-29 11:11:59: itr(3380), training loss:  2.6264, 2.4069, 2.2362, 1.9661, 1.6571, 1.4543, 1.2974, 0.94586, 0.54046, 0.14751,
+2021-06-29 11:12:15: itr(3390), training loss:  2.6367, 2.3443, 2.1265, 1.8144, 1.6433, 1.3173, 0.96659, 0.68057, 0.36582, 0.12729,
+2021-06-29 11:12:32: itr(3400), training loss:  2.4041, 2.1511, 1.8605, 1.6322, 1.4394, 1.2361, 1.062, 0.85182, 0.48066, 0.12932,
+2021-06-29 11:12:48: itr(3410), training loss:  2.1722, 2.0113, 1.8768, 1.5482, 1.3709, 1.1959, 0.97848, 0.80611, 0.50899, 0.14382,
+2021-06-29 11:13:04: itr(3420), training loss:  2.7863, 2.5667, 2.4042, 2.0568, 1.9969, 1.5857, 1.1352, 0.80092, 0.51382, 0.17362,
+2021-06-29 11:13:20: itr(3430), training loss:  2.7232, 2.5055, 2.2438, 2.0336, 1.6211, 1.3658, 1.1109, 0.74283, 0.43339, 0.17364,
+2021-06-29 11:13:36: itr(3440), training loss:  3.0056, 2.6856, 2.3414, 2.0194, 1.7882, 1.432, 1.0613, 0.77431, 0.50933, 0.1663,
+2021-06-29 11:13:52: itr(3450), training loss:  2.4186, 2.2641, 2.1151, 1.8453, 1.4977, 1.171, 0.80899, 0.4535, 0.33088, 0.1327,
+2021-06-29 11:14:08: itr(3460), training loss:  2.8078, 2.4138, 2.0746, 1.7935, 1.634, 1.4589, 1.2024, 0.89466, 0.62003, 0.14995,
+2021-06-29 11:14:23: itr(3470), training loss:  2.8115, 2.7027, 2.3411, 1.8631, 1.6308, 1.3074, 0.83508, 0.61954, 0.3376, 0.15744,
+2021-06-29 11:14:40: itr(3480), training loss:  2.7643, 2.4841, 2.1384, 1.9502, 1.5327, 1.2691, 1.0021, 0.65371, 0.38366, 0.16933,
+2021-06-29 11:14:56: itr(3490), training loss:  2.7666, 2.4933, 2.0994, 1.8593, 1.6879, 1.4177, 1.0863, 0.81834, 0.5411, 0.19949,
+2021-06-29 11:15:12: itr(3500), training loss:  2.4386, 2.1524, 1.8703, 1.7551, 1.571, 1.3041, 0.89609, 0.54563, 0.2798, 0.11273,
+2021-06-29 11:15:27: itr(3510), training loss:  2.4568, 2.2914, 1.9263, 1.8141, 1.67, 1.3355, 1.0475, 0.78103, 0.57702, 0.11851,
+2021-06-29 11:15:43: itr(3520), training loss:  2.5932, 2.3273, 2.0594, 1.8434, 1.5114, 1.2248, 0.90526, 0.83285, 0.53652, 0.14978,
+2021-06-29 11:15:59: itr(3530), training loss:  2.6401, 2.2895, 1.8645, 1.6852, 1.4042, 1.1386, 0.94515, 0.63034, 0.42519, 0.14425,
+ 50%|█████     | 5/10 [1:37:45<1:37:46, 1173.24s/it]2021-06-29 11:16:14: itr(3540), training loss:  2.3972, 2.2553, 2.0601, 1.8304, 1.5951, 1.2481, 0.89037, 0.63915, 0.42189, 0.13293,
+2021-06-29 11:16:30: itr(3550), training loss:  2.3073, 2.1269, 1.9002, 1.7908, 1.6121, 1.3275, 0.9269, 0.63879, 0.25869, 0.14616,
+2021-06-29 11:16:45: itr(3560), training loss:  2.4019, 2.0695, 1.8853, 1.6327, 1.4356, 1.2243, 0.97654, 0.59973, 0.39772, 0.16319,
+2021-06-29 11:17:01: itr(3570), training loss:  2.7718, 2.6099, 2.3246, 2.0852, 1.9656, 1.725, 1.3645, 0.99118, 0.63775, 0.16374,
+2021-06-29 11:17:20: itr(3580), training loss:  2.2626, 2.1847, 2.0267, 1.7569, 1.4429, 1.1443, 0.82513, 0.55887, 0.43089, 0.14698,
+2021-06-29 11:17:36: itr(3590), training loss:  2.7159, 2.4895, 2.2412, 1.9809, 1.6065, 1.1624, 0.93117, 0.63098, 0.46327, 0.16119,
+2021-06-29 11:17:52: itr(3600), training loss:  2.3556, 2.1578, 1.9916, 1.641, 1.3979, 1.306, 0.98426, 0.75313, 0.56685, 0.16171,
+2021-06-29 11:18:08: itr(3610), training loss:  2.8355, 2.709, 2.5131, 2.2515, 1.9084, 1.5715, 1.2528, 0.85102, 0.63934, 0.16411,
+2021-06-29 11:18:24: itr(3620), training loss:  2.0509, 1.9233, 1.6914, 1.5694, 1.296, 1.1061, 0.84866, 0.56524, 0.38366, 0.16681,
+2021-06-29 11:18:40: itr(3630), training loss:  2.6187, 2.2497, 2.0073, 1.7867, 1.659, 1.3716, 1.2879, 0.89852, 0.47061, 0.14898,
+2021-06-29 11:18:56: itr(3640), training loss:  2.5064, 2.1489, 1.9736, 1.7511, 1.4197, 1.2043, 0.83889, 0.59057, 0.43093, 0.13738,
+2021-06-29 11:19:12: itr(3650), training loss:  2.5132, 2.2755, 2.0096, 1.7698, 1.4132, 1.2314, 1.0698, 0.76329, 0.52309, 0.14165,
+2021-06-29 11:19:29: itr(3660), training loss:  2.7902, 2.5289, 2.3, 1.9978, 1.8719, 1.5021, 1.2397, 0.92861, 0.47122, 0.16811,
+2021-06-29 11:19:45: itr(3670), training loss:  2.4389, 2.2899, 2.13, 1.872, 1.7334, 1.3911, 1.0287, 0.75742, 0.4374, 0.18106,
+2021-06-29 11:20:01: itr(3680), training loss:  2.7951, 2.4944, 2.2436, 1.7726, 1.4635, 1.11, 0.87593, 0.62554, 0.41165, 0.15088,
+2021-06-29 11:20:18: itr(3690), training loss:  2.6164, 2.278, 2.1384, 1.8528, 1.5274, 1.2967, 0.97866, 0.70954, 0.31397, 0.12401,
+2021-06-29 11:20:34: itr(3700), training loss:  2.2702, 2.0595, 1.8147, 1.6874, 1.5683, 1.1915, 0.98803, 0.78554, 0.53789, 0.1524,
+2021-06-29 11:20:51: itr(3710), training loss:  2.4367, 2.286, 2.0485, 1.8933, 1.6072, 1.4255, 1.1864, 0.93516, 0.45557, 0.14429,
+2021-06-29 11:21:08: itr(3720), training loss:  2.3638, 2.1128, 1.7522, 1.4703, 1.2232, 1.0608, 0.8579, 0.68586, 0.3689, 0.14779,
+2021-06-29 11:21:24: itr(3730), training loss:  2.9506, 2.6119, 2.3611, 2.1297, 1.849, 1.4392, 1.0508, 0.7939, 0.54401, 0.14959,
+2021-06-29 11:21:41: itr(3740), training loss:  3.2365, 2.9368, 2.5676, 2.3439, 2.0325, 1.7926, 1.4198, 1.0995, 0.67463, 0.17785,
+2021-06-29 11:21:58: itr(3750), training loss:  2.798, 2.5813, 2.4025, 2.2423, 2.0238, 1.7699, 1.3353, 0.86805, 0.37153, 0.13342,
+2021-06-29 11:22:14: itr(3760), training loss:  2.6298, 2.338, 2.098, 1.9007, 1.643, 1.2686, 1.0703, 0.69946, 0.37655, 0.15439,
+2021-06-29 11:22:31: itr(3770), training loss:  2.5385, 2.2751, 2.0692, 1.8267, 1.5144, 1.1654, 0.89234, 0.64983, 0.42667, 0.15328,
+2021-06-29 11:22:48: itr(3780), training loss:  2.5763, 2.337, 2.1291, 1.8388, 1.514, 1.2239, 0.88008, 0.68746, 0.37411, 0.13581,
+2021-06-29 11:23:04: itr(3790), training loss:  2.4022, 2.1817, 1.9108, 1.7214, 1.5578, 1.445, 0.98409, 0.67779, 0.50273, 0.14032,
+2021-06-29 11:23:22: itr(3800), training loss:  2.3709, 2.104, 1.8517, 1.6122, 1.3936, 1.2911, 1.2288, 0.86772, 0.54099, 0.15611,
+2021-06-29 11:23:39: itr(3810), training loss:  2.6484, 2.4083, 2.1991, 1.987, 1.726, 1.2892, 0.89352, 0.68476, 0.5095, 0.15663,
+2021-06-29 11:23:59: itr(3820), training loss:  2.5221, 2.3777, 1.9441, 1.7474, 1.4075, 1.1769, 0.86072, 0.55486, 0.35839, 0.13139,
+2021-06-29 11:24:16: itr(3830), training loss:  2.3909, 2.0792, 1.8258, 1.6909, 1.5573, 1.1429, 0.93122, 0.79625, 0.66445, 0.14039,
+2021-06-29 11:24:33: itr(3840), training loss:  2.6713, 2.513, 2.2887, 2.1039, 1.9473, 1.6348, 1.3637, 0.93348, 0.47586, 0.18261,
+2021-06-29 11:24:51: itr(3850), training loss:  3.0411, 2.7685, 2.5782, 2.0792, 1.6976, 1.5336, 1.2083, 0.71145, 0.29964, 0.16541,
+2021-06-29 11:25:08: itr(3860), training loss:  2.3946, 2.2281, 1.962, 1.8006, 1.4348, 1.2391, 1.0186, 0.72049, 0.36907, 0.15713,
+2021-06-29 11:25:26: itr(3870), training loss:  2.8239, 2.39, 2.2216, 1.9471, 1.8493, 1.5832, 1.1531, 0.86408, 0.52341, 0.15779,
+2021-06-29 11:25:43: itr(3880), training loss:  2.7452, 2.5311, 2.3381, 2.084, 1.8868, 1.5611, 1.3451, 0.87196, 0.61639, 0.18566,
+2021-06-29 11:26:01: itr(3890), training loss:  2.685, 2.5707, 2.381, 2.1535, 1.8484, 1.4248, 1.1833, 0.80931, 0.52584, 0.12637,
+2021-06-29 11:26:18: itr(3900), training loss:  2.2518, 1.9697, 1.6615, 1.5244, 1.375, 1.1053, 0.78312, 0.51449, 0.281, 0.14031,
+2021-06-29 11:26:36: itr(3910), training loss:  2.7261, 2.5659, 2.1258, 1.8742, 1.7456, 1.6021, 1.1485, 0.96229, 0.75077, 0.14816,
+2021-06-29 11:26:53: itr(3920), training loss:  2.7186, 2.3598, 2.1173, 1.8464, 1.5588, 1.2191, 1.0251, 0.65475, 0.3995, 0.16452,
+2021-06-29 11:27:11: itr(3930), training loss:  2.6198, 2.3883, 2.1845, 1.9421, 1.7703, 1.4487, 1.2693, 1.0124, 0.52461, 0.13781,
+2021-06-29 11:27:28: itr(3940), training loss:  3.2879, 2.8744, 2.3984, 2.2102, 1.908, 1.5984, 1.3937, 1.1231, 0.57862, 0.16119,
+2021-06-29 11:27:45: itr(3950), training loss:  2.5036, 2.1544, 1.9769, 1.7685, 1.5911, 1.3978, 1.1237, 0.72645, 0.42055, 0.16517,
+2021-06-29 11:28:02: itr(3960), training loss:  2.2172, 1.9116, 1.8003, 1.6134, 1.3478, 1.0685, 0.85141, 0.65111, 0.29019, 0.12175,
+2021-06-29 11:28:19: itr(3970), training loss:  2.4129, 2.116, 1.9176, 1.6502, 1.536, 1.1808, 0.9651, 0.81317, 0.48944, 0.13701,
+2021-06-29 11:28:36: itr(3980), training loss:  2.3379, 2.1281, 1.876, 1.5863, 1.3362, 1.1506, 0.95707, 0.54613, 0.21739, 0.1355,
+2021-06-29 11:28:53: itr(3990), training loss:  2.5662, 2.3549, 2.0118, 1.7629, 1.5586, 1.2551, 1.0578, 0.74727, 0.47135, 0.17181,
+2021-06-29 11:29:10: itr(4000), training loss:  2.4137, 2.2214, 1.9874, 1.6687, 1.4431, 1.1169, 1.0247, 0.7874, 0.44421, 0.1529,
+2021-06-29 11:29:26: itr(4010), training loss:  2.925, 2.4839, 2.0386, 1.7802, 1.5314, 1.2549, 0.94118, 0.76019, 0.51318, 0.16835,
+2021-06-29 11:29:43: itr(4020), training loss:  2.63, 2.2857, 2.0915, 1.8796, 1.6186, 1.3112, 0.88293, 0.70876, 0.53071, 0.12433,
+2021-06-29 11:29:59: itr(4030), training loss:  2.4121, 2.2534, 2.0756, 1.8195, 1.5334, 1.2648, 0.95248, 0.62888, 0.4396, 0.16162,
+2021-06-29 11:30:16: itr(4040), training loss:  2.336, 2.0885, 1.9108, 1.782, 1.5167, 1.3308, 1.0244, 0.70223, 0.46967, 0.15374,
+2021-06-29 11:30:32: itr(4050), training loss:  2.6289, 2.3474, 2.0305, 1.7404, 1.5919, 1.3149, 1.0643, 0.79614, 0.45554, 0.15125,
+2021-06-29 11:30:52: itr(4060), training loss:  2.8222, 2.5654, 2.3749, 2.0841, 1.8228, 1.6253, 1.1908, 0.92271, 0.58441, 0.13771,
+2021-06-29 11:31:08: itr(4070), training loss:  2.3294, 2.083, 1.8203, 1.5089, 1.2572, 1.0322, 0.81047, 0.55381, 0.31921, 0.14141,
+2021-06-29 11:31:25: itr(4080), training loss:  2.5257, 2.2826, 2.1288, 2.006, 1.6946, 1.4471, 1.0134, 0.79208, 0.42298, 0.13161,
+2021-06-29 11:31:42: itr(4090), training loss:  2.944, 2.6004, 2.1382, 1.8011, 1.5913, 1.3202, 1.1442, 0.85961, 0.39415, 0.18106,
+2021-06-29 11:31:58: itr(4100), training loss:  2.7365, 2.3496, 2.1569, 1.9143, 1.6851, 1.3751, 1.0336, 0.60106, 0.39677, 0.15208,
+2021-06-29 11:32:14: itr(4110), training loss:  2.5132, 2.3344, 2.1139, 1.9571, 1.6971, 1.4665, 1.2264, 1.0246, 0.66857, 0.15321,
+2021-06-29 11:32:30: itr(4120), training loss:  2.548, 2.3842, 2.0667, 1.7876, 1.5177, 1.1515, 1.055, 0.6873, 0.52923, 0.15978,
+2021-06-29 11:32:46: itr(4130), training loss:  2.7773, 2.4323, 2.2368, 1.8283, 1.3255, 0.89278, 0.78634, 0.5353, 0.28435, 0.14269,
+2021-06-29 11:33:02: itr(4140), training loss:  2.6675, 2.5107, 2.2888, 1.927, 1.7761, 1.5097, 1.161, 0.90603, 0.42365, 0.16374,
+2021-06-29 11:33:19: itr(4150), training loss:  2.5448, 2.343, 2.1451, 1.8844, 1.7017, 1.456, 1.2551, 0.8704, 0.48132, 0.15379,
+2021-06-29 11:33:35: itr(4160), training loss:  2.3239, 2.0092, 1.8816, 1.7633, 1.583, 1.3714, 1.1841, 0.87544, 0.45451, 0.14532,
+2021-06-29 11:33:51: itr(4170), training loss:  2.8131, 2.4616, 2.1837, 1.9096, 1.4618, 1.2218, 0.91713, 0.67002, 0.46816, 0.12553,
+2021-06-29 11:34:06: itr(4180), training loss:  2.4705, 2.1404, 1.9246, 1.7271, 1.5214, 1.2049, 0.97662, 0.62375, 0.43503, 0.14697,
+2021-06-29 11:34:22: itr(4190), training loss:  3.0541, 2.8674, 2.5329, 2.3167, 2.0636, 1.6297, 1.2726, 0.72646, 0.45914, 0.17895,
+2021-06-29 11:34:39: itr(4200), training loss:  2.5301, 2.2509, 1.9572, 1.7621, 1.4311, 1.236, 0.9941, 0.78752, 0.54333, 0.1408,
+2021-06-29 11:34:54: itr(4210), training loss:  2.3197, 1.9549, 1.6963, 1.499, 1.34, 1.1672, 0.89728, 0.72256, 0.4667, 0.13122,
+2021-06-29 11:35:10: itr(4220), training loss:  2.4274, 2.2792, 1.9916, 1.7886, 1.6441, 1.5093, 1.2493, 0.87342, 0.55382, 0.15429,
+2021-06-29 11:35:25: itr(4230), training loss:  2.3104, 2.1317, 1.9544, 1.7016, 1.4017, 1.269, 0.92513, 0.64652, 0.48069, 0.1539,
+2021-06-29 11:35:41: itr(4240), training loss:  2.3829, 2.0863, 1.7174, 1.4624, 1.2622, 1.1298, 0.86132, 0.61658, 0.33761, 0.12706,
+ 60%|██████    | 6/10 [1:57:23<1:18:18, 1174.71s/it]2021-06-29 11:35:57: itr(4250), training loss:  2.3949, 2.2224, 1.8762, 1.6785, 1.3965, 1.0541, 0.86792, 0.48488, 0.29984, 0.12795,
+2021-06-29 11:36:12: itr(4260), training loss:  2.2333, 2.0026, 1.8108, 1.6235, 1.5004, 1.1991, 0.83738, 0.52455, 0.30075, 0.094632,
+2021-06-29 11:36:28: itr(4270), training loss:  2.448, 2.1584, 1.9453, 1.7512, 1.5827, 1.2487, 0.89711, 0.66446, 0.46493, 0.11163,
+2021-06-29 11:36:44: itr(4280), training loss:  2.1909, 1.9816, 1.803, 1.6193, 1.4835, 1.2901, 1.0426, 0.77155, 0.39625, 0.15169,
+2021-06-29 11:37:00: itr(4290), training loss:  2.3366, 2.1545, 1.9183, 1.5824, 1.3653, 1.1539, 1.0104, 0.65224, 0.57314, 0.1455,
+2021-06-29 11:37:19: itr(4300), training loss:  2.5666, 2.3601, 2.0495, 1.7151, 1.5962, 1.4351, 1.1382, 0.86994, 0.48782, 0.13984,
+2021-06-29 11:37:35: itr(4310), training loss:  2.3781, 2.1144, 1.8614, 1.571, 1.345, 1.231, 0.94543, 0.78056, 0.36415, 0.12311,
+2021-06-29 11:37:52: itr(4320), training loss:  2.8161, 2.5785, 2.1828, 1.8983, 1.6552, 1.3282, 1.1068, 0.79416, 0.39558, 0.19687,
+2021-06-29 11:38:08: itr(4330), training loss:  2.3854, 2.0814, 1.8789, 1.7602, 1.3784, 1.1169, 0.92446, 0.7644, 0.53417, 0.1322,
+2021-06-29 11:38:24: itr(4340), training loss:  2.6757, 2.3796, 2.1773, 1.805, 1.4099, 1.1291, 0.82673, 0.5587, 0.31775, 0.14461,
+2021-06-29 11:38:40: itr(4350), training loss:  2.3862, 2.2367, 2.0693, 1.8887, 1.7093, 1.226, 1.0379, 0.77711, 0.38619, 0.14744,
+2021-06-29 11:38:57: itr(4360), training loss:  2.7262, 2.5128, 2.2684, 1.9142, 1.6107, 1.4432, 1.1962, 0.91511, 0.69899, 0.15523,
+2021-06-29 11:39:13: itr(4370), training loss:  2.1468, 1.9815, 1.8026, 1.56, 1.253, 0.96014, 0.81546, 0.60388, 0.35579, 0.15026,
+2021-06-29 11:39:29: itr(4380), training loss:  2.9167, 2.6734, 2.3875, 2.2269, 1.8105, 1.5015, 1.1505, 0.76194, 0.48012, 0.16275,
+2021-06-29 11:39:46: itr(4390), training loss:  2.7177, 2.6289, 2.3082, 1.961, 1.8301, 1.4479, 1.139, 0.82654, 0.51637, 0.18552,
+2021-06-29 11:40:02: itr(4400), training loss:  2.7881, 2.3563, 2.0916, 1.9637, 1.6802, 1.333, 0.83551, 0.58598, 0.36121, 0.17086,
+2021-06-29 11:40:19: itr(4410), training loss:  2.7, 2.595, 2.2037, 1.9897, 1.7897, 1.3145, 0.95519, 0.68425, 0.50879, 0.14898,
+2021-06-29 11:40:35: itr(4420), training loss:  2.95, 2.6827, 2.4054, 2.1195, 1.8724, 1.6325, 1.0267, 0.6911, 0.45102, 0.16326,
+2021-06-29 11:40:52: itr(4430), training loss:  1.8699, 1.8106, 1.6445, 1.4896, 1.1513, 1.0394, 0.71713, 0.50024, 0.29149, 0.11882,
+2021-06-29 11:41:09: itr(4440), training loss:  2.8481, 2.5829, 2.4083, 2.1757, 1.928, 1.6242, 1.2597, 0.79514, 0.49161, 0.15725,
+2021-06-29 11:41:25: itr(4450), training loss:  2.3126, 2.1547, 1.9215, 1.7805, 1.4062, 1.1082, 0.84724, 0.55344, 0.33171, 0.1149,
+2021-06-29 11:41:42: itr(4460), training loss:  2.8016, 2.4972, 2.2361, 1.9729, 1.798, 1.5162, 1.1414, 0.76195, 0.46238, 0.14511,
+2021-06-29 11:41:59: itr(4470), training loss:  2.1477, 1.9499, 1.7054, 1.5022, 1.2272, 0.98194, 0.80711, 0.56258, 0.25659, 0.13023,
+2021-06-29 11:42:15: itr(4480), training loss:  2.2137, 2.0286, 1.9783, 1.8096, 1.6553, 1.3951, 0.95344, 0.58608, 0.41542, 0.14265,
+2021-06-29 11:42:32: itr(4490), training loss:  2.574, 2.3161, 1.9086, 1.4625, 1.2772, 1.0621, 0.74126, 0.42047, 0.36221, 0.15552,
+2021-06-29 11:42:49: itr(4500), training loss:  2.6958, 2.4577, 2.1039, 1.7841, 1.4871, 1.1347, 0.93805, 0.68134, 0.40452, 0.14812,
+2021-06-29 11:43:06: itr(4510), training loss:  2.4464, 2.2938, 2.0523, 1.8529, 1.6937, 1.2963, 0.92343, 0.6073, 0.35094, 0.14001,
+2021-06-29 11:43:23: itr(4520), training loss:  2.4812, 2.2394, 1.9942, 1.869, 1.5878, 1.3103, 1.181, 0.86098, 0.54247, 0.14228,
+2021-06-29 11:43:40: itr(4530), training loss:  2.7635, 2.5812, 2.3471, 2.1276, 1.8156, 1.5168, 1.2748, 0.80085, 0.35199, 0.14785,
+2021-06-29 11:43:58: itr(4540), training loss:  2.6201, 2.4047, 2.1272, 1.7887, 1.604, 1.2964, 1.1115, 0.83161, 0.31411, 0.18173,
+2021-06-29 11:44:17: itr(4550), training loss:  2.7147, 2.5545, 2.2756, 1.9718, 1.665, 1.3865, 1.1876, 0.97846, 0.54891, 0.16075,
+2021-06-29 11:44:34: itr(4560), training loss:  2.2859, 2.09, 1.8881, 1.7131, 1.4244, 1.1366, 0.87408, 0.65087, 0.34326, 0.14934,
+2021-06-29 11:44:52: itr(4570), training loss:  2.9179, 2.6184, 2.3778, 2.1747, 1.7264, 1.4278, 1.1351, 0.73804, 0.4238, 0.13666,
+2021-06-29 11:45:10: itr(4580), training loss:  2.5855, 2.3549, 2.0248, 1.8603, 1.5167, 1.2162, 0.96356, 0.71029, 0.42031, 0.13584,
+2021-06-29 11:45:27: itr(4590), training loss:  2.4186, 2.1763, 1.966, 1.8335, 1.6655, 1.3858, 1.2115, 0.89195, 0.42665, 0.13706,
+2021-06-29 11:45:45: itr(4600), training loss:  2.8322, 2.6247, 2.2801, 1.9745, 1.6783, 1.3409, 1.1511, 0.89274, 0.4364, 0.15242,
+2021-06-29 11:46:02: itr(4610), training loss:  2.4437, 2.1883, 2.0185, 1.6084, 1.4352, 1.2088, 0.8937, 0.5732, 0.43924, 0.13362,
+2021-06-29 11:46:20: itr(4620), training loss:  2.3998, 2.263, 2.0492, 1.8467, 1.5864, 1.2082, 0.85999, 0.58758, 0.39706, 0.15346,
+2021-06-29 11:46:37: itr(4630), training loss:  2.7768, 2.5067, 2.1741, 1.938, 1.6903, 1.3248, 1.0629, 0.83286, 0.61312, 0.14751,
+2021-06-29 11:46:55: itr(4640), training loss:  2.3004, 2.1377, 1.7768, 1.5961, 1.444, 1.159, 0.92387, 0.74856, 0.37749, 0.1393,
+2021-06-29 11:47:12: itr(4650), training loss:  2.3492, 2.147, 1.8856, 1.7758, 1.6036, 1.2474, 1.0339, 0.7856, 0.62682, 0.14079,
+2021-06-29 11:47:29: itr(4660), training loss:  2.3913, 2.2895, 2.1194, 1.9105, 1.6182, 1.2264, 0.96744, 0.60174, 0.38559, 0.1257,
+2021-06-29 11:47:46: itr(4670), training loss:  2.6825, 2.538, 2.1573, 1.8781, 1.4868, 1.1741, 0.98656, 0.70604, 0.56433, 0.16085,
+2021-06-29 11:48:04: itr(4680), training loss:  2.7932, 2.6416, 2.378, 2.0658, 1.8341, 1.5527, 1.0707, 0.80106, 0.48633, 0.18974,
+2021-06-29 11:48:21: itr(4690), training loss:  2.0083, 1.8182, 1.6693, 1.3731, 1.1148, 0.83395, 0.55697, 0.40062, 0.21978, 0.11822,
+2021-06-29 11:48:37: itr(4700), training loss:  2.8292, 2.5959, 2.4753, 2.1688, 1.9815, 1.4889, 1.1287, 0.75147, 0.53483, 0.15018,
+2021-06-29 11:48:54: itr(4710), training loss:  2.4202, 2.2018, 1.9632, 1.7174, 1.3978, 1.048, 0.90146, 0.45986, 0.33036, 0.13846,
+2021-06-29 11:49:11: itr(4720), training loss:  2.7332, 2.676, 2.5213, 2.293, 1.8945, 1.5501, 1.2823, 0.71604, 0.41798, 0.1229,
+2021-06-29 11:49:28: itr(4730), training loss:  2.2807, 2.0692, 1.868, 1.6713, 1.3983, 1.2998, 1.0112, 0.62669, 0.36204, 0.18584,
+2021-06-29 11:49:44: itr(4740), training loss:  2.5906, 2.32, 2.1084, 1.8834, 1.5791, 1.2628, 0.9758, 0.75685, 0.50023, 0.15914,
+2021-06-29 11:50:01: itr(4750), training loss:  2.3034, 2.0841, 1.8602, 1.6074, 1.2774, 1.0169, 0.78969, 0.56137, 0.27957, 0.11895,
+2021-06-29 11:50:18: itr(4760), training loss:  2.3738, 2.228, 2.0898, 1.8746, 1.5448, 1.3784, 1.0936, 0.83927, 0.61623, 0.15817,
+2021-06-29 11:50:34: itr(4770), training loss:  2.2251, 2.1564, 1.9897, 1.7412, 1.5549, 1.1826, 1.0265, 0.7072, 0.34169, 0.13708,
+2021-06-29 11:50:50: itr(4780), training loss:  2.5482, 2.2023, 2.0195, 1.7325, 1.6506, 1.4065, 1.1675, 0.87055, 0.562, 0.17316,
+2021-06-29 11:51:10: itr(4790), training loss:  2.6241, 2.5119, 2.0989, 1.9142, 1.5925, 1.327, 0.88835, 0.65996, 0.40306, 0.14809,
+2021-06-29 11:51:26: itr(4800), training loss:  2.4734, 2.2071, 1.9875, 1.7063, 1.5796, 1.2501, 1.0182, 0.68768, 0.54476, 0.16965,
+2021-06-29 11:51:42: itr(4810), training loss:  2.7496, 2.6665, 2.2636, 1.9658, 1.6247, 1.391, 1.0055, 0.70374, 0.3869, 0.14283,
+2021-06-29 11:51:59: itr(4820), training loss:  2.4386, 2.1109, 1.9301, 1.5484, 1.336, 1.1068, 1.0515, 0.78724, 0.47976, 0.12648,
+2021-06-29 11:52:15: itr(4830), training loss:  2.5711, 2.3604, 2.1247, 1.8957, 1.7422, 1.2748, 1.0918, 0.7274, 0.42621, 0.15846,
+2021-06-29 11:52:31: itr(4840), training loss:  2.7392, 2.5565, 2.3984, 2.1437, 1.8, 1.5023, 1.1443, 0.82582, 0.55867, 0.17477,
+2021-06-29 11:52:47: itr(4850), training loss:  2.3729, 2.2273, 1.9557, 1.7235, 1.6191, 1.2664, 0.97698, 0.60368, 0.41779, 0.14515,
+2021-06-29 11:53:03: itr(4860), training loss:  2.2319, 2.1062, 1.795, 1.5556, 1.2915, 1.0497, 0.73085, 0.508, 0.34683, 0.12931,
+2021-06-29 11:53:19: itr(4870), training loss:  2.0732, 1.826, 1.6412, 1.4943, 1.297, 1.1529, 0.98856, 0.6956, 0.44326, 0.10392,
+2021-06-29 11:53:35: itr(4880), training loss:  2.2765, 2.0424, 1.8572, 1.5717, 1.392, 1.2868, 0.90889, 0.70527, 0.47129, 0.17611,
+2021-06-29 11:53:50: itr(4890), training loss:  2.1861, 2.0532, 1.767, 1.5062, 1.3786, 1.0976, 0.88527, 0.5837, 0.39488, 0.14896,
+2021-06-29 11:54:06: itr(4900), training loss:  2.8816, 2.7382, 2.3555, 2.1018, 1.7155, 1.5719, 1.1295, 0.82691, 0.56558, 0.14252,
+2021-06-29 11:54:22: itr(4910), training loss:  2.2355, 2.0743, 1.7815, 1.5401, 1.3644, 1.0347, 0.90208, 0.62592, 0.3605, 0.13456,
+2021-06-29 11:54:38: itr(4920), training loss:  2.8857, 2.4717, 2.1465, 1.9591, 1.8322, 1.6301, 1.4072, 0.96205, 0.60113, 0.1701,
+2021-06-29 11:54:53: itr(4930), training loss:  2.2177, 2.0119, 1.7607, 1.51, 1.3114, 1.203, 1.0143, 0.7509, 0.55992, 0.14739,
+2021-06-29 11:55:09: itr(4940), training loss:  2.632, 2.4336, 2.266, 1.9155, 1.7687, 1.6227, 1.1793, 0.86723, 0.54916, 0.13825,
+ 70%|███████   | 7/10 [2:17:02<58:48, 1176.13s/it]  2021-06-29 11:55:24: itr(4950), training loss:  2.4292, 2.0921, 1.7568, 1.5726, 1.3235, 1.0816, 0.92232, 0.6354, 0.5037, 0.14758,
+2021-06-29 11:55:40: itr(4960), training loss:  2.5462, 2.3749, 2.1339, 1.6907, 1.3463, 1.2276, 1.0699, 0.85778, 0.35371, 0.13168,
+2021-06-29 11:55:56: itr(4970), training loss:  2.3781, 2.1892, 1.8277, 1.581, 1.4529, 1.2148, 1.0219, 0.87519, 0.57738, 0.13503,
+2021-06-29 11:56:12: itr(4980), training loss:  2.6644, 2.3665, 2.0806, 1.8286, 1.5326, 1.2559, 0.88269, 0.54813, 0.36487, 0.14114,
+2021-06-29 11:56:28: itr(4990), training loss:  2.2695, 2.0469, 1.9494, 1.6279, 1.3922, 1.1647, 0.96882, 0.74585, 0.46557, 0.10378,
+2021-06-29 11:56:44: itr(5000), training loss:  2.4445, 2.1506, 1.8662, 1.4719, 1.2156, 1.0467, 0.8464, 0.54335, 0.31497, 0.13991,
+2021-06-29 11:57:00: itr(5010), training loss:  2.8449, 2.4666, 2.2025, 1.8713, 1.6494, 1.2226, 0.95913, 0.64067, 0.45142, 0.14302,
+2021-06-29 11:57:17: itr(5020), training loss:  2.5775, 2.3691, 2.0749, 1.7824, 1.4697, 1.2883, 0.94826, 0.75521, 0.5692, 0.16797,
+2021-06-29 11:57:36: itr(5030), training loss:  2.7115, 2.5123, 2.285, 2.0727, 1.9254, 1.6924, 1.3233, 0.94295, 0.53375, 0.2153,
+2021-06-29 11:57:52: itr(5040), training loss:  2.549, 2.2255, 1.7536, 1.538, 1.3068, 1.0378, 0.74047, 0.53687, 0.42247, 0.13173,
+2021-06-29 11:58:08: itr(5050), training loss:  2.5208, 2.3641, 2.0903, 1.6749, 1.49, 1.2532, 0.97273, 0.78978, 0.42377, 0.17641,
+2021-06-29 11:58:24: itr(5060), training loss:  2.5743, 2.2064, 1.8587, 1.7126, 1.4968, 1.2014, 0.99727, 0.63521, 0.40515, 0.12749,
+2021-06-29 11:58:41: itr(5070), training loss:  2.6659, 2.4851, 2.2693, 1.9114, 1.6055, 1.3496, 1.1598, 0.72693, 0.55944, 0.1398,
+2021-06-29 11:58:57: itr(5080), training loss:  2.2685, 2.0624, 1.9519, 1.6919, 1.571, 1.1994, 1.0596, 0.85084, 0.62247, 0.10128,
+2021-06-29 11:59:13: itr(5090), training loss:  2.8207, 2.4286, 2.2972, 1.8578, 1.6009, 1.4127, 1.1911, 0.86925, 0.54389, 0.14832,
+2021-06-29 11:59:30: itr(5100), training loss:  2.7722, 2.5496, 2.4167, 2.1602, 1.8368, 1.5385, 1.1424, 0.80143, 0.47123, 0.16089,
+2021-06-29 11:59:47: itr(5110), training loss:  2.0818, 1.9203, 1.6231, 1.5104, 1.2898, 1.0074, 0.80142, 0.56225, 0.35504, 0.11005,
+2021-06-29 12:00:03: itr(5120), training loss:  2.6259, 2.1763, 2.034, 1.7525, 1.5449, 1.3569, 1.1134, 0.71594, 0.46648, 0.14334,
+2021-06-29 12:00:20: itr(5130), training loss:  2.762, 2.5311, 2.1876, 1.8927, 1.5943, 1.4021, 1.1062, 0.80005, 0.52369, 0.1257,
+2021-06-29 12:00:37: itr(5140), training loss:  2.2495, 2.0937, 1.8843, 1.6265, 1.4861, 1.2713, 0.97818, 0.71236, 0.44, 0.1221,
+2021-06-29 12:00:54: itr(5150), training loss:  2.3263, 2.053, 1.8828, 1.6937, 1.5373, 1.2763, 1.0625, 0.77652, 0.46562, 0.14918,
+2021-06-29 12:01:11: itr(5160), training loss:  3.0396, 2.7158, 2.3467, 2.0142, 1.6968, 1.3878, 1.1734, 0.77952, 0.33982, 0.14982,
+2021-06-29 12:01:27: itr(5170), training loss:  2.6502, 2.5183, 2.2932, 2.0965, 1.8714, 1.5176, 1.3257, 1.0847, 0.78972, 0.21467,
+2021-06-29 12:01:44: itr(5180), training loss:  2.4205, 2.2382, 1.9213, 1.6988, 1.4952, 1.0666, 0.70964, 0.58435, 0.43137, 0.12639,
+2021-06-29 12:02:01: itr(5190), training loss:  2.4425, 2.0475, 1.8511, 1.6015, 1.3187, 1.0564, 0.77592, 0.52608, 0.28387, 0.13434,
+2021-06-29 12:02:18: itr(5200), training loss:  2.1826, 1.999, 1.8038, 1.6142, 1.4352, 1.1806, 0.88373, 0.61413, 0.30441, 0.11588,
+2021-06-29 12:02:35: itr(5210), training loss:  3.0477, 2.7853, 2.4952, 2.2521, 1.85, 1.5224, 1.086, 0.91692, 0.64704, 0.18341,
+2021-06-29 12:02:52: itr(5220), training loss:  2.7208, 2.5468, 2.2109, 1.9852, 1.6518, 1.5195, 1.2926, 0.97171, 0.54105, 0.16131,
+2021-06-29 12:03:10: itr(5230), training loss:  2.4014, 2.1285, 1.8898, 1.6039, 1.3556, 1.1858, 0.8512, 0.6951, 0.30866, 0.12152,
+2021-06-29 12:03:27: itr(5240), training loss:  2.6045, 2.4299, 2.0894, 1.8279, 1.618, 1.3923, 1.0357, 0.75565, 0.55307, 0.15358,
+2021-06-29 12:03:44: itr(5250), training loss:  2.1943, 1.8563, 1.6446, 1.4826, 1.2886, 1.189, 0.88869, 0.6457, 0.3845, 0.12634,
+2021-06-29 12:04:01: itr(5260), training loss:  2.6161, 2.4149, 2.1501, 1.9964, 1.8253, 1.475, 1.0087, 0.69562, 0.37827, 0.13414,
+2021-06-29 12:04:18: itr(5270), training loss:  2.4494, 2.2563, 2.072, 1.7995, 1.4543, 1.257, 1.0601, 0.78973, 0.55922, 0.20647,
+2021-06-29 12:04:39: itr(5280), training loss:  2.7367, 2.4856, 2.1121, 1.9568, 1.6537, 1.2991, 1.2169, 0.84966, 0.60836, 0.17247,
+2021-06-29 12:04:56: itr(5290), training loss:  2.2609, 2.1312, 1.9808, 1.6737, 1.475, 1.2345, 0.84786, 0.65178, 0.40826, 0.12577,
+2021-06-29 12:05:14: itr(5300), training loss:  2.2431, 1.9963, 1.8309, 1.5979, 1.3387, 1.2087, 0.89487, 0.66217, 0.41887, 0.16395,
+2021-06-29 12:05:31: itr(5310), training loss:  2.3465, 2.1566, 1.8674, 1.6545, 1.4846, 1.3374, 0.96949, 0.69789, 0.43555, 0.13385,
+2021-06-29 12:05:49: itr(5320), training loss:  2.5629, 2.2712, 1.9261, 1.6776, 1.4973, 1.3114, 0.92167, 0.75001, 0.49982, 0.13843,
+2021-06-29 12:06:06: itr(5330), training loss:  2.3327, 2.12, 1.8837, 1.6123, 1.3514, 1.1772, 0.85705, 0.67278, 0.47987, 0.15915,
+2021-06-29 12:06:24: itr(5340), training loss:  2.3098, 2.0221, 1.7146, 1.5964, 1.3617, 1.0458, 0.78983, 0.58513, 0.2587, 0.13278,
+2021-06-29 12:06:41: itr(5350), training loss:  2.6557, 2.3537, 2.1654, 1.9877, 1.6363, 1.2905, 0.8378, 0.56283, 0.35327, 0.16068,
+2021-06-29 12:06:58: itr(5360), training loss:  2.4433, 2.2837, 2.1042, 1.7575, 1.557, 1.2725, 1.0194, 0.66645, 0.39253, 0.13526,
+2021-06-29 12:07:15: itr(5370), training loss:  2.4148, 2.1548, 1.9955, 1.8582, 1.6301, 1.3767, 0.92996, 0.67742, 0.31013, 0.12597,
+2021-06-29 12:07:32: itr(5380), training loss:  2.3131, 2.1219, 1.7977, 1.5157, 1.2522, 1.0417, 0.90797, 0.66359, 0.38621, 0.11737,
+2021-06-29 12:07:49: itr(5390), training loss:  2.5577, 2.4214, 2.141, 1.8279, 1.6144, 1.2372, 0.9971, 0.78691, 0.4523, 0.16221,
+2021-06-29 12:08:06: itr(5400), training loss:  2.6555, 2.3573, 2.1647, 2, 1.6866, 1.2424, 0.98693, 0.65606, 0.35581, 0.12051,
+2021-06-29 12:08:22: itr(5410), training loss:  2.3367, 2.2175, 2.0127, 1.7174, 1.4339, 1.1971, 0.86468, 0.60019, 0.20386, 0.11039,
+2021-06-29 12:08:39: itr(5420), training loss:  2.3922, 2.2797, 1.9631, 1.742, 1.4552, 1.1715, 0.84518, 0.64191, 0.3105, 0.13872,
+2021-06-29 12:08:56: itr(5430), training loss:  2.5692, 2.2861, 2.0472, 1.7783, 1.5068, 1.2798, 0.97073, 0.59642, 0.33303, 0.12545,
+2021-06-29 12:09:13: itr(5440), training loss:  2.3249, 2.0282, 1.7829, 1.6099, 1.4648, 1.3271, 0.99482, 0.59762, 0.36013, 0.1137,
+2021-06-29 12:09:29: itr(5450), training loss:  2.492, 2.3999, 2.204, 2.0122, 1.7519, 1.3643, 1.0234, 0.81675, 0.39338, 0.15683,
+2021-06-29 12:09:45: itr(5460), training loss:  2.4858, 2.2746, 2.0548, 1.7344, 1.3923, 1.2173, 0.98201, 0.65086, 0.33214, 0.14523,
+2021-06-29 12:10:02: itr(5470), training loss:  2.5949, 2.2843, 2.0006, 1.6406, 1.5115, 1.2862, 0.85104, 0.60814, 0.43655, 0.15733,
+2021-06-29 12:10:18: itr(5480), training loss:  2.6889, 2.4811, 2.2176, 2.0585, 1.804, 1.4203, 1.2512, 0.7706, 0.38643, 0.17567,
+2021-06-29 12:10:35: itr(5490), training loss:  2.3616, 2.1648, 1.9464, 1.7523, 1.5817, 1.3802, 1.1726, 0.77014, 0.53516, 0.12596,
+2021-06-29 12:10:51: itr(5500), training loss:  2.4688, 2.2491, 2.0031, 1.8088, 1.5847, 1.254, 0.99094, 0.60584, 0.31642, 0.13443,
+2021-06-29 12:11:08: itr(5510), training loss:  2.27, 2.0834, 1.9529, 1.6785, 1.4197, 1.0529, 0.88335, 0.61563, 0.42645, 0.1275,
+2021-06-29 12:11:27: itr(5520), training loss:  2.9806, 2.6565, 2.3933, 2.2719, 1.8889, 1.6905, 1.2996, 0.9904, 0.46616, 0.17807,
+2021-06-29 12:11:43: itr(5530), training loss:  2.3726, 2.1084, 1.9105, 1.6796, 1.4055, 0.95033, 0.71405, 0.54888, 0.31139, 0.15418,
+2021-06-29 12:11:59: itr(5540), training loss:  2.2257, 1.9102, 1.7601, 1.6528, 1.5013, 1.2588, 0.98613, 0.70831, 0.4478, 0.13804,
+2021-06-29 12:12:15: itr(5550), training loss:  2.6651, 2.3753, 2.1726, 2.0722, 1.9715, 1.708, 1.2577, 0.94312, 0.60575, 0.1948,
+2021-06-29 12:12:31: itr(5560), training loss:  2.9943, 2.7473, 2.4353, 2.123, 1.82, 1.4948, 1.3333, 1.0845, 0.79185, 0.20452,
+2021-06-29 12:12:47: itr(5570), training loss:  2.7027, 2.4407, 2.2793, 2.0414, 1.7674, 1.5293, 1.2653, 0.80963, 0.58059, 0.18015,
+2021-06-29 12:13:03: itr(5580), training loss:  2.4768, 2.3239, 2.0621, 1.8702, 1.5311, 1.1427, 0.93127, 0.64829, 0.3384, 0.13799,
+2021-06-29 12:13:19: itr(5590), training loss:  2.6227, 2.3909, 2.2163, 1.9828, 1.7397, 1.5281, 1.3029, 0.81976, 0.35489, 0.13108,
+2021-06-29 12:13:35: itr(5600), training loss:  2.4868, 2.3087, 1.9046, 1.4912, 1.2984, 1.0261, 0.88823, 0.63595, 0.36478, 0.13272,
+2021-06-29 12:13:51: itr(5610), training loss:  2.2554, 2.035, 1.8248, 1.6679, 1.4165, 1.273, 0.97139, 0.75357, 0.40427, 0.13555,
+2021-06-29 12:14:07: itr(5620), training loss:  2.5812, 2.4047, 2.1089, 1.9007, 1.6226, 1.3178, 0.91684, 0.62497, 0.39617, 0.18992,
+2021-06-29 12:14:23: itr(5630), training loss:  2.7294, 2.5034, 2.3605, 2.1554, 2.0082, 1.6256, 1.1663, 0.92563, 0.72288, 0.21709,
+2021-06-29 12:14:38: itr(5640), training loss:  2.9421, 2.7141, 2.5105, 2.0398, 1.7132, 1.2828, 0.97986, 0.74524, 0.48256, 0.16192,
+2021-06-29 12:14:54: itr(5650), training loss:  2.5385, 2.3632, 2.12, 1.8786, 1.5773, 1.3258, 1.0052, 0.57885, 0.36244, 0.13696,
+ 80%|████████  | 8/10 [2:36:42<39:14, 1177.44s/it]2021-06-29 12:15:09: itr(5660), training loss:  2.1843, 1.8887, 1.6652, 1.5056, 1.3526, 1.0847, 0.8844, 0.72385, 0.45975, 0.12577,
+2021-06-29 12:15:25: itr(5670), training loss:  2.0415, 1.8057, 1.551, 1.3684, 1.2324, 0.99412, 0.8959, 0.59382, 0.34633, 0.10982,
+2021-06-29 12:15:41: itr(5680), training loss:  2.5883, 2.3828, 2.1601, 1.9421, 1.5884, 1.4267, 1.1461, 0.85702, 0.46219, 0.12581,
+2021-06-29 12:15:57: itr(5690), training loss:  2.546, 2.2892, 1.9892, 1.682, 1.4441, 1.1585, 0.97167, 0.79468, 0.40297, 0.14611,
+2021-06-29 12:16:13: itr(5700), training loss:  2.6794, 2.4468, 2.1234, 1.8945, 1.6675, 1.3517, 0.92462, 0.72108, 0.39983, 0.15795,
+2021-06-29 12:16:29: itr(5710), training loss:  2.732, 2.5036, 2.2202, 2.0234, 1.6051, 1.3353, 1.1588, 0.77132, 0.50948, 0.15834,
+2021-06-29 12:16:45: itr(5720), training loss:  2.4423, 2.1712, 2.0501, 1.7619, 1.3687, 1.1455, 0.95501, 0.7091, 0.3545, 0.10853,
+2021-06-29 12:17:01: itr(5730), training loss:  2.1852, 1.955, 1.7706, 1.6132, 1.3939, 1.1397, 0.93316, 0.58556, 0.39764, 0.13511,
+2021-06-29 12:17:18: itr(5740), training loss:  2.658, 2.3131, 2.0509, 1.8924, 1.7683, 1.4112, 1.0443, 0.75902, 0.49764, 0.16759,
+2021-06-29 12:17:34: itr(5750), training loss:  2.6209, 2.3427, 2.0598, 1.8191, 1.5571, 1.4806, 1.2214, 0.79721, 0.44934, 0.16341,
+2021-06-29 12:17:50: itr(5760), training loss:  2.5144, 2.2817, 1.9856, 1.7626, 1.6046, 1.4104, 1.0565, 0.72575, 0.60983, 0.14785,
+2021-06-29 12:18:09: itr(5770), training loss:  2.3921, 2.2355, 1.8786, 1.6394, 1.3702, 1.1004, 0.80737, 0.5069, 0.27635, 0.12383,
+2021-06-29 12:18:25: itr(5780), training loss:  2.1933, 2.0433, 1.7106, 1.5257, 1.2892, 1.0493, 0.91284, 0.67821, 0.57964, 0.13323,
+2021-06-29 12:18:42: itr(5790), training loss:  2.2649, 2.02, 1.8346, 1.5598, 1.3206, 1.0605, 0.69817, 0.51968, 0.36661, 0.1167,
+2021-06-29 12:18:58: itr(5800), training loss:  2.5732, 2.3213, 2.1601, 1.8726, 1.5958, 1.2478, 0.93575, 0.76244, 0.40494, 0.15794,
+2021-06-29 12:19:15: itr(5810), training loss:  2.3032, 2.1142, 1.9221, 1.5668, 1.2427, 1.081, 0.91593, 0.58075, 0.39817, 0.13476,
+2021-06-29 12:19:32: itr(5820), training loss:  2.4733, 2.2012, 1.8554, 1.5395, 1.294, 1.0053, 0.8018, 0.75216, 0.4628, 0.15501,
+2021-06-29 12:19:48: itr(5830), training loss:  2.2321, 1.9714, 1.6882, 1.5049, 1.3759, 1.1807, 0.82175, 0.60204, 0.3223, 0.14662,
+2021-06-29 12:20:05: itr(5840), training loss:  2.5719, 2.2655, 2.038, 1.8368, 1.7461, 1.4607, 0.95672, 0.68369, 0.4261, 0.126,
+2021-06-29 12:20:22: itr(5850), training loss:  2.0769, 1.7821, 1.6457, 1.414, 1.3224, 0.9983, 0.71853, 0.47137, 0.31962, 0.10862,
+2021-06-29 12:20:39: itr(5860), training loss:  2.7593, 2.6202, 2.2987, 1.9423, 1.7069, 1.4189, 1.1781, 0.7953, 0.57245, 0.1766,
+2021-06-29 12:20:55: itr(5870), training loss:  2.5096, 2.2199, 1.9644, 1.7024, 1.4451, 1.1801, 0.913, 0.70664, 0.59357, 0.14887,
+2021-06-29 12:21:12: itr(5880), training loss:  2.3285, 2.1816, 1.9189, 1.6576, 1.3276, 1.1892, 0.807, 0.51935, 0.31676, 0.10631,
+2021-06-29 12:21:29: itr(5890), training loss:  2.594, 2.3136, 2.0657, 1.9597, 1.7136, 1.3885, 1.2014, 0.8864, 0.46727, 0.11679,
+2021-06-29 12:21:46: itr(5900), training loss:  2.6561, 2.4831, 2.1172, 1.7619, 1.5363, 1.1169, 0.80128, 0.64694, 0.40249, 0.15392,
+2021-06-29 12:22:02: itr(5910), training loss:  2.066, 1.786, 1.5492, 1.2956, 1.2351, 1.087, 0.94253, 0.64608, 0.42071, 0.1536,
+2021-06-29 12:22:20: itr(5920), training loss:  2.5229, 2.2157, 1.8793, 1.642, 1.3244, 1.0921, 0.84091, 0.57645, 0.36149, 0.11664,
+2021-06-29 12:22:37: itr(5930), training loss:  2.5481, 2.3303, 1.9959, 1.8273, 1.7092, 1.4788, 1.0721, 0.76175, 0.47696, 0.17709,
+2021-06-29 12:22:54: itr(5940), training loss:  2.2891, 1.9756, 1.8473, 1.6104, 1.3949, 1.1885, 0.86743, 0.57295, 0.43605, 0.11034,
+2021-06-29 12:23:11: itr(5950), training loss:  2.6485, 2.4702, 2.0568, 1.8308, 1.5983, 1.1682, 0.89709, 0.76076, 0.45866, 0.1713,
+2021-06-29 12:23:28: itr(5960), training loss:  2.4395, 2.1669, 2.0102, 1.7722, 1.4567, 1.401, 1.0682, 0.68417, 0.39566, 0.13058,
+2021-06-29 12:23:45: itr(5970), training loss:  2.6823, 2.462, 2.1094, 1.8644, 1.5421, 1.2467, 1.0314, 0.75395, 0.55949, 0.16434,
+2021-06-29 12:24:02: itr(5980), training loss:  2.8424, 2.7062, 2.4115, 2.2226, 1.9607, 1.4047, 1.0825, 0.79818, 0.33598, 0.15053,
+2021-06-29 12:24:20: itr(5990), training loss:  2.6369, 2.3784, 2.0795, 1.9637, 1.7333, 1.4607, 0.95321, 0.74375, 0.48297, 0.19063,
+2021-06-29 12:24:38: itr(6000), training loss:  2.3646, 2.171, 1.9419, 1.7372, 1.38, 1.0433, 0.84019, 0.55886, 0.35548, 0.12799,
+2021-06-29 12:24:58: itr(6010), training loss:  2.5855, 2.3107, 2.1017, 1.823, 1.6077, 1.3861, 1.1012, 0.83172, 0.36843, 0.13371,
+2021-06-29 12:25:15: itr(6020), training loss:  2.5139, 2.3154, 1.9337, 1.7694, 1.5398, 1.1837, 0.90419, 0.68512, 0.57993, 0.14345,
+2021-06-29 12:25:33: itr(6030), training loss:  2.4336, 2.2054, 2.0085, 1.7905, 1.4634, 1.0952, 0.82512, 0.63456, 0.38658, 0.12478,
+2021-06-29 12:25:50: itr(6040), training loss:  2.5113, 2.2619, 2.0232, 1.8273, 1.6118, 1.1272, 0.82375, 0.55889, 0.246, 0.15226,
+2021-06-29 12:26:07: itr(6050), training loss:  2.3963, 2.2353, 2.0364, 1.8279, 1.5239, 1.3012, 0.91433, 0.65598, 0.42189, 0.13258,
+2021-06-29 12:26:25: itr(6060), training loss:  2.6149, 2.4525, 2.122, 1.8261, 1.5828, 1.4149, 1.2117, 0.78945, 0.51617, 0.12004,
+2021-06-29 12:26:42: itr(6070), training loss:  2.3439, 2.0579, 1.8901, 1.7133, 1.5522, 1.2865, 1.0354, 0.66051, 0.40511, 0.098748,
+2021-06-29 12:26:59: itr(6080), training loss:  2.4953, 2.2582, 1.9869, 1.7119, 1.5043, 1.1584, 0.91287, 0.63526, 0.44019, 0.14318,
+2021-06-29 12:27:16: itr(6090), training loss:  2.6752, 2.5698, 2.3439, 2.1159, 1.9065, 1.5077, 1.2585, 0.98576, 0.54905, 0.13097,
+2021-06-29 12:27:33: itr(6100), training loss:  2.7946, 2.526, 2.1773, 1.8743, 1.5743, 1.4489, 0.92093, 0.65409, 0.29424, 0.16355,
+2021-06-29 12:27:50: itr(6110), training loss:  2.63, 2.3504, 2.0411, 1.9051, 1.6149, 1.4921, 1.079, 0.79365, 0.53987, 0.14616,
+2021-06-29 12:28:07: itr(6120), training loss:  2.6167, 2.3456, 2.0534, 1.7837, 1.5091, 1.1694, 0.85866, 0.55176, 0.30864, 0.14673,
+2021-06-29 12:28:23: itr(6130), training loss:  3.0109, 2.785, 2.5018, 2.1562, 1.8933, 1.6336, 1.2775, 0.91783, 0.67173, 0.15859,
+2021-06-29 12:28:41: itr(6140), training loss:  2.8052, 2.7036, 2.4773, 2.1828, 1.802, 1.5125, 1.2263, 0.84941, 0.63802, 0.22137,
+2021-06-29 12:28:57: itr(6150), training loss:  2.1506, 1.8945, 1.7172, 1.5119, 1.3114, 1.0857, 0.8305, 0.60462, 0.46662, 0.1166,
+2021-06-29 12:29:14: itr(6160), training loss:  2.7625, 2.4569, 2.0847, 1.7231, 1.4952, 1.2519, 1.0327, 0.73579, 0.39481, 0.15651,
+2021-06-29 12:29:30: itr(6170), training loss:  2.3394, 2.0451, 1.8265, 1.5287, 1.3156, 1.1169, 0.8735, 0.63349, 0.31406, 0.13483,
+2021-06-29 12:29:47: itr(6180), training loss:  2.6925, 2.4215, 2.2676, 2.0378, 1.7196, 1.3967, 0.99683, 0.7803, 0.4789, 0.16594,
+2021-06-29 12:30:03: itr(6190), training loss:  2.4872, 2.0592, 1.857, 1.6015, 1.4678, 1.2181, 1.0299, 0.8074, 0.44871, 0.15312,
+2021-06-29 12:30:20: itr(6200), training loss:  2.3623, 2.152, 1.9573, 1.683, 1.3936, 1.2936, 0.96343, 0.629, 0.51194, 0.14325,
+2021-06-29 12:30:36: itr(6210), training loss:  2.3688, 1.9829, 1.8177, 1.5106, 1.3122, 1.2095, 0.96239, 0.71003, 0.54228, 0.15137,
+2021-06-29 12:30:53: itr(6220), training loss:  2.2908, 1.9391, 1.6223, 1.4134, 1.2486, 0.99765, 0.7621, 0.57438, 0.40456, 0.14864,
+2021-06-29 12:31:09: itr(6230), training loss:  2.9319, 2.7388, 2.5266, 2.2417, 1.9711, 1.4851, 1.1914, 0.97495, 0.60545, 0.15091,
+2021-06-29 12:31:25: itr(6240), training loss:  2.4247, 2.2952, 2.1202, 1.8211, 1.5903, 1.3555, 1.1099, 0.82542, 0.48521, 0.15334,
+2021-06-29 12:31:44: itr(6250), training loss:  2.6563, 2.5064, 2.2266, 1.8681, 1.4125, 1.1158, 0.92292, 0.69812, 0.44282, 0.15288,
+2021-06-29 12:32:00: itr(6260), training loss:  2.4994, 2.2427, 2.0561, 1.7759, 1.681, 1.3722, 1.096, 0.88538, 0.63856, 0.1451,
+2021-06-29 12:32:17: itr(6270), training loss:  2.5138, 2.2552, 1.9959, 1.7403, 1.5918, 1.2584, 0.93956, 0.80736, 0.40422, 0.12671,
+2021-06-29 12:32:33: itr(6280), training loss:  2.4045, 2.1099, 1.8696, 1.5542, 1.4298, 1.1885, 0.92701, 0.69412, 0.46565, 0.13013,
+2021-06-29 12:32:49: itr(6290), training loss:  2.3063, 2.1276, 1.793, 1.4735, 1.1588, 0.89418, 0.64465, 0.57805, 0.31738, 0.12082,
+2021-06-29 12:33:05: itr(6300), training loss:  2.6707, 2.4254, 2.181, 1.6803, 1.376, 1.1768, 0.94864, 0.71763, 0.37972, 0.1473,
+2021-06-29 12:33:21: itr(6310), training loss:  2.0482, 1.8842, 1.559, 1.4811, 1.3511, 1.1115, 0.81348, 0.59069, 0.43886, 0.14616,
+2021-06-29 12:33:37: itr(6320), training loss:  2.5967, 2.2373, 1.9532, 1.7735, 1.5488, 1.3289, 1.0063, 0.63581, 0.40662, 0.15943,
+2021-06-29 12:33:53: itr(6330), training loss:  2.122, 1.8938, 1.6172, 1.3775, 1.1729, 1.0661, 0.84118, 0.7301, 0.40604, 0.10555,
+2021-06-29 12:34:08: itr(6340), training loss:  2.9059, 2.3961, 2.1941, 1.8806, 1.4931, 1.2941, 0.95394, 0.64926, 0.36377, 0.13134,
+2021-06-29 12:34:24: itr(6350), training loss:  2.571, 2.4595, 2.0031, 1.7334, 1.4833, 1.2795, 1.1025, 0.77316, 0.46148, 0.16122,
+2021-06-29 12:34:40: itr(6360), training loss:  2.6051, 2.3787, 2.0535, 1.7764, 1.533, 1.3204, 1.1386, 0.82925, 0.41734, 0.15065,
+ 90%|█████████ | 9/10 [2:56:23<19:38, 1178.60s/it]2021-06-29 12:34:55: itr(6370), training loss:  2.4101, 2.2411, 1.9696, 1.8135, 1.6234, 1.2563, 0.97763, 0.69774, 0.43429, 0.12619,
+2021-06-29 12:35:11: itr(6380), training loss:  2.489, 2.2944, 2.0998, 1.7181, 1.5546, 1.2481, 0.98203, 0.67073, 0.47919, 0.15926,
+2021-06-29 12:35:27: itr(6390), training loss:  2.4735, 2.277, 2.0963, 1.8542, 1.6287, 1.3939, 1.0558, 0.86413, 0.52769, 0.16161,
+2021-06-29 12:35:42: itr(6400), training loss:  2.9943, 2.7, 2.2578, 2.0685, 1.9341, 1.7265, 1.4517, 0.94663, 0.49684, 0.15302,
+2021-06-29 12:35:58: itr(6410), training loss:  2.3717, 2.1272, 1.8768, 1.5174, 1.3441, 1.0383, 0.79193, 0.61947, 0.36232, 0.16664,
+2021-06-29 12:36:14: itr(6420), training loss:  2.4573, 2.1884, 1.8894, 1.6829, 1.3088, 1.0909, 0.91798, 0.77383, 0.51291, 0.13126,
+2021-06-29 12:36:30: itr(6430), training loss:  2.3741, 1.9754, 1.8044, 1.6153, 1.4529, 1.2327, 0.9402, 0.61739, 0.35692, 0.13977,
+2021-06-29 12:36:46: itr(6440), training loss:  2.7108, 2.4441, 2.1566, 1.9358, 1.6538, 1.4446, 1.0161, 0.61448, 0.35772, 0.14267,
+2021-06-29 12:37:01: itr(6450), training loss:  2.4398, 2.1555, 1.8168, 1.5652, 1.3877, 1.0441, 0.84826, 0.69396, 0.27933, 0.094928,
+2021-06-29 12:37:17: itr(6460), training loss:  2.4315, 2.252, 2.0006, 1.5907, 1.347, 1.069, 1.0022, 0.6551, 0.35536, 0.15632,
+2021-06-29 12:37:32: itr(6470), training loss:  2.6273, 2.4181, 2.2346, 2.0418, 1.7167, 1.3582, 1.0409, 0.66458, 0.51338, 0.13659,
+2021-06-29 12:37:48: itr(6480), training loss:  2.5241, 2.2942, 2.1105, 1.7804, 1.6216, 1.2255, 1.0351, 0.72464, 0.38308, 0.1335,
+2021-06-29 12:38:06: itr(6490), training loss:  2.2429, 2.0208, 1.7252, 1.4089, 1.1614, 1.0281, 0.73361, 0.5777, 0.45068, 0.13766,
+2021-06-29 12:38:22: itr(6500), training loss:  2.7676, 2.5038, 2.3951, 2.2178, 1.7614, 1.3762, 1.0259, 0.76878, 0.4111, 0.15277,
+2021-06-29 12:38:38: itr(6510), training loss:  2.7205, 2.4723, 2.2216, 1.8635, 1.5474, 1.2846, 0.97433, 0.71956, 0.41608, 0.16697,
+2021-06-29 12:38:54: itr(6520), training loss:  2.7047, 2.5158, 2.3019, 2.0098, 1.8575, 1.5635, 1.0489, 0.75184, 0.47276, 0.1626,
+2021-06-29 12:39:11: itr(6530), training loss:  2.398, 2.0816, 1.8103, 1.584, 1.3467, 1.0736, 1.0101, 0.7613, 0.38426, 0.13521,
+2021-06-29 12:39:26: itr(6540), training loss:  2.6059, 2.4732, 2.2963, 1.9158, 1.6118, 1.3587, 1.2163, 0.90128, 0.52441, 0.13727,
+2021-06-29 12:39:42: itr(6550), training loss:  2.5007, 2.3158, 2.0175, 1.7969, 1.4298, 1.1753, 0.95299, 0.72784, 0.47218, 0.15464,
+2021-06-29 12:39:58: itr(6560), training loss:  2.3614, 2.1256, 1.906, 1.643, 1.3944, 1.1252, 0.8403, 0.58436, 0.33808, 0.12258,
+2021-06-29 12:40:14: itr(6570), training loss:  2.7182, 2.4141, 2.1136, 1.9358, 1.6119, 1.3962, 1.05, 0.7147, 0.38678, 0.14297,
+2021-06-29 12:40:31: itr(6580), training loss:  2.3498, 2.0888, 1.8506, 1.6741, 1.3335, 0.97217, 0.8416, 0.66349, 0.43541, 0.15855,
+2021-06-29 12:40:47: itr(6590), training loss:  2.4901, 2.2716, 2.0342, 1.7804, 1.4404, 1.1296, 0.94625, 0.63556, 0.37896, 0.1625,
+2021-06-29 12:41:04: itr(6600), training loss:  2.787, 2.5198, 2.3065, 1.9905, 1.5634, 1.2125, 0.82353, 0.6581, 0.49061, 0.16168,
+2021-06-29 12:41:19: itr(6610), training loss:  2.7742, 2.5788, 2.4058, 2.149, 1.8624, 1.5594, 1.2013, 0.69346, 0.57327, 0.17793,
+2021-06-29 12:41:35: itr(6620), training loss:  2.5875, 2.3852, 2.1434, 1.9347, 1.7922, 1.5349, 1.1093, 0.95665, 0.55084, 0.15832,
+2021-06-29 12:41:52: itr(6630), training loss:  2.3376, 2.2102, 1.8501, 1.6473, 1.4915, 1.2521, 0.95739, 0.72759, 0.46626, 0.14379,
+2021-06-29 12:42:08: itr(6640), training loss:  2.6627, 2.2984, 2.0697, 1.7666, 1.5089, 1.1598, 0.8791, 0.69275, 0.49538, 0.15873,
+2021-06-29 12:42:25: itr(6650), training loss:  2.2285, 1.959, 1.6604, 1.4875, 1.2677, 1.144, 1.0271, 0.72651, 0.45058, 0.1241,
+2021-06-29 12:42:41: itr(6660), training loss:  2.4774, 2.2665, 1.939, 1.6968, 1.4164, 1.1128, 0.88919, 0.6943, 0.54253, 0.15531,
+2021-06-29 12:42:58: itr(6670), training loss:  2.3187, 2.0389, 1.6715, 1.508, 1.2598, 0.98479, 0.82905, 0.64897, 0.3999, 0.16021,
+2021-06-29 12:43:14: itr(6680), training loss:  2.5349, 2.2814, 2.0331, 1.7353, 1.3816, 1.0954, 0.80238, 0.62876, 0.30339, 0.13656,
+2021-06-29 12:43:31: itr(6690), training loss:  2.6602, 2.3219, 2.1653, 1.7678, 1.5724, 1.2842, 1.0685, 0.80681, 0.54612, 0.13296,
+2021-06-29 12:43:49: itr(6700), training loss:  2.6463, 2.44, 2.1401, 1.7868, 1.5635, 1.3308, 1.1195, 0.91633, 0.51725, 0.15234,
+2021-06-29 12:44:05: itr(6710), training loss:  2.471, 2.3142, 2.0977, 1.9533, 1.6089, 1.3019, 0.98181, 0.74318, 0.42091, 0.13985,
+2021-06-29 12:44:22: itr(6720), training loss:  2.6755, 2.4189, 2.055, 1.8666, 1.6961, 1.4467, 1.1999, 0.71021, 0.36772, 0.14843,
+2021-06-29 12:44:39: itr(6730), training loss:  2.557, 2.2095, 2.0628, 1.9185, 1.671, 1.4684, 1.0779, 0.6946, 0.29052, 0.14734,
+2021-06-29 12:44:59: itr(6740), training loss:  2.1301, 1.9272, 1.7451, 1.6356, 1.363, 1.0678, 0.91806, 0.73416, 0.46462, 0.16124,
+2021-06-29 12:45:16: itr(6750), training loss:  2.4546, 2.1949, 1.9223, 1.7026, 1.5091, 1.2982, 0.99764, 0.64172, 0.26596, 0.13059,
+2021-06-29 12:45:33: itr(6760), training loss:  2.4009, 2.1517, 1.9849, 1.6923, 1.3181, 1.0365, 0.84091, 0.56701, 0.40255, 0.12358,
+2021-06-29 12:45:50: itr(6770), training loss:  2.6283, 2.4739, 2.1723, 1.9127, 1.5554, 1.3715, 1.0363, 0.7909, 0.46597, 0.15697,
+2021-06-29 12:46:06: itr(6780), training loss:  2.3671, 2.1282, 1.9753, 1.8603, 1.5227, 1.3302, 1.1183, 0.80512, 0.34844, 0.14251,
+2021-06-29 12:46:23: itr(6790), training loss:  2.8278, 2.557, 2.2859, 2.0454, 1.7377, 1.6566, 1.3711, 1.0073, 0.55645, 0.17211,
+2021-06-29 12:46:39: itr(6800), training loss:  2.2016, 2.0509, 1.8897, 1.6577, 1.3847, 1.1132, 0.84986, 0.60327, 0.3747, 0.12775,
+2021-06-29 12:46:56: itr(6810), training loss:  2.3229, 2.2261, 2.0232, 1.7808, 1.698, 1.3984, 1.1319, 0.8559, 0.50653, 0.13879,
+2021-06-29 12:47:12: itr(6820), training loss:  2.8742, 2.6555, 2.5175, 2.1241, 1.6246, 1.3931, 1.0241, 0.60293, 0.44396, 0.1808,
+2021-06-29 12:47:27: itr(6830), training loss:  2.6268, 2.3343, 2.0275, 1.8264, 1.6038, 1.4183, 1.1469, 0.85586, 0.47418, 0.15995,
+2021-06-29 12:47:43: itr(6840), training loss:  2.2515, 1.9517, 1.8523, 1.6203, 1.2812, 0.97993, 0.7354, 0.45396, 0.29662, 0.12427,
+2021-06-29 12:47:59: itr(6850), training loss:  2.3637, 1.9377, 1.6667, 1.5345, 1.3065, 1.1213, 0.84725, 0.56753, 0.39445, 0.13241,
+2021-06-29 12:48:15: itr(6860), training loss:  2.7142, 2.4294, 2.1191, 1.8721, 1.5285, 1.2139, 0.91442, 0.74971, 0.48134, 0.15264,
+2021-06-29 12:48:31: itr(6870), training loss:  2.1281, 1.9851, 1.8209, 1.6883, 1.4079, 1.1186, 0.85832, 0.67826, 0.40795, 0.12392,
+2021-06-29 12:48:46: itr(6880), training loss:  2.2499, 2.0584, 1.8658, 1.5381, 1.3538, 1.1721, 0.85727, 0.62572, 0.38087, 0.12704,
+2021-06-29 12:49:02: itr(6890), training loss:  2.6184, 2.3114, 1.9137, 1.7651, 1.4048, 1.1428, 0.81468, 0.5343, 0.36114, 0.13959,
+2021-06-29 12:49:17: itr(6900), training loss:  2.2593, 2.0635, 1.8453, 1.4541, 1.2013, 1.0048, 0.83481, 0.55049, 0.3034, 0.13738,
+2021-06-29 12:49:33: itr(6910), training loss:  2.5116, 2.3159, 2.0254, 1.8585, 1.6226, 1.4108, 1.08, 0.7242, 0.37248, 0.14199,
+2021-06-29 12:49:49: itr(6920), training loss:  2.8651, 2.6153, 2.3754, 2.1056, 1.8095, 1.5321, 1.2808, 0.77429, 0.48068, 0.177,
+2021-06-29 12:50:04: itr(6930), training loss:  2.5413, 2.3696, 2.1392, 1.9178, 1.7088, 1.4298, 1.1851, 0.81573, 0.3217, 0.14696,
+2021-06-29 12:50:21: itr(6940), training loss:  2.7496, 2.4877, 2.2295, 1.9127, 1.5794, 1.2164, 1.0206, 0.63093, 0.30807, 0.17595,
+2021-06-29 12:50:36: itr(6950), training loss:  2.9296, 2.5077, 2.2034, 1.7715, 1.6015, 1.3053, 1.0523, 0.83347, 0.58593, 0.18616,
+2021-06-29 12:50:51: itr(6960), training loss:  2.3143, 2.0484, 1.7726, 1.623, 1.4366, 1.2744, 0.96514, 0.73665, 0.43298, 0.11655,
+2021-06-29 12:51:05: itr(6970), training loss:  2.4424, 2.2304, 1.966, 1.6301, 1.4108, 1.1791, 0.94879, 0.76908, 0.38483, 0.12727,
+2021-06-29 12:51:23: itr(6980), training loss:  2.439, 2.2624, 1.9941, 1.7223, 1.363, 1.2447, 0.98302, 0.81581, 0.46435, 0.14267,
+2021-06-29 12:51:37: itr(6990), training loss:  2.7732, 2.6954, 2.4829, 2.2584, 1.8396, 1.4836, 1.2471, 0.93509, 0.57616, 0.19976,
+2021-06-29 12:51:51: itr(7000), training loss:  2.712, 2.4099, 2.201, 1.9026, 1.5838, 1.3413, 1.0552, 0.8909, 0.55324, 0.12553,
+2021-06-29 12:52:06: itr(7010), training loss:  2.4957, 2.3271, 2.0769, 1.8029, 1.5429, 1.2252, 0.96745, 0.82277, 0.55397, 0.1514,
+2021-06-29 12:52:20: itr(7020), training loss:  2.574, 2.4265, 2.0857, 1.8742, 1.588, 1.3528, 0.95596, 0.62023, 0.40202, 0.15153,
+2021-06-29 12:52:35: itr(7030), training loss:  2.5937, 2.4051, 2.0212, 1.7248, 1.5452, 1.1955, 1.0662, 0.9098, 0.60349, 0.16958,
+2021-06-29 12:52:49: itr(7040), training loss:  2.728, 2.3429, 2.2308, 1.834, 1.6501, 1.3723, 0.97848, 0.6147, 0.27508, 0.14899,
+2021-06-29 12:53:04: itr(7050), training loss:  2.2042, 2.0623, 1.8537, 1.7109, 1.4958, 1.1781, 0.97527, 0.61955, 0.38962, 0.12692,
+2021-06-29 12:53:18: itr(7060), training loss:  2.3002, 1.9973, 1.7954, 1.5794, 1.3761, 1.2589, 0.99368, 0.68117, 0.4422, 0.11359,
+100%|██████████| 10/10 [3:15:11<00:00, 1162.87s/it]100%|██████████| 10/10 [3:15:11<00:00, 1171.13s/it]
+model:../model/dqn/init-q saved success!!!!
+2021-06-29 12:53:31,542 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [203.6532029271 m] train_with_random_action 
+model:../model/dqn/init-q loaded success!!!!
+  0%|          | 0/30 [00:00<?, ?it/s]2021-06-29 12:54:38,431 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1076867024 m] data_collection 
+  3%|▎         | 1/30 [01:06<32:07, 66.46s/it]2021-06-29 12:55:47,466 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1505238573 m] data_collection 
+  7%|▋         | 2/30 [02:15<31:43, 67.98s/it]2021-06-29 12:56:56,554 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1514126579 m] data_collection 
+ 10%|█         | 3/30 [03:24<30:49, 68.48s/it]2021-06-29 12:58:08,774 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.2036172628 m] data_collection 
+ 13%|█▎        | 4/30 [04:36<30:18, 69.96s/it]2021-06-29 12:59:16,557 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1296613773 m] data_collection 
+ 17%|█▋        | 5/30 [05:44<28:49, 69.17s/it]2021-06-29 13:00:27,387 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1804356257 m] data_collection 
+ 20%|██        | 6/30 [06:55<27:53, 69.74s/it]2021-06-29 13:01:37,993 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1767044028 m] data_collection 
+ 23%|██▎       | 7/30 [08:06<26:50, 70.02s/it]2021-06-29 13:02:50,167 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.2028544148 m] data_collection 
+ 27%|██▋       | 8/30 [09:18<25:55, 70.71s/it]2021-06-29 13:03:56,752 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1096789956 m] data_collection 
+ 30%|███       | 9/30 [10:24<24:17, 69.42s/it]2021-06-29 13:05:07,432 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1779427091 m] data_collection 
+ 33%|███▎      | 10/30 [11:35<23:16, 69.81s/it]2021-06-29 13:06:16,328 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1482121746 m] data_collection 
+ 37%|███▋      | 11/30 [12:44<22:01, 69.53s/it]2021-06-29 13:07:28,018 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1947836240 m] data_collection 
+ 40%|████      | 12/30 [13:56<21:03, 70.19s/it]2021-06-29 13:08:36,484 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1410378456 m] data_collection 
+ 43%|████▎     | 13/30 [15:04<19:44, 69.66s/it]2021-06-29 13:09:44,996 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1418171962 m] data_collection 
+ 47%|████▋     | 14/30 [16:13<18:29, 69.32s/it]2021-06-29 13:10:53,595 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1432601531 m] data_collection 
+ 50%|█████     | 15/30 [17:21<17:16, 69.10s/it]2021-06-29 13:12:02,276 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1446251432 m] data_collection 
+ 53%|█████▎    | 16/30 [18:30<16:05, 68.97s/it]2021-06-29 13:13:10,421 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1356932998 m] data_collection 
+ 57%|█████▋    | 17/30 [19:38<14:53, 68.72s/it]2021-06-29 13:14:14,975 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0758321404 m] data_collection 
+ 60%|██████    | 18/30 [20:43<13:29, 67.47s/it]2021-06-29 13:15:23,801 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1470444481 m] data_collection 
+ 63%|██████▎   | 19/30 [21:51<12:26, 67.88s/it]2021-06-29 13:16:32,157 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1392107209 m] data_collection 
+ 67%|██████▋   | 20/30 [23:00<11:20, 68.02s/it]2021-06-29 13:17:41,453 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1548768759 m] data_collection 
+ 70%|███████   | 21/30 [24:09<10:15, 68.40s/it]2021-06-29 13:18:51,103 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1607602517 m] data_collection 
+ 73%|███████▎  | 22/30 [25:19<09:10, 68.78s/it]2021-06-29 13:20:00,160 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1509037932 m] data_collection 
+ 77%|███████▋  | 23/30 [26:28<08:02, 68.86s/it]2021-06-29 13:21:05,525 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.0893636505 m] data_collection 
+ 80%|████████  | 24/30 [27:33<06:46, 67.81s/it]2021-06-29 13:22:21,629 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.2683363716 m] data_collection 
+ 83%|████████▎ | 25/30 [28:49<05:51, 70.30s/it]2021-06-29 13:23:44,023 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.3731420477 m] data_collection 
+ 87%|████████▋ | 26/30 [30:12<04:55, 73.93s/it]2021-06-29 13:24:55,769 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1957190355 m] data_collection 
+ 90%|█████████ | 27/30 [31:23<03:39, 73.27s/it]2021-06-29 13:26:02,454 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1113371293 m] data_collection 
+ 93%|█████████▎| 28/30 [32:30<02:22, 71.30s/it]2021-06-29 13:27:13,374 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.1819492102 m] data_collection 
+ 97%|█████████▋| 29/30 [33:41<01:11, 71.18s/it]2021-06-29 13:27:49,783 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.6067364494 m] data_collection 
+100%|██████████| 30/30 [34:17<00:00, 60.75s/it]100%|██████████| 30/30 [34:17<00:00, 68.59s/it]
+filter num :140438
+2021-06-29 13:27:53,369 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [34.3566570799 m] data_collection_with_batch 
+greedy train data length:303841
+  0%|          | 0/10 [00:00<?, ?it/s]2021-06-29 13:27:54: itr(7070), training loss:  5.1598, 6.0158, 5.554, 5.6687, 5.187, 4.7983, 5.2573, 4.5748, 3.999, 3.9769,
+2021-06-29 13:28:09: itr(7080), training loss:  2.4012, 2.5122, 1.3123, 0.9716, 1.1444, 0.78603, 0.62769, 1.2098, 0.75621, 0.5876,
+2021-06-29 13:28:22: itr(7090), training loss:  1.9921, 1.8018, 0.63569, 0.60504, 0.60688, 0.62779, 0.3935, 0.52594, 0.35497, 0.36339,
+2021-06-29 13:28:36: itr(7100), training loss:  1.5083, 1.5549, 0.70824, 0.64914, 0.63638, 0.50677, 0.39651, 0.3665, 0.36326, 0.36377,
+2021-06-29 13:28:51: itr(7110), training loss:  1.4297, 1.4723, 0.5178, 0.49415, 0.43162, 0.3377, 0.28358, 0.26113, 0.23947, 0.25971,
+2021-06-29 13:29:05: itr(7120), training loss:  1.6767, 1.6595, 0.59581, 0.5229, 0.47961, 0.36967, 0.29272, 0.29126, 0.26914, 0.32551,
+2021-06-29 13:29:19: itr(7130), training loss:  1.635, 1.6416, 0.5833, 0.57344, 0.52684, 0.38724, 0.25002, 0.25351, 0.24039, 0.29934,
+2021-06-29 13:29:34: itr(7140), training loss:  1.3296, 1.3355, 0.59513, 0.52297, 0.46027, 0.33879, 0.24451, 0.19733, 0.16168, 0.21676,
+2021-06-29 13:29:49: itr(7150), training loss:  1.6412, 1.6663, 0.63498, 0.58786, 0.48159, 0.37546, 0.25261, 0.23741, 0.20004, 0.24484,
+2021-06-29 13:30:04: itr(7160), training loss:  1.442, 1.4473, 0.51507, 0.47614, 0.37723, 0.30715, 0.18777, 0.16516, 0.15564, 0.17198,
+2021-06-29 13:30:19: itr(7170), training loss:  1.5951, 1.6104, 0.65864, 0.63684, 0.49781, 0.36957, 0.25612, 0.22119, 0.19368, 0.19726,
+2021-06-29 13:30:33: itr(7180), training loss:  1.5717, 1.5751, 0.60376, 0.56199, 0.4859, 0.31555, 0.21864, 0.1835, 0.17673, 0.18774,
+2021-06-29 13:30:48: itr(7190), training loss:  1.4191, 1.44, 0.49458, 0.41766, 0.33267, 0.25158, 0.17712, 0.16884, 0.16319, 0.14796,
+2021-06-29 13:31:03: itr(7200), training loss:  1.4953, 1.5357, 0.54712, 0.49495, 0.38125, 0.30792, 0.1947, 0.17432, 0.14283, 0.14318,
+2021-06-29 13:31:18: itr(7210), training loss:  1.5936, 1.6001, 0.64191, 0.60927, 0.52184, 0.38553, 0.26296, 0.25211, 0.22636, 0.23139,
+2021-06-29 13:31:33: itr(7220), training loss:  1.3733, 1.3819, 0.58232, 0.52473, 0.45581, 0.29857, 0.23229, 0.17545, 0.15132, 0.15664,
+2021-06-29 13:31:48: itr(7230), training loss:  1.3974, 1.4304, 0.51508, 0.48362, 0.40737, 0.34932, 0.23204, 0.20851, 0.1776, 0.1752,
+2021-06-29 13:32:03: itr(7240), training loss:  1.2981, 1.3279, 0.56955, 0.5508, 0.48347, 0.30597, 0.19273, 0.16228, 0.14301, 0.1361,
+2021-06-29 13:32:18: itr(7250), training loss:  1.3517, 1.362, 0.53359, 0.44913, 0.39701, 0.22725, 0.17487, 0.17519, 0.18005, 0.17125,
+2021-06-29 13:32:33: itr(7260), training loss:  1.2854, 1.2911, 0.57766, 0.53249, 0.46128, 0.266, 0.24651, 0.19419, 0.17795, 0.1686,
+2021-06-29 13:32:48: itr(7270), training loss:  1.4135, 1.3982, 0.51843, 0.49348, 0.39698, 0.27086, 0.30665, 0.15845, 0.14758, 0.12256,
+2021-06-29 13:33:02: itr(7280), training loss:  1.6239, 1.6419, 0.6226, 0.5356, 0.46685, 0.30125, 0.23979, 0.16416, 0.15004, 0.14777,
+2021-06-29 13:33:17: itr(7290), training loss:  1.5178, 1.5244, 0.55811, 0.47887, 0.39883, 0.24382, 0.17432, 0.13878, 0.13512, 0.11936,
+2021-06-29 13:33:34: itr(7300), training loss:  1.1218, 1.1375, 0.50882, 0.45965, 0.4193, 0.27336, 0.21334, 0.19051, 0.18787, 0.16884,
+2021-06-29 13:33:48: itr(7310), training loss:  1.8729, 1.8843, 0.67446, 0.63619, 0.54292, 0.42297, 0.35193, 0.25316, 0.23744, 0.23704,
+2021-06-29 13:34:03: itr(7320), training loss:  1.3006, 1.2466, 0.46688, 0.47618, 0.3985, 0.26771, 0.17479, 0.14513, 0.14365, 0.13051,
+2021-06-29 13:34:18: itr(7330), training loss:  1.5088, 1.5415, 0.52322, 0.43629, 0.35693, 0.27508, 0.20667, 0.17267, 0.14791, 0.14386,
+2021-06-29 13:34:33: itr(7340), training loss:  1.3159, 1.3227, 0.46295, 0.40393, 0.34138, 0.21751, 0.16036, 0.14003, 0.12714, 0.12051,
+2021-06-29 13:34:48: itr(7350), training loss:  1.3842, 1.3848, 0.51261, 0.45684, 0.40405, 0.28832, 0.19607, 0.18729, 0.17988, 0.16134,
+2021-06-29 13:35:02: itr(7360), training loss:  1.3725, 1.3737, 0.61834, 0.5624, 0.45166, 0.27407, 0.19612, 0.16252, 0.17304, 0.17573,
+ 10%|█         | 1/10 [07:17<1:05:34, 437.16s/it]2021-06-29 13:35:16: itr(7370), training loss:  1.4322, 1.4288, 0.49191, 0.48908, 0.41022, 0.31978, 0.24817, 0.15973, 0.16442, 0.15829,
+2021-06-29 13:35:31: itr(7380), training loss:  1.6382, 1.6643, 0.61275, 0.53324, 0.48311, 0.31888, 0.24058, 0.17583, 0.18607, 0.19024,
+2021-06-29 13:35:45: itr(7390), training loss:  1.6571, 1.6635, 0.50218, 0.44943, 0.4261, 0.29313, 0.23721, 0.13843, 0.13756, 0.13605,
+2021-06-29 13:36:00: itr(7400), training loss:  1.5615, 1.5518, 0.48683, 0.43467, 0.41706, 0.25105, 0.18719, 0.13914, 0.13533, 0.13437,
+2021-06-29 13:36:15: itr(7410), training loss:  1.615, 1.6184, 0.47191, 0.41707, 0.35141, 0.26372, 0.18844, 0.13075, 0.15507, 0.13985,
+2021-06-29 13:36:30: itr(7420), training loss:  1.5578, 1.568, 0.55063, 0.4732, 0.42051, 0.25765, 0.21809, 0.16535, 0.14841, 0.15783,
+2021-06-29 13:36:44: itr(7430), training loss:  1.205, 1.2049, 0.48807, 0.44164, 0.43255, 0.23275, 0.18091, 0.12021, 0.12268, 0.11847,
+2021-06-29 13:36:59: itr(7440), training loss:  1.3241, 1.331, 0.50042, 0.4446, 0.37437, 0.23577, 0.16038, 0.13658, 0.15526, 0.14691,
+2021-06-29 13:37:14: itr(7450), training loss:  1.3804, 1.3811, 0.47822, 0.40832, 0.41941, 0.25713, 0.15814, 0.14273, 0.14796, 0.13752,
+2021-06-29 13:37:30: itr(7460), training loss:  1.6753, 1.6893, 0.48616, 0.40717, 0.38784, 0.24072, 0.16236, 0.14465, 0.14311, 0.14511,
+2021-06-29 13:37:45: itr(7470), training loss:  1.76, 1.7622, 0.61862, 0.56367, 0.47474, 0.3337, 0.26097, 0.25361, 0.26185, 0.25167,
+2021-06-29 13:38:00: itr(7480), training loss:  1.551, 1.5604, 0.52438, 0.46343, 0.37924, 0.23801, 0.18923, 0.11872, 0.12204, 0.13716,
+2021-06-29 13:38:14: itr(7490), training loss:  1.377, 1.379, 0.42485, 0.33518, 0.29914, 0.21828, 0.15708, 0.13554, 0.15287, 0.14026,
+2021-06-29 13:38:29: itr(7500), training loss:  1.665, 1.665, 0.64802, 0.54954, 0.53006, 0.31152, 0.26021, 0.18781, 0.17156, 0.17945,
+2021-06-29 13:38:44: itr(7510), training loss:  1.2968, 1.3029, 0.437, 0.38752, 0.38411, 0.22787, 0.11258, 0.11382, 0.10997, 0.10911,
+2021-06-29 13:39:03: itr(7520), training loss:  1.3335, 1.3421, 0.41117, 0.36719, 0.35721, 0.22955, 0.18635, 0.11008, 0.11362, 0.10405,
+2021-06-29 13:39:17: itr(7530), training loss:  1.6184, 1.645, 0.45283, 0.35516, 0.31503, 0.22717, 0.13943, 0.11746, 0.12943, 0.13102,
+2021-06-29 13:39:32: itr(7540), training loss:  1.7422, 1.7822, 0.5772, 0.44372, 0.41562, 0.30221, 0.23093, 0.21613, 0.22638, 0.22684,
+2021-06-29 13:39:48: itr(7550), training loss:  1.5063, 1.514, 0.55952, 0.45941, 0.43699, 0.29908, 0.24631, 0.19684, 0.19925, 0.1963,
+2021-06-29 13:40:02: itr(7560), training loss:  1.3718, 1.3722, 0.38008, 0.34258, 0.34923, 0.18883, 0.19023, 0.12419, 0.12365, 0.11667,
+2021-06-29 13:40:17: itr(7570), training loss:  1.4956, 1.4931, 0.48992, 0.34309, 0.31785, 0.26385, 0.20256, 0.13918, 0.13912, 0.13161,
+2021-06-29 13:40:32: itr(7580), training loss:  1.5353, 1.536, 0.51938, 0.45241, 0.44069, 0.2564, 0.1888, 0.14973, 0.14648, 0.15105,
+2021-06-29 13:40:47: itr(7590), training loss:  1.4364, 1.438, 0.46195, 0.3632, 0.35651, 0.22866, 0.16124, 0.12406, 0.12022, 0.11227,
+2021-06-29 13:41:01: itr(7600), training loss:  1.4057, 1.4113, 0.43297, 0.37673, 0.39555, 0.22545, 0.17097, 0.13642, 0.12356, 0.11534,
+2021-06-29 13:41:15: itr(7610), training loss:  1.6976, 1.695, 0.43088, 0.33839, 0.33331, 0.2123, 0.15854, 0.10779, 0.12073, 0.1213,
+2021-06-29 13:41:30: itr(7620), training loss:  1.4099, 1.4103, 0.40921, 0.35254, 0.34849, 0.2427, 0.17621, 0.14648, 0.14913, 0.15241,
+2021-06-29 13:41:45: itr(7630), training loss:  1.3069, 1.3279, 0.43824, 0.33991, 0.33672, 0.22476, 0.15368, 0.13233, 0.13159, 0.12675,
+2021-06-29 13:42:00: itr(7640), training loss:  1.7076, 1.7027, 0.51142, 0.42483, 0.41543, 0.24053, 0.1917, 0.13124, 0.14005, 0.1292,
+2021-06-29 13:42:14: itr(7650), training loss:  1.803, 1.7945, 0.60523, 0.49371, 0.48244, 0.33724, 0.2618, 0.20596, 0.205, 0.19671,
+2021-06-29 13:42:29: itr(7660), training loss:  1.2452, 1.2497, 0.42651, 0.35538, 0.36121, 0.23025, 0.14534, 0.11524, 0.13317, 0.13962,
+ 20%|██        | 2/10 [14:39<58:42, 440.27s/it]  2021-06-29 13:42:43: itr(7670), training loss:  1.8113, 1.8949, 0.56769, 0.46021, 0.44177, 0.29351, 0.21852, 0.20444, 0.2047, 0.20604,
+2021-06-29 13:42:57: itr(7680), training loss:  1.5339, 1.5704, 0.48325, 0.4355, 0.43279, 0.26336, 0.20339, 0.13844, 0.13762, 0.13091,
+2021-06-29 13:43:11: itr(7690), training loss:  1.4756, 1.4572, 0.49618, 0.40313, 0.39793, 0.24838, 0.19308, 0.12846, 0.12923, 0.13637,
+2021-06-29 13:43:26: itr(7700), training loss:  1.6879, 1.6913, 0.4606, 0.33982, 0.33918, 0.23094, 0.16062, 0.12686, 0.13341, 0.1311,
+2021-06-29 13:43:40: itr(7710), training loss:  1.5732, 1.57, 0.53755, 0.48299, 0.44469, 0.24793, 0.20238, 0.18937, 0.20053, 0.20833,
+2021-06-29 13:43:54: itr(7720), training loss:  1.4768, 1.4752, 0.44471, 0.38264, 0.38731, 0.2634, 0.18335, 0.15215, 0.14998, 0.17137,
+2021-06-29 13:44:08: itr(7730), training loss:  1.395, 1.394, 0.45874, 0.41335, 0.41634, 0.35306, 0.24371, 0.17673, 0.17828, 0.19576,
+2021-06-29 13:44:24: itr(7740), training loss:  1.1487, 1.156, 0.43174, 0.32652, 0.35387, 0.22177, 0.17537, 0.12886, 0.12325, 0.11674,
+2021-06-29 13:44:39: itr(7750), training loss:  1.5905, 1.5751, 0.37045, 0.32147, 0.31265, 0.23392, 0.14398, 0.11584, 0.1371, 0.13032,
+2021-06-29 13:44:54: itr(7760), training loss:  1.3163, 1.3332, 0.40316, 0.3323, 0.361, 0.25177, 0.18217, 0.1471, 0.15429, 0.14265,
+2021-06-29 13:45:09: itr(7770), training loss:  1.5001, 1.5044, 0.4206, 0.36951, 0.38081, 0.18421, 0.12127, 0.11532, 0.12245, 0.12577,
+2021-06-29 13:45:24: itr(7780), training loss:  1.5075, 1.4887, 0.49509, 0.399, 0.3609, 0.24263, 0.1608, 0.13135, 0.14716, 0.15558,
+2021-06-29 13:45:39: itr(7790), training loss:  1.5763, 1.5734, 0.55419, 0.4329, 0.4355, 0.35077, 0.28353, 0.22784, 0.22339, 0.20382,
+2021-06-29 13:45:54: itr(7800), training loss:  1.5343, 1.5362, 0.39165, 0.34772, 0.3416, 0.18919, 0.13898, 0.11137, 0.12556, 0.11379,
+2021-06-29 13:46:08: itr(7810), training loss:  1.6177, 1.6133, 0.46162, 0.39226, 0.38379, 0.28397, 0.20719, 0.17066, 0.17624, 0.17673,
+2021-06-29 13:46:23: itr(7820), training loss:  1.323, 1.2986, 0.45619, 0.39493, 0.3872, 0.22739, 0.20191, 0.13396, 0.12965, 0.13433,
+2021-06-29 13:46:38: itr(7830), training loss:  1.5127, 1.501, 0.42912, 0.32379, 0.32843, 0.22258, 0.1523, 0.11194, 0.12362, 0.12242,
+2021-06-29 13:46:53: itr(7840), training loss:  1.6569, 1.6445, 0.46956, 0.34948, 0.36424, 0.25103, 0.17361, 0.10789, 0.11704, 0.10913,
+2021-06-29 13:47:08: itr(7850), training loss:  1.7934, 1.7971, 0.45899, 0.40607, 0.37047, 0.29958, 0.28495, 0.16704, 0.1726, 0.15384,
+2021-06-29 13:47:22: itr(7860), training loss:  1.8043, 1.8064, 0.55602, 0.4423, 0.43883, 0.27996, 0.25691, 0.18199, 0.16652, 0.15455,
+2021-06-29 13:47:37: itr(7870), training loss:  1.313, 1.3121, 0.52277, 0.4307, 0.43318, 0.26435, 0.20625, 0.16954, 0.1758, 0.15656,
+2021-06-29 13:47:51: itr(7880), training loss:  1.5622, 1.584, 0.45127, 0.33752, 0.35215, 0.25046, 0.17598, 0.14743, 0.14235, 0.13308,
+2021-06-29 13:48:06: itr(7890), training loss:  1.6513, 1.6563, 0.50912, 0.40172, 0.41132, 0.23422, 0.16648, 0.11539, 0.1171, 0.10876,
+2021-06-29 13:48:20: itr(7900), training loss:  1.4966, 1.5013, 0.50255, 0.42158, 0.43499, 0.24518, 0.16219, 0.13605, 0.14693, 0.13918,
+2021-06-29 13:48:34: itr(7910), training loss:  1.6459, 1.6542, 0.52421, 0.41315, 0.40254, 0.22725, 0.16266, 0.11925, 0.13331, 0.1289,
+2021-06-29 13:48:49: itr(7920), training loss:  1.6042, 1.6191, 0.47656, 0.38842, 0.40792, 0.22742, 0.17262, 0.13136, 0.14175, 0.13802,
+2021-06-29 13:49:03: itr(7930), training loss:  1.4682, 1.4671, 0.30625, 0.23918, 0.2515, 0.18981, 0.12464, 0.11705, 0.12112, 0.10708,
+2021-06-29 13:49:19: itr(7940), training loss:  1.5014, 1.5009, 0.42729, 0.32012, 0.33598, 0.26836, 0.21205, 0.13735, 0.13521, 0.12542,
+2021-06-29 13:49:36: itr(7950), training loss:  1.2611, 1.2629, 0.54987, 0.48014, 0.49937, 0.26118, 0.18685, 0.14204, 0.13813, 0.12558,
+2021-06-29 13:49:50: itr(7960), training loss:  1.5402, 1.5415, 0.38503, 0.3102, 0.27058, 0.20436, 0.133, 0.10905, 0.12517, 0.13195,
+ 30%|███       | 3/10 [21:56<51:12, 438.95s/it]2021-06-29 13:50:05: itr(7970), training loss:  1.3282, 1.3069, 0.39189, 0.2893, 0.31813, 0.17657, 0.14717, 0.11392, 0.13009, 0.13566,
+2021-06-29 13:50:20: itr(7980), training loss:  1.7295, 1.7218, 0.52132, 0.43072, 0.43892, 0.25161, 0.17368, 0.14362, 0.15293, 0.14134,
+2021-06-29 13:50:35: itr(7990), training loss:  1.3189, 1.3349, 0.52552, 0.43312, 0.44851, 0.28141, 0.22454, 0.18052, 0.17831, 0.17257,
+2021-06-29 13:50:50: itr(8000), training loss:  1.4395, 1.4319, 0.44411, 0.37071, 0.38107, 0.27348, 0.19498, 0.18595, 0.19852, 0.18723,
+2021-06-29 13:51:04: itr(8010), training loss:  1.4668, 1.4727, 0.39082, 0.33169, 0.2976, 0.22392, 0.15118, 0.13156, 0.15368, 0.14228,
+2021-06-29 13:51:19: itr(8020), training loss:  1.0654, 1.0732, 0.45869, 0.41296, 0.39654, 0.21931, 0.17213, 0.11628, 0.11865, 0.11673,
+2021-06-29 13:51:34: itr(8030), training loss:  1.6497, 1.649, 0.52061, 0.40841, 0.4123, 0.26656, 0.20376, 0.15353, 0.15927, 0.1605,
+2021-06-29 13:51:49: itr(8040), training loss:  1.6438, 1.6306, 0.64525, 0.56772, 0.58175, 0.34737, 0.28781, 0.16701, 0.16184, 0.15402,
+2021-06-29 13:52:04: itr(8050), training loss:  1.2778, 1.2789, 0.43417, 0.3613, 0.37644, 0.20718, 0.15849, 0.12252, 0.12314, 0.10555,
+2021-06-29 13:52:19: itr(8060), training loss:  1.4458, 1.4437, 0.47695, 0.37616, 0.38195, 0.22515, 0.13398, 0.099969, 0.11697, 0.10247,
+2021-06-29 13:52:34: itr(8070), training loss:  1.6333, 1.6283, 0.52891, 0.40638, 0.45519, 0.25876, 0.1993, 0.14889, 0.16113, 0.15194,
+2021-06-29 13:52:50: itr(8080), training loss:  1.4067, 1.4079, 0.48253, 0.36212, 0.36661, 0.23871, 0.17232, 0.13669, 0.14737, 0.15335,
+2021-06-29 13:53:05: itr(8090), training loss:  1.6826, 1.6787, 0.50958, 0.39841, 0.37753, 0.25779, 0.21856, 0.11667, 0.13101, 0.11841,
+2021-06-29 13:53:20: itr(8100), training loss:  1.6191, 1.6192, 0.50303, 0.41948, 0.4225, 0.3023, 0.23058, 0.16816, 0.17422, 0.15523,
+2021-06-29 13:53:36: itr(8110), training loss:  1.2884, 1.2825, 0.38757, 0.33054, 0.30911, 0.21229, 0.13151, 0.12798, 0.1366, 0.12411,
+2021-06-29 13:53:52: itr(8120), training loss:  1.7915, 1.8066, 0.44318, 0.34036, 0.34916, 0.2439, 0.16853, 0.13091, 0.13909, 0.13637,
+2021-06-29 13:54:08: itr(8130), training loss:  1.5066, 1.5042, 0.39969, 0.31214, 0.32115, 0.20431, 0.12174, 0.12169, 0.13382, 0.11956,
+2021-06-29 13:54:22: itr(8140), training loss:  1.4091, 1.4045, 0.40188, 0.32343, 0.33358, 0.19976, 0.13224, 0.11181, 0.11436, 0.10638,
+2021-06-29 13:54:37: itr(8150), training loss:  1.3362, 1.3366, 0.46588, 0.38122, 0.38305, 0.24585, 0.22826, 0.11736, 0.12066, 0.11666,
+2021-06-29 13:54:52: itr(8160), training loss:  1.1349, 1.1397, 0.33719, 0.26878, 0.27379, 0.14104, 0.10742, 0.089503, 0.095096, 0.091672,
+2021-06-29 13:55:09: itr(8170), training loss:  1.3388, 1.3483, 0.38787, 0.3066, 0.33684, 0.24212, 0.17599, 0.10378, 0.13799, 0.13259,
+2021-06-29 13:55:24: itr(8180), training loss:  1.5196, 1.5133, 0.40674, 0.32852, 0.36305, 0.21643, 0.14381, 0.12143, 0.13915, 0.13561,
+2021-06-29 13:55:38: itr(8190), training loss:  1.6769, 1.6755, 0.45194, 0.3172, 0.33124, 0.25684, 0.1833, 0.1472, 0.16184, 0.15522,
+2021-06-29 13:55:53: itr(8200), training loss:  1.5221, 1.5196, 0.47206, 0.39049, 0.38989, 0.18434, 0.13727, 0.10599, 0.10185, 0.097519,
+2021-06-29 13:56:07: itr(8210), training loss:  1.3169, 1.3162, 0.40781, 0.32856, 0.33978, 0.2165, 0.13557, 0.12711, 0.13218, 0.12515,
+2021-06-29 13:56:21: itr(8220), training loss:  1.2257, 1.2102, 0.45134, 0.35056, 0.36241, 0.26418, 0.20322, 0.13864, 0.13605, 0.12448,
+2021-06-29 13:56:35: itr(8230), training loss:  1.635, 1.6407, 0.45158, 0.36949, 0.3865, 0.2768, 0.19461, 0.14705, 0.13315, 0.11879,
+2021-06-29 13:56:50: itr(8240), training loss:  1.4793, 1.4557, 0.43671, 0.35387, 0.38067, 0.23872, 0.1883, 0.12205, 0.13288, 0.12515,
+2021-06-29 13:57:04: itr(8250), training loss:  1.7726, 1.7768, 0.60657, 0.52326, 0.55337, 0.28772, 0.19532, 0.17681, 0.19332, 0.18009,
+ 40%|████      | 4/10 [29:21<44:05, 440.96s/it]2021-06-29 13:57:18: itr(8260), training loss:  1.466, 1.4828, 0.50652, 0.43824, 0.42058, 0.24984, 0.17215, 0.14175, 0.17598, 0.18396,
+2021-06-29 13:57:34: itr(8270), training loss:  1.2393, 1.2652, 0.37609, 0.30276, 0.29838, 0.19813, 0.12765, 0.10018, 0.10971, 0.10255,
+2021-06-29 13:57:49: itr(8280), training loss:  1.1401, 1.18, 0.36732, 0.2854, 0.31132, 0.20307, 0.1041, 0.10216, 0.10368, 0.099415,
+2021-06-29 13:58:04: itr(8290), training loss:  1.3151, 1.2972, 0.38709, 0.32542, 0.32234, 0.20604, 0.15827, 0.11624, 0.11311, 0.11044,
+2021-06-29 13:58:19: itr(8300), training loss:  1.4328, 1.4334, 0.434, 0.35928, 0.35925, 0.24208, 0.18617, 0.15451, 0.15572, 0.14294,
+2021-06-29 13:58:33: itr(8310), training loss:  1.5632, 1.5511, 0.41523, 0.32242, 0.35139, 0.23451, 0.15515, 0.15521, 0.16284, 0.13815,
+2021-06-29 13:58:47: itr(8320), training loss:  1.429, 1.426, 0.44857, 0.37064, 0.36978, 0.25674, 0.20805, 0.16089, 0.18437, 0.15533,
+2021-06-29 13:59:02: itr(8330), training loss:  1.445, 1.4497, 0.46712, 0.37006, 0.38658, 0.2521, 0.1842, 0.12901, 0.13213, 0.1293,
+2021-06-29 13:59:17: itr(8340), training loss:  1.4318, 1.438, 0.4002, 0.35857, 0.35655, 0.19537, 0.12144, 0.10067, 0.10413, 0.10843,
+2021-06-29 13:59:32: itr(8350), training loss:  1.636, 1.6468, 0.5455, 0.438, 0.43095, 0.35101, 0.25953, 0.1976, 0.20916, 0.19715,
+2021-06-29 13:59:46: itr(8360), training loss:  1.4724, 1.4766, 0.48128, 0.41042, 0.40872, 0.27111, 0.16235, 0.13523, 0.14983, 0.13787,
+2021-06-29 14:00:01: itr(8370), training loss:  1.5105, 1.5206, 0.40821, 0.26541, 0.28453, 0.22561, 0.13565, 0.10293, 0.12751, 0.1146,
+2021-06-29 14:00:18: itr(8380), training loss:  1.5749, 1.5917, 0.48477, 0.3969, 0.41529, 0.32279, 0.2546, 0.20311, 0.20777, 0.22182,
+2021-06-29 14:00:33: itr(8390), training loss:  1.2597, 1.2579, 0.3856, 0.30143, 0.32573, 0.21691, 0.15743, 0.11006, 0.13113, 0.12017,
+2021-06-29 14:00:49: itr(8400), training loss:  1.3546, 1.355, 0.48185, 0.35369, 0.39342, 0.23657, 0.17104, 0.11138, 0.12303, 0.1118,
+2021-06-29 14:01:03: itr(8410), training loss:  1.6582, 1.6913, 0.54109, 0.53976, 0.51981, 0.27521, 0.14867, 0.11726, 0.12461, 0.11579,
+2021-06-29 14:01:18: itr(8420), training loss:  1.8022, 1.8068, 0.42012, 0.33738, 0.33384, 0.25819, 0.20139, 0.12556, 0.13549, 0.13379,
+2021-06-29 14:01:34: itr(8430), training loss:  1.4426, 1.4391, 0.50796, 0.36173, 0.39263, 0.23577, 0.16428, 0.12238, 0.13469, 0.12355,
+2021-06-29 14:01:49: itr(8440), training loss:  1.7981, 1.798, 0.54554, 0.40938, 0.43035, 0.25668, 0.18731, 0.15409, 0.1659, 0.15079,
+2021-06-29 14:02:03: itr(8450), training loss:  1.3859, 1.3986, 0.47339, 0.38611, 0.39704, 0.2626, 0.24635, 0.1732, 0.17537, 0.16339,
+2021-06-29 14:02:18: itr(8460), training loss:  1.3541, 1.349, 0.4492, 0.31502, 0.34599, 0.22442, 0.14927, 0.12074, 0.12113, 0.11223,
+2021-06-29 14:02:32: itr(8470), training loss:  1.5089, 1.5051, 0.53397, 0.4514, 0.47048, 0.27001, 0.19601, 0.1304, 0.14514, 0.14302,
+2021-06-29 14:02:46: itr(8480), training loss:  1.3715, 1.3712, 0.45559, 0.34394, 0.35611, 0.22647, 0.11086, 0.088661, 0.10838, 0.10692,
+2021-06-29 14:03:00: itr(8490), training loss:  1.7307, 1.7411, 0.48344, 0.36872, 0.38621, 0.25491, 0.19107, 0.14258, 0.15975, 0.15551,
+2021-06-29 14:03:15: itr(8500), training loss:  1.6425, 1.6378, 0.45722, 0.3488, 0.36107, 0.22388, 0.1469, 0.12875, 0.15559, 0.13818,
+2021-06-29 14:03:30: itr(8510), training loss:  1.5935, 1.6097, 0.48886, 0.36883, 0.38576, 0.21406, 0.13537, 0.11082, 0.12627, 0.11383,
+2021-06-29 14:03:44: itr(8520), training loss:  1.2825, 1.2849, 0.43346, 0.35789, 0.37367, 0.22828, 0.14557, 0.1279, 0.14293, 0.13178,
+2021-06-29 14:03:59: itr(8530), training loss:  1.4601, 1.443, 0.49071, 0.40074, 0.40856, 0.22164, 0.14363, 0.10493, 0.12251, 0.11935,
+2021-06-29 14:04:13: itr(8540), training loss:  1.3124, 1.3085, 0.46648, 0.36398, 0.36682, 0.22968, 0.17673, 0.10072, 0.12618, 0.11902,
+2021-06-29 14:04:27: itr(8550), training loss:  1.7355, 1.7301, 0.53436, 0.41799, 0.42419, 0.29008, 0.22959, 0.13497, 0.14974, 0.13677,
+ 50%|█████     | 5/10 [36:38<36:39, 439.81s/it]2021-06-29 14:04:40: itr(8560), training loss:  1.2427, 1.2512, 0.40058, 0.36183, 0.3486, 0.23183, 0.1419, 0.13531, 0.14563, 0.16419,
+2021-06-29 14:04:54: itr(8570), training loss:  1.6192, 1.6211, 0.43743, 0.36826, 0.38063, 0.24936, 0.16548, 0.14469, 0.13914, 0.1288,
+2021-06-29 14:05:08: itr(8580), training loss:  1.4801, 1.4724, 0.46446, 0.31928, 0.32778, 0.21867, 0.15223, 0.122, 0.14394, 0.13216,
+2021-06-29 14:05:24: itr(8590), training loss:  1.5315, 1.5533, 0.38715, 0.3067, 0.31659, 0.23967, 0.15982, 0.12613, 0.12408, 0.12384,
+2021-06-29 14:05:38: itr(8600), training loss:  1.4332, 1.4218, 0.45231, 0.33658, 0.34913, 0.23408, 0.15388, 0.11391, 0.11452, 0.11034,
+2021-06-29 14:05:52: itr(8610), training loss:  1.2694, 1.2692, 0.47491, 0.33811, 0.36732, 0.27102, 0.20832, 0.14612, 0.16057, 0.13243,
+2021-06-29 14:06:06: itr(8620), training loss:  1.7495, 1.7527, 0.40653, 0.31646, 0.34086, 0.24229, 0.14282, 0.12848, 0.14407, 0.1323,
+2021-06-29 14:06:22: itr(8630), training loss:  1.4747, 1.4826, 0.51191, 0.38648, 0.41023, 0.25982, 0.19227, 0.14192, 0.13542, 0.12866,
+2021-06-29 14:06:39: itr(8640), training loss:  1.5519, 1.5567, 0.46, 0.38654, 0.39085, 0.30104, 0.18369, 0.14088, 0.14808, 0.1432,
+2021-06-29 14:06:56: itr(8650), training loss:  1.3925, 1.3968, 0.53198, 0.43739, 0.40657, 0.29663, 0.18004, 0.1375, 0.15602, 0.13118,
+2021-06-29 14:07:12: itr(8660), training loss:  1.4523, 1.459, 0.49466, 0.35827, 0.36844, 0.25647, 0.14843, 0.12865, 0.14564, 0.13896,
+2021-06-29 14:07:29: itr(8670), training loss:  1.2541, 1.2552, 0.47607, 0.39453, 0.40501, 0.20399, 0.16168, 0.11535, 0.13011, 0.11942,
+2021-06-29 14:07:43: itr(8680), training loss:  1.464, 1.4679, 0.46155, 0.36304, 0.38416, 0.23805, 0.1635, 0.13941, 0.1391, 0.14999,
+2021-06-29 14:07:59: itr(8690), training loss:  1.4732, 1.4727, 0.45594, 0.34004, 0.37431, 0.25813, 0.18095, 0.13617, 0.15099, 0.13891,
+2021-06-29 14:08:15: itr(8700), training loss:  1.3051, 1.3111, 0.45235, 0.36931, 0.37852, 0.22188, 0.13832, 0.11869, 0.13022, 0.12769,
+2021-06-29 14:08:31: itr(8710), training loss:  1.6123, 1.5991, 0.45135, 0.31876, 0.33891, 0.21079, 0.1596, 0.099626, 0.12121, 0.11703,
+2021-06-29 14:08:47: itr(8720), training loss:  1.5917, 1.59, 0.51684, 0.40504, 0.42216, 0.25696, 0.19756, 0.11518, 0.14075, 0.13824,
+2021-06-29 14:09:03: itr(8730), training loss:  1.653, 1.6199, 0.4717, 0.35657, 0.36171, 0.2391, 0.20476, 0.12811, 0.13874, 0.12041,
+2021-06-29 14:09:17: itr(8740), training loss:  1.36, 1.3601, 0.41927, 0.32514, 0.34881, 0.2411, 0.17364, 0.13372, 0.13849, 0.12408,
+2021-06-29 14:09:31: itr(8750), training loss:  1.908, 1.905, 0.54749, 0.4374, 0.47205, 0.2889, 0.18834, 0.15521, 0.16571, 0.15082,
+2021-06-29 14:09:45: itr(8760), training loss:  1.3056, 1.3028, 0.44829, 0.37526, 0.41132, 0.23271, 0.13883, 0.10136, 0.11, 0.10236,
+2021-06-29 14:10:00: itr(8770), training loss:  1.3872, 1.3783, 0.52371, 0.43, 0.44153, 0.3143, 0.2333, 0.19055, 0.20433, 0.2,
+2021-06-29 14:10:14: itr(8780), training loss:  1.7323, 1.7338, 0.45837, 0.33924, 0.35899, 0.26147, 0.17968, 0.14471, 0.15235, 0.14548,
+2021-06-29 14:10:27: itr(8790), training loss:  1.6034, 1.6097, 0.51559, 0.39712, 0.40873, 0.30038, 0.24112, 0.18896, 0.21375, 0.21297,
+2021-06-29 14:10:41: itr(8800), training loss:  1.7496, 1.7533, 0.56168, 0.44069, 0.48438, 0.30084, 0.26007, 0.25472, 0.24928, 0.24292,
+2021-06-29 14:10:56: itr(8810), training loss:  1.531, 1.5212, 0.45002, 0.34738, 0.36067, 0.23608, 0.16046, 0.11543, 0.13515, 0.12556,
+2021-06-29 14:11:10: itr(8820), training loss:  1.3992, 1.3979, 0.40033, 0.31554, 0.32248, 0.23565, 0.12923, 0.11282, 0.12548, 0.11944,
+2021-06-29 14:11:24: itr(8830), training loss:  1.8403, 1.8464, 0.51896, 0.37983, 0.39851, 0.28592, 0.20214, 0.12332, 0.14229, 0.13628,
+2021-06-29 14:11:38: itr(8840), training loss:  1.4141, 1.4158, 0.41144, 0.29362, 0.33533, 0.18583, 0.1168, 0.11012, 0.15006, 0.13991,
+2021-06-29 14:11:52: itr(8850), training loss:  1.7554, 1.7634, 0.44349, 0.30904, 0.32968, 0.22557, 0.14849, 0.14919, 0.14817, 0.13506,
+ 60%|██████    | 6/10 [43:59<29:20, 440.08s/it]2021-06-29 14:12:05: itr(8860), training loss:  1.3925, 1.3963, 0.48454, 0.4144, 0.41729, 0.27715, 0.16413, 0.15367, 0.17005, 0.1803,
+2021-06-29 14:12:18: itr(8870), training loss:  1.7307, 1.7552, 0.49325, 0.38808, 0.40942, 0.21986, 0.14345, 0.10582, 0.12646, 0.11572,
+2021-06-29 14:12:32: itr(8880), training loss:  1.5417, 1.553, 0.46217, 0.37305, 0.40184, 0.26342, 0.22006, 0.13415, 0.14559, 0.13642,
+2021-06-29 14:12:47: itr(8890), training loss:  1.6875, 1.6524, 0.42506, 0.34602, 0.36189, 0.24591, 0.15286, 0.14524, 0.14398, 0.13327,
+2021-06-29 14:13:01: itr(8900), training loss:  1.7603, 1.7566, 0.47785, 0.35133, 0.39504, 0.24529, 0.17269, 0.13753, 0.15664, 0.15516,
+2021-06-29 14:13:15: itr(8910), training loss:  1.5333, 1.5308, 0.49848, 0.37453, 0.39999, 0.27326, 0.21116, 0.093468, 0.12324, 0.10811,
+2021-06-29 14:13:30: itr(8920), training loss:  1.4196, 1.4215, 0.42823, 0.29497, 0.32284, 0.23387, 0.14962, 0.12333, 0.13156, 0.11411,
+2021-06-29 14:13:45: itr(8930), training loss:  1.3831, 1.381, 0.47656, 0.38621, 0.39982, 0.20343, 0.13626, 0.1219, 0.13528, 0.1253,
+2021-06-29 14:13:59: itr(8940), training loss:  1.5234, 1.5253, 0.45311, 0.33056, 0.33295, 0.26269, 0.18137, 0.15001, 0.1578, 0.14285,
+2021-06-29 14:14:13: itr(8950), training loss:  1.4206, 1.4203, 0.41802, 0.31929, 0.35264, 0.1973, 0.11472, 0.081854, 0.11653, 0.10822,
+2021-06-29 14:14:27: itr(8960), training loss:  1.823, 1.8241, 0.48366, 0.39351, 0.44793, 0.27835, 0.20643, 0.14913, 0.14541, 0.13737,
+2021-06-29 14:14:42: itr(8970), training loss:  1.1864, 1.1979, 0.4804, 0.37437, 0.40179, 0.22708, 0.17754, 0.10375, 0.12053, 0.10182,
+2021-06-29 14:14:56: itr(8980), training loss:  1.2817, 1.2846, 0.44763, 0.31389, 0.34448, 0.22017, 0.14917, 0.10917, 0.12125, 0.12062,
+2021-06-29 14:15:11: itr(8990), training loss:  1.4739, 1.4753, 0.35512, 0.23978, 0.26009, 0.21676, 0.13518, 0.080688, 0.10274, 0.090706,
+2021-06-29 14:15:25: itr(9000), training loss:  1.6936, 1.6941, 0.39661, 0.33034, 0.3332, 0.25466, 0.14963, 0.13155, 0.14784, 0.15383,
+2021-06-29 14:15:41: itr(9010), training loss:  1.609, 1.6066, 0.4084, 0.31092, 0.32835, 0.21434, 0.13929, 0.10359, 0.12157, 0.11139,
+2021-06-29 14:15:58: itr(9020), training loss:  1.519, 1.5049, 0.44126, 0.31049, 0.31352, 0.221, 0.1683, 0.090419, 0.10321, 0.090234,
+2021-06-29 14:16:12: itr(9030), training loss:  1.6013, 1.6031, 0.50455, 0.41467, 0.42726, 0.30642, 0.21203, 0.18429, 0.20262, 0.18344,
+2021-06-29 14:16:26: itr(9040), training loss:  1.3552, 1.366, 0.39568, 0.31582, 0.32791, 0.21909, 0.16047, 0.11206, 0.12204, 0.11845,
+2021-06-29 14:16:41: itr(9050), training loss:  1.2565, 1.2536, 0.42807, 0.32963, 0.37567, 0.29783, 0.16398, 0.10936, 0.12156, 0.11988,
+2021-06-29 14:16:55: itr(9060), training loss:  1.8494, 1.8376, 0.37188, 0.25974, 0.2844, 0.20656, 0.11102, 0.092266, 0.13027, 0.13123,
+2021-06-29 14:17:10: itr(9070), training loss:  1.3923, 1.3948, 0.40332, 0.31602, 0.3244, 0.24633, 0.18289, 0.14488, 0.1596, 0.15018,
+2021-06-29 14:17:24: itr(9080), training loss:  1.0667, 1.0695, 0.38243, 0.30542, 0.32881, 0.15398, 0.1013, 0.098296, 0.1097, 0.10912,
+2021-06-29 14:17:38: itr(9090), training loss:  1.6281, 1.6247, 0.59885, 0.45649, 0.50946, 0.25715, 0.17198, 0.13173, 0.15043, 0.13738,
+2021-06-29 14:17:52: itr(9100), training loss:  1.5456, 1.5431, 0.37167, 0.30413, 0.31736, 0.20735, 0.16693, 0.103, 0.10576, 0.095328,
+2021-06-29 14:18:06: itr(9110), training loss:  1.5323, 1.5416, 0.47148, 0.37173, 0.35719, 0.22533, 0.15528, 0.14696, 0.15227, 0.13503,
+2021-06-29 14:18:20: itr(9120), training loss:  1.3195, 1.3536, 0.41487, 0.35491, 0.36594, 0.2647, 0.20231, 0.098891, 0.12224, 0.10716,
+2021-06-29 14:18:34: itr(9130), training loss:  1.6248, 1.6412, 0.52714, 0.42129, 0.43694, 0.27643, 0.20646, 0.13337, 0.16257, 0.13621,
+2021-06-29 14:18:48: itr(9140), training loss:  1.1687, 1.1711, 0.42847, 0.32419, 0.35069, 0.23356, 0.16937, 0.13927, 0.16007, 0.1603,
+ 70%|███████   | 7/10 [51:05<21:46, 435.41s/it]2021-06-29 14:19:01: itr(9150), training loss:  1.5392, 1.5323, 0.45113, 0.34538, 0.34674, 0.22338, 0.15165, 0.1128, 0.13361, 0.12726,
+2021-06-29 14:19:14: itr(9160), training loss:  1.5754, 1.5903, 0.4259, 0.29958, 0.32304, 0.20527, 0.12728, 0.10531, 0.12965, 0.12725,
+2021-06-29 14:19:28: itr(9170), training loss:  1.1204, 1.1388, 0.3983, 0.28994, 0.3232, 0.21595, 0.14386, 0.084103, 0.10091, 0.099091,
+2021-06-29 14:19:42: itr(9180), training loss:  1.3922, 1.3797, 0.39645, 0.28639, 0.32337, 0.19265, 0.12689, 0.12809, 0.11906, 0.10534,
+2021-06-29 14:19:56: itr(9190), training loss:  1.7582, 1.7749, 0.49553, 0.37924, 0.38574, 0.23169, 0.1454, 0.14297, 0.17559, 0.17188,
+2021-06-29 14:20:10: itr(9200), training loss:  1.6269, 1.6255, 0.41942, 0.32189, 0.35695, 0.2507, 0.16675, 0.1327, 0.14084, 0.13115,
+2021-06-29 14:20:25: itr(9210), training loss:  1.3536, 1.3545, 0.46352, 0.37614, 0.39688, 0.27267, 0.18116, 0.13079, 0.13857, 0.13332,
+2021-06-29 14:20:40: itr(9220), training loss:  1.1906, 1.1924, 0.45833, 0.38169, 0.3935, 0.25669, 0.20467, 0.14236, 0.1392, 0.12303,
+2021-06-29 14:20:55: itr(9230), training loss:  1.4826, 1.4835, 0.57114, 0.47455, 0.46514, 0.27114, 0.19496, 0.13945, 0.16737, 0.14877,
+2021-06-29 14:21:12: itr(9240), training loss:  1.2839, 1.2805, 0.47361, 0.30739, 0.35143, 0.21661, 0.16329, 0.11273, 0.11757, 0.10963,
+2021-06-29 14:21:27: itr(9250), training loss:  1.4259, 1.4301, 0.366, 0.22757, 0.26849, 0.20338, 0.10805, 0.069448, 0.097505, 0.089185,
+2021-06-29 14:21:42: itr(9260), training loss:  1.6603, 1.6666, 0.52826, 0.3938, 0.454, 0.2044, 0.16995, 0.14727, 0.15235, 0.15089,
+2021-06-29 14:21:57: itr(9270), training loss:  1.5516, 1.5564, 0.48765, 0.39456, 0.41114, 0.26129, 0.20377, 0.11232, 0.15673, 0.13993,
+2021-06-29 14:22:12: itr(9280), training loss:  1.3737, 1.3737, 0.4649, 0.36383, 0.38667, 0.22014, 0.1711, 0.1284, 0.12784, 0.12103,
+2021-06-29 14:22:27: itr(9290), training loss:  1.5631, 1.5658, 0.39634, 0.28717, 0.31215, 0.22419, 0.16187, 0.099148, 0.11986, 0.10707,
+2021-06-29 14:22:42: itr(9300), training loss:  1.531, 1.5248, 0.47505, 0.33843, 0.34846, 0.23118, 0.18525, 0.11776, 0.12606, 0.12142,
+2021-06-29 14:22:57: itr(9310), training loss:  1.4036, 1.3947, 0.39378, 0.26338, 0.28733, 0.19371, 0.1372, 0.10879, 0.12438, 0.10818,
+2021-06-29 14:23:12: itr(9320), training loss:  1.8059, 1.8094, 0.56825, 0.46743, 0.48923, 0.30345, 0.25163, 0.20893, 0.23967, 0.2239,
+2021-06-29 14:23:27: itr(9330), training loss:  1.4355, 1.4319, 0.33928, 0.21896, 0.23703, 0.17087, 0.1027, 0.073121, 0.093952, 0.086954,
+2021-06-29 14:23:42: itr(9340), training loss:  1.5536, 1.5523, 0.30895, 0.23146, 0.241, 0.14909, 0.12592, 0.087781, 0.09376, 0.083772,
+2021-06-29 14:23:56: itr(9350), training loss:  1.7012, 1.7286, 0.43698, 0.33203, 0.35278, 0.19741, 0.10877, 0.071357, 0.11128, 0.10272,
+2021-06-29 14:24:11: itr(9360), training loss:  1.4409, 1.4425, 0.34598, 0.24189, 0.26991, 0.16544, 0.10466, 0.10134, 0.12482, 0.12638,
+2021-06-29 14:24:25: itr(9370), training loss:  1.6507, 1.6521, 0.60651, 0.48188, 0.49287, 0.2852, 0.185, 0.11013, 0.12909, 0.11556,
+2021-06-29 14:24:39: itr(9380), training loss:  1.3944, 1.4044, 0.37219, 0.265, 0.28582, 0.18157, 0.13205, 0.10298, 0.11766, 0.11408,
+2021-06-29 14:24:53: itr(9390), training loss:  1.5526, 1.5534, 0.52303, 0.36281, 0.41174, 0.26927, 0.20454, 0.11621, 0.13416, 0.12548,
+2021-06-29 14:25:07: itr(9400), training loss:  1.5876, 1.612, 0.42951, 0.33824, 0.34474, 0.18947, 0.13491, 0.10681, 0.11928, 0.11031,
+2021-06-29 14:25:22: itr(9410), training loss:  1.5742, 1.5865, 0.48114, 0.34921, 0.37818, 0.22187, 0.19032, 0.10818, 0.12983, 0.10745,
+2021-06-29 14:25:36: itr(9420), training loss:  1.7133, 1.7097, 0.42973, 0.34548, 0.3552, 0.26404, 0.17935, 0.14135, 0.16717, 0.15414,
+2021-06-29 14:25:51: itr(9430), training loss:  1.9755, 1.962, 0.52026, 0.39593, 0.43944, 0.25845, 0.19386, 0.12319, 0.1486, 0.13674,
+2021-06-29 14:26:04: itr(9440), training loss:  1.5146, 1.5069, 0.37383, 0.26903, 0.27915, 0.20555, 0.11568, 0.089085, 0.15418, 0.1562,
+ 80%|████████  | 8/10 [58:17<14:28, 434.44s/it]2021-06-29 14:26:19: itr(9450), training loss:  1.1983, 1.198, 0.39045, 0.27856, 0.29578, 0.15175, 0.10737, 0.095224, 0.1079, 0.099467,
+2021-06-29 14:26:34: itr(9460), training loss:  1.395, 1.3957, 0.36745, 0.25842, 0.27745, 0.18126, 0.13935, 0.094757, 0.11013, 0.10277,
+2021-06-29 14:26:48: itr(9470), training loss:  1.4122, 1.4234, 0.48166, 0.34999, 0.36879, 0.2419, 0.18874, 0.10039, 0.1278, 0.12146,
+2021-06-29 14:27:02: itr(9480), training loss:  1.3872, 1.4014, 0.48522, 0.38743, 0.41086, 0.24376, 0.20395, 0.12598, 0.12887, 0.11983,
+2021-06-29 14:27:17: itr(9490), training loss:  1.2325, 1.2292, 0.38926, 0.30999, 0.31024, 0.20709, 0.15792, 0.076636, 0.11327, 0.095784,
+2021-06-29 14:27:32: itr(9500), training loss:  1.7042, 1.7063, 0.53464, 0.41433, 0.42681, 0.27978, 0.22522, 0.19388, 0.20561, 0.21777,
+2021-06-29 14:27:46: itr(9510), training loss:  1.8828, 1.8816, 0.46384, 0.32917, 0.35756, 0.25426, 0.17183, 0.10237, 0.14988, 0.1252,
+2021-06-29 14:28:00: itr(9520), training loss:  1.8796, 1.8799, 0.55882, 0.42376, 0.44649, 0.3017, 0.24012, 0.19171, 0.20376, 0.19719,
+2021-06-29 14:28:15: itr(9530), training loss:  1.4496, 1.4484, 0.4682, 0.38715, 0.38801, 0.26778, 0.20947, 0.19102, 0.20444, 0.19194,
+2021-06-29 14:28:30: itr(9540), training loss:  1.723, 1.7247, 0.56804, 0.42257, 0.4809, 0.24098, 0.18401, 0.14304, 0.15686, 0.13612,
+2021-06-29 14:28:44: itr(9550), training loss:  1.4432, 1.4403, 0.54548, 0.40195, 0.47012, 0.17706, 0.12012, 0.10953, 0.13339, 0.10201,
+2021-06-29 14:28:59: itr(9560), training loss:  2.0627, 2.0622, 0.59395, 0.47546, 0.53354, 0.22475, 0.14674, 0.13069, 0.15614, 0.15225,
+2021-06-29 14:29:14: itr(9570), training loss:  1.6147, 1.6136, 0.43355, 0.37351, 0.38534, 0.23078, 0.1884, 0.10805, 0.1185, 0.10014,
+2021-06-29 14:29:28: itr(9580), training loss:  1.5889, 1.5884, 0.44606, 0.30793, 0.3449, 0.20683, 0.14586, 0.068986, 0.099481, 0.088924,
+2021-06-29 14:29:42: itr(9590), training loss:  1.7444, 1.7448, 0.57145, 0.43286, 0.4468, 0.29584, 0.23671, 0.1708, 0.18355, 0.15465,
+2021-06-29 14:29:57: itr(9600), training loss:  1.5046, 1.5016, 0.60383, 0.48872, 0.47776, 0.30766, 0.23273, 0.13859, 0.15622, 0.14201,
+2021-06-29 14:30:12: itr(9610), training loss:  1.5215, 1.5407, 0.41243, 0.28142, 0.29514, 0.19529, 0.14406, 0.10583, 0.11021, 0.091378,
+2021-06-29 14:30:26: itr(9620), training loss:  1.4278, 1.419, 0.37532, 0.27181, 0.28924, 0.19114, 0.14753, 0.11218, 0.13623, 0.10536,
+2021-06-29 14:30:40: itr(9630), training loss:  1.4055, 1.4118, 0.48902, 0.43254, 0.4376, 0.24678, 0.14491, 0.12304, 0.13807, 0.1135,
+2021-06-29 14:30:54: itr(9640), training loss:  1.6958, 1.6827, 0.50326, 0.39387, 0.39031, 0.23982, 0.19954, 0.12206, 0.1175, 0.091561,
+2021-06-29 14:31:08: itr(9650), training loss:  1.6626, 1.6608, 0.56706, 0.44514, 0.46938, 0.27976, 0.2037, 0.12985, 0.15739, 0.13081,
+2021-06-29 14:31:22: itr(9660), training loss:  1.5943, 1.593, 0.53699, 0.38118, 0.39687, 0.24928, 0.18867, 0.11557, 0.13868, 0.10674,
+2021-06-29 14:31:38: itr(9670), training loss:  1.474, 1.4712, 0.42785, 0.32907, 0.33599, 0.25252, 0.18022, 0.12271, 0.13668, 0.10236,
+2021-06-29 14:31:52: itr(9680), training loss:  1.635, 1.6333, 0.69084, 0.52297, 0.56534, 0.34597, 0.2941, 0.26454, 0.28222, 0.2529,
+2021-06-29 14:32:06: itr(9690), training loss:  1.6065, 1.6039, 0.42509, 0.29047, 0.32532, 0.18992, 0.14114, 0.10129, 0.12515, 0.099089,
+2021-06-29 14:32:20: itr(9700), training loss:  1.6767, 1.6724, 0.4999, 0.36896, 0.39973, 0.19893, 0.13449, 0.10006, 0.12244, 0.095237,
+2021-06-29 14:32:34: itr(9710), training loss:  1.4268, 1.4252, 0.54966, 0.43261, 0.45197, 0.21339, 0.16586, 0.12115, 0.15532, 0.12263,
+2021-06-29 14:32:47: itr(9720), training loss:  1.6783, 1.6871, 0.43591, 0.32379, 0.34443, 0.1981, 0.1669, 0.11029, 0.14156, 0.10349,
+2021-06-29 14:33:00: itr(9730), training loss:  1.8194, 1.8288, 0.52741, 0.42014, 0.43035, 0.22412, 0.1681, 0.16, 0.15368, 0.12118,
+2021-06-29 14:33:14: itr(9740), training loss:  1.6889, 1.6936, 0.51692, 0.3828, 0.39482, 0.24894, 0.1669, 0.11389, 0.17863, 0.1127,
+ 90%|█████████ | 9/10 [1:05:22<07:11, 431.63s/it]2021-06-29 14:33:27: itr(9750), training loss:  1.7976, 1.803, 0.481, 0.34684, 0.35651, 0.25161, 0.1834, 0.13829, 0.15766, 0.13329,
+2021-06-29 14:33:40: itr(9760), training loss:  1.4093, 1.4151, 0.46268, 0.36907, 0.38205, 0.19218, 0.13783, 0.10551, 0.12531, 0.10303,
+2021-06-29 14:33:54: itr(9770), training loss:  1.3626, 1.3583, 0.52614, 0.37934, 0.39425, 0.28047, 0.21988, 0.15408, 0.17032, 0.13825,
+2021-06-29 14:34:08: itr(9780), training loss:  1.5907, 1.5908, 0.42511, 0.31211, 0.32941, 0.21753, 0.16418, 0.14446, 0.17274, 0.13896,
+2021-06-29 14:34:21: itr(9790), training loss:  1.6879, 1.6787, 0.42352, 0.3025, 0.29544, 0.19603, 0.1157, 0.10408, 0.14071, 0.11683,
+2021-06-29 14:34:35: itr(9800), training loss:  1.5744, 1.5733, 0.48345, 0.35656, 0.36896, 0.20606, 0.12564, 0.095799, 0.11481, 0.078384,
+2021-06-29 14:34:50: itr(9810), training loss:  1.6382, 1.6346, 0.50657, 0.3865, 0.4148, 0.25901, 0.19347, 0.10508, 0.13995, 0.095634,
+2021-06-29 14:35:03: itr(9820), training loss:  1.5014, 1.4977, 0.3956, 0.31428, 0.34167, 0.19156, 0.12391, 0.10171, 0.12049, 0.10135,
+2021-06-29 14:35:17: itr(9830), training loss:  1.5944, 1.6041, 0.46395, 0.35804, 0.37823, 0.21457, 0.16576, 0.080004, 0.11714, 0.07688,
+2021-06-29 14:35:32: itr(9840), training loss:  1.6588, 1.6583, 0.40191, 0.29023, 0.32481, 0.19671, 0.12471, 0.07202, 0.1266, 0.077779,
+2021-06-29 14:35:46: itr(9850), training loss:  1.4575, 1.4528, 0.39686, 0.27676, 0.30297, 0.13641, 0.094362, 0.067931, 0.090224, 0.05429,
+2021-06-29 14:36:00: itr(9860), training loss:  1.3939, 1.3949, 0.39697, 0.27932, 0.30075, 0.14701, 0.10443, 0.075374, 0.11524, 0.074784,
+2021-06-29 14:36:14: itr(9870), training loss:  1.387, 1.3878, 0.41994, 0.30864, 0.32633, 0.18231, 0.11711, 0.10227, 0.11891, 0.081911,
+2021-06-29 14:36:31: itr(9880), training loss:  1.6394, 1.6411, 0.47018, 0.36197, 0.38088, 0.2432, 0.18252, 0.13856, 0.16737, 0.11057,
+2021-06-29 14:36:46: itr(9890), training loss:  1.1398, 1.1396, 0.35614, 0.26084, 0.26707, 0.1439, 0.10334, 0.087111, 0.11127, 0.057486,
+2021-06-29 14:37:00: itr(9900), training loss:  1.3177, 1.3216, 0.31803, 0.20724, 0.21704, 0.15551, 0.11734, 0.072918, 0.099259, 0.0692,
+2021-06-29 14:37:15: itr(9910), training loss:  1.6382, 1.627, 0.48136, 0.34688, 0.35001, 0.21855, 0.18373, 0.12928, 0.15756, 0.11301,
+2021-06-29 14:37:29: itr(9920), training loss:  1.533, 1.5676, 0.40597, 0.30245, 0.33468, 0.2013, 0.11686, 0.081989, 0.10284, 0.061999,
+2021-06-29 14:37:45: itr(9930), training loss:  1.4799, 1.4904, 0.49322, 0.39182, 0.39461, 0.17385, 0.11785, 0.068956, 0.10412, 0.0792,
+2021-06-29 14:37:58: itr(9940), training loss:  1.192, 1.1955, 0.42865, 0.32882, 0.34924, 0.15843, 0.14606, 0.121, 0.14341, 0.096741,
+2021-06-29 14:38:14: itr(9950), training loss:  1.3711, 1.3524, 0.40296, 0.30879, 0.30812, 0.21431, 0.1696, 0.092595, 0.10731, 0.099155,
+2021-06-29 14:38:28: itr(9960), training loss:  1.3642, 1.3613, 0.39707, 0.28185, 0.289, 0.20688, 0.15483, 0.11129, 0.13677, 0.11363,
+2021-06-29 14:38:41: itr(9970), training loss:  1.4558, 1.4628, 0.36997, 0.24198, 0.27401, 0.1516, 0.095546, 0.057425, 0.097338, 0.050176,
+2021-06-29 14:38:55: itr(9980), training loss:  1.5925, 1.5915, 0.5988, 0.44637, 0.49558, 0.28813, 0.23879, 0.1745, 0.20315, 0.13876,
+2021-06-29 14:39:09: itr(9990), training loss:  1.3904, 1.3928, 0.45771, 0.31384, 0.33321, 0.18864, 0.15163, 0.10138, 0.11771, 0.089826,
+2021-06-29 14:39:23: itr(10000), training loss:  1.5282, 1.5262, 0.49203, 0.34505, 0.34406, 0.23385, 0.1968, 0.089669, 0.12471, 0.071806,
+2021-06-29 14:39:37: itr(10010), training loss:  1.8322, 1.8079, 0.54924, 0.40243, 0.42736, 0.23613, 0.19558, 0.13409, 0.1616, 0.11738,
+2021-06-29 14:39:51: itr(10020), training loss:  1.6351, 1.6321, 0.4668, 0.36636, 0.38911, 0.22408, 0.12952, 0.10061, 0.14199, 0.081633,
+2021-06-29 14:40:04: itr(10030), training loss:  1.3938, 1.4021, 0.32035, 0.21545, 0.2247, 0.14877, 0.10874, 0.09249, 0.099835, 0.068408,
+100%|██████████| 10/10 [1:12:24<00:00, 428.36s/it]100%|██████████| 10/10 [1:12:24<00:00, 434.41s/it]
+model:../model/dqn/best-reward-10 saved success!!!!
+2021-06-29 14:40:18,181 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [106.7701560577 m] train_with_greedy_action 
+2021-06-29 14:44:29,000 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [4.1799814065 m] validation 
+(2.084254510127599, 0.2214929639401935, 2.084254510127599)
+2021-06-29 14:48:54,212 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [4.4201046546 m] validation_train 
+(1.043456540378431, 0.22109556123181712, 1.043456540378431)
+2021-06-29 14:48:57,677 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [319.5304563006 m] main 
+finished!!!!!!,time cost:319.5304999748866 m

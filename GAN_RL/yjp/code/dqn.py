@@ -33,7 +33,7 @@ class DQN():
 
         # self.sess=tf.compat.v1.InteractiveSession()
         self.sess=self._init_session()
-        self.global_step = tf.train.get_or_create_global_step()#trainable=False
+        self.global_step = tf.compat.v1.train.get_or_create_global_step()#trainable=False
         self._init()
         self.sess.run(tf.global_variables_initializer())
         self.saver =tf.compat.v1.train.Saver()
@@ -129,7 +129,7 @@ class DQN():
                 concate_input_k[ii]=tf.concat([self.env.user_states,self.action_state,action_feature_list_],axis=1)
                 concate_input_k[ii] = tf.reshape(concate_input_k[ii],[-1,self.pw_dim*self.f_dim+2*self.f_dim+int(ii+1)*self.f_dim])
 
-                current_variables = tf.trainable_variables()
+                current_variables = tf.compat.v1.trainable_variables()
                 # q_value_k[ii]: 构造paper里面提到的Q^j, where j=1,...,_k
                 with tf.variable_scope('Q'+str(ii)+'-function',reuse=False):
                     q_value_k[ii] = self.mlp(concate_input_k[ii],self.hidden_dims,1,tf.nn.elu,sd=self.std,act_last=False)
@@ -140,9 +140,9 @@ class DQN():
                 # y_label为reward
                 ##y_label就是env算出来的reward,每个用户的reward，segment_sum操作了
                 self.loss_k[ii] = tf.reduce_mean(tf.squared_difference(q_value_k[ii],self.placeholder['y_label']))#
-                opt_k[ii] = tf.train.AdamOptimizer(learning_rate=self.lr)
+                opt_k[ii] = tf.compat.v1.train.AdamOptimizer(learning_rate=self.lr)
 
-                train_variable_k[ii] = list(set(tf.trainable_variables())-set(current_variables))
+                train_variable_k[ii] = list(set(tf.compat.v1.trainable_variables())-set(current_variables))
                 self.train_op_k[ii] = opt_k[ii].minimize(self.loss_k[ii],var_list=train_variable_k[ii],global_step=self.global_step)
 
             # self.sess.run(tf.variables_initializer(list(set(tf.global_variables())-set(agg_variables))))
@@ -236,6 +236,7 @@ class DQN():
                     q_value_all = self.mlp(concate_input,self.hidden_dims,1,tf.nn.elu,sd=self.std,act_last=False)
 
                 q_value_all = tf.reshape(q_value_all,[-1])
+                # tf.sparse_to_dense deprecated. 使用tf.sparse.SparseTensor创建一个sparsetensor，然后用tf.sparse.to_dense
                 q1_tensor = tf.sparse_to_dense(self.placeholder['all_action_tensor_indices'],
                                                self.placeholder['all_action_tensor_shape'],q_value_all,default_value=self.min_value)
                 q1_tensor += to_avoid_repeat_tensor

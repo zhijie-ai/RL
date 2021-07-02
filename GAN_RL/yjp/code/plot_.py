@@ -13,20 +13,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-f = open('../data/analysis/loss_random_0.3_10_0.001_1024_filtered_0.8.pkl', 'rb')#数据集过滤了空值，0.8用户
-f = open('../data/analysis/loss_random_0.3_10_0.001_1024_filtered_all.pkl', 'rb')# 过滤了空值，全部用户
-f = open('../data/analysis/loss_random_0.3_10_0.001_1024_not_filtered_0.8.pkl', 'rb')# 不过滤空值，0.8用户
-f = open('../data/analysis/loss_random_0.3_10_0.001_1024_not_filtered_all.pkl', 'rb')# 不过滤空值，全部用户
-# #
-f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_filtered_0.8.pkl', 'rb')#数据集过滤了空值，0.8用户
-f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_filtered_all.pkl', 'rb')# 过滤了空值，全部用户
-f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_not_filtered_0.8.pkl', 'rb')# 不过滤空值，0.8用户
-f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_not_filtered_all.pkl', 'rb')# 不过滤空值，全部用户
-# #
-f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_filtered_0.8.pkl', 'rb') # 数据集过滤了空值，0.8用户
-f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_filtered_all.pkl', 'rb')# 过滤了空值，全部用户
-f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_not_filtered_0.8.pkl', 'rb')# 不过滤空值，0.8用户
-f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_not_filtered_all.pkl', 'rb')# 不过滤空值，全部用户
+# f = open('../data/analysis/loss_random_0.3_10_0.001_1024_filtered_0.8.pkl', 'rb')#数据集过滤了空值，0.8用户
+# f = open('../data/analysis/loss_random_0.3_10_0.001_1024_filtered_all.pkl', 'rb')# 过滤了空值，全部用户
+# f = open('../data/analysis/loss_random_0.3_10_0.001_1024_not_filtered_0.8.pkl', 'rb')# 不过滤空值，0.8用户
+# f = open('../data/analysis/loss_random_0.3_10_0.001_1024_not_filtered_all.pkl', 'rb')# 不过滤空值，全部用户
+# # #
+# f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_filtered_0.8.pkl', 'rb')#数据集过滤了空值，0.8用户
+# f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_filtered_all.pkl', 'rb')# 过滤了空值，全部用户
+# f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_not_filtered_0.8.pkl', 'rb')# 不过滤空值，0.8用户
+# f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_not_filtered_all.pkl', 'rb')# 不过滤空值，全部用户
+# # #
+# f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_filtered_0.8.pkl', 'rb') # 数据集过滤了空值，0.8用户
+# f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_filtered_all.pkl', 'rb')# 过滤了空值，全部用户
+# f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_not_filtered_0.8.pkl', 'rb')# 不过滤空值，0.8用户
+# f = open('../data/analysis/loss_comb_0.3_10_0.001_1024_not_filtered_all.pkl', 'rb')# 不过滤空值，全部用户
+
+f = open('../data/analysis/loss_comb_0.01_10_0.001_1024_filtered.pkl', 'rb')# 不过滤空值，全部用户
+# f = open('../data/analysis/loss_greedy_0.3_10_0.001_1024_filtered_0.2.pkl', 'rb')# 不过滤空值，全部用户
+# f = open('../data/analysis/loss_random_0.3_10_0.001_1024_filtered_0.2.pkl', 'rb')# 不过滤空值，全部用户
 loss = pickle.load(f)
 f.close()
 print(loss[0])
@@ -47,7 +51,7 @@ def plot(data_,name):
     # plt.show()
 
 if __name__ == '__main__':
-    plot(loss,'comb_not_filtered_all')
+    plot(loss,'comb_filtered_0.01')
 
 
 
