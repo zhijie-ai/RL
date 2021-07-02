@@ -77,7 +77,6 @@ def multi_compute_validation(current_best_reward,dataset,env,dqn,user_set):
         thread.join()
 
     user_avg_reward = user_sum_reward/len(user_set)
-    print('AAAAA',len(user_set),user_sum_reward)
     if user_avg_reward> current_best_reward:
         current_best_reward = user_avg_reward
 
@@ -120,10 +119,8 @@ def validation_train(current_best_reward,dataset,env,dqn,vali_user):
             break
 
     user_sum_reward,clk_sum_rate = env.compute_average_reward(vali_user,sim_u_reward)
-    print('EEEE',user_sum_reward)
 
     user_avg_reward = user_sum_reward/len(vali_user)
-    print('BBBB',len(vali_user),user_sum_reward)
     if user_avg_reward>current_best_reward:
         current_best_reward =user_avg_reward
 
@@ -175,8 +172,8 @@ def main(args):
     dataset = Dataset(args,env,dqn)
 
     dqn.restore('best-reward-comb-10')
-    print(multi_compute_validation(0.0,dataset,env,dqn,env.test_user[:10]))
-    print(validation_train(0.0,dataset,env,dqn,env.test_user[:10]))
+    print(multi_compute_validation(0.0,dataset,env,dqn,env.test_user))
+    print(validation_train(0.0,dataset,env,dqn,env.vali_user))
 
 
 if __name__ == '__main__':
