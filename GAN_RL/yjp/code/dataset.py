@@ -9,6 +9,8 @@
 #               皇图霸业谈笑中，                 #
 #               不胜人生一场醉。                 #
 #-----------------------------------------------
+import multiprocessing
+
 from utils.yjp_decorator import cost_time_def
 from GAN_RL.yjp.code.options import get_options
 import datetime,os
@@ -19,12 +21,18 @@ import threading
 from multiprocessing import Process
 from tqdm import tqdm
 
+os.environ['CUDA_VISIBLE_DEVICES']=''
 class Dataset():
     def __init__(self,args,env,dqn):
         self.args = args
         self.env = env
         self.dqn = dqn
-        self.lock = threading.Lock()
+        if self.args.compu_type=='thread':
+            self.lock = threading.Lock()
+            print('thread lock')
+        else:
+            print('process lock')
+            self.lock = multiprocessing.Lock()
 
     @cost_time_def
     def data_collection_with_batch(self,train_user,type='random'):
@@ -203,12 +211,15 @@ class Dataset():
     def collection(self,u_set,type='random'):
         global data_collection
         data = self.data_collection(u_set,type)
+        print('get data finished~~~~~~~~~')
         self.lock.acquire()
+        print('get lock sucess~~~~~~~~~~~')
         data_collection['user'].extend(data['user'])
         data_collection['state'].extend(data['state'])
         data_collection['action'].extend(data['action'])
         data_collection['y'].extend(data['y'])
         self.lock.release()
+        print('release lock~~~~~~~~~~~~~~~~')
 
     #用多线程收集数据反而变慢了
     @cost_time_def
@@ -229,7 +240,7 @@ class Dataset():
             print('======',len(thread_u[ii]))
             if self.args.compu_type=='thread':
                 thread = threading.Thread(target=self.collection,args=(thread_u[ii],))
-            else:
+            else:  # 不知道什么原因，用进程会死锁。就算切换到了进程的lock，还是一样
                 thread = Process(target=self.collection,args=(thread_u[ii],))
             thread.start()
             threads.append(thread)
@@ -462,8 +473,9 @@ if __name__ == '__main__':
     dqn = DQN(env,cmd_args)
     dataset = Dataset(cmd_args,env,dqn)
 
-    # data = dataset.multi_collect_data(env.train_user,cmd_args.num_thread)
-    # print(len(data['user']))
-    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.2),replace=False)
-    data_collection = dataset.data_collection_all(train_user)
-    print('train data length:{}'.format(len(data_collection['user'])))
+    train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.8),replace=False)
+    data = dataset.multi_collect_data(train_user[:60],cmd_args.num_thread)
+    print(len(data['user']))
+    # train_user = np.random.choice(env.train_user,int(len(env.train_user)*0.2),replace=False)
+    # data_collection = dataset.data_collection_all(train_user)
+    # print('train data length:{}'.format(len(data_collection['user'])))

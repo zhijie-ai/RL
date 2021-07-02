@@ -17,7 +17,8 @@ from utils.yjp_decorator import cost_time_def
 from sklearn.model_selection import train_test_split
 import pickle
 from collections import defaultdict
-import numba as nb
+from GAN_RL.yjp.data.click import train as get_click_data
+from GAN_RL.yjp.data.exposure import get_data as get_exposure_data
 
 
 class Dataset():
@@ -636,16 +637,21 @@ class Dataset():
             out2['user_time_dense_v']=ut_dense_v
             return out2
 
-    def reading_raw(self):
-        self.click = pd.read_csv(self.click_path)
-        self.exposure = pd.read_csv(self.exposure_path)
+    @cost_time_def
+    def reading_raw(self,flag=True):
+        if flag:
+            self.click = pd.read_csv(self.click_path)
+            self.exposure = pd.read_csv(self.exposure_path)
+        else:
+            self.click = get_click_data()
+            self.exposure = get_exposure_data()
         print('data shape:',self.click.shape,self.exposure.shape)
 
     @cost_time_def
     def init_dataset(self):
-        # self.reading_raw()
-        # self.gen_embedding()#'20210412'
-        # self.preprocess_data()
+        self.reading_raw(True)
+        self.gen_embedding()#'20210412'
+        self.preprocess_data()
         self.read_data()
         self.format_data()
         print('---------------------------size_user:{}\tsize_item:{}\tnum of train user:{}'

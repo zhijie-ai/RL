@@ -11,8 +11,6 @@
 #-----------------------------------------------
 import time,datetime
 from utils.txt_process import read_sql
-from utils.redis_process import init_redis_pool
-from utils.yjp_ml_log import log
 from utils.config import project_root_path, root_path
 import utils.load_data as ld
 from utils.yjp_decorator import cost_time_def
@@ -20,7 +18,6 @@ from multiprocessing.pool import ThreadPool
 import pandas as pd
 
 
-client = init_redis_pool(db=6)
 city_recall_path = project_root_path+'/GAN_RL/yjp/data/sqls2/exposure.sql'
 city_recall_sql = read_sql(city_recall_path)
 
@@ -36,13 +33,13 @@ def train(date_s,city_recall_sql,hostname=None,port=None):
         import utils.impala_process as imp
         data = imp.get_data_sql_with_columns(hostname,port,city_recall_sql)
     else:# 本地测试
-        data = ld.get_data_from_csv(root_path + '/GAN_RL/yjp/data/exposure.csv')
+        data = ld.get_data_from_csv(root_path + '/GAN_RL/yjp/data/raw/exposure.csv')
 
     t2 = time.time()
     print('fetching data cost:{} m,sql:{},{}'.format((t2 - t1) / 60,city_recall_sql,data.shape))
     return data
 
-if __name__ == '__main__':
+def get_data(flag=False):
     date_str = [(datetime.datetime.now()+datetime.timedelta(-i)).strftime('%Y%m%d') for i in range(1,8)]
     pool = ThreadPool(7)
     res = []
@@ -57,4 +54,10 @@ if __name__ == '__main__':
         df_ = i.get()
         df = pd.concat([df,df_])
     print(df.shape)
-    df.to_csv(root_path + '/GAN_RL/yjp/data/exposure.csv',index=False)
+
+    if flag:
+        df.to_csv(root_path + '/GAN_RL/yjp/data/raw/exposure.csv',index=False)
+    return df
+
+if __name__ == '__main__':
+    get_data(flag=True)
