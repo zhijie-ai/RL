@@ -1,0 +1,867 @@
+nohup: 忽略输入
+2021-07-02 17:39:23,813 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.9403200785 m] reading_raw 
+2021-07-02 17:39:26,424 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0435067733 m] gen_embedding 
+2021-07-02 17:43:35,631 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [1.9879778385 m] split_dataset 
+2021-07-02 18:02:16,822 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [22.8399537007 m] preprocess_data 
+2021-07-02 18:02:30,870 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.2341198842 m] read_data 
+2021-07-02 18:05:16,574 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7617240429 m] format_data 
+2021-07-02 18:05:16,574 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [27.8196721594 m] init_dataset 
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:307: The name tf.GPUOptions is deprecated. Please use tf.compat.v1.GPUOptions instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:308: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:309: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-02 18:05:16.650547: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2021-07-02 18:05:16.689238: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2100000000 Hz
+2021-07-02 18:05:16.692963: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x469b4f0 executing computations on platform Host. Devices:
+2021-07-02 18:05:16.693021: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2021-07-02 18:05:16.694894: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2021-07-02 18:05:17.395250: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: Tesla P40 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:37:00.0
+2021-07-02 18:05:17.395555: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-07-02 18:05:17.413708: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-07-02 18:05:17.423185: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2021-07-02 18:05:17.423961: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2021-07-02 18:05:17.460425: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2021-07-02 18:05:17.469403: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2021-07-02 18:05:17.522915: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2021-07-02 18:05:17.525775: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2021-07-02 18:05:17.525846: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2021-07-02 18:05:17.627329: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-07-02 18:05:17.627386: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2021-07-02 18:05:17.627400: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2021-07-02 18:05:17.629854: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11459 MB memory) -> physical GPU (device: 0, name: Tesla P40, pci bus id: 0000:37:00.0, compute capability: 6.1)
+2021-07-02 18:05:17.635813: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x1d1b5270 executing computations on platform CUDA. Devices:
+2021-07-02 18:05:17.635850: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): Tesla P40, Compute Capability 6.1
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:384: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:337: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:20: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:389: The name tf.train.exponential_decay is deprecated. Please use tf.compat.v1.train.exponential_decay instead.
+
+WARNING:tensorflow:From /data2/project/RL/GAN_RL/yjp/code/model.py:390: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+2021-07-02 18:05:40,439 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.3526783903 m] prepare_validation_data 
+2021-07-02 18:05:50,159 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.0882997473 m] prepare_validation_data 
+  0%|          | 0/50 [00:00<?, ?it/s]2021-07-02 18:05:51.741762: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+2021-07-02 18:05:51.769845: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2021-07-02 18:11:43,952 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.4424897512 m] train_on_epoch 
+  2%|▏         | 1/50 [05:53<4:48:56, 353.80s/it]2021-07-02 18:17:27,371 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2736272375 m] train_on_epoch 
+  4%|▍         | 2/50 [11:37<4:38:09, 347.69s/it]2021-07-02 18:23:11,946 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2952765028 m] train_on_epoch 
+  6%|▌         | 3/50 [17:21<4:31:14, 346.27s/it]/data2/project/RL
+current args:Namespace(batch_size=1024, click_path='../data/raw/click.csv', clip_max_value=40.0, clip_min_value=-40.0, compu_type='thread', data_folder='../data/handled/', dims='256-32', dqn_dims='256-32', dqn_lr=0.001, dqn_type='offline', embedding_path='/data1/ai-recall/bpr/model/', env_std=0.001, epoch=10, exposure_path='../data/raw/exposure.csv', gamma=0.98, init_learning_rate=0.01, k=10, learning_rate=0.001, min_value=-1000000000.0, model_path='../model/dqn/', noclick_weight=0.3, num_iters=50, num_thread=1, pw_band_size=20, pw_dim=4, q_std=0.01, random_seed=1126, resplit=False, rnn_hidden_dim=20, sample_batch_size=1024, save_dir='../model/save_dir/', threshold=0.97, train_time_horizon=15, training_batch_size=1024, user_model='PW', vali_batch_size=2000, vali_time_horizon=15)
+2021-07-02 17:37:27,start 
+data shape: (7424847, 4) (79611339, 4)
+>>>>>>>>>>>>>>>>>>>>>embedding path:/data1/ai-recall/bpr/model/20210702/
+final shape: (710856, 5) (17282822, 5) behavior_data.shape (17993678, 5)
+sku_id         269122
+user_id        135365
+session_app    486638
+time           553212
+is_click            2
+split_tag           3
+dtype: int64
+>>>>>function preprocess_data finished~~~~~<<<<<<<<<<<<
+---------------------------size_user:135365	size_item:269122	num of train user:109729	num of vali user:12151	num of test user:13485
+2021-07-02 18:05:16, load data completed
+2021-07-02 18:05:16, start to construct graph
+2021-07-02 18:05:19, graph completed
+2021-07-02 18:05:19, start prepare vali data
+2021-07-02 18:05:44, prepare validation data, completed
+2021-07-02 18:05:44, start prepare test data
+2021-07-02 18:05:50, prepare test data end
+2021-07-02 18:05:52, itr: 0, epoch:[1/50], completed user:[1024/109729] loss: 3.50162, precision_1: 0.06407, precision_2: 0.11981
+2021-07-02 18:05:52, start first iteration validation
+2021-07-02 18:06:02, first iteration validation complete
+>>>>>>>>2021-07-02 18:06:02: itr: 0, vali: 3.48572, 0.06843, 0.13154<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:06:37, itr: 10, epoch:[1/50], completed user:[11264/109729] loss: 3.47992, precision_1: 0.04909, precision_2: 0.09781
+2021-07-02 18:06:49, itr: 20, epoch:[1/50], completed user:[21504/109729] loss: 3.49942, precision_1: 0.05774, precision_2: 0.10863
+2021-07-02 18:07:03, itr: 30, epoch:[1/50], completed user:[31744/109729] loss: 3.41209, precision_1: 0.07046, precision_2: 0.13569
+2021-07-02 18:07:16, itr: 40, epoch:[1/50], completed user:[41984/109729] loss: 3.41015, precision_1: 0.06915, precision_2: 0.13344
+2021-07-02 18:07:29, itr: 50, epoch:[1/50], completed user:[52224/109729] loss: 3.37505, precision_1: 0.06963, precision_2: 0.13685
+2021-07-02 18:07:42, itr: 60, epoch:[1/50], completed user:[62464/109729] loss: 3.30174, precision_1: 0.07414, precision_2: 0.14828
+2021-07-02 18:08:19, itr: 70, epoch:[1/50], completed user:[72704/109729] loss: 3.29240, precision_1: 0.08889, precision_2: 0.16480
+2021-07-02 18:08:31, itr: 80, epoch:[1/50], completed user:[82944/109729] loss: 3.30508, precision_1: 0.09094, precision_2: 0.16975
+2021-07-02 18:08:44, itr: 90, epoch:[1/50], completed user:[93184/109729] loss: 3.23423, precision_1: 0.10041, precision_2: 0.18260
+2021-07-02 18:08:58, itr: 100, epoch:[1/50], completed user:[103424/109729] loss: 3.21950, precision_1: 0.10702, precision_2: 0.19279
+2021-07-02 18:08:58, start first iteration validation
+2021-07-02 18:09:08, first iteration validation complete
+>>>>>>>>2021-07-02 18:09:08: itr: 100, vali: 3.26088, 0.10139, 0.18408<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:11:43, epoch 0 train complete
+2021-07-02 18:11:48, itr: 110, epoch:[2/50], completed user:[3072/109729] loss: 3.29318, precision_1: 0.09731, precision_2: 0.16955
+2021-07-02 18:12:25, itr: 120, epoch:[2/50], completed user:[13312/109729] loss: 3.31009, precision_1: 0.09703, precision_2: 0.18208
+2021-07-02 18:12:38, itr: 130, epoch:[2/50], completed user:[23552/109729] loss: 3.26437, precision_1: 0.09948, precision_2: 0.18529
+2021-07-02 18:12:51, itr: 140, epoch:[2/50], completed user:[33792/109729] loss: 3.28773, precision_1: 0.10235, precision_2: 0.18080
+2021-07-02 18:13:04, itr: 150, epoch:[2/50], completed user:[44032/109729] loss: 3.23472, precision_1: 0.10502, precision_2: 0.19313
+2021-07-02 18:13:17, itr: 160, epoch:[2/50], completed user:[54272/109729] loss: 3.26384, precision_1: 0.10243, precision_2: 0.18866
+2021-07-02 18:13:30, itr: 170, epoch:[2/50], completed user:[64512/109729] loss: 3.25204, precision_1: 0.10543, precision_2: 0.19079
+2021-07-02 18:14:05, itr: 180, epoch:[2/50], completed user:[74752/109729] loss: 3.24266, precision_1: 0.10390, precision_2: 0.18635
+2021-07-02 18:14:18, itr: 190, epoch:[2/50], completed user:[84992/109729] loss: 3.24678, precision_1: 0.10539, precision_2: 0.19176
+2021-07-02 18:14:32, itr: 200, epoch:[2/50], completed user:[95232/109729] loss: 3.23907, precision_1: 0.11289, precision_2: 0.19784
+>>>>>>>>2021-07-02 18:14:41: itr: 200, vali: 3.25407, 0.10308, 0.18673<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:14:54, itr: 210, epoch:[2/50], completed user:[105472/109729] loss: 3.24814, precision_1: 0.10637, precision_2: 0.18852
+2021-07-02 18:17:27, epoch 1 train complete
+2021-07-02 18:17:33, itr: 220, epoch:[3/50], completed user:[5120/109729] loss: 3.29772, precision_1: 0.10161, precision_2: 0.18635
+2021-07-02 18:18:11, itr: 230, epoch:[3/50], completed user:[15360/109729] loss: 3.27661, precision_1: 0.09975, precision_2: 0.17765
+2021-07-02 18:18:24, itr: 240, epoch:[3/50], completed user:[25600/109729] loss: 3.24708, precision_1: 0.10664, precision_2: 0.19820
+2021-07-02 18:18:37, itr: 250, epoch:[3/50], completed user:[35840/109729] loss: 3.24194, precision_1: 0.09959, precision_2: 0.18582
+2021-07-02 18:18:50, itr: 260, epoch:[3/50], completed user:[46080/109729] loss: 3.29131, precision_1: 0.09536, precision_2: 0.18057
+2021-07-02 18:19:03, itr: 270, epoch:[3/50], completed user:[56320/109729] loss: 3.26650, precision_1: 0.10078, precision_2: 0.17925
+2021-07-02 18:19:40, itr: 280, epoch:[3/50], completed user:[66560/109729] loss: 3.24854, precision_1: 0.09606, precision_2: 0.17700
+2021-07-02 18:19:53, itr: 290, epoch:[3/50], completed user:[76800/109729] loss: 3.29651, precision_1: 0.10013, precision_2: 0.17737
+2021-07-02 18:20:06, itr: 300, epoch:[3/50], completed user:[87040/109729] loss: 3.26565, precision_1: 0.10527, precision_2: 0.18918
+>>>>>>>>2021-07-02 18:20:15: itr: 300, vali: 3.26674, 0.10364, 0.18585<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+2021-07-02 18:20:29, itr: 310, epoch:[3/50], completed user:[97280/109729] loss: 3.25407, precision_1: 0.10150, precision_2: 0.18143
+2021-07-02 18:20:42, itr: 320, epoch:[3/50], completed user:[107520/109729] loss: 3.26844, precision_1: 0.10344, precision_2: 0.18115
+2021-07-02 18:23:11, epoch 2 train complete
+2021-07-02 18:23:21, itr: 330, epoch:[4/50], completed user:[7168/109729] loss: 3.22660, precision_1: 0.10887, precision_2: 0.19815
+2021-07-02 18:23:59, itr: 340, epoch:[4/50], completed user:[17408/109729] loss: 3.27520, precision_1: 0.10128, precision_2: 0.18198
+2021-07-02 18:24:12, itr: 350, epoch:[4/50], completed user:[27648/109729] loss: 3.21962, precision_1: 0.10851, precision_2: 0.19129
+2021-07-02 18:24:25, itr: 360, epoch:[4/50], completed user:[37888/109729] loss: 3.24335, precision_1: 0.10753, precision_2: 0.19209
+2021-07-02 18:24:38, itr: 370, epoch:[4/50], completed user:[48128/109729] loss: 3.26876, precision_1: 0.10296, precision_2: 0.18968
+2021-07-02 18:24:51, itr: 380, epoch:[4/50], completed user:[58368/109729] loss: 3.29490, precision_1: 0.10017, precision_2: 0.18480
+2021-07-02 18:25:27, itr: 390, epoch:[4/50], completed user:[68608/109729] loss: 3.27524, precision_1: 0.10684, precision_2: 0.19094
+2021-07-02 18:25:39, itr: 400, epoch:[4/50], completed user:[78848/109729] loss: 3.27194, precision_1: 0.10058, precision_2: 0.186022021-07-02 18:28:56,208 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2819334348 m] train_on_epoch 
+  8%|▊         | 4/50 [23:06<4:24:51, 345.48s/it]2021-07-02 18:34:41,056 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2971779029 m] train_on_epoch 
+ 10%|█         | 5/50 [28:50<4:18:56, 345.25s/it]2021-07-02 18:40:23,975 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2629486203 m] train_on_epoch 
+ 12%|█▏        | 6/50 [34:33<4:12:36, 344.46s/it]2021-07-02 18:46:08,083 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2820230484 m] train_on_epoch 
+ 14%|█▍        | 7/50 [40:17<4:06:46, 344.34s/it]2021-07-02 18:51:51,972 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2791608890 m] train_on_epoch 
+ 16%|█▌        | 8/50 [46:01<4:00:56, 344.20s/it]
+>>>>>>>>2021-07-02 18:25:49: itr: 400, vali: 3.24891, 0.10444, 0.18840<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:26:02, itr: 410, epoch:[4/50], completed user:[89088/109729] loss: 3.30239, precision_1: 0.10398, precision_2: 0.18406
+2021-07-02 18:26:15, itr: 420, epoch:[4/50], completed user:[99328/109729] loss: 3.28138, precision_1: 0.10477, precision_2: 0.18813
+2021-07-02 18:26:28, itr: 430, epoch:[4/50], completed user:[109568/109729] loss: 3.25447, precision_1: 0.10042, precision_2: 0.18892
+2021-07-02 18:28:56, epoch 3 train complete
+2021-07-02 18:29:08, itr: 440, epoch:[5/50], completed user:[9216/109729] loss: 3.26443, precision_1: 0.10481, precision_2: 0.18645
+2021-07-02 18:29:44, itr: 450, epoch:[5/50], completed user:[19456/109729] loss: 3.25720, precision_1: 0.10621, precision_2: 0.19072
+2021-07-02 18:29:57, itr: 460, epoch:[5/50], completed user:[29696/109729] loss: 3.29080, precision_1: 0.10641, precision_2: 0.18368
+2021-07-02 18:30:10, itr: 470, epoch:[5/50], completed user:[39936/109729] loss: 3.22519, precision_1: 0.10188, precision_2: 0.19164
+2021-07-02 18:30:24, itr: 480, epoch:[5/50], completed user:[50176/109729] loss: 3.26826, precision_1: 0.10721, precision_2: 0.18738
+2021-07-02 18:30:37, itr: 490, epoch:[5/50], completed user:[60416/109729] loss: 3.27838, precision_1: 0.10115, precision_2: 0.18407
+2021-07-02 18:31:14, itr: 500, epoch:[5/50], completed user:[70656/109729] loss: 3.26070, precision_1: 0.10329, precision_2: 0.18275
+>>>>>>>>2021-07-02 18:31:23: itr: 500, vali: 3.24614, 0.10512, 0.18908<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:31:36, itr: 510, epoch:[5/50], completed user:[80896/109729] loss: 3.22057, precision_1: 0.10869, precision_2: 0.19379
+2021-07-02 18:31:49, itr: 520, epoch:[5/50], completed user:[91136/109729] loss: 3.24080, precision_1: 0.10560, precision_2: 0.19388
+2021-07-02 18:32:03, itr: 530, epoch:[5/50], completed user:[101376/109729] loss: 3.27057, precision_1: 0.10216, precision_2: 0.18970
+2021-07-02 18:34:41, epoch 4 train complete
+2021-07-02 18:34:42, itr: 540, epoch:[6/50], completed user:[1024/109729] loss: 3.26252, precision_1: 0.10556, precision_2: 0.18648
+2021-07-02 18:35:19, itr: 550, epoch:[6/50], completed user:[11264/109729] loss: 3.27416, precision_1: 0.10388, precision_2: 0.18772
+2021-07-02 18:35:31, itr: 560, epoch:[6/50], completed user:[21504/109729] loss: 3.29027, precision_1: 0.10087, precision_2: 0.18116
+2021-07-02 18:35:44, itr: 570, epoch:[6/50], completed user:[31744/109729] loss: 3.20637, precision_1: 0.10811, precision_2: 0.19068
+2021-07-02 18:35:58, itr: 580, epoch:[6/50], completed user:[41984/109729] loss: 3.24044, precision_1: 0.10751, precision_2: 0.18891
+2021-07-02 18:36:10, itr: 590, epoch:[6/50], completed user:[52224/109729] loss: 3.27073, precision_1: 0.10426, precision_2: 0.18991
+2021-07-02 18:36:24, itr: 600, epoch:[6/50], completed user:[62464/109729] loss: 3.24104, precision_1: 0.10456, precision_2: 0.18535
+>>>>>>>>2021-07-02 18:36:33: itr: 600, vali: 3.24522, 0.10473, 0.18903<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 18:37:09, itr: 610, epoch:[6/50], completed user:[72704/109729] loss: 3.24342, precision_1: 0.10707, precision_2: 0.18857
+2021-07-02 18:37:22, itr: 620, epoch:[6/50], completed user:[82944/109729] loss: 3.27287, precision_1: 0.10383, precision_2: 0.18226
+2021-07-02 18:37:35, itr: 630, epoch:[6/50], completed user:[93184/109729] loss: 3.22090, precision_1: 0.10452, precision_2: 0.18778
+2021-07-02 18:37:48, itr: 640, epoch:[6/50], completed user:[103424/109729] loss: 3.20260, precision_1: 0.11044, precision_2: 0.19734
+2021-07-02 18:40:23, epoch 5 train complete
+2021-07-02 18:40:28, itr: 650, epoch:[7/50], completed user:[3072/109729] loss: 3.28001, precision_1: 0.09842, precision_2: 0.17877
+2021-07-02 18:41:04, itr: 660, epoch:[7/50], completed user:[13312/109729] loss: 3.28829, precision_1: 0.10046, precision_2: 0.18189
+2021-07-02 18:41:17, itr: 670, epoch:[7/50], completed user:[23552/109729] loss: 3.25206, precision_1: 0.10215, precision_2: 0.18671
+2021-07-02 18:41:30, itr: 680, epoch:[7/50], completed user:[33792/109729] loss: 3.24681, precision_1: 0.10486, precision_2: 0.18813
+2021-07-02 18:41:44, itr: 690, epoch:[7/50], completed user:[44032/109729] loss: 3.22203, precision_1: 0.10965, precision_2: 0.19918
+2021-07-02 18:41:57, itr: 700, epoch:[7/50], completed user:[54272/109729] loss: 3.24879, precision_1: 0.10378, precision_2: 0.19387
+>>>>>>>>2021-07-02 18:42:07: itr: 700, vali: 3.24660, 0.10627, 0.19033<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:42:20, itr: 710, epoch:[7/50], completed user:[64512/109729] loss: 3.23875, precision_1: 0.10700, precision_2: 0.19040
+2021-07-02 18:42:56, itr: 720, epoch:[7/50], completed user:[74752/109729] loss: 3.23156, precision_1: 0.10727, precision_2: 0.19078
+2021-07-02 18:43:09, itr: 730, epoch:[7/50], completed user:[84992/109729] loss: 3.23441, precision_1: 0.10744, precision_2: 0.19661
+2021-07-02 18:43:22, itr: 740, epoch:[7/50], completed user:[95232/109729] loss: 3.22562, precision_1: 0.11587, precision_2: 0.20138
+2021-07-02 18:43:35, itr: 750, epoch:[7/50], completed user:[105472/109729] loss: 3.23683, precision_1: 0.10961, precision_2: 0.19329
+2021-07-02 18:46:08, epoch 6 train complete
+2021-07-02 18:46:14, itr: 760, epoch:[8/50], completed user:[5120/109729] loss: 3.28689, precision_1: 0.10710, precision_2: 0.18909
+2021-07-02 18:46:51, itr: 770, epoch:[8/50], completed user:[15360/109729] loss: 3.26324, precision_1: 0.10033, precision_2: 0.17901
+2021-07-02 18:47:04, itr: 780, epoch:[8/50], completed user:[25600/109729] loss: 3.24181, precision_1: 0.10737, precision_2: 0.19691
+2021-07-02 18:47:17, itr: 790, epoch:[8/50], completed user:[35840/109729] loss: 3.23671, precision_1: 0.10509, precision_2: 0.18719
+2021-07-02 18:47:30, itr: 800, epoch:[8/50], completed user:[46080/109729] loss: 3.28043, precision_1: 0.10034, precision_2: 0.18502
+>>>>>>>>2021-07-02 18:47:40: itr: 800, vali: 3.24178, 0.10627, 0.19072<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:47:53, itr: 810, epoch:[8/50], completed user:[56320/109729] loss: 3.25637, precision_1: 0.10636, precision_2: 0.18278
+2021-07-02 18:48:06, itr: 820, epoch:[8/50], completed user:[66560/109729] loss: 3.24342, precision_1: 0.09415, precision_2: 0.18343
+2021-07-02 18:48:42, itr: 830, epoch:[8/50], completed user:[76800/109729] loss: 3.27384, precision_1: 0.10143, precision_2: 0.18035
+2021-07-02 18:48:55, itr: 840, epoch:[8/50], completed user:[87040/109729] loss: 3.25428, precision_1: 0.10431, precision_2: 0.19034
+2021-07-02 18:49:08, itr: 850, epoch:[8/50], completed user:[97280/109729] loss: 3.24311, precision_1: 0.10469, precision_2: 0.18743
+2021-07-02 18:49:22, itr: 860, epoch:[8/50], completed user:[107520/109729] loss: 3.25975, precision_1: 0.10577, precision_2: 0.18097
+2021-07-02 18:51:51, epoch 7 train complete
+2021-07-02 18:52:01, itr: 870, epoch:[9/50], completed user:[7168/109729] loss: 3.21600, precision_1: 0.11069, precision_2: 0.20541
+2021-07-02 18:52:38, itr: 880, epoch:[9/50], completed user:[17408/109729] loss: 3.26065, precision_1: 0.10164, precision_2: 0.18469
+2021-07-02 18:52:51, itr: 890, epoch:[9/50], completed user:[27648/109729] loss: 3.21022, precision_1: 0.10923, precision_2: 0.19435
+2021-07-02 18:53:05, itr: 900, epoch:[9/50], completed user:[37888/109729] loss: 3.22922, precision_1: 0.10716, precision_2: 0.19337
+>>>>>>>>2021-07-02 18:53:14: itr: 900, vali: 3.23994, 0.10608, 0.19085<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:53:28, itr: 910, epoch:[9/50], completed user:[48128/109729] loss: 3.25876, precision_1: 0.10392, precision_2: 0.19312
+2021-07-02 18:57:37,054 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2970969637 m] train_on_epoch 
+ 18%|█▊        | 9/50 [51:46<3:55:23, 344.47s/it]2021-07-02 19:03:20,925 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2784547369 m] train_on_epoch 
+ 20%|██        | 10/50 [57:30<3:49:31, 344.29s/it]2021-07-02 19:09:04,456 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2644385338 m] train_on_epoch 
+ 22%|██▏       | 11/50 [1:03:14<3:43:38, 344.06s/it]2021-07-02 19:14:47,345 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2654721061 m] train_on_epoch 
+ 24%|██▍       | 12/50 [1:08:57<3:37:40, 343.70s/it]2021-07-02 19:20:39,131 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.4121184071 m] train_on_epoch 
+ 26%|██▌       | 13/50 [1:14:48<3:33:27, 346.15s/it]2021-07-02 18:53:41, itr: 920, epoch:[9/50], completed user:[58368/109729] loss: 3.28305, precision_1: 0.10429, precision_2: 0.18779
+2021-07-02 18:54:17, itr: 930, epoch:[9/50], completed user:[68608/109729] loss: 3.25549, precision_1: 0.10792, precision_2: 0.19274
+2021-07-02 18:54:30, itr: 940, epoch:[9/50], completed user:[78848/109729] loss: 3.26037, precision_1: 0.10097, precision_2: 0.18932
+2021-07-02 18:54:43, itr: 950, epoch:[9/50], completed user:[89088/109729] loss: 3.29034, precision_1: 0.10752, precision_2: 0.18798
+2021-07-02 18:54:56, itr: 960, epoch:[9/50], completed user:[99328/109729] loss: 3.26663, precision_1: 0.10852, precision_2: 0.19320
+2021-07-02 18:55:09, itr: 970, epoch:[9/50], completed user:[109568/109729] loss: 3.24436, precision_1: 0.10408, precision_2: 0.19161
+2021-07-02 18:57:37, epoch 8 train complete
+2021-07-02 18:57:49, itr: 980, epoch:[10/50], completed user:[9216/109729] loss: 3.25582, precision_1: 0.10539, precision_2: 0.18703
+2021-07-02 18:58:25, itr: 990, epoch:[10/50], completed user:[19456/109729] loss: 3.24981, precision_1: 0.10885, precision_2: 0.18978
+2021-07-02 18:58:38, itr: 1000, epoch:[10/50], completed user:[29696/109729] loss: 3.28045, precision_1: 0.10622, precision_2: 0.18255
+>>>>>>>>2021-07-02 18:58:48: itr: 1000, vali: 3.23993, 0.10674, 0.19241<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 18:59:01, itr: 1010, epoch:[10/50], completed user:[39936/109729] loss: 3.21695, precision_1: 0.10543, precision_2: 0.19575
+2021-07-02 18:59:14, itr: 1020, epoch:[10/50], completed user:[50176/109729] loss: 3.25766, precision_1: 0.10741, precision_2: 0.18757
+2021-07-02 18:59:27, itr: 1030, epoch:[10/50], completed user:[60416/109729] loss: 3.27014, precision_1: 0.10403, precision_2: 0.18714
+2021-07-02 19:00:03, itr: 1040, epoch:[10/50], completed user:[70656/109729] loss: 3.25247, precision_1: 0.10242, precision_2: 0.18832
+2021-07-02 19:00:16, itr: 1050, epoch:[10/50], completed user:[80896/109729] loss: 3.21264, precision_1: 0.10888, precision_2: 0.19340
+2021-07-02 19:00:29, itr: 1060, epoch:[10/50], completed user:[91136/109729] loss: 3.23176, precision_1: 0.10791, precision_2: 0.19561
+2021-07-02 19:00:43, itr: 1070, epoch:[10/50], completed user:[101376/109729] loss: 3.25984, precision_1: 0.10376, precision_2: 0.18773
+2021-07-02 19:03:20, epoch 9 train complete
+2021-07-02 19:03:22, itr: 1080, epoch:[11/50], completed user:[1024/109729] loss: 3.28697, precision_1: 0.10444, precision_2: 0.18444
+2021-07-02 19:03:35, itr: 1090, epoch:[11/50], completed user:[11264/109729] loss: 3.26393, precision_1: 0.10278, precision_2: 0.18974
+2021-07-02 19:04:11, itr: 1100, epoch:[11/50], completed user:[21504/109729] loss: 3.28691, precision_1: 0.09996, precision_2: 0.18224
+>>>>>>>>2021-07-02 19:04:21: itr: 1100, vali: 3.23863, 0.10610, 0.19144<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 19:04:34, itr: 1110, epoch:[11/50], completed user:[31744/109729] loss: 3.19745, precision_1: 0.10960, precision_2: 0.19254
+2021-07-02 19:04:47, itr: 1120, epoch:[11/50], completed user:[41984/109729] loss: 3.23423, precision_1: 0.10679, precision_2: 0.19179
+2021-07-02 19:05:00, itr: 1130, epoch:[11/50], completed user:[52224/109729] loss: 3.26164, precision_1: 0.10426, precision_2: 0.18637
+2021-07-02 19:05:13, itr: 1140, epoch:[11/50], completed user:[62464/109729] loss: 3.23305, precision_1: 0.10824, precision_2: 0.18832
+2021-07-02 19:05:49, itr: 1150, epoch:[11/50], completed user:[72704/109729] loss: 3.23470, precision_1: 0.10727, precision_2: 0.19077
+2021-07-02 19:06:02, itr: 1160, epoch:[11/50], completed user:[82944/109729] loss: 3.27898, precision_1: 0.10084, precision_2: 0.18021
+2021-07-02 19:06:15, itr: 1170, epoch:[11/50], completed user:[93184/109729] loss: 3.21066, precision_1: 0.10666, precision_2: 0.18992
+2021-07-02 19:06:28, itr: 1180, epoch:[11/50], completed user:[103424/109729] loss: 3.20087, precision_1: 0.11195, precision_2: 0.19469
+2021-07-02 19:09:04, epoch 10 train complete
+2021-07-02 19:09:08, itr: 1190, epoch:[12/50], completed user:[3072/109729] loss: 3.27397, precision_1: 0.09897, precision_2: 0.17987
+2021-07-02 19:09:45, itr: 1200, epoch:[12/50], completed user:[13312/109729] loss: 3.27895, precision_1: 0.10122, precision_2: 0.18113
+>>>>>>>>2021-07-02 19:09:54: itr: 1200, vali: 3.23745, 0.10684, 0.19200<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+2021-07-02 19:10:07, itr: 1210, epoch:[12/50], completed user:[23552/109729] loss: 3.25155, precision_1: 0.10446, precision_2: 0.18884
+2021-07-02 19:10:20, itr: 1220, epoch:[12/50], completed user:[33792/109729] loss: 3.23664, precision_1: 0.10775, precision_2: 0.18928
+2021-07-02 19:10:34, itr: 1230, epoch:[12/50], completed user:[44032/109729] loss: 3.21868, precision_1: 0.11054, precision_2: 0.19811
+2021-07-02 19:10:47, itr: 1240, epoch:[12/50], completed user:[54272/109729] loss: 3.23532, precision_1: 0.10513, precision_2: 0.19522
+2021-07-02 19:11:00, itr: 1250, epoch:[12/50], completed user:[64512/109729] loss: 3.23226, precision_1: 0.11172, precision_2: 0.19473
+2021-07-02 19:11:35, itr: 1260, epoch:[12/50], completed user:[74752/109729] loss: 3.23020, precision_1: 0.10656, precision_2: 0.19131
+2021-07-02 19:11:48, itr: 1270, epoch:[12/50], completed user:[84992/109729] loss: 3.22909, precision_1: 0.10744, precision_2: 0.19716
+2021-07-02 19:12:01, itr: 1280, epoch:[12/50], completed user:[95232/109729] loss: 3.21594, precision_1: 0.11643, precision_2: 0.20268
+2021-07-02 19:12:14, itr: 1290, epoch:[12/50], completed user:[105472/109729] loss: 3.23901, precision_1: 0.11094, precision_2: 0.19539
+2021-07-02 19:14:47, epoch 11 train complete
+2021-07-02 19:14:53, itr: 1300, epoch:[13/50], completed user:[5120/109729] loss: 3.28628, precision_1: 0.10847, precision_2: 0.18890
+>>>>>>>>2021-07-02 19:15:03: itr: 1300, vali: 3.23926, 0.10661, 0.19176<<<<<<<<
+2021-07-02 19:15:40, itr: 1310, epoch:[13/50], completed user:[15360/109729] loss: 3.25869, precision_1: 0.10033, precision_2: 0.18365
+2021-07-02 19:15:53, itr: 1320, epoch:[13/50], completed user:[25600/109729] loss: 3.23196, precision_1: 0.10774, precision_2: 0.19857
+2021-07-02 19:16:06, itr: 1330, epoch:[13/50], completed user:[35840/109729] loss: 3.23628, precision_1: 0.10607, precision_2: 0.18975
+2021-07-02 19:16:19, itr: 1340, epoch:[13/50], completed user:[46080/109729] loss: 3.27379, precision_1: 0.10176, precision_2: 0.18466
+2021-07-02 19:16:32, itr: 1350, epoch:[13/50], completed user:[56320/109729] loss: 3.25477, precision_1: 0.10524, precision_2: 0.18520
+2021-07-02 19:16:45, itr: 1360, epoch:[13/50], completed user:[66560/109729] loss: 3.23637, precision_1: 0.09484, precision_2: 0.17943
+2021-07-02 19:17:20, itr: 1370, epoch:[13/50], completed user:[76800/109729] loss: 3.26583, precision_1: 0.10236, precision_2: 0.17923
+2021-07-02 19:17:33, itr: 1380, epoch:[13/50], completed user:[87040/109729] loss: 3.25022, precision_1: 0.10739, precision_2: 0.19630
+2021-07-02 19:17:46, itr: 1390, epoch:[13/50], completed user:[97280/109729] loss: 3.24377, precision_1: 0.10544, precision_2: 0.18724
+2021-07-02 19:17:59, itr: 1400, epoch:[13/50], completed user:[107520/109729] loss: 3.25457, precision_1: 0.10757, precision_2: 0.18331
+>>>>>>>>2021-07-02 19:18:09: itr: 1400, vali: 3.23391, 0.10713, 0.19234<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+2021-07-02 19:20:39, epoch 12 train complete
+2021-07-02 19:20:48, itr: 1410, epoch:[14/50], completed user:[7168/109729] loss: 3.20907, precision_1: 0.10760, precision_2: 0.20813
+2021-07-02 19:21:24, itr: 1420, epoch:[14/50], completed user:[17408/109729] loss: 3.25716, precision_1: 0.10327, precision_2: 0.18595
+2021-07-02 19:21:37, itr: 1430, epoch:[14/50], completed user:[27648/109729] loss: 3.20700, precision_1: 0.11175, precision_2: 0.19435
+2021-07-02 19:21:50, itr: 1440, epoch:[14/50], completed user:[37888/109729] loss: 3.22310, precision_1: 0.10789, precision_2: 0.190812021-07-02 19:26:21,476 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2467433254 m] train_on_epoch 
+ 28%|██▊       | 14/50 [1:20:31<3:27:00, 345.00s/it]2021-07-02 19:32:04,059 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2573176265 m] train_on_epoch 
+ 30%|███       | 15/50 [1:26:13<3:20:49, 344.27s/it]2021-07-02 19:37:46,889 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2585368514 m] train_on_epoch 
+ 32%|███▏      | 16/50 [1:31:56<3:14:50, 343.84s/it]2021-07-02 19:43:27,304 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2216522455 m] train_on_epoch 
+ 34%|███▍      | 17/50 [1:37:37<3:08:32, 342.81s/it]2021-07-02 19:49:08,169 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2286813776 m] train_on_epoch 
+ 36%|███▌      | 18/50 [1:43:18<3:02:31, 342.22s/it]
+2021-07-02 19:22:03, itr: 1450, epoch:[14/50], completed user:[48128/109729] loss: 3.25127, precision_1: 0.10487, precision_2: 0.19580
+2021-07-02 19:22:16, itr: 1460, epoch:[14/50], completed user:[58368/109729] loss: 3.27641, precision_1: 0.10335, precision_2: 0.19172
+2021-07-02 19:22:51, itr: 1470, epoch:[14/50], completed user:[68608/109729] loss: 3.24846, precision_1: 0.10612, precision_2: 0.19473
+2021-07-02 19:23:04, itr: 1480, epoch:[14/50], completed user:[78848/109729] loss: 3.25576, precision_1: 0.10291, precision_2: 0.19262
+2021-07-02 19:23:17, itr: 1490, epoch:[14/50], completed user:[89088/109729] loss: 3.28663, precision_1: 0.10883, precision_2: 0.18761
+2021-07-02 19:23:30, itr: 1500, epoch:[14/50], completed user:[99328/109729] loss: 3.26249, precision_1: 0.10946, precision_2: 0.19377
+>>>>>>>>2021-07-02 19:23:40: itr: 1500, vali: 3.23330, 0.10697, 0.19247<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 19:23:53, itr: 1510, epoch:[14/50], completed user:[109568/109729] loss: 3.24012, precision_1: 0.10446, precision_2: 0.19180
+2021-07-02 19:26:21, epoch 13 train complete
+2021-07-02 19:26:33, itr: 1520, epoch:[15/50], completed user:[9216/109729] loss: 3.25593, precision_1: 0.10423, precision_2: 0.19089
+2021-07-02 19:27:09, itr: 1530, epoch:[15/50], completed user:[19456/109729] loss: 3.24607, precision_1: 0.10621, precision_2: 0.19223
+2021-07-02 19:27:22, itr: 1540, epoch:[15/50], completed user:[29696/109729] loss: 3.27714, precision_1: 0.10340, precision_2: 0.18049
+2021-07-02 19:27:35, itr: 1550, epoch:[15/50], completed user:[39936/109729] loss: 3.21310, precision_1: 0.10562, precision_2: 0.19612
+2021-07-02 19:27:48, itr: 1560, epoch:[15/50], completed user:[50176/109729] loss: 3.25104, precision_1: 0.10525, precision_2: 0.19110
+2021-07-02 19:28:01, itr: 1570, epoch:[15/50], completed user:[60416/109729] loss: 3.26447, precision_1: 0.10250, precision_2: 0.18656
+2021-07-02 19:28:37, itr: 1580, epoch:[15/50], completed user:[70656/109729] loss: 3.24677, precision_1: 0.10329, precision_2: 0.18918
+2021-07-02 19:28:50, itr: 1590, epoch:[15/50], completed user:[80896/109729] loss: 3.21174, precision_1: 0.10928, precision_2: 0.19615
+2021-07-02 19:29:03, itr: 1600, epoch:[15/50], completed user:[91136/109729] loss: 3.22869, precision_1: 0.10791, precision_2: 0.19504
+>>>>>>>>2021-07-02 19:29:12: itr: 1600, vali: 3.23315, 0.10635, 0.19208<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 19:29:26, itr: 1610, epoch:[15/50], completed user:[101376/109729] loss: 3.25145, precision_1: 0.10447, precision_2: 0.18898
+2021-07-02 19:32:04, epoch 14 train complete
+2021-07-02 19:32:05, itr: 1620, epoch:[16/50], completed user:[1024/109729] loss: 3.24966, precision_1: 0.10759, precision_2: 0.18926
+2021-07-02 19:32:18, itr: 1630, epoch:[16/50], completed user:[11264/109729] loss: 3.25394, precision_1: 0.10517, precision_2: 0.19176
+2021-07-02 19:32:54, itr: 1640, epoch:[16/50], completed user:[21504/109729] loss: 3.27994, precision_1: 0.10249, precision_2: 0.18297
+2021-07-02 19:33:07, itr: 1650, epoch:[16/50], completed user:[31744/109729] loss: 3.19636, precision_1: 0.10960, precision_2: 0.19497
+2021-07-02 19:33:21, itr: 1660, epoch:[16/50], completed user:[41984/109729] loss: 3.23126, precision_1: 0.10697, precision_2: 0.18963
+2021-07-02 19:33:34, itr: 1670, epoch:[16/50], completed user:[52224/109729] loss: 3.25785, precision_1: 0.10408, precision_2: 0.18805
+2021-07-02 19:33:47, itr: 1680, epoch:[16/50], completed user:[62464/109729] loss: 3.22733, precision_1: 0.10719, precision_2: 0.18692
+2021-07-02 19:34:22, itr: 1690, epoch:[16/50], completed user:[72704/109729] loss: 3.22917, precision_1: 0.10667, precision_2: 0.19337
+2021-07-02 19:34:35, itr: 1700, epoch:[16/50], completed user:[82944/109729] loss: 3.26554, precision_1: 0.10177, precision_2: 0.18263
+>>>>>>>>2021-07-02 19:34:44: itr: 1700, vali: 3.23150, 0.10640, 0.19167<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 19:34:57, itr: 1710, epoch:[16/50], completed user:[93184/109729] loss: 3.20464, precision_1: 0.10881, precision_2: 0.19117
+2021-07-02 19:35:11, itr: 1720, epoch:[16/50], completed user:[103424/109729] loss: 3.19457, precision_1: 0.11252, precision_2: 0.19829
+2021-07-02 19:37:46, epoch 15 train complete
+2021-07-02 19:37:50, itr: 1730, epoch:[17/50], completed user:[3072/109729] loss: 3.26997, precision_1: 0.09823, precision_2: 0.17822
+2021-07-02 19:38:04, itr: 1740, epoch:[17/50], completed user:[13312/109729] loss: 3.27480, precision_1: 0.10198, precision_2: 0.18569
+2021-07-02 19:38:39, itr: 1750, epoch:[17/50], completed user:[23552/109729] loss: 3.23922, precision_1: 0.10499, precision_2: 0.18991
+2021-07-02 19:38:52, itr: 1760, epoch:[17/50], completed user:[33792/109729] loss: 3.23968, precision_1: 0.10717, precision_2: 0.19082
+2021-07-02 19:39:05, itr: 1770, epoch:[17/50], completed user:[44032/109729] loss: 3.21329, precision_1: 0.11214, precision_2: 0.19900
+2021-07-02 19:39:18, itr: 1780, epoch:[17/50], completed user:[54272/109729] loss: 3.23215, precision_1: 0.10571, precision_2: 0.19753
+2021-07-02 19:39:31, itr: 1790, epoch:[17/50], completed user:[64512/109729] loss: 3.22693, precision_1: 0.11133, precision_2: 0.19375
+2021-07-02 19:40:06, itr: 1800, epoch:[17/50], completed user:[74752/109729] loss: 3.21868, precision_1: 0.10567, precision_2: 0.19468
+>>>>>>>>2021-07-02 19:40:15: itr: 1800, vali: 3.22982, 0.10640, 0.19237<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 19:40:28, itr: 1810, epoch:[17/50], completed user:[84992/109729] loss: 3.22882, precision_1: 0.11192, precision_2: 0.20108
+2021-07-02 19:40:41, itr: 1820, epoch:[17/50], completed user:[95232/109729] loss: 3.21110, precision_1: 0.11699, precision_2: 0.20175
+2021-07-02 19:40:54, itr: 1830, epoch:[17/50], completed user:[105472/109729] loss: 3.22270, precision_1: 0.10884, precision_2: 0.19329
+2021-07-02 19:43:27, epoch 16 train complete
+2021-07-02 19:43:33, itr: 1840, epoch:[18/50], completed user:[5120/109729] loss: 3.27800, precision_1: 0.11102, precision_2: 0.19086
+2021-07-02 19:44:08, itr: 1850, epoch:[18/50], completed user:[15360/109729] loss: 3.25393, precision_1: 0.09627, precision_2: 0.18384
+2021-07-02 19:44:22, itr: 1860, epoch:[18/50], completed user:[25600/109729] loss: 3.22789, precision_1: 0.10958, precision_2: 0.19765
+2021-07-02 19:44:35, itr: 1870, epoch:[18/50], completed user:[35840/109729] loss: 3.22851, precision_1: 0.10803, precision_2: 0.18955
+2021-07-02 19:44:48, itr: 1880, epoch:[18/50], completed user:[46080/109729] loss: 3.26586, precision_1: 0.10247, precision_2: 0.18662
+2021-07-02 19:45:01, itr: 1890, epoch:[18/50], completed user:[56320/109729] loss: 3.24450, precision_1: 0.10562, precision_2: 0.18576
+2021-07-02 19:45:14, itr: 1900, epoch:[18/50], completed user:[66560/109729] loss: 3.23263, precision_1: 0.09623, precision_2: 0.17909
+>>>>>>>>2021-07-02 19:45:24: itr: 1900, vali: 3.22866, 0.10700, 0.19281<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 19:45:59, itr: 1910, epoch:[18/50], completed user:[76800/109729] loss: 3.25887, precision_1: 0.10236, precision_2: 0.18053
+2021-07-02 19:46:11, itr: 1920, epoch:[18/50], completed user:[87040/109729] loss: 3.24125, precision_1: 0.10835, precision_2: 0.19707
+2021-07-02 19:46:24, itr: 1930, epoch:[18/50], completed user:[97280/109729] loss: 3.23229, precision_1: 0.10525, precision_2: 0.18837
+2021-07-02 19:46:38, itr: 1940, epoch:[18/50], completed user:[107520/109729] loss: 3.24922, precision_1: 0.10739, precision_2: 0.18547
+2021-07-02 19:49:08, epoch 17 train complete
+2021-07-02 19:49:17, itr: 1950, epoch:[19/50], completed user:[7168/109729] loss: 3.20203, precision_1: 0.11032, precision_2: 0.20396
+2021-07-02 19:49:53, itr: 1960, epoch:[19/50], completed user:[17408/109729] loss: 3.24548, precision_1: 0.10489, precision_2: 0.18704
+2021-07-02 19:50:06, itr: 1970, epoch:[19/50], completed user:[27648/109729] loss: 3.19922, precision_1: 0.10995, precision_2: 0.19489
+2021-07-02 19:50:18, itr: 1980, epoch:[19/50], completed user:[37888/109729] loss: 3.21932, precision_1: 0.10826, precision_2: 0.193732021-07-02 19:54:49,375 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2357237577 m] train_on_epoch 
+ 38%|███▊      | 19/50 [1:48:59<2:56:39, 341.93s/it]2021-07-02 20:00:30,422 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2283343315 m] train_on_epoch 
+ 40%|████      | 20/50 [1:54:40<2:50:49, 341.66s/it]2021-07-02 20:06:10,785 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2097155611 m] train_on_epoch 
+ 42%|████▏     | 21/50 [2:00:20<2:44:56, 341.27s/it]2021-07-02 20:11:50,570 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2023982724 m] train_on_epoch 
+ 44%|████▍     | 22/50 [2:06:00<2:39:03, 340.83s/it]2021-07-02 20:17:31,357 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2003064791 m] train_on_epoch 
+ 46%|████▌     | 23/50 [2:11:41<2:33:22, 340.82s/it]
+2021-07-02 19:50:32, itr: 1990, epoch:[19/50], completed user:[48128/109729] loss: 3.24495, precision_1: 0.10544, precision_2: 0.19484
+2021-07-02 19:50:45, itr: 2000, epoch:[19/50], completed user:[58368/109729] loss: 3.27391, precision_1: 0.10242, precision_2: 0.19116
+>>>>>>>>2021-07-02 19:50:55: itr: 2000, vali: 3.22854, 0.10658, 0.19231<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 19:51:08, itr: 2010, epoch:[19/50], completed user:[68608/109729] loss: 3.23996, precision_1: 0.10883, precision_2: 0.19491
+2021-07-02 19:51:42, itr: 2020, epoch:[19/50], completed user:[78848/109729] loss: 3.24517, precision_1: 0.10388, precision_2: 0.19301
+2021-07-02 19:51:55, itr: 2030, epoch:[19/50], completed user:[89088/109729] loss: 3.27758, precision_1: 0.10883, precision_2: 0.18462
+2021-07-02 19:52:08, itr: 2040, epoch:[19/50], completed user:[99328/109729] loss: 3.25339, precision_1: 0.10815, precision_2: 0.19527
+2021-07-02 19:52:22, itr: 2050, epoch:[19/50], completed user:[109568/109729] loss: 3.23067, precision_1: 0.10408, precision_2: 0.19450
+2021-07-02 19:54:49, epoch 18 train complete
+2021-07-02 19:55:01, itr: 2060, epoch:[20/50], completed user:[9216/109729] loss: 3.23985, precision_1: 0.10635, precision_2: 0.18992
+2021-07-02 19:55:36, itr: 2070, epoch:[20/50], completed user:[19456/109729] loss: 3.22679, precision_1: 0.10941, precision_2: 0.19317
+2021-07-02 19:55:49, itr: 2080, epoch:[20/50], completed user:[29696/109729] loss: 3.26323, precision_1: 0.10378, precision_2: 0.18274
+2021-07-02 19:56:02, itr: 2090, epoch:[20/50], completed user:[39936/109729] loss: 3.20452, precision_1: 0.10580, precision_2: 0.19313
+2021-07-02 19:56:15, itr: 2100, epoch:[20/50], completed user:[50176/109729] loss: 3.24474, precision_1: 0.10780, precision_2: 0.19208
+>>>>>>>>2021-07-02 19:56:25: itr: 2100, vali: 3.22432, 0.10624, 0.19236<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 19:56:38, itr: 2110, epoch:[20/50], completed user:[60416/109729] loss: 3.25611, precision_1: 0.10576, precision_2: 0.18695
+2021-07-02 19:57:13, itr: 2120, epoch:[20/50], completed user:[70656/109729] loss: 3.24078, precision_1: 0.10242, precision_2: 0.19058
+2021-07-02 19:57:25, itr: 2130, epoch:[20/50], completed user:[80896/109729] loss: 3.19969, precision_1: 0.10987, precision_2: 0.19831
+2021-07-02 19:57:38, itr: 2140, epoch:[20/50], completed user:[91136/109729] loss: 3.22620, precision_1: 0.10791, precision_2: 0.19427
+2021-07-02 19:57:52, itr: 2150, epoch:[20/50], completed user:[101376/109729] loss: 3.24548, precision_1: 0.10519, precision_2: 0.19112
+2021-07-02 20:00:30, epoch 19 train complete
+2021-07-02 20:00:31, itr: 2160, epoch:[21/50], completed user:[1024/109729] loss: 3.23451, precision_1: 0.10667, precision_2: 0.19037
+2021-07-02 20:00:45, itr: 2170, epoch:[21/50], completed user:[11264/109729] loss: 3.24334, precision_1: 0.10480, precision_2: 0.19158
+2021-07-02 20:01:19, itr: 2180, epoch:[21/50], completed user:[21504/109729] loss: 3.26997, precision_1: 0.10267, precision_2: 0.18333
+2021-07-02 20:01:32, itr: 2190, epoch:[21/50], completed user:[31744/109729] loss: 3.19016, precision_1: 0.10829, precision_2: 0.19553
+2021-07-02 20:01:46, itr: 2200, epoch:[21/50], completed user:[41984/109729] loss: 3.22665, precision_1: 0.10697, precision_2: 0.18963
+>>>>>>>>2021-07-02 20:01:55: itr: 2200, vali: 3.22256, 0.10598, 0.19234<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 20:02:08, itr: 2210, epoch:[21/50], completed user:[52224/109729] loss: 3.24578, precision_1: 0.10445, precision_2: 0.18972
+2021-07-02 20:02:21, itr: 2220, epoch:[21/50], completed user:[62464/109729] loss: 3.21906, precision_1: 0.10754, precision_2: 0.18797
+2021-07-02 20:02:56, itr: 2230, epoch:[21/50], completed user:[72704/109729] loss: 3.21985, precision_1: 0.10567, precision_2: 0.19097
+2021-07-02 20:03:08, itr: 2240, epoch:[21/50], completed user:[82944/109729] loss: 3.25487, precision_1: 0.10009, precision_2: 0.18394
+2021-07-02 20:03:21, itr: 2250, epoch:[21/50], completed user:[93184/109729] loss: 3.19680, precision_1: 0.11077, precision_2: 0.19082
+2021-07-02 20:03:35, itr: 2260, epoch:[21/50], completed user:[103424/109729] loss: 3.18939, precision_1: 0.11120, precision_2: 0.19658
+2021-07-02 20:06:10, epoch 20 train complete
+2021-07-02 20:06:14, itr: 2270, epoch:[22/50], completed user:[3072/109729] loss: 3.25190, precision_1: 0.09952, precision_2: 0.17895
+2021-07-02 20:06:27, itr: 2280, epoch:[22/50], completed user:[13312/109729] loss: 3.26624, precision_1: 0.10179, precision_2: 0.18246
+2021-07-02 20:07:02, itr: 2290, epoch:[22/50], completed user:[23552/109729] loss: 3.22856, precision_1: 0.10677, precision_2: 0.19275
+2021-07-02 20:07:15, itr: 2300, epoch:[22/50], completed user:[33792/109729] loss: 3.21984, precision_1: 0.10659, precision_2: 0.18986
+>>>>>>>>2021-07-02 20:07:25: itr: 2300, vali: 3.21906, 0.10653, 0.19253<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 20:07:38, itr: 2310, epoch:[22/50], completed user:[44032/109729] loss: 3.19428, precision_1: 0.11267, precision_2: 0.20007
+2021-07-02 20:07:51, itr: 2320, epoch:[22/50], completed user:[54272/109729] loss: 3.22528, precision_1: 0.10378, precision_2: 0.19695
+2021-07-02 20:08:04, itr: 2330, epoch:[22/50], completed user:[64512/109729] loss: 3.21736, precision_1: 0.10995, precision_2: 0.19473
+2021-07-02 20:08:38, itr: 2340, epoch:[22/50], completed user:[74752/109729] loss: 3.20942, precision_1: 0.10496, precision_2: 0.19238
+2021-07-02 20:08:51, itr: 2350, epoch:[22/50], completed user:[84992/109729] loss: 3.21703, precision_1: 0.11192, precision_2: 0.19940
+2021-07-02 20:09:04, itr: 2360, epoch:[22/50], completed user:[95232/109729] loss: 3.21342, precision_1: 0.11624, precision_2: 0.20231
+2021-07-02 20:09:17, itr: 2370, epoch:[22/50], completed user:[105472/109729] loss: 3.21208, precision_1: 0.11056, precision_2: 0.19596
+2021-07-02 20:11:50, epoch 21 train complete
+2021-07-02 20:11:56, itr: 2380, epoch:[23/50], completed user:[5120/109729] loss: 3.26157, precision_1: 0.11024, precision_2: 0.19066
+2021-07-02 20:12:31, itr: 2390, epoch:[23/50], completed user:[15360/109729] loss: 3.24234, precision_1: 0.09820, precision_2: 0.18268
+2021-07-02 20:12:45, itr: 2400, epoch:[23/50], completed user:[25600/109729] loss: 3.21827, precision_1: 0.11031, precision_2: 0.19801
+>>>>>>>>2021-07-02 20:12:54: itr: 2400, vali: 3.21869, 0.10610, 0.19247<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 20:13:07, itr: 2410, epoch:[23/50], completed user:[35840/109729] loss: 3.21764, precision_1: 0.10961, precision_2: 0.18798
+2021-07-02 20:13:20, itr: 2420, epoch:[23/50], completed user:[46080/109729] loss: 3.24829, precision_1: 0.10052, precision_2: 0.18627
+2021-07-02 20:13:33, itr: 2430, epoch:[23/50], completed user:[56320/109729] loss: 3.23254, precision_1: 0.10301, precision_2: 0.18315
+2021-07-02 20:13:47, itr: 2440, epoch:[23/50], completed user:[66560/109729] loss: 3.22497, precision_1: 0.09449, precision_2: 0.17961
+2021-07-02 20:14:21, itr: 2450, epoch:[23/50], completed user:[76800/109729] loss: 3.24947, precision_1: 0.10460, precision_2: 0.18184
+2021-07-02 20:14:33, itr: 2460, epoch:[23/50], completed user:[87040/109729] loss: 3.23810, precision_1: 0.10624, precision_2: 0.19515
+2021-07-02 20:14:46, itr: 2470, epoch:[23/50], completed user:[97280/109729] loss: 3.22709, precision_1: 0.10450, precision_2: 0.18612
+2021-07-02 20:14:59, itr: 2480, epoch:[23/50], completed user:[107520/109729] loss: 3.23579, precision_1: 0.10667, precision_2: 0.18259
+2021-07-02 20:17:31, epoch 22 train complete
+2021-07-02 20:17:40, itr: 2490, epoch:[24/50], completed user:[7168/109729] loss: 3.20117, precision_1: 0.10942, precision_2: 0.20377
+2021-07-02 20:18:14, itr: 2500, epoch:[24/50], completed user:[17408/109729] loss: 3.25544, precision_1: 0.10363, precision_2: 0.18632
+>>>>>>>>2021-07-02 20:18:23: itr: 2500, vali: 3.21682, 0.10621, 0.19382<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 20:18:37, itr: 2510, epoch:[24/50], completed user:[27648/109729] loss: 3.19089, precision_1: 0.11067, precision_2: 0.194712021-07-02 20:23:10,920 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1913842956 m] train_on_epoch 
+ 48%|████▊     | 24/50 [2:17:20<2:27:31, 340.44s/it]2021-07-02 20:28:51,126 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1965411703 m] train_on_epoch 
+ 50%|█████     | 25/50 [2:23:01<2:21:49, 340.37s/it]2021-07-02 20:34:40,003 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.3407799204 m] train_on_epoch 
+ 52%|█████▏    | 26/50 [2:28:49<2:17:10, 342.92s/it]2021-07-02 20:40:19,873 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1770132025 m] train_on_epoch 
+ 54%|█████▍    | 27/50 [2:34:29<2:11:06, 342.00s/it]2021-07-02 20:45:59,385 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1798295259 m] train_on_epoch 
+ 56%|█████▌    | 28/50 [2:40:09<2:05:07, 341.26s/it]
+2021-07-02 20:18:50, itr: 2520, epoch:[24/50], completed user:[37888/109729] loss: 3.21222, precision_1: 0.10753, precision_2: 0.19300
+2021-07-02 20:19:03, itr: 2530, epoch:[24/50], completed user:[48128/109729] loss: 3.23791, precision_1: 0.10583, precision_2: 0.19465
+2021-07-02 20:19:16, itr: 2540, epoch:[24/50], completed user:[58368/109729] loss: 3.26628, precision_1: 0.10410, precision_2: 0.19023
+2021-07-02 20:19:29, itr: 2550, epoch:[24/50], completed user:[68608/109729] loss: 3.23418, precision_1: 0.10630, precision_2: 0.19202
+2021-07-02 20:20:03, itr: 2560, epoch:[24/50], completed user:[78848/109729] loss: 3.24046, precision_1: 0.10447, precision_2: 0.19126
+2021-07-02 20:20:16, itr: 2570, epoch:[24/50], completed user:[89088/109729] loss: 3.26859, precision_1: 0.10715, precision_2: 0.18312
+2021-07-02 20:20:29, itr: 2580, epoch:[24/50], completed user:[99328/109729] loss: 3.24351, precision_1: 0.10909, precision_2: 0.19208
+2021-07-02 20:20:42, itr: 2590, epoch:[24/50], completed user:[109568/109729] loss: 3.22639, precision_1: 0.10427, precision_2: 0.19450
+2021-07-02 20:23:10, epoch 23 train complete
+2021-07-02 20:23:22, itr: 2600, epoch:[25/50], completed user:[9216/109729] loss: 3.23865, precision_1: 0.10384, precision_2: 0.19108
+>>>>>>>>2021-07-02 20:23:32: itr: 2600, vali: 3.22000, 0.10589, 0.19242<<<<<<<<
+2021-07-02 20:24:06, itr: 2610, epoch:[25/50], completed user:[19456/109729] loss: 3.21967, precision_1: 0.10941, precision_2: 0.19449
+2021-07-02 20:24:20, itr: 2620, epoch:[25/50], completed user:[29696/109729] loss: 3.25502, precision_1: 0.10397, precision_2: 0.18707
+2021-07-02 20:24:33, itr: 2630, epoch:[25/50], completed user:[39936/109729] loss: 3.20176, precision_1: 0.10450, precision_2: 0.19332
+2021-07-02 20:24:46, itr: 2640, epoch:[25/50], completed user:[50176/109729] loss: 3.23619, precision_1: 0.10721, precision_2: 0.19189
+2021-07-02 20:24:59, itr: 2650, epoch:[25/50], completed user:[60416/109729] loss: 3.24847, precision_1: 0.10480, precision_2: 0.18752
+2021-07-02 20:25:33, itr: 2660, epoch:[25/50], completed user:[70656/109729] loss: 3.23628, precision_1: 0.10259, precision_2: 0.18918
+2021-07-02 20:25:45, itr: 2670, epoch:[25/50], completed user:[80896/109729] loss: 3.19582, precision_1: 0.11085, precision_2: 0.19693
+2021-07-02 20:25:58, itr: 2680, epoch:[25/50], completed user:[91136/109729] loss: 3.21949, precision_1: 0.10444, precision_2: 0.18965
+2021-07-02 20:26:12, itr: 2690, epoch:[25/50], completed user:[101376/109729] loss: 3.23548, precision_1: 0.10644, precision_2: 0.19041
+2021-07-02 20:28:51, epoch 24 train complete
+2021-07-02 20:28:52, itr: 2700, epoch:[26/50], completed user:[1024/109729] loss: 3.23229, precision_1: 0.10778, precision_2: 0.19185
+>>>>>>>>2021-07-02 20:29:01: itr: 2700, vali: 3.21546, 0.10623, 0.19319<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 20:29:15, itr: 2710, epoch:[26/50], completed user:[11264/109729] loss: 3.23458, precision_1: 0.10498, precision_2: 0.19323
+2021-07-02 20:29:49, itr: 2720, epoch:[26/50], completed user:[21504/109729] loss: 3.25802, precision_1: 0.10520, precision_2: 0.18387
+2021-07-02 20:30:02, itr: 2730, epoch:[26/50], completed user:[31744/109729] loss: 3.17729, precision_1: 0.10960, precision_2: 0.19534
+2021-07-02 20:30:15, itr: 2740, epoch:[26/50], completed user:[41984/109729] loss: 3.22027, precision_1: 0.10679, precision_2: 0.19359
+2021-07-02 20:30:28, itr: 2750, epoch:[26/50], completed user:[52224/109729] loss: 3.23919, precision_1: 0.10296, precision_2: 0.18823
+2021-07-02 20:30:41, itr: 2760, epoch:[26/50], completed user:[62464/109729] loss: 3.21379, precision_1: 0.10579, precision_2: 0.18622
+2021-07-02 20:31:15, itr: 2770, epoch:[26/50], completed user:[72704/109729] loss: 3.21323, precision_1: 0.10767, precision_2: 0.19037
+2021-07-02 20:31:27, itr: 2780, epoch:[26/50], completed user:[82944/109729] loss: 3.24928, precision_1: 0.09953, precision_2: 0.18021
+2021-07-02 20:31:40, itr: 2790, epoch:[26/50], completed user:[93184/109729] loss: 3.19273, precision_1: 0.10917, precision_2: 0.19135
+2021-07-02 20:31:54, itr: 2800, epoch:[26/50], completed user:[103424/109729] loss: 3.18420, precision_1: 0.11139, precision_2: 0.19753
+>>>>>>>>2021-07-02 20:32:03: itr: 2800, vali: 3.21617, 0.10632, 0.19260<<<<<<<<
+2021-07-02 20:34:40, epoch 25 train complete
+2021-07-02 20:34:44, itr: 2810, epoch:[27/50], completed user:[3072/109729] loss: 3.24833, precision_1: 0.10026, precision_2: 0.17729
+2021-07-02 20:34:57, itr: 2820, epoch:[27/50], completed user:[13312/109729] loss: 3.26028, precision_1: 0.10122, precision_2: 0.18436
+2021-07-02 20:35:30, itr: 2830, epoch:[27/50], completed user:[23552/109729] loss: 3.22473, precision_1: 0.10517, precision_2: 0.19222
+2021-07-02 20:35:43, itr: 2840, epoch:[27/50], completed user:[33792/109729] loss: 3.21714, precision_1: 0.10466, precision_2: 0.18928
+2021-07-02 20:35:57, itr: 2850, epoch:[27/50], completed user:[44032/109729] loss: 3.18912, precision_1: 0.11178, precision_2: 0.19776
+2021-07-02 20:36:09, itr: 2860, epoch:[27/50], completed user:[54272/109729] loss: 3.22349, precision_1: 0.10262, precision_2: 0.19811
+2021-07-02 20:36:23, itr: 2870, epoch:[27/50], completed user:[64512/109729] loss: 3.21181, precision_1: 0.10917, precision_2: 0.19414
+2021-07-02 20:36:56, itr: 2880, epoch:[27/50], completed user:[74752/109729] loss: 3.20448, precision_1: 0.10355, precision_2: 0.19184
+2021-07-02 20:37:09, itr: 2890, epoch:[27/50], completed user:[84992/109729] loss: 3.20911, precision_1: 0.11267, precision_2: 0.19754
+2021-07-02 20:37:22, itr: 2900, epoch:[27/50], completed user:[95232/109729] loss: 3.19859, precision_1: 0.11475, precision_2: 0.20361
+>>>>>>>>2021-07-02 20:37:32: itr: 2900, vali: 3.21880, 0.10584, 0.19216<<<<<<<<
+2021-07-02 20:37:45, itr: 2910, epoch:[27/50], completed user:[105472/109729] loss: 3.20445, precision_1: 0.10884, precision_2: 0.19462
+2021-07-02 20:40:19, epoch 26 train complete
+2021-07-02 20:40:26, itr: 2920, epoch:[28/50], completed user:[5120/109729] loss: 3.25452, precision_1: 0.10887, precision_2: 0.19007
+2021-07-02 20:40:39, itr: 2930, epoch:[28/50], completed user:[15360/109729] loss: 3.23452, precision_1: 0.09608, precision_2: 0.18345
+2021-07-02 20:41:13, itr: 2940, epoch:[28/50], completed user:[25600/109729] loss: 3.21093, precision_1: 0.10884, precision_2: 0.19673
+2021-07-02 20:41:26, itr: 2950, epoch:[28/50], completed user:[35840/109729] loss: 3.21627, precision_1: 0.11000, precision_2: 0.19073
+2021-07-02 20:41:39, itr: 2960, epoch:[28/50], completed user:[46080/109729] loss: 3.24358, precision_1: 0.10176, precision_2: 0.18555
+2021-07-02 20:41:52, itr: 2970, epoch:[28/50], completed user:[56320/109729] loss: 3.22661, precision_1: 0.10543, precision_2: 0.18446
+2021-07-02 20:42:05, itr: 2980, epoch:[28/50], completed user:[66560/109729] loss: 3.22099, precision_1: 0.09554, precision_2: 0.17839
+2021-07-02 20:42:39, itr: 2990, epoch:[28/50], completed user:[76800/109729] loss: 3.24524, precision_1: 0.10236, precision_2: 0.17904
+2021-07-02 20:42:52, itr: 3000, epoch:[28/50], completed user:[87040/109729] loss: 3.22995, precision_1: 0.10662, precision_2: 0.19669
+>>>>>>>>2021-07-02 20:43:01: itr: 3000, vali: 3.21663, 0.10571, 0.19229<<<<<<<<
+2021-07-02 20:43:14, itr: 3010, epoch:[28/50], completed user:[97280/109729] loss: 3.22319, precision_1: 0.10732, precision_2: 0.18968
+2021-07-02 20:43:27, itr: 3020, epoch:[28/50], completed user:[107520/109729] loss: 3.23226, precision_1: 0.10541, precision_2: 0.18169
+2021-07-02 20:45:59, epoch 27 train complete
+2021-07-02 20:46:08, itr: 3030, epoch:[29/50], completed user:[7168/109729] loss: 3.19479, precision_1: 0.11196, precision_2: 0.20831
+2021-07-02 20:46:43, itr: 3040, epoch:[29/50], completed user:[17408/109729] loss: 3.22863, precision_1: 0.10670, precision_2: 0.18776
+2021-07-02 20:46:55, itr: 3050, epoch:[29/50], completed user:[27648/109729] loss: 3.18552, precision_1: 0.10923, precision_2: 0.19453
+2021-07-02 20:47:08, itr: 3060, epoch:[29/50], completed user:[37888/109729] loss: 3.20574, precision_1: 0.10734, precision_2: 0.19464
+2021-07-02 20:47:22, itr: 3070, epoch:[29/50], completed user:[48128/109729] loss: 3.23139, precision_1: 0.10621, precision_2: 0.192172021-07-02 20:51:39,767 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1849894206 m] train_on_epoch 
+ 58%|█████▊    | 29/50 [2:45:49<1:59:21, 341.01s/it]2021-07-02 20:57:20,097 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1692610065 m] train_on_epoch 
+ 60%|██████    | 30/50 [2:51:30<1:53:36, 340.82s/it]2021-07-02 21:02:59,712 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1621467630 m] train_on_epoch 
+ 62%|██████▏   | 31/50 [2:57:09<1:47:48, 340.47s/it]2021-07-02 21:08:40,235 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1719474276 m] train_on_epoch 
+ 64%|██████▍   | 32/50 [3:02:50<1:42:08, 340.50s/it]2021-07-02 21:14:20,597 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1603902936 m] train_on_epoch 
+ 66%|██████▌   | 33/50 [3:08:30<1:36:27, 340.47s/it]
+2021-07-02 20:47:34, itr: 3080, epoch:[29/50], completed user:[58368/109729] loss: 3.26174, precision_1: 0.10522, precision_2: 0.19191
+2021-07-02 20:47:47, itr: 3090, epoch:[29/50], completed user:[68608/109729] loss: 3.23157, precision_1: 0.10846, precision_2: 0.19184
+2021-07-02 20:48:21, itr: 3100, epoch:[29/50], completed user:[78848/109729] loss: 3.23587, precision_1: 0.10350, precision_2: 0.19049
+>>>>>>>>2021-07-02 20:48:30: itr: 3100, vali: 3.21374, 0.10592, 0.19271<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 20:48:43, itr: 3110, epoch:[29/50], completed user:[89088/109729] loss: 3.26598, precision_1: 0.10790, precision_2: 0.18424
+2021-07-02 20:48:57, itr: 3120, epoch:[29/50], completed user:[99328/109729] loss: 3.23815, precision_1: 0.10890, precision_2: 0.19564
+2021-07-02 20:49:10, itr: 3130, epoch:[29/50], completed user:[109568/109729] loss: 3.22170, precision_1: 0.10254, precision_2: 0.19508
+2021-07-02 20:51:39, epoch 28 train complete
+2021-07-02 20:51:51, itr: 3140, epoch:[30/50], completed user:[9216/109729] loss: 3.22809, precision_1: 0.10326, precision_2: 0.18973
+2021-07-02 20:52:25, itr: 3150, epoch:[30/50], completed user:[19456/109729] loss: 3.21801, precision_1: 0.10960, precision_2: 0.19317
+2021-07-02 20:52:38, itr: 3160, epoch:[30/50], completed user:[29696/109729] loss: 3.25395, precision_1: 0.10603, precision_2: 0.18744
+2021-07-02 20:52:51, itr: 3170, epoch:[30/50], completed user:[39936/109729] loss: 3.20129, precision_1: 0.10450, precision_2: 0.19388
+2021-07-02 20:53:04, itr: 3180, epoch:[30/50], completed user:[50176/109729] loss: 3.22917, precision_1: 0.10643, precision_2: 0.18993
+2021-07-02 20:53:17, itr: 3190, epoch:[30/50], completed user:[60416/109729] loss: 3.24591, precision_1: 0.10288, precision_2: 0.18695
+2021-07-02 20:53:30, itr: 3200, epoch:[30/50], completed user:[70656/109729] loss: 3.22753, precision_1: 0.10329, precision_2: 0.18936
+>>>>>>>>2021-07-02 20:53:40: itr: 3200, vali: 3.21349, 0.10557, 0.19287<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 20:54:13, itr: 3210, epoch:[30/50], completed user:[80896/109729] loss: 3.19488, precision_1: 0.11164, precision_2: 0.19851
+2021-07-02 20:54:26, itr: 3220, epoch:[30/50], completed user:[91136/109729] loss: 3.21676, precision_1: 0.10406, precision_2: 0.19234
+2021-07-02 20:54:39, itr: 3230, epoch:[30/50], completed user:[101376/109729] loss: 3.23216, precision_1: 0.10572, precision_2: 0.19094
+2021-07-02 20:57:20, epoch 29 train complete
+2021-07-02 20:57:21, itr: 3240, epoch:[31/50], completed user:[1024/109729] loss: 3.23254, precision_1: 0.10870, precision_2: 0.19185
+2021-07-02 20:57:34, itr: 3250, epoch:[31/50], completed user:[11264/109729] loss: 3.23445, precision_1: 0.10664, precision_2: 0.19470
+2021-07-02 20:58:08, itr: 3260, epoch:[31/50], completed user:[21504/109729] loss: 3.25205, precision_1: 0.10484, precision_2: 0.18261
+2021-07-02 20:58:21, itr: 3270, epoch:[31/50], completed user:[31744/109729] loss: 3.17566, precision_1: 0.11221, precision_2: 0.19664
+2021-07-02 20:58:34, itr: 3280, epoch:[31/50], completed user:[41984/109729] loss: 3.21568, precision_1: 0.10571, precision_2: 0.19161
+2021-07-02 20:58:47, itr: 3290, epoch:[31/50], completed user:[52224/109729] loss: 3.23747, precision_1: 0.10538, precision_2: 0.18712
+2021-07-02 20:59:00, itr: 3300, epoch:[31/50], completed user:[62464/109729] loss: 3.20964, precision_1: 0.10561, precision_2: 0.18727
+>>>>>>>>2021-07-02 20:59:09: itr: 3300, vali: 3.21144, 0.10598, 0.19278<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 20:59:42, itr: 3310, epoch:[31/50], completed user:[72704/109729] loss: 3.21018, precision_1: 0.10567, precision_2: 0.18897
+2021-07-02 20:59:55, itr: 3320, epoch:[31/50], completed user:[82944/109729] loss: 3.24276, precision_1: 0.10028, precision_2: 0.18002
+2021-07-02 21:00:08, itr: 3330, epoch:[31/50], completed user:[93184/109729] loss: 3.18790, precision_1: 0.10845, precision_2: 0.18903
+2021-07-02 21:00:21, itr: 3340, epoch:[31/50], completed user:[103424/109729] loss: 3.18134, precision_1: 0.10930, precision_2: 0.19412
+2021-07-02 21:02:59, epoch 30 train complete
+2021-07-02 21:03:03, itr: 3350, epoch:[32/50], completed user:[3072/109729] loss: 3.24569, precision_1: 0.09805, precision_2: 0.17637
+2021-07-02 21:03:16, itr: 3360, epoch:[32/50], completed user:[13312/109729] loss: 3.25709, precision_1: 0.10217, precision_2: 0.18341
+2021-07-02 21:03:51, itr: 3370, epoch:[32/50], completed user:[23552/109729] loss: 3.22114, precision_1: 0.10659, precision_2: 0.19364
+2021-07-02 21:04:03, itr: 3380, epoch:[32/50], completed user:[33792/109729] loss: 3.21868, precision_1: 0.10351, precision_2: 0.19140
+2021-07-02 21:04:17, itr: 3390, epoch:[32/50], completed user:[44032/109729] loss: 3.18435, precision_1: 0.11161, precision_2: 0.19491
+2021-07-02 21:04:29, itr: 3400, epoch:[32/50], completed user:[54272/109729] loss: 3.21510, precision_1: 0.10320, precision_2: 0.19464
+>>>>>>>>2021-07-02 21:04:39: itr: 3400, vali: 3.20977, 0.10581, 0.19324<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 21:04:52, itr: 3410, epoch:[32/50], completed user:[64512/109729] loss: 3.20517, precision_1: 0.10838, precision_2: 0.19493
+2021-07-02 21:05:25, itr: 3420, epoch:[32/50], completed user:[74752/109729] loss: 3.20370, precision_1: 0.10301, precision_2: 0.19291
+2021-07-02 21:05:38, itr: 3430, epoch:[32/50], completed user:[84992/109729] loss: 3.20523, precision_1: 0.11211, precision_2: 0.19679
+2021-07-02 21:05:51, itr: 3440, epoch:[32/50], completed user:[95232/109729] loss: 3.19385, precision_1: 0.11475, precision_2: 0.20324
+2021-07-02 21:06:04, itr: 3450, epoch:[32/50], completed user:[105472/109729] loss: 3.19918, precision_1: 0.10884, precision_2: 0.19577
+2021-07-02 21:08:40, epoch 31 train complete
+2021-07-02 21:08:46, itr: 3460, epoch:[33/50], completed user:[5120/109729] loss: 3.25227, precision_1: 0.10965, precision_2: 0.18988
+2021-07-02 21:09:00, itr: 3470, epoch:[33/50], completed user:[15360/109729] loss: 3.23035, precision_1: 0.09666, precision_2: 0.18249
+2021-07-02 21:09:34, itr: 3480, epoch:[33/50], completed user:[25600/109729] loss: 3.20767, precision_1: 0.10940, precision_2: 0.19949
+2021-07-02 21:09:47, itr: 3490, epoch:[33/50], completed user:[35840/109729] loss: 3.21133, precision_1: 0.10980, precision_2: 0.19368
+2021-07-02 21:10:00, itr: 3500, epoch:[33/50], completed user:[46080/109729] loss: 3.24079, precision_1: 0.10087, precision_2: 0.18662
+>>>>>>>>2021-07-02 21:10:10: itr: 3500, vali: 3.21023, 0.10496, 0.19257<<<<<<<<
+2021-07-02 21:10:22, itr: 3510, epoch:[33/50], completed user:[56320/109729] loss: 3.22145, precision_1: 0.10617, precision_2: 0.18464
+2021-07-02 21:10:35, itr: 3520, epoch:[33/50], completed user:[66560/109729] loss: 3.21819, precision_1: 0.09519, precision_2: 0.18048
+2021-07-02 21:11:08, itr: 3530, epoch:[33/50], completed user:[76800/109729] loss: 3.24172, precision_1: 0.10329, precision_2: 0.18146
+2021-07-02 21:11:21, itr: 3540, epoch:[33/50], completed user:[87040/109729] loss: 3.22603, precision_1: 0.10816, precision_2: 0.19496
+2021-07-02 21:11:34, itr: 3550, epoch:[33/50], completed user:[97280/109729] loss: 3.22157, precision_1: 0.10582, precision_2: 0.18949
+2021-07-02 21:11:47, itr: 3560, epoch:[33/50], completed user:[107520/109729] loss: 3.23253, precision_1: 0.10452, precision_2: 0.18313
+2021-07-02 21:14:20, epoch 32 train complete
+2021-07-02 21:14:30, itr: 3570, epoch:[34/50], completed user:[7168/109729] loss: 3.18654, precision_1: 0.11123, precision_2: 0.20486
+2021-07-02 21:14:43, itr: 3580, epoch:[34/50], completed user:[17408/109729] loss: 3.22860, precision_1: 0.10525, precision_2: 0.18650
+2021-07-02 21:15:15, itr: 3590, epoch:[34/50], completed user:[27648/109729] loss: 3.18103, precision_1: 0.10851, precision_2: 0.19255
+2021-07-02 21:15:28, itr: 3600, epoch:[34/50], completed user:[37888/109729] loss: 3.20209, precision_1: 0.10734, precision_2: 0.19355
+>>>>>>>>2021-07-02 21:15:38: itr: 3600, vali: 3.20850, 0.10631, 0.19281<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 21:15:51, itr: 3610, epoch:[34/50], completed user:[48128/109729] loss: 3.22757, precision_1: 0.10716, precision_2: 0.193312021-07-02 21:20:00,836 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1413263083 m] train_on_epoch 
+ 68%|██████▊   | 34/50 [3:14:10<1:30:46, 340.41s/it]2021-07-02 21:25:41,001 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1474423289 m] train_on_epoch 
+ 70%|███████   | 35/50 [3:19:51<1:25:05, 340.35s/it]2021-07-02 21:31:21,124 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1448981365 m] train_on_epoch 
+ 72%|███████▏  | 36/50 [3:25:31<1:19:24, 340.29s/it]2021-07-02 21:37:05,373 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2081223289 m] train_on_epoch 
+ 74%|███████▍  | 37/50 [3:31:15<1:13:59, 341.48s/it]2021-07-02 21:43:01,619 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.4056780497 m] train_on_epoch 
+ 76%|███████▌  | 38/50 [3:37:11<1:09:10, 345.91s/it]
+2021-07-02 21:16:04, itr: 3620, epoch:[34/50], completed user:[58368/109729] loss: 3.25545, precision_1: 0.10447, precision_2: 0.18985
+2021-07-02 21:16:17, itr: 3630, epoch:[34/50], completed user:[68608/109729] loss: 3.22507, precision_1: 0.10792, precision_2: 0.19437
+2021-07-02 21:16:50, itr: 3640, epoch:[34/50], completed user:[78848/109729] loss: 3.23269, precision_1: 0.10544, precision_2: 0.19262
+2021-07-02 21:17:03, itr: 3650, epoch:[34/50], completed user:[89088/109729] loss: 3.26214, precision_1: 0.10640, precision_2: 0.18462
+2021-07-02 21:17:16, itr: 3660, epoch:[34/50], completed user:[99328/109729] loss: 3.23250, precision_1: 0.10871, precision_2: 0.19621
+2021-07-02 21:17:29, itr: 3670, epoch:[34/50], completed user:[109568/109729] loss: 3.21668, precision_1: 0.10446, precision_2: 0.19508
+2021-07-02 21:20:01, epoch 33 train complete
+2021-07-02 21:20:12, itr: 3680, epoch:[35/50], completed user:[9216/109729] loss: 3.22264, precision_1: 0.10403, precision_2: 0.19205
+2021-07-02 21:20:46, itr: 3690, epoch:[35/50], completed user:[19456/109729] loss: 3.21366, precision_1: 0.10885, precision_2: 0.19185
+2021-07-02 21:20:59, itr: 3700, epoch:[35/50], completed user:[29696/109729] loss: 3.24374, precision_1: 0.10754, precision_2: 0.18707
+>>>>>>>>2021-07-02 21:21:08: itr: 3700, vali: 3.21049, 0.10573, 0.19287<<<<<<<<
+2021-07-02 21:21:21, itr: 3710, epoch:[35/50], completed user:[39936/109729] loss: 3.19980, precision_1: 0.10711, precision_2: 0.19313
+2021-07-02 21:21:34, itr: 3720, epoch:[35/50], completed user:[50176/109729] loss: 3.22337, precision_1: 0.10604, precision_2: 0.19247
+2021-07-02 21:21:47, itr: 3730, epoch:[35/50], completed user:[60416/109729] loss: 3.24106, precision_1: 0.10672, precision_2: 0.18887
+2021-07-02 21:22:00, itr: 3740, epoch:[35/50], completed user:[70656/109729] loss: 3.22344, precision_1: 0.10172, precision_2: 0.19075
+2021-07-02 21:22:33, itr: 3750, epoch:[35/50], completed user:[80896/109729] loss: 3.19066, precision_1: 0.11085, precision_2: 0.20067
+2021-07-02 21:22:46, itr: 3760, epoch:[35/50], completed user:[91136/109729] loss: 3.20733, precision_1: 0.10464, precision_2: 0.19254
+2021-07-02 21:22:59, itr: 3770, epoch:[35/50], completed user:[101376/109729] loss: 3.22682, precision_1: 0.10519, precision_2: 0.19397
+2021-07-02 21:25:41, epoch 34 train complete
+2021-07-02 21:25:42, itr: 3780, epoch:[36/50], completed user:[1024/109729] loss: 3.22338, precision_1: 0.10704, precision_2: 0.19167
+2021-07-02 21:25:55, itr: 3790, epoch:[36/50], completed user:[11264/109729] loss: 3.22517, precision_1: 0.10645, precision_2: 0.19250
+2021-07-02 21:26:29, itr: 3800, epoch:[36/50], completed user:[21504/109729] loss: 3.24677, precision_1: 0.10466, precision_2: 0.18116
+>>>>>>>>2021-07-02 21:26:38: itr: 3800, vali: 3.20636, 0.10544, 0.19284<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 21:26:51, itr: 3810, epoch:[36/50], completed user:[31744/109729] loss: 3.16718, precision_1: 0.11109, precision_2: 0.19571
+2021-07-02 21:27:05, itr: 3820, epoch:[36/50], completed user:[41984/109729] loss: 3.21236, precision_1: 0.10517, precision_2: 0.19053
+2021-07-02 21:27:17, itr: 3830, epoch:[36/50], completed user:[52224/109729] loss: 3.23167, precision_1: 0.10333, precision_2: 0.18861
+2021-07-02 21:27:30, itr: 3840, epoch:[36/50], completed user:[62464/109729] loss: 3.20615, precision_1: 0.10736, precision_2: 0.18762
+2021-07-02 21:27:43, itr: 3850, epoch:[36/50], completed user:[72704/109729] loss: 3.20149, precision_1: 0.10807, precision_2: 0.19557
+2021-07-02 21:28:15, itr: 3860, epoch:[36/50], completed user:[82944/109729] loss: 3.23778, precision_1: 0.10233, precision_2: 0.17890
+2021-07-02 21:28:28, itr: 3870, epoch:[36/50], completed user:[93184/109729] loss: 3.18636, precision_1: 0.11024, precision_2: 0.19153
+2021-07-02 21:28:42, itr: 3880, epoch:[36/50], completed user:[103424/109729] loss: 3.17524, precision_1: 0.11195, precision_2: 0.19848
+2021-07-02 21:31:21, epoch 35 train complete
+2021-07-02 21:31:25, itr: 3890, epoch:[37/50], completed user:[3072/109729] loss: 3.24016, precision_1: 0.09952, precision_2: 0.17951
+2021-07-02 21:31:38, itr: 3900, epoch:[37/50], completed user:[13312/109729] loss: 3.25259, precision_1: 0.10350, precision_2: 0.18683
+>>>>>>>>2021-07-02 21:31:48: itr: 3900, vali: 3.20792, 0.10618, 0.19388<<<<<<<<
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 21:32:21, itr: 3910, epoch:[37/50], completed user:[23552/109729] loss: 3.21207, precision_1: 0.10783, precision_2: 0.19417
+2021-07-02 21:32:34, itr: 3920, epoch:[37/50], completed user:[33792/109729] loss: 3.20935, precision_1: 0.10794, precision_2: 0.19295
+2021-07-02 21:32:48, itr: 3930, epoch:[37/50], completed user:[44032/109729] loss: 3.18113, precision_1: 0.11285, precision_2: 0.19687
+2021-07-02 21:33:00, itr: 3940, epoch:[37/50], completed user:[54272/109729] loss: 3.20962, precision_1: 0.10243, precision_2: 0.19753
+2021-07-02 21:33:14, itr: 3950, epoch:[37/50], completed user:[64512/109729] loss: 3.20020, precision_1: 0.10858, precision_2: 0.19630
+2021-07-02 21:33:47, itr: 3960, epoch:[37/50], completed user:[74752/109729] loss: 3.19644, precision_1: 0.10284, precision_2: 0.19574
+2021-07-02 21:34:01, itr: 3970, epoch:[37/50], completed user:[84992/109729] loss: 3.20019, precision_1: 0.11192, precision_2: 0.20145
+2021-07-02 21:34:14, itr: 3980, epoch:[37/50], completed user:[95232/109729] loss: 3.18793, precision_1: 0.11457, precision_2: 0.20194
+2021-07-02 21:34:28, itr: 3990, epoch:[37/50], completed user:[105472/109729] loss: 3.19469, precision_1: 0.10827, precision_2: 0.19443
+2021-07-02 21:37:05, epoch 36 train complete
+2021-07-02 21:37:12, itr: 4000, epoch:[38/50], completed user:[5120/109729] loss: 3.25224, precision_1: 0.10965, precision_2: 0.19066
+>>>>>>>>2021-07-02 21:37:22: itr: 4000, vali: 3.20738, 0.10687, 0.19366<<<<<<<<
+2021-07-02 21:37:36, itr: 4010, epoch:[38/50], completed user:[15360/109729] loss: 3.22469, precision_1: 0.09898, precision_2: 0.18500
+2021-07-02 21:38:08, itr: 4020, epoch:[38/50], completed user:[25600/109729] loss: 3.20180, precision_1: 0.10921, precision_2: 0.20206
+2021-07-02 21:38:22, itr: 4030, epoch:[38/50], completed user:[35840/109729] loss: 3.20585, precision_1: 0.11019, precision_2: 0.19210
+2021-07-02 21:38:36, itr: 4040, epoch:[38/50], completed user:[46080/109729] loss: 3.23495, precision_1: 0.10123, precision_2: 0.18662
+2021-07-02 21:38:49, itr: 4050, epoch:[38/50], completed user:[56320/109729] loss: 3.21558, precision_1: 0.10487, precision_2: 0.18650
+2021-07-02 21:39:02, itr: 4060, epoch:[38/50], completed user:[66560/109729] loss: 3.21050, precision_1: 0.09606, precision_2: 0.17909
+2021-07-02 21:39:36, itr: 4070, epoch:[38/50], completed user:[76800/109729] loss: 3.23702, precision_1: 0.10274, precision_2: 0.18053
+2021-07-02 21:39:49, itr: 4080, epoch:[38/50], completed user:[87040/109729] loss: 3.22067, precision_1: 0.10835, precision_2: 0.19457
+2021-07-02 21:40:03, itr: 4090, epoch:[38/50], completed user:[97280/109729] loss: 3.21508, precision_1: 0.10788, precision_2: 0.18987
+2021-07-02 21:40:17, itr: 4100, epoch:[38/50], completed user:[107520/109729] loss: 3.22125, precision_1: 0.10487, precision_2: 0.18547
+>>>>>>>>2021-07-02 21:40:27: itr: 4100, vali: 3.20415, 0.10571, 0.19332<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 21:43:01, epoch 37 train complete
+2021-07-02 21:43:11, itr: 4110, epoch:[39/50], completed user:[7168/109729] loss: 3.18316, precision_1: 0.11341, precision_2: 0.20849
+2021-07-02 21:43:25, itr: 4120, epoch:[39/50], completed user:[17408/109729] loss: 3.22101, precision_1: 0.10634, precision_2: 0.18902
+2021-07-02 21:43:58, itr: 4130, epoch:[39/50], completed user:[27648/109729] loss: 3.17569, precision_1: 0.11247, precision_2: 0.19651
+2021-07-02 21:44:11, itr: 4140, epoch:[39/50], completed user:[37888/109729] loss: 3.19601, precision_1: 0.10771, precision_2: 0.19410
+2021-07-02 21:44:25, itr: 4150, epoch:[39/50], completed user:[48128/109729] loss: 3.22250, precision_1: 0.10602, precision_2: 0.19618
+2021-07-02 21:44:38, itr: 4160, epoch:[39/50], completed user:[58368/109729] loss: 3.24800, precision_1: 0.10391, precision_2: 0.191542021-07-02 21:48:47,530 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2370546420 m] train_on_epoch 
+ 78%|███████▊  | 39/50 [3:42:57<1:03:25, 345.91s/it]2021-07-02 21:54:33,890 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2358577132 m] train_on_epoch 
+ 80%|████████  | 40/50 [3:48:44<57:40, 346.04s/it]  2021-07-02 22:00:19,084 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2270173152 m] train_on_epoch 
+ 82%|████████▏ | 41/50 [3:54:29<51:52, 345.80s/it]2021-07-02 22:06:01,868 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1865966121 m] train_on_epoch 
+ 84%|████████▍ | 42/50 [4:00:12<45:59, 344.88s/it]2021-07-02 22:11:46,896 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2232660095 m] train_on_epoch 
+ 86%|████████▌ | 43/50 [4:05:57<40:14, 344.93s/it]
+2021-07-02 21:44:52, itr: 4170, epoch:[39/50], completed user:[68608/109729] loss: 3.22127, precision_1: 0.10919, precision_2: 0.19311
+2021-07-02 21:45:25, itr: 4180, epoch:[39/50], completed user:[78848/109729] loss: 3.22683, precision_1: 0.10466, precision_2: 0.19107
+2021-07-02 21:45:38, itr: 4190, epoch:[39/50], completed user:[89088/109729] loss: 3.25601, precision_1: 0.10622, precision_2: 0.18555
+2021-07-02 21:45:52, itr: 4200, epoch:[39/50], completed user:[99328/109729] loss: 3.22787, precision_1: 0.10834, precision_2: 0.19564
+>>>>>>>>2021-07-02 21:46:02: itr: 4200, vali: 3.20455, 0.10750, 0.19474<<<<<<<<
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 21:46:15, itr: 4210, epoch:[39/50], completed user:[109568/109729] loss: 3.20966, precision_1: 0.10581, precision_2: 0.19469
+2021-07-02 21:48:47, epoch 38 train complete
+2021-07-02 21:49:00, itr: 4220, epoch:[40/50], completed user:[9216/109729] loss: 3.21807, precision_1: 0.10345, precision_2: 0.19070
+2021-07-02 21:49:33, itr: 4230, epoch:[40/50], completed user:[19456/109729] loss: 3.20835, precision_1: 0.10866, precision_2: 0.19543
+2021-07-02 21:49:47, itr: 4240, epoch:[40/50], completed user:[29696/109729] loss: 3.23357, precision_1: 0.10829, precision_2: 0.18819
+2021-07-02 21:50:00, itr: 4250, epoch:[40/50], completed user:[39936/109729] loss: 3.19044, precision_1: 0.10468, precision_2: 0.19519
+2021-07-02 21:50:14, itr: 4260, epoch:[40/50], completed user:[50176/109729] loss: 3.21730, precision_1: 0.10721, precision_2: 0.19365
+2021-07-02 21:50:27, itr: 4270, epoch:[40/50], completed user:[60416/109729] loss: 3.23570, precision_1: 0.10768, precision_2: 0.18772
+2021-07-02 21:50:41, itr: 4280, epoch:[40/50], completed user:[70656/109729] loss: 3.21515, precision_1: 0.10137, precision_2: 0.18988
+2021-07-02 21:51:13, itr: 4290, epoch:[40/50], completed user:[80896/109729] loss: 3.18449, precision_1: 0.11321, precision_2: 0.20145
+2021-07-02 21:51:27, itr: 4300, epoch:[40/50], completed user:[91136/109729] loss: 3.20466, precision_1: 0.10829, precision_2: 0.19446
+>>>>>>>>2021-07-02 21:51:37: itr: 4300, vali: 3.19956, 0.10764, 0.19517<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 21:51:51, itr: 4310, epoch:[40/50], completed user:[101376/109729] loss: 3.22020, precision_1: 0.10840, precision_2: 0.19326
+2021-07-02 21:54:34, epoch 39 train complete
+2021-07-02 21:54:35, itr: 4320, epoch:[41/50], completed user:[1024/109729] loss: 3.21821, precision_1: 0.10667, precision_2: 0.19333
+2021-07-02 21:54:49, itr: 4330, epoch:[41/50], completed user:[11264/109729] loss: 3.21474, precision_1: 0.10333, precision_2: 0.19636
+2021-07-02 21:55:23, itr: 4340, epoch:[41/50], completed user:[21504/109729] loss: 3.23855, precision_1: 0.10520, precision_2: 0.18585
+2021-07-02 21:55:36, itr: 4350, epoch:[41/50], completed user:[31744/109729] loss: 3.15728, precision_1: 0.10904, precision_2: 0.19683
+2021-07-02 21:55:50, itr: 4360, epoch:[41/50], completed user:[41984/109729] loss: 3.20534, precision_1: 0.10787, precision_2: 0.19035
+2021-07-02 21:56:03, itr: 4370, epoch:[41/50], completed user:[52224/109729] loss: 3.22304, precision_1: 0.10799, precision_2: 0.19121
+2021-07-02 21:56:16, itr: 4380, epoch:[41/50], completed user:[62464/109729] loss: 3.19837, precision_1: 0.11016, precision_2: 0.18884
+2021-07-02 21:56:30, itr: 4390, epoch:[41/50], completed user:[72704/109729] loss: 3.19287, precision_1: 0.10907, precision_2: 0.19477
+2021-07-02 21:57:02, itr: 4400, epoch:[41/50], completed user:[82944/109729] loss: 3.23426, precision_1: 0.10345, precision_2: 0.18263
+>>>>>>>>2021-07-02 21:57:12: itr: 4400, vali: 3.19826, 0.10753, 0.19601<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 21:57:26, itr: 4410, epoch:[41/50], completed user:[93184/109729] loss: 3.17711, precision_1: 0.11024, precision_2: 0.19260
+2021-07-02 21:57:39, itr: 4420, epoch:[41/50], completed user:[103424/109729] loss: 3.17081, precision_1: 0.11461, precision_2: 0.19677
+2021-07-02 22:00:19, epoch 40 train complete
+2021-07-02 22:00:23, itr: 4430, epoch:[42/50], completed user:[3072/109729] loss: 3.23084, precision_1: 0.10007, precision_2: 0.18245
+2021-07-02 22:00:36, itr: 4440, epoch:[42/50], completed user:[13312/109729] loss: 3.24608, precision_1: 0.10255, precision_2: 0.18550
+2021-07-02 22:01:10, itr: 4450, epoch:[42/50], completed user:[23552/109729] loss: 3.20648, precision_1: 0.10748, precision_2: 0.19719
+2021-07-02 22:01:23, itr: 4460, epoch:[42/50], completed user:[33792/109729] loss: 3.20003, precision_1: 0.10717, precision_2: 0.19410
+2021-07-02 22:01:36, itr: 4470, epoch:[42/50], completed user:[44032/109729] loss: 3.17512, precision_1: 0.10929, precision_2: 0.19633
+2021-07-02 22:01:49, itr: 4480, epoch:[42/50], completed user:[54272/109729] loss: 3.20223, precision_1: 0.10340, precision_2: 0.19927
+2021-07-02 22:02:02, itr: 4490, epoch:[42/50], completed user:[64512/109729] loss: 3.19003, precision_1: 0.11212, precision_2: 0.19650
+2021-07-02 22:02:34, itr: 4500, epoch:[42/50], completed user:[74752/109729] loss: 3.19082, precision_1: 0.10337, precision_2: 0.19486
+>>>>>>>>2021-07-02 22:02:44: itr: 4500, vali: 3.19627, 0.10745, 0.19517<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 22:02:57, itr: 4510, epoch:[42/50], completed user:[84992/109729] loss: 3.18910, precision_1: 0.11360, precision_2: 0.20052
+2021-07-02 22:03:11, itr: 4520, epoch:[42/50], completed user:[95232/109729] loss: 3.17776, precision_1: 0.11829, precision_2: 0.20324
+2021-07-02 22:03:25, itr: 4530, epoch:[42/50], completed user:[105472/109729] loss: 3.18755, precision_1: 0.10904, precision_2: 0.19615
+2021-07-02 22:06:02, epoch 41 train complete
+2021-07-02 22:06:08, itr: 4540, epoch:[43/50], completed user:[5120/109729] loss: 3.24153, precision_1: 0.11044, precision_2: 0.18890
+2021-07-02 22:06:22, itr: 4550, epoch:[43/50], completed user:[15360/109729] loss: 3.21650, precision_1: 0.09936, precision_2: 0.18597
+2021-07-02 22:06:56, itr: 4560, epoch:[43/50], completed user:[25600/109729] loss: 3.19297, precision_1: 0.11031, precision_2: 0.20279
+2021-07-02 22:07:09, itr: 4570, epoch:[43/50], completed user:[35840/109729] loss: 3.19715, precision_1: 0.11019, precision_2: 0.19387
+2021-07-02 22:07:23, itr: 4580, epoch:[43/50], completed user:[46080/109729] loss: 3.22553, precision_1: 0.10212, precision_2: 0.19000
+2021-07-02 22:07:36, itr: 4590, epoch:[43/50], completed user:[56320/109729] loss: 3.20842, precision_1: 0.10673, precision_2: 0.18855
+2021-07-02 22:07:49, itr: 4600, epoch:[43/50], completed user:[66560/109729] loss: 3.20389, precision_1: 0.09484, precision_2: 0.17961
+>>>>>>>>2021-07-02 22:08:00: itr: 4600, vali: 3.19657, 0.10735, 0.19405<<<<<<<<
+2021-07-02 22:08:32, itr: 4610, epoch:[43/50], completed user:[76800/109729] loss: 3.23113, precision_1: 0.10292, precision_2: 0.18444
+2021-07-02 22:08:45, itr: 4620, epoch:[43/50], completed user:[87040/109729] loss: 3.21266, precision_1: 0.10797, precision_2: 0.19630
+2021-07-02 22:08:59, itr: 4630, epoch:[43/50], completed user:[97280/109729] loss: 3.20471, precision_1: 0.10807, precision_2: 0.19268
+2021-07-02 22:09:12, itr: 4640, epoch:[43/50], completed user:[107520/109729] loss: 3.21583, precision_1: 0.10685, precision_2: 0.18798
+2021-07-02 22:11:47, epoch 42 train complete
+2021-07-02 22:11:56, itr: 4650, epoch:[44/50], completed user:[7168/109729] loss: 3.17440, precision_1: 0.11287, precision_2: 0.20541
+2021-07-02 22:12:10, itr: 4660, epoch:[44/50], completed user:[17408/109729] loss: 3.21250, precision_1: 0.10814, precision_2: 0.18830
+2021-07-02 22:12:42, itr: 4670, epoch:[44/50], completed user:[27648/109729] loss: 3.16595, precision_1: 0.11211, precision_2: 0.19759
+2021-07-02 22:12:56, itr: 4680, epoch:[44/50], completed user:[37888/109729] loss: 3.19009, precision_1: 0.10753, precision_2: 0.19646
+2021-07-02 22:13:09, itr: 4690, epoch:[44/50], completed user:[48128/109729] loss: 3.21143, precision_1: 0.10678, precision_2: 0.195802021-07-02 22:17:32,749 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2109898448 m] train_on_epoch 
+ 88%|████████▊ | 44/50 [4:11:42<34:31, 345.21s/it]2021-07-02 22:23:15,983 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1935129285 m] train_on_epoch 
+ 90%|█████████ | 45/50 [4:17:26<28:43, 344.62s/it]2021-07-02 22:29:02,915 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2543225090 m] train_on_epoch 
+ 92%|█████████▏| 46/50 [4:23:13<23:01, 345.31s/it]2021-07-02 22:34:50,019 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2512150725 m] train_on_epoch 
+ 94%|█████████▍| 47/50 [4:29:00<17:17, 345.85s/it]2021-07-02 22:40:37,100 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2510641495 m] train_on_epoch 
+ 96%|█████████▌| 48/50 [4:34:47<11:32, 346.22s/it]
+2021-07-02 22:13:23, itr: 4700, epoch:[44/50], completed user:[58368/109729] loss: 3.24086, precision_1: 0.10803, precision_2: 0.19341
+>>>>>>>>2021-07-02 22:13:33: itr: 4700, vali: 3.19480, 0.10738, 0.19504<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 22:13:46, itr: 4710, epoch:[44/50], completed user:[68608/109729] loss: 3.21267, precision_1: 0.11153, precision_2: 0.19545
+2021-07-02 22:14:20, itr: 4720, epoch:[44/50], completed user:[78848/109729] loss: 3.22059, precision_1: 0.10427, precision_2: 0.18913
+2021-07-02 22:14:33, itr: 4730, epoch:[44/50], completed user:[89088/109729] loss: 3.24946, precision_1: 0.10566, precision_2: 0.18723
+2021-07-02 22:14:46, itr: 4740, epoch:[44/50], completed user:[99328/109729] loss: 3.22103, precision_1: 0.10890, precision_2: 0.19733
+2021-07-02 22:14:59, itr: 4750, epoch:[44/50], completed user:[109568/109729] loss: 3.20386, precision_1: 0.10716, precision_2: 0.19488
+2021-07-02 22:17:33, epoch 43 train complete
+2021-07-02 22:17:45, itr: 4760, epoch:[45/50], completed user:[9216/109729] loss: 3.21025, precision_1: 0.10558, precision_2: 0.18973
+2021-07-02 22:17:58, itr: 4770, epoch:[45/50], completed user:[19456/109729] loss: 3.20470, precision_1: 0.11375, precision_2: 0.19770
+2021-07-02 22:18:32, itr: 4780, epoch:[45/50], completed user:[29696/109729] loss: 3.22568, precision_1: 0.10961, precision_2: 0.19139
+2021-07-02 22:18:45, itr: 4790, epoch:[45/50], completed user:[39936/109729] loss: 3.18431, precision_1: 0.10263, precision_2: 0.19444
+2021-07-02 22:18:59, itr: 4800, epoch:[45/50], completed user:[50176/109729] loss: 3.21088, precision_1: 0.10662, precision_2: 0.19855
+>>>>>>>>2021-07-02 22:19:09: itr: 4800, vali: 3.19437, 0.10730, 0.19464<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 22:19:22, itr: 4810, epoch:[45/50], completed user:[60416/109729] loss: 3.23186, precision_1: 0.10653, precision_2: 0.18714
+2021-07-02 22:19:35, itr: 4820, epoch:[45/50], completed user:[70656/109729] loss: 3.21097, precision_1: 0.09963, precision_2: 0.18745
+2021-07-02 22:20:07, itr: 4830, epoch:[45/50], completed user:[80896/109729] loss: 3.17711, precision_1: 0.11419, precision_2: 0.20106
+2021-07-02 22:20:20, itr: 4840, epoch:[45/50], completed user:[91136/109729] loss: 3.20030, precision_1: 0.10656, precision_2: 0.19273
+2021-07-02 22:20:34, itr: 4850, epoch:[45/50], completed user:[101376/109729] loss: 3.21149, precision_1: 0.11178, precision_2: 0.19112
+2021-07-02 22:23:16, epoch 44 train complete
+2021-07-02 22:23:17, itr: 4860, epoch:[46/50], completed user:[1024/109729] loss: 3.20915, precision_1: 0.10593, precision_2: 0.19148
+2021-07-02 22:23:31, itr: 4870, epoch:[46/50], completed user:[11264/109729] loss: 3.20961, precision_1: 0.10535, precision_2: 0.19691
+2021-07-02 22:24:05, itr: 4880, epoch:[46/50], completed user:[21504/109729] loss: 3.23135, precision_1: 0.10754, precision_2: 0.18694
+2021-07-02 22:24:18, itr: 4890, epoch:[46/50], completed user:[31744/109729] loss: 3.15169, precision_1: 0.10923, precision_2: 0.20037
+2021-07-02 22:24:32, itr: 4900, epoch:[46/50], completed user:[41984/109729] loss: 3.19372, precision_1: 0.10751, precision_2: 0.19233
+>>>>>>>>2021-07-02 22:24:42: itr: 4900, vali: 3.19388, 0.10816, 0.19593<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+2021-07-02 22:24:55, itr: 4910, epoch:[46/50], completed user:[52224/109729] loss: 3.21644, precision_1: 0.10966, precision_2: 0.19512
+2021-07-02 22:25:09, itr: 4920, epoch:[46/50], completed user:[62464/109729] loss: 3.19201, precision_1: 0.10824, precision_2: 0.18814
+2021-07-02 22:25:22, itr: 4930, epoch:[46/50], completed user:[72704/109729] loss: 3.18614, precision_1: 0.11167, precision_2: 0.19656
+2021-07-02 22:25:55, itr: 4940, epoch:[46/50], completed user:[82944/109729] loss: 3.22580, precision_1: 0.10458, precision_2: 0.18394
+2021-07-02 22:26:09, itr: 4950, epoch:[46/50], completed user:[93184/109729] loss: 3.17309, precision_1: 0.11024, precision_2: 0.19207
+2021-07-02 22:26:23, itr: 4960, epoch:[46/50], completed user:[103424/109729] loss: 3.16206, precision_1: 0.11480, precision_2: 0.19791
+2021-07-02 22:29:03, epoch 45 train complete
+2021-07-02 22:29:07, itr: 4970, epoch:[47/50], completed user:[3072/109729] loss: 3.22569, precision_1: 0.10302, precision_2: 0.18596
+2021-07-02 22:29:20, itr: 4980, epoch:[47/50], completed user:[13312/109729] loss: 3.23677, precision_1: 0.10502, precision_2: 0.18950
+2021-07-02 22:29:55, itr: 4990, epoch:[47/50], completed user:[23552/109729] loss: 3.20028, precision_1: 0.10552, precision_2: 0.19364
+2021-07-02 22:30:08, itr: 5000, epoch:[47/50], completed user:[33792/109729] loss: 3.19582, precision_1: 0.10678, precision_2: 0.19680
+>>>>>>>>2021-07-02 22:30:18: itr: 5000, vali: 3.19243, 0.10779, 0.19548<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+2021-07-02 22:30:32, itr: 5010, epoch:[47/50], completed user:[44032/109729] loss: 3.16892, precision_1: 0.11018, precision_2: 0.20078
+2021-07-02 22:30:45, itr: 5020, epoch:[47/50], completed user:[54272/109729] loss: 3.19671, precision_1: 0.10571, precision_2: 0.20081
+2021-07-02 22:30:58, itr: 5030, epoch:[47/50], completed user:[64512/109729] loss: 3.18498, precision_1: 0.11212, precision_2: 0.19689
+2021-07-02 22:31:12, itr: 5040, epoch:[47/50], completed user:[74752/109729] loss: 3.18050, precision_1: 0.10390, precision_2: 0.19699
+2021-07-02 22:31:45, itr: 5050, epoch:[47/50], completed user:[84992/109729] loss: 3.18140, precision_1: 0.11472, precision_2: 0.20425
+2021-07-02 22:31:59, itr: 5060, epoch:[47/50], completed user:[95232/109729] loss: 3.17251, precision_1: 0.11531, precision_2: 0.20250
+2021-07-02 22:32:12, itr: 5070, epoch:[47/50], completed user:[105472/109729] loss: 3.17667, precision_1: 0.11266, precision_2: 0.19920
+2021-07-02 22:34:50, epoch 46 train complete
+2021-07-02 22:34:56, itr: 5080, epoch:[48/50], completed user:[5120/109729] loss: 3.23165, precision_1: 0.11024, precision_2: 0.19204
+2021-07-02 22:35:11, itr: 5090, epoch:[48/50], completed user:[15360/109729] loss: 3.20849, precision_1: 0.09975, precision_2: 0.18809
+2021-07-02 22:35:45, itr: 5100, epoch:[48/50], completed user:[25600/109729] loss: 3.18654, precision_1: 0.11013, precision_2: 0.20243
+>>>>>>>>2021-07-02 22:35:55: itr: 5100, vali: 3.19047, 0.10912, 0.19641<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre1 saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 22:36:08, itr: 5110, epoch:[48/50], completed user:[35840/109729] loss: 3.18955, precision_1: 0.10666, precision_2: 0.19485
+2021-07-02 22:36:22, itr: 5120, epoch:[48/50], completed user:[46080/109729] loss: 3.22215, precision_1: 0.10212, precision_2: 0.19089
+2021-07-02 22:36:35, itr: 5130, epoch:[48/50], completed user:[56320/109729] loss: 3.20069, precision_1: 0.10543, precision_2: 0.18817
+2021-07-02 22:36:49, itr: 5140, epoch:[48/50], completed user:[66560/109729] loss: 3.19662, precision_1: 0.09606, precision_2: 0.18152
+2021-07-02 22:37:21, itr: 5150, epoch:[48/50], completed user:[76800/109729] loss: 3.22318, precision_1: 0.10385, precision_2: 0.18835
+2021-07-02 22:37:34, itr: 5160, epoch:[48/50], completed user:[87040/109729] loss: 3.20776, precision_1: 0.10835, precision_2: 0.19669
+2021-07-02 22:37:48, itr: 5170, epoch:[48/50], completed user:[97280/109729] loss: 3.20087, precision_1: 0.10844, precision_2: 0.19062
+2021-07-02 22:38:02, itr: 5180, epoch:[48/50], completed user:[107520/109729] loss: 3.20877, precision_1: 0.10901, precision_2: 0.18798
+2021-07-02 22:40:37, epoch 47 train complete
+2021-07-02 22:40:47, itr: 5190, epoch:[49/50], completed user:[7168/109729] loss: 3.16777, precision_1: 0.11414, precision_2: 0.20668
+2021-07-02 22:41:00, itr: 5200, epoch:[49/50], completed user:[17408/109729] loss: 3.20326, precision_1: 0.10959, precision_2: 0.19011
+>>>>>>>>2021-07-02 22:41:10: itr: 5200, vali: 3.18949, 0.10841, 0.19687<<<<<<<<
+model:../model/save_dir/PW/best-loss saved success!!!!
+model:../model/save_dir/PW/best-pre2 saved success!!!!
+2021-07-02 22:41:44, itr: 5210, epoch:[49/50], completed user:[27648/109729] loss: 3.16276, precision_1: 0.11445, precision_2: 0.199212021-07-02 22:46:24,825 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2605702043 m] train_on_epoch 
+ 98%|█████████▊| 49/50 [4:40:35<05:46, 346.67s/it]2021-07-02 22:52:13,429 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2778966347 m] train_on_epoch 
+100%|██████████| 50/50 [4:46:23<00:00, 347.25s/it]100%|██████████| 50/50 [4:46:23<00:00, 343.67s/it]
+WARNING:tensorflow:From /data1/anaconda3/lib/python3.6/site-packages/tensorflow/python/training/saver.py:1276: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+2021-07-02 22:55:27,066 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.2128294071 m] validation 
+2021-07-02 22:58:28,406 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2261849046 m] multithread_compute_validation 
+2021-07-02 23:01:14,234 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1801261862 m] validation 
+2021-07-02 23:03:49,573 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7647693952 m] multithread_compute_validation 
+2021-07-02 23:07:02,377 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.2011208256 m] validation 
+2021-07-02 23:10:02,834 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.2137328148 m] multithread_compute_validation 
+2021-07-02 23:12:49,066 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1752716780 m] validation 
+2021-07-02 23:15:25,076 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7707402587 m] multithread_compute_validation 
+2021-07-02 23:18:36,784 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.2072721799 m] validation 
+2021-07-02 23:21:37,441 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [3.1957662344 m] multithread_compute_validation 
+2021-07-02 23:24:22,456 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [0.1785722812 m] validation 
+2021-07-02 23:26:59,182 - /data2/project/RL/utils/yjp_decorator.py[line:53] - INFO: [2.7497633537 m] multithread_compute_validation 
+
+2021-07-02 22:41:57, itr: 5220, epoch:[49/50], completed user:[37888/109729] loss: 3.18797, precision_1: 0.10698, precision_2: 0.19482
+2021-07-02 22:42:11, itr: 5230, epoch:[49/50], completed user:[48128/109729] loss: 3.20387, precision_1: 0.10946, precision_2: 0.19580
+2021-07-02 22:42:25, itr: 5240, epoch:[49/50], completed user:[58368/109729] loss: 3.23483, precision_1: 0.11028, precision_2: 0.19397
+2021-07-02 22:42:38, itr: 5250, epoch:[49/50], completed user:[68608/109729] loss: 3.20641, precision_1: 0.11388, precision_2: 0.19762
+2021-07-02 22:43:12, itr: 5260, epoch:[49/50], completed user:[78848/109729] loss: 3.21431, precision_1: 0.10680, precision_2: 0.19165
+2021-07-02 22:43:25, itr: 5270, epoch:[49/50], completed user:[89088/109729] loss: 3.24413, precision_1: 0.10808, precision_2: 0.18742
+2021-07-02 22:43:39, itr: 5280, epoch:[49/50], completed user:[99328/109729] loss: 3.21439, precision_1: 0.10946, precision_2: 0.19752
+2021-07-02 22:43:52, itr: 5290, epoch:[49/50], completed user:[109568/109729] loss: 3.19905, precision_1: 0.10754, precision_2: 0.19777
+2021-07-02 22:46:25, epoch 48 train complete
+2021-07-02 22:46:37, itr: 5300, epoch:[50/50], completed user:[9216/109729] loss: 3.20524, precision_1: 0.10616, precision_2: 0.19166
+>>>>>>>>2021-07-02 22:46:47: itr: 5300, vali: 3.19040, 0.10695, 0.19382<<<<<<<<
+2021-07-02 22:47:01, itr: 5310, epoch:[50/50], completed user:[19456/109729] loss: 3.19678, precision_1: 0.11432, precision_2: 0.19808
+2021-07-02 22:47:34, itr: 5320, epoch:[50/50], completed user:[29696/109729] loss: 3.21964, precision_1: 0.11168, precision_2: 0.19271
+2021-07-02 22:47:48, itr: 5330, epoch:[50/50], completed user:[39936/109729] loss: 3.17989, precision_1: 0.10450, precision_2: 0.19388
+2021-07-02 22:48:02, itr: 5340, epoch:[50/50], completed user:[50176/109729] loss: 3.20471, precision_1: 0.10878, precision_2: 0.20031
+2021-07-02 22:48:15, itr: 5350, epoch:[50/50], completed user:[60416/109729] loss: 3.22603, precision_1: 0.11017, precision_2: 0.19136
+2021-07-02 22:48:29, itr: 5360, epoch:[50/50], completed user:[70656/109729] loss: 3.20538, precision_1: 0.09877, precision_2: 0.18918
+2021-07-02 22:49:03, itr: 5370, epoch:[50/50], completed user:[80896/109729] loss: 3.17137, precision_1: 0.11399, precision_2: 0.20047
+2021-07-02 22:49:16, itr: 5380, epoch:[50/50], completed user:[91136/109729] loss: 3.19231, precision_1: 0.11271, precision_2: 0.19696
+2021-07-02 22:49:30, itr: 5390, epoch:[50/50], completed user:[101376/109729] loss: 3.20770, precision_1: 0.11054, precision_2: 0.18934
+2021-07-02 22:52:13, epoch 49 train complete
+model:../model/save_dir/PW/best-loss loaded success!!!!
+test!!!loss!!!, test: 3.20395, vali: 3.18949
+model:../model/save_dir/PW/best-pre1 loaded success!!!!
+test!!!pre1!!!, test: 0.10858, vali: 0.10912
+model:../model/save_dir/PW/best-pre2 loaded success!!!!
+test!!!pre2!!!, test: 0.19520, vali: 0.19687
+2021-07-02 23:26:59, end.	 time cost:349.533788450559 m

@@ -156,6 +156,9 @@ def train(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
     data_collection = dataset.data_collection_all(train_user)
+    file = open('data/data_collection_comb.pkl'.format(), 'wb')
+    pickle.dump(data_collection, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
     print('train data length:{}'.format(len(data_collection['user'])))
 
     for _ in tqdm(range(dataset.args.epoch)):
