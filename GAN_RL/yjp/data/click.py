@@ -14,12 +14,15 @@ from utils.txt_process import read_sql
 from utils.yjp_ml_log import log
 from utils.config import project_root_path, root_path
 import utils.load_data as ld
+from utils.yjp_decorator import cost_time_minute
 
 
 city_recall_path = project_root_path+'/GAN_RL/yjp/data/sqls2/click.sql'
 city_recall_sql = read_sql(city_recall_path)
 
-def train(hostname='haproxy.cdh.yjp.com',port=21050,flag=False):
+
+@cost_time_minute
+def train(hostname='haproxy.cdh.yjp.com',port=21050,flag=True):
     t1 = time.time()
     log.logger.info('starting time :{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
 
@@ -38,6 +41,8 @@ def train(hostname='haproxy.cdh.yjp.com',port=21050,flag=False):
 
     t2 = time.time()
     log.logger.info('fetching data cost:{} m'.format((t2 - t1) / 60))
+    data.user_id=data.user_id.astype(int)
+    data.sku_id=data.sku_id.astype(int)
     return data
 
 if __name__ == '__main__':

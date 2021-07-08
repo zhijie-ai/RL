@@ -36,9 +36,9 @@ def plot(data,label,name,num=10,ran=50):
 
 if __name__ == '__main__':
 
-    plot([pw_loss,pw_loss],['loss-lstm','loss-pw'],'loss',num=10)
-    plot([pw_p1,pw_p1],['p1-lstm','p1-pw'],'p1',num=10)
-    plot([pw_p2,pw_p2],['p2-lstm','p2-pw'],'p2',num=10)
+    plot([pw_loss,pw_loss],['loss-pw','loss-pw'],'loss',num=10)
+    plot([pw_p1,pw_p1],['p1-pw','p1-pw'],'p1',num=10)
+    plot([pw_p2,pw_p2],['p2-pw','p2-pw'],'p2',num=10)
 
 
 

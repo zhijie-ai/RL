@@ -11,7 +11,7 @@
 #-----------------------------------------------
 import multiprocessing
 
-from utils.yjp_decorator import cost_time_def
+from utils.yjp_decorator import cost_time_minute
 from GAN_RL.yjp.code.options import get_options
 import datetime,os
 import numpy as np
@@ -34,7 +34,7 @@ class Dataset():
             print('process lock')
             self.lock = multiprocessing.Lock()
 
-    @cost_time_def
+    @cost_time_minute
     def data_collection_with_batch(self,train_user,type='random'):
         data_size_init = len(train_user)*self.args.train_time_horizon+10
         data_collection = {'user':deque(maxlen=data_size_init),'state':deque(maxlen=data_size_init),
@@ -76,7 +76,7 @@ class Dataset():
         return data_collection
 
 
-    @cost_time_def
+    @cost_time_minute
     def data_collection(self, training_user,type='random'):
         states = [[] for _ in range(len(training_user))]
         data_size_init = len(training_user)*self.args.train_time_horizon+100
@@ -99,6 +99,7 @@ class Dataset():
                 for u_i in range(len(training_user)):
                     user_i = training_user[u_i]
                     # 从用户曝光过的sku中随机选出k个sku作为推荐，模拟推荐引擎的选择
+                    print('AAAA',user_i)
                     random_action[u_i] = np.random.choice(list(set(np.arange(len(self.env.feature_space[user_i])))-set(states[u_i])),self.dqn.k,replace=False).tolist()
                     random_action_feature += [self.env.feature_space[user_i][jj] for jj in random_action[u_i]]
 
@@ -178,7 +179,7 @@ class Dataset():
 
                 # 4. compute one-step delayed reward
                 max_q_feed_dict,_,_,_ = self.format_max_q_feed_dict(old_training_user,next_states)
-                max_q_value = self.dqn.get_max_q_value(max_q_feed_dict)
+                max_q_value = self.dqn.get_max_q_value(max_q_feed_dict)#  max_q_value:是第10次推荐时，在所有item的reward中选最大的reward
 
                 #4. save to memory
                 y_value = sampled_reward+self.args.gamma*max_q_value
@@ -222,7 +223,7 @@ class Dataset():
         print('release lock~~~~~~~~~~~~~~~~')
 
     #用多线程收集数据反而变慢了
-    @cost_time_def
+    @cost_time_minute
     def multi_collect_data(self,user_set,num_sets):
         global data_collection
 

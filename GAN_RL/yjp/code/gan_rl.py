@@ -15,7 +15,7 @@ import numpy as np
 import threading
 from multiprocessing import Process
 from tqdm import tqdm
-from utils.yjp_decorator import cost_time_def
+from utils.yjp_decorator import cost_time_minute
 
 from GAN_RL.yjp.code.options import get_options
 from GAN_RL.yjp.code.data_util import Dataset
@@ -30,7 +30,7 @@ warnings.filterwarnings('ignore', category=DeprecationWarning, module='tensorflo
 warnings.filterwarnings('ignore')
 
 
-@cost_time_def
+@cost_time_minute
 def multithread_compute_validation(model, out_):
     global vali_sum, vali_cnt
 
@@ -54,7 +54,7 @@ def multithread_compute_validation(model, out_):
 lock = threading.Lock()
 
 
-@cost_time_def
+@cost_time_minute
 def validation(model, out_, ii):
     global vali_sum, vali_cnt
 
@@ -67,7 +67,7 @@ def validation(model, out_, ii):
     lock.release()
 
 
-@cost_time_def
+@cost_time_minute
 def train_on_epoch(model, out_vali, i, epochs):
     for ind in range(0, len(dataset.train_user), cmd_args.batch_size):
         training_user = dataset.train_user[ind:ind + cmd_args.batch_size]

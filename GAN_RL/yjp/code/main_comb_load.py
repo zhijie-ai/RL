@@ -10,7 +10,7 @@
 #               不胜人生一场醉。                 #
 #-----------------------------------------------
 # 用训练得到的env模型来训练强化学习模型
-from utils.yjp_decorator import cost_time_def
+from utils.yjp_decorator import cost_time_minute
 import pickle
 import numpy as np
 from collections import deque
@@ -83,7 +83,7 @@ def multi_compute_validation(current_best_reward,dataset,env,dqn,user_set):
     return user_avg_reward,sum_clk_rate/len(user_set),current_best_reward
 
 # 新启线程来运行
-@cost_time_def##1459.6893651485s
+@cost_time_minute##1459.6893651485s
 def validation(dataset,env,dqn,vali_user):
     # initialize empty states
     global user_sum_reward,sum_clk_rate
@@ -106,7 +106,7 @@ def validation(dataset,env,dqn,vali_user):
 
     lock.release()
 
-@cost_time_def
+@cost_time_minute
 def validation_train(current_best_reward,dataset,env,dqn,vali_user):
     sim_u_reward = {}
     sim_vali_user = vali_user.copy()
@@ -126,7 +126,7 @@ def validation_train(current_best_reward,dataset,env,dqn,vali_user):
 
     return user_avg_reward, clk_sum_rate/len(vali_user) ,current_best_reward
 
-# @cost_time_def#0.5478950063 m
+# @cost_time_minute#0.5478950063 m
 def train_on_epoch(data_collection,dataset,dqn,loss):
     # START TRAINING for this batch of users
     num_samples = len(data_collection['user'])
@@ -151,7 +151,7 @@ def train_on_epoch(data_collection,dataset,dqn,loss):
                 print_loss += ' %.5g,'
             print(('%s: itr(%d), training loss:'+print_loss) % tuple([log_time, step//10]+loss_val))
 
-@cost_time_def
+@cost_time_minute
 def train(dataset,dqn,train_user):
     loss = [[] for _ in range(dqn.k)]
 
@@ -164,7 +164,7 @@ def train(dataset,dqn,train_user):
     dqn.save('best-reward-comb-{}'.format(dataset.args.epoch))
     return loss
 
-@cost_time_def
+@cost_time_minute
 def main(args):
     env = Enviroment(args)
     env.initialize_environment()

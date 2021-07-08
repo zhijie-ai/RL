@@ -13,7 +13,7 @@ import time,datetime
 from utils.txt_process import read_sql
 from utils.config import project_root_path, root_path
 import utils.load_data as ld
-from utils.yjp_decorator import cost_time_def
+from utils.yjp_decorator import cost_time_minute
 from multiprocessing.pool import ThreadPool
 import pandas as pd
 
@@ -21,7 +21,7 @@ import pandas as pd
 city_recall_path = project_root_path+'/GAN_RL/yjp/data/sqls2/exposure.sql'
 city_recall_sql = read_sql(city_recall_path)
 
-@cost_time_def
+@cost_time_minute
 def train(date_s,city_recall_sql,hostname=None,port=None):
     t1 = time.time()
     print('starting time :{}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t1))))
@@ -39,7 +39,7 @@ def train(date_s,city_recall_sql,hostname=None,port=None):
     print('fetching data cost:{} m,sql:{},{}'.format((t2 - t1) / 60,city_recall_sql,data.shape))
     return data
 
-def get_data(flag=False):
+def get_data(flag=True):
     date_str = [(datetime.datetime.now()+datetime.timedelta(-i)).strftime('%Y%m%d') for i in range(1,8)]
     pool = ThreadPool(7)
     res = []
@@ -49,6 +49,7 @@ def get_data(flag=False):
 
     pool.close()
     pool.join()
+
     df = pd.DataFrame()
     for i in res:
         df_ = i.get()
@@ -57,6 +58,9 @@ def get_data(flag=False):
 
     if flag:
         df.to_csv(root_path + '/GAN_RL/yjp/data/raw/exposure.csv',index=False)
+
+    df.user_id=df.user_id.astype(int)
+    df.sku_id=df.sku_id.astype(int)
     return df
 
 if __name__ == '__main__':

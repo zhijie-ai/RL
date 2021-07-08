@@ -13,7 +13,7 @@ import pandas as pd
 import datetime
 import numpy as np
 from GAN_RL.yjp.code.options import get_options
-from utils.yjp_decorator import cost_time_def
+from utils.yjp_decorator import cost_time_minute
 from sklearn.model_selection import train_test_split
 import pickle
 from collections import defaultdict
@@ -34,7 +34,7 @@ class Dataset():
 
         np.random.seed(self.random_seed)
 
-    @cost_time_def
+    @cost_time_minute
     def drop_dup_row(self,data,min_count=7):
 
         def _parse(ser):
@@ -84,6 +84,7 @@ class Dataset():
         data.drop('flag',axis=1,inplace=True)
         return data
 
+    @cost_time_minute
     def filter_(self,data,min_count=4,max_count=80,total=10):
         #为了方便后面根据session_app字段过滤时速度较快
         data['session_app_']= data.session_app.apply(hash)
@@ -101,7 +102,7 @@ class Dataset():
         data = data.drop_duplicates()
         return data
 
-    @cost_time_def
+    @cost_time_minute
     def split_dataset(self,data):
         data = data.sample(frac=1).reset_index(drop=True)
         user_ids = data.user_id.unique()
@@ -119,7 +120,7 @@ class Dataset():
         data = data.sort_values(by='time')
         return data
 
-    @cost_time_def
+    @cost_time_minute
     def preprocess_data(self):
         # click = self.filter_(self.click,min_count=7,max_count=20)
         # user = np.random.choice(self.exposure.user_id.unique(),10000,replace=False)
@@ -197,7 +198,7 @@ class Dataset():
         print('>>>>>function preprocess_data finished~~~~~<<<<<<<<<<<<')
 
 
-    @cost_time_def
+    @cost_time_minute
     def gen_embedding(self,d_str=None):
         if d_str is None:
             d_str = datetime.datetime.now().strftime('%Y%m%d')
@@ -228,7 +229,7 @@ class Dataset():
         pickle.dump(id2key_sku, file, protocol=pickle.HIGHEST_PROTOCOL)
         file.close()
 
-    @cost_time_def
+    @cost_time_minute
     def read_data(self):
         with open(self.data_folder+'data_behavior.pkl','rb') as f:
             self.data_behavior = pickle.load(f)
@@ -443,7 +444,7 @@ class Dataset():
         out['user_time_dense']=user_time_dense
         return out
 
-    @cost_time_def
+    @cost_time_minute
     def format_data(self):
         # self.data_click = [[] for _ in range(self.size_user)]
         # self.data_disp = [[] for _ in range(self.size_user)]
@@ -541,7 +542,7 @@ class Dataset():
 
         return out2
 
-    @cost_time_def
+    @cost_time_minute
     def prepare_validation_data(self,num_sets,v_user):
         if self.model_type == 'PW':
             vali_thread_u = [[] for _ in range(num_sets)]
@@ -637,19 +638,19 @@ class Dataset():
             out2['user_time_dense_v']=ut_dense_v
             return out2
 
-    @cost_time_def
+    @cost_time_minute
     def reading_raw(self,flag=True):
         if flag:
             self.click = pd.read_csv(self.click_path)
             self.exposure = pd.read_csv(self.exposure_path)
         else:
-            self.click = get_click_data()
-            self.exposure = get_exposure_data()
+            self.click = get_click_data(flag=True)
+            self.exposure = get_exposure_data(flag=True)
         print('data shape:',self.click.shape,self.exposure.shape)
 
-    @cost_time_def
+    @cost_time_minute
     def init_dataset(self):
-        self.reading_raw(True)
+        self.reading_raw(False)
         self.gen_embedding()#'20210412'
         self.preprocess_data()
         self.read_data()
