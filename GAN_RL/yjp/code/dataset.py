@@ -58,7 +58,6 @@ class Dataset():
     def permutation(self,data_collection):
         tmp = np.array(data_collection['state'])
         not_none_ind = [index for index,d in enumerate(tmp) if d]
-        print('filter num :{}'.format(len(tmp)-len(not_none_ind)))
 
         ind = np.random.permutation(len(not_none_ind))
         user = np.array(data_collection['user'])[not_none_ind][ind].tolist()
@@ -73,6 +72,8 @@ class Dataset():
         y = np.array(data_collection['y'])[not_none_ind][ind].tolist()
         data_collection['y'].clear()
         data_collection['y'].extend(y)
+
+        print('filter num :{}\t data length:{}'.format(len(tmp)-len(not_none_ind),len(ind)))
         return data_collection
 
 
