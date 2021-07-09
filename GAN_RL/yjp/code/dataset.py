@@ -99,7 +99,6 @@ class Dataset():
                 for u_i in range(len(training_user)):
                     user_i = training_user[u_i]
                     # 从用户曝光过的sku中随机选出k个sku作为推荐，模拟推荐引擎的选择
-                    print('AAAA',user_i)
                     random_action[u_i] = np.random.choice(list(set(np.arange(len(self.env.feature_space[user_i])))-set(states[u_i])),self.dqn.k,replace=False).tolist()
                     random_action_feature += [self.env.feature_space[user_i][jj] for jj in random_action[u_i]]
 
