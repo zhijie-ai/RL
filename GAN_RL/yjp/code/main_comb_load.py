@@ -124,6 +124,10 @@ def validation_train(current_best_reward,dataset,env,dqn,vali_user):
     if user_avg_reward>current_best_reward:
         current_best_reward =user_avg_reward
 
+    file = open('data/val_u_reward.pkl'.format(), 'wb')
+    pickle.dump(sim_u_reward, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
+
     return user_avg_reward, clk_sum_rate/len(vali_user) ,current_best_reward
 
 # @cost_time_minute#0.5478950063 m
